@@ -1,0 +1,117 @@
+.logo-section {
+  background-color: #5C1043;
+  width: 100%;
+}
+
+.logos-large {
+  max-width: 1200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 30px 0px;
+}
+
+.logos-small {
+  max-width: 1200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 auto;
+  // padding: 30px 0px;
+}
+
+.logo {
+  max-width: 20%;
+  align-self: center;
+}
+
+
+.logos-large .logo {
+  padding: 0px 10px;
+  width: 25%;
+  align-self: center;
+}
+
+.logos {
+  max-width: 1200px;
+  // border: 1px solid red;
+  // padding: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  // align-items: center;
+  margin: 0 auto;
+  padding: 30px 0px;
+  flex-basis: 21%;
+  border-bottom: 1px solid rgba(183, 192, 198, 0.16);
+}
+
+.logos .logo {
+  padding: 20px;
+  align-self: center;
+}
+
+.logos .logo img {
+  max-width: 100px;
+}
+
+.footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #5C1043;
+  .footer-flex {
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 30px 0px;
+    max-width: 1200px;
+    // border: 1px solid green;
+    a, p.lato {
+      color: $white;
+      margin: 0px;
+      font-size: 17px;
+      font-weight: 400;
+    }
+  }
+  .footer-flex-small {
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 30px 0px;
+    max-width: 1200px;
+    // border: 1px solid green;
+    a, p.lato {
+      color: $white;
+      margin: 0px 6px;
+      font-size: 13px;
+      font-weight: 400;
+    }
+  }
+}
+
+
+footer.footer-btm {
+  position: relative;
+  background-color: #5C1043;
+  width: 100%;
+}
+
+
+.logo-break {
+  flex-basis: 100%;
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+}

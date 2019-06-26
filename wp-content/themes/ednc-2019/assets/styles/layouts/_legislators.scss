@@ -1,0 +1,38 @@
+.legislator {
+  .callout {
+    h6 {
+      margin: 0;
+      background-color: red;
+    }
+
+    .h1 {
+      margin: 15px 0;
+    }
+
+    &.Democrat {
+      background: $denim;
+
+      h6, .h2 {
+        color: $white;
+      }
+    }
+
+    &.Republican {
+      background: $scarlet;
+
+      h6, .h2 {
+        color: $white;
+      }
+    }
+  }
+}
+
+
+
+body.legislation-tracker > div.wrap > div > main > div > div:nth-child(2) > div.col-md-9.col-lg-8.col-md-pull-3 > ul > li > a {
+    color: $text;
+}
+
+.extra-margin {
+  margin: 5em 0;
+}

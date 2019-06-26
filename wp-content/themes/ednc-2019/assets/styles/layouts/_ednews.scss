@@ -1,0 +1,307 @@
+.ednews-template-default {
+
+  .archive-day a {
+    color: white;
+  }
+
+  .archive-day li {
+    color: white;
+  }
+
+  .single .hentry li {
+    color: white;
+  }
+
+  .accordion h3 a {
+    color: white;
+  }
+  .single .hentry ol, .single .hentry ul {
+    margin-bottom: 1.88em;
+    color: white;
+  }
+}
+
+.archive-month-ednews ul, li {
+  // color: white;
+
+}
+
+.archive-month-ednews li a {
+  color: white;
+  :hover {
+    color: pink;
+  }
+}
+
+
+.featured-pick {
+  background-color: #39C;
+  overflow: hidden;
+  margin-bottom: 1em;
+  color: white;
+
+  a {
+    color: white;
+  }
+
+  &:after {
+    opacity: 0.2;
+    bottom: 5px;
+    top: auto;
+    transform: translateY(0);
+  }
+  h6, h3, p, a, a.more {
+    color: white;
+  }
+  h4 {
+    // margin: 0;
+  }
+}
+
+.ednews-items h4 {
+  margin: 0;
+}
+
+p.ednews-footer {
+  line-height: 1.3em;
+}
+
+.callout-purple {
+  background: $plum-darker;
+  padding: 30px;
+  margin: 0 0 1.25rem;
+  overflow: hidden;
+  font-family: $font-family-sans-serif;
+  color: $jet;
+
+  form {
+    .input-group {
+      input.form-control {
+        background-color: $purple;
+        color: white;
+        border: 1px solid white;
+        border-right: none;
+      }
+      input.form-control::placeholder {
+        color: white;
+      }
+      input.form-control:focus {
+        // outline-color: transparent;
+        // outline-style: none;
+      }
+      span {
+        input {
+          background-color: $purple;
+          color: white;
+          border: 1px solid white;
+          border-left: none;
+          text-transform: none;
+        }
+      }
+    }
+  }
+
+  ul.resource-cats {
+
+    li {
+      @include li-rd(white);
+      a {
+        color: white;
+        font-style: normal;
+      }
+    }
+  }
+
+  .h1 {
+    font-size: $font-size-h1;
+    font-style: normal;
+    margin-top: 0;
+    color: white;
+
+    .big {
+      font-size: 1.2em;
+      line-height: 1;
+    }
+  }
+
+  h4 {
+    margin-top: 0;
+    color: white;
+  }
+
+  p {
+    font-weight: 300;
+    margin-bottom: 1em;
+    color: white;
+  }
+
+  .button {
+    margin: 0;
+  }
+
+  .menu {
+    list-style: none;
+    padding: 0;
+    font-family: $font-family-sans-serif;
+
+    li {
+      padding-bottom: .25em;
+      margin: 0;
+      color: white;
+
+      &.active {
+        & > a {
+          color: $white;
+          font-weight: 700;
+        }
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: $jet;
+      color: white;
+
+      &:hover, &:active, &:focus {
+        color: $white;
+      }
+    }
+  }
+
+  @media (max-width: $screen-md-max) {
+    padding: 15px;
+  }
+}
+
+
+.callout-blue {
+  background: $bright-blue;
+  padding: 30px;
+  margin: 0 0 1.25rem;
+  overflow: hidden;
+  font-family: $font-family-sans-serif;
+  color: $jet;
+
+  form {
+    .input-group {
+      input.form-control {
+        background-color: $purple;
+        color: white;
+        border: 1px solid white;
+        border-right: none;
+      }
+      input.form-control::placeholder {
+        color: white;
+      }
+      input.form-control:focus {
+        // outline-color: transparent;
+        // outline-style: none;
+      }
+      span {
+        input {
+          background-color: $purple;
+          color: white;
+          border: 1px solid white;
+          border-left: none;
+          text-transform: none;
+        }
+      }
+    }
+  }
+
+  ul.resource-cats {
+
+    li {
+      @include li-rd(white);
+      a {
+        color: white;
+        font-style: normal;
+      }
+    }
+  }
+
+  .h1 {
+    font-size: $font-size-h1;
+    font-style: normal;
+    margin-top: 0;
+    color: white;
+
+    .big {
+      font-size: 1.2em;
+      line-height: 1;
+    }
+  }
+
+  h4 {
+    margin-top: 0;
+    color: white;
+  }
+
+  p {
+    font-weight: 300;
+    margin-bottom: 1em;
+    color: white;
+  }
+
+  .button {
+    margin: 0;
+  }
+
+  .menu {
+    list-style: none;
+    padding: 0;
+    font-family: $font-family-sans-serif;
+
+    li {
+      padding-bottom: .25em;
+      margin: 0;
+      color: white;
+
+      &.active {
+        & > a {
+          color: $white;
+          font-weight: 700;
+        }
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: $jet;
+      color: white;
+
+      &:hover, &:active, &:focus {
+        color: $white;
+      }
+    }
+  }
+
+  @media (max-width: $screen-md-max) {
+    padding: 15px;
+  }
+}
+
+.aside {
+  background: $steel;
+  padding: 10px 20px;
+
+  @media (min-width: 545px) {
+    width: 50%;
+  }
+
+  & > h3:first-of-type {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: $screen-md-min) {
+  .archive, .edlibrary {
+    .sidebar {
+      .btn {
+        white-space: normal;
+        text-align: left;
+        width: 100%;
+      }
+    }
+  }
+}

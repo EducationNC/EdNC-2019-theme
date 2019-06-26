@@ -1,0 +1,133 @@
+#voices {
+  h3.section-header {
+    color: white;
+  }
+}
+
+.block-voices {
+  clear: both;
+  margin-bottom: 40px;
+  padding-top: 36px;
+  position: relative;
+}
+
+.block-small {
+  clear: both;
+  margin-bottom: 40px;
+  padding-top: 36px;
+  position: relative;
+  width: 100%;
+  position: relative;
+  clear: both;
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+#voices.block::before {
+  @include block-before (204px);
+}
+
+.block .home-page-wrapper, .block-small .site-wrapper {
+    z-index: 3;
+}
+
+.block-small::before {
+    content: '';
+    height: 158px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+
+
+.block-small.golden::before {
+    background: $golden;
+}
+.block-small.green::before {
+    background: $green;
+}
+.block-small.dark-blue::before {
+    background: $dark-blue;
+}
+.block-small.bright-blue::before {
+    background: $bright-blue;
+}
+.block-small.coral::before {
+    background: $coral;
+}
+
+#voices {
+  h4 {
+    margin-top: 5px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 400px;
+  }
+}
+
+.site-wrapper .staff, .site-wrapper .specialists, .site-wrapper .correspondents, .site-wrapper .edambassadors, .site-wrapper .contributors {
+  @include content-box(-20px);
+  justify-content: flex-start;
+}
+
+
+
+.flex-section-4 {
+  @include block-4(20px);
+}
+
+.flex-section-6 {
+  @include block-6(20px);
+}
+
+.flex-section-3 {
+  @include block-3(20px);
+}
+
+.flex-section-5 {
+  @include block-5(20px);
+}
+
+.circle-image img {
+  border-radius: 50%;
+}
+
+#voices h2 {
+  margin: 0;
+}
+.tabs-section {
+  @include flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tabs-section {
+  @include flex;
+  justify-content: space-between;
+  align-items: center;
+  .nav-tabs {
+    margin-bottom: 0;
+    li {
+      a {
+        background-color: $coral;
+        border: 1px white solid;
+        color: $white;
+      }
+      a:focus {
+        background-color: $coral;
+        border: 1px white solid;
+      }
+      a:active {
+        background-color: white;
+        border: 1px white solid;
+        color: $coral;
+      }
+    }
+  }
+}
+
+ul.nav li a:hover {
+  @include link;
+}

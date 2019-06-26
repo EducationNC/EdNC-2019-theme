@@ -1,0 +1,201 @@
+
+h1.h6.entry-title {
+    margin-top: 0px;
+    margin-bottom: 50px;
+    margin-left: 10px;
+    text-transform: inherit;
+}
+.single-post h1.h6.entry-title {
+    margin-left: 0px;
+}
+.blog{background: inherit !important;}
+/* Find and fix "Juice.io" on website. It it showing up with an orange background.  */
+
+.btn-yellow{background-color:#FFDE17; color:#fff;}
+.btn-yellow:hover, .btn-yellow:active, .btn-yellow:focus, .btn-yellow:visited{background-color:#e1c417;}
+/* Add this to the style sheets in SASS */
+
+body.home > .social-share-buttons{
+    display: none !important;
+}
+
+@media only screen and (max-width: 480px) {
+    .term-reach-nc-voices * .photo-overlay, .term-energizing-east * .photo-overlay {height: 88px !important;}
+    /* Temporary fix for mobile banner on Reach NC Voices Page */
+}
+
+.dropdown-menu>li>a, .dropdown .widgetized-menu .menu{
+    font-size: .8em;
+}
+
+.column-reach-nc-voices * .column-name-overlay * .h1 {display:none;}
+.column-name-overlay{ display:none;}
+
+.chat-button{
+	background-color: #0084ff;
+    padding: 10px 30px;
+    color: #fff;
+    display: block;
+    font-size: 28px;
+    text-align: center;
+    max-width: 75%;
+    margin: 20px auto;
+}
+.chat-button a{
+    color:#fff;
+    text-decoration:none;
+}
+.ncga .block-person .overflow-hidden{
+	height: 200px;
+}
+.ncga .block-person img {
+    width: 100%;
+
+}
+.column-energizing-east * .h1{display:none;}
+.term-energizing-east * .entry-title{ /*display:none;*/}
+
+.block-person>div:hover .attachment-bio-headshot-committee {
+    -webkit-transform: scale(1.05);
+    -o-transform: scale(1.05);
+    transform: scale(1.05);
+}
+.block-person .attachment-bio-headshot-committee {
+    -webkit-transition: -webkit-transform .3s;
+    -o-transition: -o-transform .3s;
+    transition: transform .3s;
+}
+
+.btn-fb-msg{
+    background-color:#6680b0;
+}
+
+.btn-fb-msg img{
+    width: 20px;
+    margin-right: 5px;
+}
+
+.btn-fb-msg:hover, .chat-button:hover,
+.btn-fb-msg:focus, .chat-button:focus,
+.btn-fb-msg:active, .chat-button:active{
+    background-color:#576e97;
+    transition: all .3s;
+}
+
+.btn-center{
+    text-align: center;
+    display: table;
+    margin: 0 auto;
+}
+
+.btn-capitalize{
+    text-transform: capitalize;
+}
+
+.text-white{
+    color:#fff;
+}
+.text-purple{
+    color:#731454;
+}
+
+.polls-box {
+    margin-bottom: 30px;
+    width:100%;
+    max-width:820px;
+    min-height: 292px;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    padding:0px;
+}
+.column-friday-with-ferrel * .h1,
+.column-friday-with-ferrel * .avatar-header{
+    display:none;
+}
+
+.polls-box:hover{
+    /*background-size:102%;
+    transition: background-size 2s ease-in;
+    -moz-transition: background-size 2s ease-in;
+    -ms-transition: background-size 2s ease-in;
+    -o-transition: background-size 2s ease-in;
+    -webkit-transition: background-size 2s ease-in;
+    transform: translate3d(0,0%,0) scale(1.05);*/
+}
+.polls-box .cz-AdminBox{
+
+}
+.polls-box-child {
+    width: 100%;
+    height: 100%;
+    min-height: 292px;
+    padding: 5px 20px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    transition: all .5s;
+    position: absolute;
+    z-index: 9;
+}
+.polls-box:hover .polls-box-child,
+.polls-box:focus .polls-box-child {
+  transform: scale(1.2);
+}
+
+.polls-box-container {
+    color: #fff;
+    text-align: center;
+    z-index: 99;
+    padding: 5px 20px;
+    min-height:292px;
+    background-color: rgba(62, 11, 45, 0.33);
+    height: auto;
+    position:relative;
+}
+
+.polls-box:hover  .polls-box h2{
+    margin-bottom: 10px;
+    margin-top: -10px;
+}
+
+.polls-box h2{
+    font-weight:bold;
+    transition: .3s;
+}
+
+.polls-box p{
+    font-weight:300;
+}
+.column-custom-header-title{
+    margin-bottom: 50px;
+    margin-top: 0px;
+    margin-left: 10px;
+    text-transform: inherit;
+}
+.center-image{
+	margin: 0 auto;
+	text-align: center;
+	margin-bottom: 20px;
+	display: block;
+}
+.background-purple{
+	background-color:#731454;
+}
+.category-header .img,
+img.full-width {
+	width: 100%;
+}
+.page-header.page-header-auto.photo-overlay{
+	height:auto !important;
+}
+
+.no-margin{
+	margin:0px !important;
+}
+.no-padding{
+	padding:0px !important;
+}
+.page-template-template-page-email-php.thank-you * .mc_embed_signup{
+	display: none;
+}
