@@ -17,7 +17,7 @@
   echo do_shortcode( '' );
 
   // Use shortcodes in form like Landing Page Template.
-  echo do_shortcode( '[custom-twitter-feeds screenname="educationnc" num=4 include="author,date,text,avatar,image"]' );
+  echo do_shortcode( '[custom-twitter-feeds screenname="educationnc" num=4 include="author,date,text,avatar,media"]' );
 
   // Store the short code in a variable.
   $var = do_shortcode( '' );
