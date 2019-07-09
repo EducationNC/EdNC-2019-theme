@@ -30,7 +30,7 @@ use Roots\Sage\Assets;
           <?php $small_logo_link= get_sub_field('link');  ?>
             <li>
               <?php if ($small_logo){ ?>
-                <img class="" width="<?php echo $small_logo_width; ?>" src="<?php echo $small_logo['url']; ?>" alt="<?php echo $small_logo['alt'] ?>" />
+                <img class="" width="<?php// echo $small_logo_width; ?>" src="<?php echo $small_logo['url']; ?>" alt="<?php echo $small_logo['alt'] ?>" />
               <?php } ?>
             </li>
         <?php endwhile; ?>
