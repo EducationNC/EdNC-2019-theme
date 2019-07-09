@@ -187,4 +187,6 @@ function add_author_meta() {
       echo "<meta name=\"author\" content=\"$author\">";
   }
 }
+
+
 // add_action( 'wp_enqueue_scripts', 'add_author_meta' );

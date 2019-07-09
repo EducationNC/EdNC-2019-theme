@@ -23,22 +23,40 @@ use Roots\Sage\Assets;
 <footer class="content-info" role="contentinfo">
   <div class="ribbon print-no">
     <ul class="list-inline text-center">
-       <li><img src="<?php echo Assets\asset_path('images/z-smith-reynolds-foundation.png'); ?>" width="153" alt="Z. Smith Reynolds Foundation" /></li>
-      <li><img src="<?php echo Assets\asset_path('images/jw-pope-foundation.png'); ?>" width="150" alt="John William Pope Foundation" /></li>
-      <li><img src="<?php echo Assets\asset_path('images/burroughs-wellcome-fund.png'); ?>" width="100" alt="Burroughs Wellcome Fund" /></li>
-      <li><img src="<?php echo Assets\asset_path('images/park-foundation.png'); ?>" width="130" alt="Park Foundation" /></li>
-      <li><img src="<?php echo Assets\asset_path('images/sas.png'); ?>" width="100" alt="SAS Institute" /></li>
-      <li><img src="<?php echo Assets\asset_path('images/duke-energy.png'); ?>" width="150" alt="Duke Energy" /></li>
-      <li><img src="<?php echo Assets\asset_path('images/SECU_Foundation_logo_trademark_White.png'); ?>" width="150" alt="Viacom" /></li>
-      <li><a title="Blue Cross Blue Shield" href="https://www.bcbsnc.com/"><img src="<?php echo Assets\asset_path('images/Blue-Cross-Blue-Sheild-NC-Logo.png'); ?>" width="130" alt="Blue Cross Blue Shield" /></a></li>
-      <li><img src="<?php echo Assets\asset_path('images/logo-belk-foundation.png'); ?>" width="130" alt="Belk Foundation" /></li>
-      <li><img src="<?php echo Assets\asset_path('images/william-trust.png'); ?>" width="170" alt="The William R. Kenan, Jr. Charitable Trust" /></li>
-      <li><img src="<?php echo Assets\asset_path('images/mebane-foundation-logo-white.png'); ?>" width="170" alt="Mebane Foundation" /></li>
-      <li><img src="<?php echo Assets\asset_path('images/duke-endowment.png'); ?>" width="200" alt="The James P. Duke Endowment" /></li>
-      <li><img src="<?php echo Assets\asset_path('images/BelkEndowment_ logo.png'); ?>" width="200" alt="John M. Belk Endowment" /></li>
-      
-      </ul>
+      <?php if( have_rows('small_logo_row_1', 'option') ): ?>
+        <?php while( have_rows('small_logo_row_1', 'option') ): the_row(); ?>
+          <?php $small_logo = get_sub_field('small_logos');  ?>
+          <?php $small_logo_width = get_sub_field('width');  ?>
+          <?php $small_logo_link= get_sub_field('link');  ?>
+            <li>
+              <?php if ($small_logo){ ?>
+                <img class="" width="<?php echo $small_logo_width; ?>" src="<?php echo $small_logo['url']; ?>" alt="<?php echo $small_logo['alt'] ?>" />
+              <?php } ?>
+            </li>
+        <?php endwhile; ?>
+      <?php endif; ?>
+    </ul>
   </div>
+
+
+
+  <!-- <div class="ribbon print-no">
+    <ul class="list-inline text-center">
+      <li><img src="<?php// echo Assets\asset_path('images/z-smith-reynolds-foundation.png'); ?>" width="153" alt="Z. Smith Reynolds Foundation" /></li>
+      <li><img src="<?php// echo Assets\asset_path('images/jw-pope-foundation.png'); ?>" width="150" alt="John William Pope Foundation" /></li>
+      <li><img src="<?php// echo Assets\asset_path('images/burroughs-wellcome-fund.png'); ?>" width="100" alt="Burroughs Wellcome Fund" /></li>
+      <li><img src="<?php// echo Assets\asset_path('images/park-foundation.png'); ?>" width="130" alt="Park Foundation" /></li>
+      <li><img src="<?php// echo Assets\asset_path('images/sas.png'); ?>" width="100" alt="SAS Institute" /></li>
+      <li><img src="<?php// echo Assets\asset_path('images/duke-energy.png'); ?>" width="150" alt="Duke Energy" /></li>
+      <li><img src="<?php// echo Assets\asset_path('images/SECU_Foundation_logo_trademark_White.png'); ?>" width="150" alt="Viacom" /></li>
+      <li><a title="Blue Cross Blue Shield" href="https://www.bcbsnc.com/"><img src="<?php// echo Assets\asset_path('images/Blue-Cross-Blue-Sheild-NC-Logo.png'); ?>" width="130" alt="Blue Cross Blue Shield" /></a></li>
+      <li><img src="<?php //echo Assets\asset_path('images/logo-belk-foundation.png'); ?>" width="130" alt="Belk Foundation" /></li>
+      <li><img src="<?php //echo Assets\asset_path('images/william-trust.png'); ?>" width="170" alt="The William R. Kenan, Jr. Charitable Trust" /></li>
+      <li><img src="<?php //echo Assets\asset_path('images/mebane-foundation-logo-white.png'); ?>" width="170" alt="Mebane Foundation" /></li>
+      <li><img src="<?php// echo Assets\asset_path('images/duke-endowment.png'); ?>" width="200" alt="The James P. Duke Endowment" /></li>
+      <li><img src="<?php //echo Assets\asset_path('images/BelkEndowment_ logo.png'); ?>" width="200" alt="John M. Belk Endowment" /></li>
+      </ul>
+  </div> -->
 
   <div class="container">
     <div class="row">
