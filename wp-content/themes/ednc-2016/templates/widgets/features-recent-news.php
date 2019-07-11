@@ -85,7 +85,7 @@ $featured_ids = array();
     <div class="col-md-4">
       <div class="flex-sm">
         <div class="ad-wrap text-center col-md-12 hidden-xs hidden-sm">
-         
+
         </div>
 
         <div class="ad-wrap text-center col-sm-12">
@@ -137,7 +137,7 @@ $featured_ids = array();
             )
           )
         );
-          
+
 
         $ad = new WP_Query($args);
 
@@ -195,7 +195,7 @@ $featured_ids = array();
          </div>
       </div>
 
-      
+
 
       <div class="ad-wrap text-center">
         <?php

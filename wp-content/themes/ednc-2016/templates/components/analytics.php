@@ -14,7 +14,7 @@ ga('send', 'pageview');
 </script>
 
 <!-- Hotjar Analytics -->
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 (function(f,b,g){
   var xo=g.prototype.open,xs=g.prototype.send,c;
   f.hj=f.hj||function(){(f.hj.q=f.hj.q||[]).push(arguments)};
@@ -26,4 +26,4 @@ ga('send', 'pageview');
     g.prototype.send=function(e){var j=this;function h(){if(j.readyState===4){f.hj("_xhr",j._u,j.status,j.response)}}this.addEventListener("readystatechange",h,false);xs.call(this,e)};
   }
 })(window,document,window.XMLHttpRequest);
-</script>
+</script> -->

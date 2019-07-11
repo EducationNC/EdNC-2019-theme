@@ -1,6 +1,106 @@
 <?php
 if( function_exists('register_field_group') ):
 
+
+
+	acf_add_local_field_group(array(
+	'key' => 'group_5d263b7601228',
+	'title' => 'Images',
+	'fields' => array(
+		array(
+			'key' => 'field_5d263b895ba33',
+			'label' => 'Email Ad Signup Image',
+			'name' => 'email_ad_signup_image',
+			'type' => 'image',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'return_format' => 'array',
+			'preview_size' => 'thumbnail',
+			'library' => 'all',
+			'min_width' => '',
+			'min_height' => '',
+			'min_size' => '',
+			'max_width' => '',
+			'max_height' => '',
+			'max_size' => '',
+			'mime_types' => '',
+		),
+		array(
+			'key' => 'field_5d263bb45ba34',
+			'label' => 'Consider It Mapped',
+			'name' => 'consider_it_mapped',
+			'type' => 'image',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'return_format' => 'array',
+			'preview_size' => 'thumbnail',
+			'library' => 'all',
+			'min_width' => '',
+			'min_height' => '',
+			'min_size' => '',
+			'max_width' => '',
+			'max_height' => '',
+			'max_size' => '',
+			'mime_types' => '',
+		),
+		array(
+			'key' => 'field_5d263bbf5ba35',
+			'label' => 'EdTalk',
+			'name' => 'edtalk-image',
+			'type' => 'image',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'return_format' => 'array',
+			'preview_size' => 'thumbnail',
+			'library' => 'all',
+			'min_width' => '',
+			'min_height' => '',
+			'min_size' => '',
+			'max_width' => '',
+			'max_height' => '',
+			'max_size' => '',
+			'mime_types' => '',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'options_page',
+				'operator' => '==',
+				'value' => 'theme-general-settings',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+
+
 	acf_add_local_field_group(array(
 		'key' => 'group_5d24a052d35aa',
 		'title' => 'Logos-2016',

@@ -81,7 +81,12 @@ if (empty($featured_ids)) {
         <article <?php post_class(); ?>>
           <a class="mega-link" href="<?php the_permalink(); ?>"></a>
           <div class="photo-overlay">
-            <img src="<?php echo Assets\asset_path('images/edtalk-featured-large.jpg'); ?>" alt="EdTalk Podcast" />
+            <?php $edtalk_image = get_field('edtalk-image', 'option');
+            if( !empty($edtalk_image) ): ?>
+
+              <img src="<?php echo $edtalk_image['url']; ?>" alt="<?php echo $edtalk_image['alt']; ?>" />
+
+            <?php endif; ?>
           </div>
           <header class="entry-header">
             <h3 class="post-title"><?php the_title(); ?></h3>
@@ -116,7 +121,12 @@ if (empty($featured_ids)) {
           <article <?php post_class(); ?>>
             <a class="mega-link" href="<?php the_permalink(); ?>"></a>
             <div class="photo-overlay">
-              <img src="<?php echo Assets\asset_path('images/consider-it-mapped-home.jpg'); ?>" alt="Consider It Mapped" />
+              <?php $consider_it_mapped = get_field('consider_it_mapped', 'option');
+              if( !empty($consider_it_mapped) ): ?>
+
+              	<img src="<?php echo $consider_it_mapped['url']; ?>" alt="<?php echo $consider_it_mapped['alt']; ?>" />
+
+              <?php endif; ?>
             </div>
             <header class="entry-header">
               <h3 class="post-title"><?php the_title(); ?></h3>
