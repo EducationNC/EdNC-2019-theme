@@ -297,6 +297,13 @@ if( function_exists('register_field_group') ):
 					'value' => 'template-stem-score-card.php',
 				),
 			),
+			array(
+				array(
+					'param' => 'page_template',
+					'operator' => '==',
+					'value' => 'template-early-bird.php',
+				),
+			),
 		),
 		'menu_order' => 0,
 		'position' => 'normal',
