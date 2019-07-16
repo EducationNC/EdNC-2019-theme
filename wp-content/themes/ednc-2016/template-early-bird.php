@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: STEM score card
+Template Name: Early Childhood
 */
 ?>
 
