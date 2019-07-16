@@ -35,7 +35,22 @@
         $session = get_term_by('slug', $slug, 'session');
         // $statuses = array_reverse(get_terms('bill-status'));
         $statuses = get_terms('bill-status');
-        list($statuses[0], $statuses[1], $statuses[2], $statuses[3], $statuses[4], $statuses[5]) = [$statuses[1], $statuses[5], $statuses[4], $statuses[3], $statuses[2], $statuses[0]];
+        // if( isset($statuses[4]) ){
+        //   $tmp = $statuses[4];
+        //   $statuses[4] = $statuses[2];
+        //   $statuses[2] = $tmp;
+        // }
+
+        // foreach ($statuses as $key => $value) {
+        //     if (empty($value)) {
+        //        unset($statuses[$key]);
+        //     }
+        // }
+        // echo "<pre>";
+        // print_r($statuses);
+        // echo "</pre>";
+
+        // list($statuses[0], $statuses[1], $statuses[2], $statuses[3], $statuses[4], $statuses[5]) = [$statuses[1], $statuses[5], $statuses[4], $statuses[3], $statuses[2], $statuses[0]];
         // echo "<pre>";
         // print_r($statuses);
         // echo "</pre>";
@@ -47,8 +62,8 @@
           $args = array(
             'post_type' => 'bill',
             'posts_per_page' => -1,
-            'orderby' => 'menu_order',
-            'order' => 'ASC',
+            // 'orderby' => 'menu_order',
+            // 'order' => 'ASC',
             'tax_query' => array(
               array(
                 'taxonomy' => 'session',
