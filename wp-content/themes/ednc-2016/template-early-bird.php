@@ -131,7 +131,7 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 			echo do_shortcode( '' );
 
 			// Use shortcodes in form like Landing Page Template.
-			echo do_shortcode( '[custom-twitter-feeds hashtag="#stemscorecard" class="my-class" num=8]' );
+			echo do_shortcode( '[custom-twitter-feeds screenname="llizabell" class="my-class" num=8]' );
 
 			// Store the short code in a variable.
 			$var = do_shortcode( '' );
