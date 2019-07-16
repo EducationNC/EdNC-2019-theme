@@ -1,6 +1,7 @@
 <?php
 /*
-Template Name: Early Bird Landing Page
+Template Name: STEM score card
+*/
 ?>
 
 <style>
@@ -141,20 +142,6 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 
 	<hr>
 
-
-	<!-- <div class="row">
-		<div class="col-md-12">
-			<?php// if( $images ): ?>
-					<ul class="innovate">
-							<?php// foreach( $images as $image ): ?>
-									<li class="innovate">
-										<?php// echo wp_get_attachment_image( $image['ID'], $size ); ?>
-									</li>
-							<?php// endforeach; ?>
-					</ul>
-			<?php// endif; ?>
-		</div>
-	</div> -->
 
 </div>
 
