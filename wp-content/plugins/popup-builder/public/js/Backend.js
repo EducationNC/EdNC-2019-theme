@@ -89,7 +89,9 @@ SGPBBackend.prototype.popupBuilderButton = function()
 		}
 		editor.settings.toolbar1 += ', popupBuilderHtmlButton';
 		editor.addButton('popupBuilderHtmlButton', {
-			text: 'Popup Builder Custom Button',
+			text: 'Popup Builder Button',
+			tooltip: 'Popup Builder Custom HTML Button',
+			icon: 'wp-menu-image dashicons-before dashicons-menu-icon-sgpb-button',
 			onclick: function () {
 				that.mediaButtonPopup('sgpb-custom-button-wrapper');
 			}

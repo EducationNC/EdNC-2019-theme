@@ -34,7 +34,7 @@ class SgpbPopupConfig
 		self::addDefine('SG_POPUP_VIDEO_URL', 'https://popup-builder.com/downloads/video/');
 		self::addDefine('SG_POPUP_SOCIAL_URL', 'https://popup-builder.com/downloads/social/');
 		self::addDefine('SG_POPUP_COUNTDOWN_URL', 'https://popup-builder.com/downloads/countdown/');
-		self::addDefine('SG_POPUP_RESTRICTION_URL', 'https://popup-builder.com/downloads/age-restriction-popup/');
+		self::addDefine('SG_POPUP_RESTRICTION_URL', 'https://popup-builder.com/downloads/yes-no-button-popup/');
 		self::addDefine('SG_POPUP_CONTACT_FORM_URL', 'https://popup-builder.com/downloads/contact-popup/');
 		self::addDefine('SG_POPUP_INACTIVITY_URL', 'https://popup-builder.com/downloads/inactivity/');
 		self::addDefine('SG_POPUP_SCHEDULING_URL', 'https://popup-builder.com/downloads/scheduling/');
@@ -50,6 +50,7 @@ class SgpbPopupConfig
 		self::addDefine('SGPB_EDD_PLUGIN_URL', 'https://popup-builder.com/downloads/easy-digital-downloads-edd-popup/');
 		self::addDefine('SGPB_PDF_PLUGIN_URL', 'https://popup-builder.com/downloads/pdf-popup/');
 		self::addDefine('SGPB_GAMIFICATION_PLUGIN_URL', 'https://popup-builder.com/downloads/pick-a-gift-popup/');
+		self::addDefine('SGPB_AGE_VERIFICATION_PLUGIN_URL', 'https://popup-builder.com/downloads/age-restriction-popup/');
 		self::addDefine('SG_POPUP_ADMIN_URL', admin_url());
 		self::addDefine('SG_POPUP_BUILDER_URL', plugins_url().'/'.SG_POPUP_FOLDER_NAME.'/');
 		self::addDefine('SG_POPUP_PLUGIN_PATH', WP_PLUGIN_DIR.'/');

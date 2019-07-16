@@ -9,7 +9,7 @@ Tags: popup, pop up, wordpress popup, popup maker, exit popup, popup builder, wo
 Requires at least: 3.8
 Tested up to: 5.2
 Requires PHP: 5.3.3
-Stable tag: 3.3
+Stable tag: 3.42
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -185,9 +185,23 @@ Go to the Popup Builder settings and set your desired options.
 
 == Changelog ==
 
+= Version 3.41- 3.42 =
+* Added new shortcodes which can be used inside the Newsletter
+* PHP > 7 notices fixed
+* Code optimization and typo fixes
+
+= Version 3.4 =
+* Popup Builder post type removed from Yoast sitemap and other SEO plugins.
+* Custom JS variable improvements.
+* Bug fixed related to PHP version notice.
+* Bug fixed related to page level cookie.
+* Popup speed optimization.
+* Bug fixed related to page scrolling when the pages moves up.
+* New extension added Age Restriction popup.
+
 = Version 3.3 =
 * Popup preview fixes.
-* Improvement: If the popup is setup on the Link and the popup opening condition doesn’t meet the current state, the default Link functionality will be triggered.
+* Improvement: If the popup is setup on the Link and the popup opening condition doesn't meet the current state, the default Link functionality will be triggered.
 * Added a Button element inside the WP editor. 
 * Fix: Mobile landscape issue, in all cases the popup sizes will be changed, if the window orientation is changed (mobile/desktop).
 * Completely works with almost all page builders.
@@ -1000,7 +1014,7 @@ Leave us a good review :)
 
 == Upgrade Notice ==
 
-Current Version of Popup Builder is 3.2
+Current Version of Popup Builder is 3.41
 
 == Other Notes ==
 

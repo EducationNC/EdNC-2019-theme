@@ -33,7 +33,13 @@
         // loop through bill years and statuses
         $slug = get_query_var('session');
         $session = get_term_by('slug', $slug, 'session');
-        $statuses = array_reverse(get_terms('bill-status'));
+        // $statuses = array_reverse(get_terms('bill-status'));
+        $statuses = get_terms('bill-status');
+        list($statuses[0], $statuses[1], $statuses[2], $statuses[3], $statuses[4], $statuses[5]) = [$statuses[1], $statuses[5], $statuses[4], $statuses[3], $statuses[2], $statuses[0]];
+        // echo "<pre>";
+        // print_r($statuses);
+        // echo "</pre>";
+
 
         foreach ( $statuses as $status ) {
           $status_ids[] = $status->term_id;

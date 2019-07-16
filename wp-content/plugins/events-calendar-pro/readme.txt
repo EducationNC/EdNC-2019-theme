@@ -4,8 +4,8 @@ Contributors: ModernTribe, barry.hughes, bordoni, borkweb, brianjessee, brook-tr
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, modern tribe, tribe, widget, pro
 Donate link: http://m.tri.be/29
 Requires at least: 4.7
-Tested up to: 5.2
-Stable tag: 4.7.2
+Tested up to: 5.2.2
+Stable tag: 4.7.4
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -204,6 +204,17 @@ Our Premium Plugins:
 * <a href="http://m.tri.be/fa" target="_blank">The Events Calendar: Filter Bar</a>
 
 == Changelog ==
+
+= [4.7.4] 2019-07-03 =
+
+* Tweak - Fixed issue where WPML integration sometimes threw a fatal while manipulating recurring events
+* TWeak - Add `GEO` and `X-APPLE-STRUCTURED-LOCATION` information to `.ics` files [89999]
+* Fix - Adding additional esc_html() calls to the Recurring Event tooltips [129566]
+* Language - 3 new strings added, 66 updated, 0 fuzzied, and 0 obsoleted
+
+= [4.7.3] 2019-06-06 =
+
+* Tweak - Reduced file size by removing .po files and directing anyone creating or editing local translations to translations.theeventscalendar.com
 
 = [4.7.2] 2019-05-16 =
 

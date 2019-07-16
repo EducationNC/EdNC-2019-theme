@@ -428,10 +428,10 @@ abstract class SGPopup
 			if (strpos($key, 'sgpb') === 0) {
 				$popupData[$key] = $value;
 			}
-			if (isset($value['name']) && strpos($value['name'], 'sgpb') === 0) {
+			if (is_array($value) && isset($value['name']) && strpos($value['name'], 'sgpb') === 0) {
 				$popupData[$value['name']] = $value['value'];
 			}
-			else if (isset($value['name']) && strpos($value['name'], 'post_ID') === 0) {
+			else if (is_array($value) && isset($value['name']) && strpos($value['name'], 'post_ID') === 0) {
 				$popupData['sgpb-post-id'] = $value['value'];
 			}
 		}
@@ -456,6 +456,7 @@ abstract class SGPopup
 				$obj->insertIntoSanitizedData(array('name' => $name,'value' => $sanitizedValue));
 			}
 		}
+
 		$obj->setSavedPopupById($data['sgpb-post-id']);
 		$result = $obj->save();
 

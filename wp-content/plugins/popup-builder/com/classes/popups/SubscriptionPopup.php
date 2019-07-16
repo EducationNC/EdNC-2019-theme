@@ -193,52 +193,52 @@ class SubscriptionPopup extends SGPopup
 		$formData = array();
 		$inputStyles = array();
 		$submitStyles = array();
-		$emailPlaceholder = $this->getFieldValue('sgpb-subs-email-placeholder');
-		if ($this->getFieldValue('sgpb-subs-text-width'))  {
-			$inputWidth = $this->getFieldValue('sgpb-subs-text-width');
+		$emailPlaceholder = $this->getOptionValue('sgpb-subs-email-placeholder');
+		if ($this->getOptionValue('sgpb-subs-text-width'))  {
+			$inputWidth = $this->getOptionValue('sgpb-subs-text-width');
 			$inputStyles['width'] = AdminHelper::getCSSSafeSize($inputWidth);
 		}
-		if ($this->getFieldValue('sgpb-subs-text-height')) {
-			$inputHeight = $this->getFieldValue('sgpb-subs-text-height');
+		if ($this->getOptionValue('sgpb-subs-text-height')) {
+			$inputHeight = $this->getOptionValue('sgpb-subs-text-height');
 			$inputStyles['height'] = AdminHelper::getCSSSafeSize($inputHeight);
 		}
-		if ($this->getFieldValue('sgpb-subs-text-border-width')) {
-			$inputBorderWidth = $this->getFieldValue('sgpb-subs-text-border-width');
+		if ($this->getOptionValue('sgpb-subs-text-border-width')) {
+			$inputBorderWidth = $this->getOptionValue('sgpb-subs-text-border-width');
 			$inputStyles['border-width'] = AdminHelper::getCSSSafeSize($inputBorderWidth);
 		}
-		if ($this->getFieldValue('sgpb-subs-text-border-color')) {
-			$inputStyles['border-color'] = $this->getFieldValue('sgpb-subs-text-border-color');
+		if ($this->getOptionValue('sgpb-subs-text-border-color')) {
+			$inputStyles['border-color'] = $this->getOptionValue('sgpb-subs-text-border-color');
 		}
-		if ($this->getFieldValue('sgpb-subs-text-bg-color')) {
-			$inputStyles['background-color'] = $this->getFieldValue('sgpb-subs-text-bg-color');
+		if ($this->getOptionValue('sgpb-subs-text-bg-color')) {
+			$inputStyles['background-color'] = $this->getOptionValue('sgpb-subs-text-bg-color');
 		}
-		if ($this->getFieldValue('sgpb-subs-text-color')) {
-			$inputStyles['color'] = $this->getFieldValue('sgpb-subs-text-color');
+		if ($this->getOptionValue('sgpb-subs-text-color')) {
+			$inputStyles['color'] = $this->getOptionValue('sgpb-subs-text-color');
 		}
 		$inputStyles['autocomplete'] = 'off';
 
-		if ($this->getFieldValue('sgpb-subs-btn-width')) {
-			$submitWidth = $this->getFieldValue('sgpb-subs-btn-width');
+		if ($this->getOptionValue('sgpb-subs-btn-width')) {
+			$submitWidth = $this->getOptionValue('sgpb-subs-btn-width');
 			$submitStyles['width'] = AdminHelper::getCSSSafeSize($submitWidth);
 		}
-		if ($this->getFieldValue('sgpb-subs-btn-height')) {
-			$submitHeight = $this->getFieldValue('sgpb-subs-btn-height');
+		if ($this->getOptionValue('sgpb-subs-btn-height')) {
+			$submitHeight = $this->getOptionValue('sgpb-subs-btn-height');
 			$submitStyles['height'] = AdminHelper::getCSSSafeSize($submitHeight);
 		}
-		if ($this->getFieldValue('sgpb-subs-btn-bg-color')) {
-			$submitStyles['background-color'] = $this->getFieldValue('sgpb-subs-btn-bg-color');
+		if ($this->getOptionValue('sgpb-subs-btn-bg-color')) {
+			$submitStyles['background-color'] = $this->getOptionValue('sgpb-subs-btn-bg-color');
 		}
-		if ($this->getFieldValue('sgpb-subs-btn-text-color')) {
-			$submitStyles['color'] = $this->getFieldValue('sgpb-subs-btn-text-color');
+		if ($this->getOptionValue('sgpb-subs-btn-text-color')) {
+			$submitStyles['color'] = $this->getOptionValue('sgpb-subs-btn-text-color');
 		}
-		if ($this->getFieldValue('sgpb-subs-btn-border-radius')) {
-			$submitStyles['border-radius'] = AdminHelper::getCSSSafeSize($this->getFieldValue('sgpb-subs-btn-border-radius'));
+		if ($this->getOptionValue('sgpb-subs-btn-border-radius')) {
+			$submitStyles['border-radius'] = AdminHelper::getCSSSafeSize($this->getOptionValue('sgpb-subs-btn-border-radius'));
 		}
-		if ($this->getFieldValue('sgpb-subs-btn-border-width')) {
-			$submitStyles['border-width'] = AdminHelper::getCSSSafeSize($this->getFieldValue('sgpb-subs-btn-border-width'));
+		if ($this->getOptionValue('sgpb-subs-btn-border-width')) {
+			$submitStyles['border-width'] = AdminHelper::getCSSSafeSize($this->getOptionValue('sgpb-subs-btn-border-width'));
 		}
-		if ($this->getFieldValue('sgpb-subs-btn-border-color')) {
-			$submitStyles['border-color'] = $this->getFieldValue('sgpb-subs-btn-border-color');
+		if ($this->getOptionValue('sgpb-subs-btn-border-color')) {
+			$submitStyles['border-color'] = $this->getOptionValue('sgpb-subs-btn-border-color');
 		}
 		$submitStyles['text-transform'] = 'none !important';
 		$submitStyles['border-style'] = 'solid';
@@ -257,10 +257,10 @@ class SubscriptionPopup extends SGPopup
 			'errorMessageBoxStyles' => $inputStyles['width']
 		);
 
-		$firstNamePlaceholder = $this->getFieldValue('sgpb-subs-first-placeholder');
+		$firstNamePlaceholder = $this->getOptionValue('sgpb-subs-first-placeholder');
 		$firstNameRequired = $this->getOptionValueFromSavedData('sgpb-subs-first-name-required');
 		$firstNameRequired = (!empty($firstNameRequired)) ? true : false;
-		$isShow = ($this->getFieldValue('sgpb-subs-first-name-status')) ? true : false;
+		$isShow = ($this->getOptionValue('sgpb-subs-first-name-status')) ? true : false;
 
 		$formData['first-name'] = array(
 			'isShow' => $isShow,
@@ -276,10 +276,10 @@ class SubscriptionPopup extends SGPopup
 			'errorMessageBoxStyles' => $inputStyles['width']
 		);
 
-		$lastNamePlaceholder = $this->getFieldValue('sgpb-subs-last-placeholder');
+		$lastNamePlaceholder = $this->getOptionValue('sgpb-subs-last-placeholder');
 		$lastNameRequired = $this->getOptionValueFromSavedData('sgpb-subs-last-name-required');
 		$lastNameRequired = (!empty($lastNameRequired)) ? true : false;
-		$isShow = ($this->getFieldValue('sgpb-subs-last-name-status')) ? true : false;
+		$isShow = ($this->getOptionValue('sgpb-subs-last-name-status')) ? true : false;
 
 		$formData['last-name'] = array(
 			'isShow' => $isShow,
@@ -312,7 +312,7 @@ class SubscriptionPopup extends SGPopup
 			),
 			'style' => array('width' => $inputWidth),
 			'label' => $gdprLabel,
-			'text' => $this->getFieldValue('sgpb-subs-gdpr-text'),
+			'text' => $this->getOptionValue('sgpb-subs-gdpr-text'),
 			'errorMessageBoxStyles' => $inputStyles['width']
 		);
 		/* GDPR checkbox */
@@ -333,8 +333,8 @@ class SubscriptionPopup extends SGPopup
 			'style' => $hiddenChecker
 		);
 
-		$submitTitle = $this->getFieldValue('sgpb-subs-btn-title');
-		$progressTitle = $this->getFieldValue('sgpb-subs-btn-progress-title');
+		$submitTitle = $this->getOptionValue('sgpb-subs-btn-title');
+		$progressTitle = $this->getOptionValue('sgpb-subs-btn-progress-title');
 		$formData['submit'] = array(
 			'isShow' => true,
 			'attrs' => array(
@@ -379,7 +379,7 @@ class SubscriptionPopup extends SGPopup
 		if (empty($requiredMessage)) {
 			$requiredMessage = SGPB_SUBSCRIPTION_VALIDATION_MESSAGE;
 		}
-		
+
 		$rules = 'rules: { ';
 		$messages = 'messages: { ';
 

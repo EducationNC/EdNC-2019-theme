@@ -86,10 +86,11 @@ class Updates
 			$sgpbUpdater = new EDD_SL_Plugin_Updater($storeURL, $pluginMainFilePath, array(
 				'version' 	=> $version,		// current version number
 				'license' 	=> $licenseKey,	// license key (used get_option above to retrieve from DB)
-				'item_id'       => $license['itemId'],	// id of this plugin
+				'item_id'   => $license['itemId'],	// id of this plugin
+				'item_name' => $license['itemName'],	// id of this plugin
 				'author' 	=> $license['autor'],	// author of this plugin
-				'url'           => home_url(),
-				'beta'          => false // set to true if you wish customers to receive update notifications of beta releases
+				'url'       => home_url(),
+				'beta'      => false // set to true if you wish customers to receive update notifications of beta releases
 			));
 		}
 
@@ -146,6 +147,7 @@ class Updates
 					'edd_action' => 'activate_license',
 					'license'    => $license,
 					'item_id'    => $itemId, // The ID of the item in EDD
+					'item_name'  => $itemName, // The Name of the item in EDD
 					'url'        => home_url()
 				);
 				// Call the custom API.
@@ -179,7 +181,7 @@ class Updates
 								$message = sprintf(__('This appears to be an invalid license key for %s.', SG_POPUP_TEXT_DOMAIN), $itemName);
 								break;
 							case 'no_activations_left' :
-								$message = __('Invalid license key for current site.', SG_POPUP_TEXT_DOMAIN);
+								$message = __('You\'ve already used the permitted number of this license key!', SG_POPUP_TEXT_DOMAIN);
 								break;
 							default :
 								$message = __('An error occurred, please try again.', SG_POPUP_TEXT_DOMAIN);
@@ -213,6 +215,7 @@ class Updates
 					'edd_action' => 'deactivate_license',
 					'license'    => $license,
 					'item_id'    => $itemId, // The ID of the item in EDD
+					'item_name'  => $itemName, // The Name of the item in EDD
 					'url'        => home_url()
 				);
 
@@ -249,7 +252,7 @@ class Updates
 					$message = urldecode($_GET['message']);
 					?>
 					<div class="error">
-						<p><?php echo $message; ?></p>
+						<h3><?php echo $message; ?></h3>
 					</div>
 					<?php
 					break;

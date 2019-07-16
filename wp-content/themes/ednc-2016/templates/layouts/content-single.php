@@ -157,13 +157,13 @@ while (have_posts()) : the_post();
       </div>
     <?php } ?>
 
-    <div id="chapters" class="chapters container print-no">
+    <!-- <div id="chapters" class="chapters container print-no">
       <div class="row">
         <div class="col-md-7 col-centered">
           <ul class="nav"></ul>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="entry-content">
       <div class="container">
@@ -173,7 +173,15 @@ while (have_posts()) : the_post();
             <?php get_template_part('templates/components/author', 'meta'); ?>
           </div>
 
-          <div class="col-md-2 col-md-pull-2 print-no"></div>
+          <div class="col-md-2 col-md-pull-2 print-no">
+            <div id="chapters" class="chapters container print-no">
+              <div class="row">
+                <div class="col-md-12 col-centered">
+                  <ul class="nav"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="col-md-7 col-md-pull-1point5 print-only">
 

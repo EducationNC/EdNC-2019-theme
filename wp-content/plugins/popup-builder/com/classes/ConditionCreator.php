@@ -304,12 +304,13 @@ class ConditionCreator
 			$savedParam =  $saveData[$ruleName];
 		}
 		else if (!empty($saveData['hiddenOption'])) {
-			$savedParam = $saveData['hiddenOption'][$ruleName];
+			$savedParam = @$saveData['hiddenOption'][$ruleName];
 		}
 
 		$ruleElementData['ruleName'] = $ruleName;
 		if ($ruleName == 'value' && !empty($saveData[$conditionDataObj->getTakeValueFrom()])) {
-			$ruleName = $saveData[$conditionDataObj->getTakeValueFrom()];
+			$index = $conditionDataObj->getTakeValueFrom();
+			$ruleName = $saveData[$index];
 		}
 
 		$type = array();

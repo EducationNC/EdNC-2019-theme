@@ -500,6 +500,12 @@ class SgpbDataConfig
 		$keys = array();
 
 		$keys[] = array(
+			'label' => __('Age Restriction', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' =>  'popupbuilder-age-verification/PopupBuilderAgeverification.php',
+			'key' => 'ageVerification',
+			'url' => SGPB_AGE_VERIFICATION_PLUGIN_URL
+		);
+		$keys[] = array(
 			'label' => __('Gamification', SG_POPUP_TEXT_DOMAIN),
 			'pluginKey' =>  'popupbuilder-gamification/PopupBuilderGamification.php',
 			'key' => 'gamification',

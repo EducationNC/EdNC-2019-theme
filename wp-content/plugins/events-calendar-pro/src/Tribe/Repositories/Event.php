@@ -168,8 +168,8 @@ class Tribe__Events__Pro__Repositories__Event extends Tribe__Events__Repositorie
 	 *
 	 * @since 4.7
 	 *
-	 * @param bool $in_series Whether to filter events thate are part of a series (`true`)
-	 *                        or not (`false`).
+	 * @param bool|int $in_series A boolean to indicate whether to filter events that are part of a series (`true`)
+	 *                        or not (`false`); a parent post ID to filter by events in a specific series.
 	 *
 	 * @return array|null Null if getting events in series, an array of query arguments that should be
 	 *                    added to the query otherwise.
@@ -178,9 +178,22 @@ class Tribe__Events__Pro__Repositories__Event extends Tribe__Events__Repositorie
 		global $wpdb;
 
 		if ( (bool) $in_series ) {
+			if ( is_numeric( $in_series ) ) {
+				$parent_post_id  = absint( $in_series );
+				$children_clause = $wpdb->prepare( "{$wpdb->posts}.post_parent = %d", $parent_post_id );
+				$parent_clause   = $wpdb->prepare( "{$wpdb->posts}.ID = %d", $parent_post_id );
+			} else {
+				$children_clause = "{$wpdb->posts}.post_parent != 0";
+				$parent_clause   = "{$wpdb->posts}.post_parent = 0";
+			}
 			$this->filter_query->join( "JOIN {$wpdb->postmeta} in_series_meta ON {$wpdb->posts}.ID = in_series_meta.post_id " );
-			$this->filter_query->where( "{$wpdb->posts}.post_parent != 0
-				OR ( {$wpdb->posts}.post_parent = 0 AND in_series_meta.meta_key = '_EventRecurrence' AND in_series_meta.meta_value IS NOT NULL )" );
+			$this->filter_query->where( "{$children_clause}
+				OR ( 
+					{$parent_clause} 
+					AND in_series_meta.meta_key = '_EventRecurrence' 
+					AND in_series_meta.meta_value IS NOT NULL 
+				)"
+			);
 
 			return null;
 		}

@@ -26,6 +26,7 @@ class Filters
 	public function init()
 	{
 		add_filter('admin_url', array($this, 'addNewPostUrl'), 10, 2);
+		add_filter('wpseo_sitemap_exclude_post_type', array($this, 'excludeSitemapsYoast'), 10, 2);
 		add_filter('admin_menu', array($this, 'removeAddNewSubmenu'), 10, 2);
 		add_filter('manage_'.SG_POPUP_POST_TYPE.'_posts_columns', array($this, 'popupsTableColumns'));
 		add_filter('post_row_actions', array($this, 'quickRowLinksManager'), 10, 2);
@@ -43,6 +44,20 @@ class Filters
 		add_filter('sgpbOptionAvailable', array($this, 'filterOption'), 10, 1);
 		add_filter('export_wp_filename', array($this, 'exportFileName'), 10, 1);
 		add_filter('sgpbAdvancedOptionsDefaultValues', array($this, 'defaultAdvancedOptionsValues'), 10, 1);
+	}
+
+	public function excludeSitemapsYoast($exclude = false, $postType)
+	{
+		$postTypeObject = get_post_type_object($postType);
+		if (!is_object($postTypeObject)) {
+			return $exclude;
+		}
+
+		if ($postTypeObject->public === false || $postType == SG_POPUP_POST_TYPE) {
+			return true;
+		}
+
+		return $exclude;
 	}
 
 	public function defaultAdvancedOptionsValues($options = array())
@@ -238,7 +253,11 @@ class Filters
 		if (!empty($post) && $post->post_type == SG_POPUP_POST_TYPE) {
 			$popupId = $post->ID;
 			$targets = get_post_meta($popupId, 'sg_popup_target_preview', true);
-			if ((isset($targets['sgpb-target'][0][0]['param']) && $targets['sgpb-target'][0][0]['param'] == 'not_rule') || !isset($targets['sgpb-target'][0][0]['param'])) {
+			if (empty($targets['sgpb-target'][0])) {
+				return $previewLink .= '/?sg_popup_preview_id='.$popupId;
+			}
+			$targetParams = $targets['sgpb-target'][0][0]['param'];
+			if ((!empty($targetParams) && $targetParams == 'not_rule') || empty($targetParams)) {
 				$previewLink = home_url();
 				$previewLink .= '/?sg_popup_preview_id='.$popupId;
 

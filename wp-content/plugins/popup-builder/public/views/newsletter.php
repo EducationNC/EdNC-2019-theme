@@ -14,6 +14,10 @@
 			'autocomplete' => 'off'
 		)
 	);
+
+	reset($subscriptionIdTitle);
+	$defaultSelectedPopupId = key($subscriptionIdTitle);
+	$subscriptionPopupsCustomFields = AdminHelper::getCustomFormFieldsByPopupId($defaultSelectedPopupId);
 ?>
 <div class="sgpb-wrapper sgpb-newsletter">
 	<div class="row">
@@ -121,8 +125,15 @@
 							</h3>
 							<div class="sgpb-options-content">
 								<div class="row form-group">
+									<div class="col-md-12">
+										<label>
+											<?php _e('Default shortcodes', SG_POPUP_TEXT_DOMAIN); ?>:
+										</label>
+									</div>
+								</div>
+								<div class="row form-group">
 									<div class="col-md-6">
-										<span><?php _e('[First name]', SG_POPUP_TEXT_DOMAIN); ?></span>
+										<code><?php _e('[First name]', SG_POPUP_TEXT_DOMAIN); ?></code>
 									</div>
 									<div class="col-md-6">
 										<?php _e('Subscriber First name', SG_POPUP_TEXT_DOMAIN); ?>
@@ -130,7 +141,7 @@
 								</div>
 								<div class="row form-group">
 									<div class="col-md-6">
-										<span><?php _e('[Last name]', SG_POPUP_TEXT_DOMAIN); ?></span>
+										<code><?php _e('[Last name]', SG_POPUP_TEXT_DOMAIN); ?></code>
 									</div>
 									<div class="col-md-6">
 										<?php _e('Subscriber Last name', SG_POPUP_TEXT_DOMAIN); ?>
@@ -138,7 +149,7 @@
 								</div>
 								<div class="row form-group">
 									<div class="col-md-6">
-										<span><?php _e('[Blog name]', SG_POPUP_TEXT_DOMAIN); ?></span>
+										<code><?php _e('[Blog name]', SG_POPUP_TEXT_DOMAIN); ?></code>
 									</div>
 									<div class="col-md-6">
 										<?php _e('Your blog name', SG_POPUP_TEXT_DOMAIN); ?>
@@ -146,7 +157,7 @@
 								</div>
 								<div class="row form-group">
 									<div class="col-md-6">
-										<span><?php _e('[User name]', SG_POPUP_TEXT_DOMAIN); ?></span>
+										<code><?php _e('[User name]', SG_POPUP_TEXT_DOMAIN); ?></code>
 									</div>
 									<div class="col-md-6">
 										<?php _e('Your user name', SG_POPUP_TEXT_DOMAIN); ?>
@@ -154,12 +165,49 @@
 								</div>
 								<div class="row form-group">
 									<div class="col-md-6">
-										<span><?php _e('[Unsubscribe]', SG_POPUP_TEXT_DOMAIN); ?></span>
+										<code><?php _e('[Unsubscribe]', SG_POPUP_TEXT_DOMAIN); ?></code>
 									</div>
 									<div class="col-md-6">
 										<?php _e('Unsubscribe', SG_POPUP_TEXT_DOMAIN); ?>
 									</div>
 								</div>
+								<?php if (!empty($subscriptionPopupsCustomFields)) :?>
+								<div class="row">
+									<div class="col-md-6">
+										<label>
+											<?php _e('Custom fields\' shortcodes', SG_POPUP_TEXT_DOMAIN); ?>:
+										</label>
+									</div>
+								</div>
+								<div class="row form-group">
+									<div class="col-md-5">
+									</div>
+									<div class="col-md-6">
+										<img src="<?php echo SG_POPUP_IMG_URL.'ajaxSpinner.gif'; ?>" width="20px" class="sgpb-hide sgpb-js-newsletter-custom-fields-spinner">
+									</div>
+								</div>
+								<div class="sgpb-newsletter-custom-fields-wrapper">
+									<?php
+									foreach ($subscriptionPopupsCustomFields as $field) {
+										if (empty($field)) {
+											continue;
+										}
+										?>
+
+										<div class="row form-group">
+											<div class="col-md-6">
+												<code>[<?php echo @$field['fieldName'];?>]</code>
+											</div>
+											<div class="col-md-6">
+												<?php echo @$field['fieldName']; ?>
+											</div>
+										</div>
+
+										<?php
+									}
+									?>
+								</div>
+								<?php endif; ?>
 							</div>
 						</div>
 					</div>

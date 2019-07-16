@@ -75,6 +75,10 @@ class Actions
 	public function inactiveExtensionNotice()
 	{
 		$screen = '';
+		$dontShowLicenseBanner = get_option('sgpb-hide-license-notice-banner');
+		if ($dontShowLicenseBanner) {
+			return $screen;
+		}
 		$inactive = AdminHelper::getOption('SGPB_INACTIVE_EXTENSIONS');
 		$hasInactiveExtensions = AdminHelper::hasInactiveExtensions();
 		if (!$inactive) {
@@ -108,6 +112,7 @@ class Actions
 					<b><?php echo $partOfContent; ?></b>
 				</div>
 				<button type="button" class="notice-dismiss" onclick="jQuery('.sgpb-license-notice').remove();"><span class="screen-reader-text"><?php _e('Dismiss this notice.', SG_POPUP_TEXT_DOMAIN) ?></span></button>
+				<span class="sgpb-dont-show-again-license-notice"><?php _e('Don\'t show again.', SG_POPUP_TEXT_DOMAIN); ?></span>
 			</div>
 			<?php
 			$content = ob_get_clean();
@@ -384,6 +389,9 @@ class Actions
 
 		foreach ($userSavedRoles as $theRole) {
 			$role = get_role($theRole);
+			if (empty($role)) {
+				continue;
+			}
 
 			$role->add_cap('read');
 			$role->add_cap('read_post');
@@ -454,7 +462,7 @@ class Actions
 			$insideShortcodeKey = $popupId.$event;
 
 			// for prevent infinity chain
-			if (in_array($insideShortcodeKey, $this->insideShortcodes)) {
+			if (is_array($this->insideShortcodes) && in_array($insideShortcodeKey, $this->insideShortcodes)) {
 				$shortcodeContent =  SGPopup::renderPopupContentShortcode($content, $argsId, $event, $args);
 
 				return $shortcodeContent;
@@ -556,6 +564,13 @@ class Actions
 		$fromEmail = $newsletterOptions['fromEmail'];
 		$emailMessage = $newsletterOptions['messageBody'];
 
+		$allAvailableShortcodes = array();
+		$allAvailableShortcodes['patternFirstName'] = '/\[First name]/';
+		$allAvailableShortcodes['patternLastName'] = '/\[Last name]/';
+		$allAvailableShortcodes['patternBlogName'] = '/\[Blog name]/';
+		$allAvailableShortcodes['patternUserName'] = '/\[User name]/';
+		$allAvailableShortcodes['patternUnsubscribe'] = '/\[Unsubscribe]/';
+
 		// When email is not valid we don't continue
 		if (!preg_match('/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/', $fromEmail)) {
 			wp_clear_scheduled_hook('sgpb_send_newsletter');
@@ -602,13 +617,8 @@ class Actions
 		);
 
 		foreach ($subscribers as $subscriber) {
-			$patternFirstName = '/\[First name]/';
-			$patternLastName = '/\[Last name]/';
-			$patternBlogName = '/\[Blog name]/';
-			$patternUserName = '/\[User name]/';
-			$patternUnsubscribe = '/\[Unsubscribe]/';
-
 			$replacementId = $subscriber['id'];
+			$allAvailableShortcodes = apply_filters('sgpbNewsletterShortcodes', $allAvailableShortcodes, $subscriptionFormId, $replacementId);
 			$replacementFirstName = $subscriber['firstName'];
 			$replacementLastName = $subscriber['lastName'];
 			$replacementBlogName = $newsletterOptions['blogname'];
@@ -621,11 +631,18 @@ class Actions
 			$replacementUnsubscribe = '<br><a href="'.$replacementUnsubscribe.'">'.__('Unsubscribe', SG_POPUP_TEXT_DOMAIN).'</a>';
 
 			// Replace First name and Last name from email message
-			$emailMessageCustom = preg_replace($patternFirstName, $replacementFirstName, $emailMessage);
-			$emailMessageCustom = preg_replace($patternLastName, $replacementLastName, $emailMessageCustom);
-			$emailMessageCustom = preg_replace($patternBlogName, $replacementBlogName, $emailMessageCustom);
-			$emailMessageCustom = preg_replace($patternUserName, $replacementUserName, $emailMessageCustom);
-			$emailMessageCustom = preg_replace($patternUnsubscribe, $replacementUnsubscribe, $emailMessageCustom);
+			$emailMessageCustom = preg_replace($allAvailableShortcodes['patternFirstName'], $replacementFirstName, $emailMessage);
+			$emailMessageCustom = preg_replace($allAvailableShortcodes['patternLastName'], $replacementLastName, $emailMessageCustom);
+			$emailMessageCustom = preg_replace($allAvailableShortcodes['patternBlogName'], $replacementBlogName, $emailMessageCustom);
+			$emailMessageCustom = preg_replace($allAvailableShortcodes['patternUserName'], $replacementUserName, $emailMessageCustom);
+			$emailMessageCustom = preg_replace($allAvailableShortcodes['patternUnsubscribe'], $replacementUnsubscribe, $emailMessageCustom);
+			if (!empty($allAvailableShortcodes['extraShortcodesWithValues'])) {
+				$customFields = $allAvailableShortcodes['extraShortcodesWithValues'];
+				foreach ($customFields as $customFieldKey => $customFieldValue) {
+					$finalShortcode = '/\['.$customFieldKey.']/';
+					$emailMessageCustom = preg_replace($finalShortcode, $customFieldValue, $emailMessageCustom);
+				}
+			}
 			$emailMessageCustom = stripslashes($emailMessageCustom);
 
 			$emailMessageCustom = apply_filters('sgpNewsletterSendingMessage', $emailMessageCustom);

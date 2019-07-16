@@ -4,6 +4,7 @@ use \DateTime;
 use \DateTimeZone;
 use \SgpbDataConfig;
 use \Elementor;
+use sgpbsubscriptionplus\SubscriptionPlusAdminHelper;
 
 class AdminHelper
 {
@@ -487,7 +488,7 @@ class AdminHelper
 		if (!is_admin()) {
 			return true;
 		}
-		
+
 		$savedUserRoles = self::getPopupPostAllowedUserRoles();
 		$currentUserRole = self::getCurrentUserRole();
 		if (!is_array($savedUserRoles) || !is_array($currentUserRole)) {
@@ -821,6 +822,10 @@ class AdminHelper
 		// in some themes global $post returns null
 		if (empty($currentPostType)) {
 			$currentPostType = $post_type;
+		}
+
+		if (empty($currentPostType) && !empty($_GET['post'])) {
+			$currentPostType = get_post_type($_GET['post']);
 		}
 
 		return $currentPostType;
@@ -1645,6 +1650,19 @@ class AdminHelper
 			$data = apply_filters('sgpbGetSubscriptionLabels', array(), $popup);
 			$data['date'] = 'Date';
 			return $data;
+		}
+
+		return array();
+	}
+
+	public static function getCustomFormFieldsByPopupId($popupId)
+	{
+		if (!class_exists('sgpbsubscriptionplus\SubscriptionPlusAdminHelper')) {
+			return array();
+		}
+
+		if (method_exists('sgpbsubscriptionplus\SubscriptionPlusAdminHelper', 'getCustomFormFieldsByPopupId')) {
+			return SubscriptionPlusAdminHelper::getCustomFormFieldsByPopupId($popupId);
 		}
 
 		return array();

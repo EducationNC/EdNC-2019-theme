@@ -68,6 +68,7 @@ class Ajax
 		add_action('wp_ajax_nopriv_sgpb_dont_show_review_popup', array($this, 'dontShowReviewPopup'));
 		add_action('wp_ajax_nopriv_sgpb_send_to_open_counter', array($this, 'addToCounter'));
 		add_action('wp_ajax_sgpb_close_banner', array($this, 'closeMainRateUsBanner'));
+		add_action('wp_ajax_sgpb_close_license_notice', array($this, 'closeLicenseNoticeBanner'));
 		add_action('wp_ajax_sgpb_hide_ask_review_popup', array($this, 'dontShowAskReviewBanner'));
 		add_action('wp_ajax_sgpb_reset_popup_opening_count', array($this, 'resetPopupOpeningCount'));
 		/*Extension notification panel*/
@@ -85,9 +86,11 @@ class Ajax
 		$popupType = $popupData['sgpb-type'];
 		$popupClassName = SGPopup::getPopupClassNameFormType($popupType);
 		$popupClassPath = SGPopup::getPopupTypeClassPath($popupType);
-		require_once($popupClassPath.$popupClassName.'.php');
-		$popupClassName = __NAMESPACE__.'\\'.$popupClassName;
-		$popupClassName::create($popupData, '_preview', 1);
+		if (file_exists($popupClassPath.$popupClassName.'.php')) {
+			require_once($popupClassPath.$popupClassName.'.php');
+			$popupClassName = __NAMESPACE__.'\\'.$popupClassName;
+			$popupClassName::create($popupData, '_preview', 1);
+		}
 
 		wp_die();
 	}
@@ -184,6 +187,13 @@ class Ajax
 	{
 		check_ajax_referer(SG_AJAX_NONCE, 'nonce');
 		update_option('SGPB_PROMOTIONAL_BANNER_CLOSED', 'SGPB_PROMOTIONAL_BANNER_CLOSED');
+		wp_die();
+	}
+
+	public function closeLicenseNoticeBanner()
+	{
+		check_ajax_referer(SG_AJAX_NONCE, 'nonce');
+		update_option('sgpb-hide-license-notice-banner', 'sgpb-hide-license-notice-banner');
 		wp_die();
 	}
 

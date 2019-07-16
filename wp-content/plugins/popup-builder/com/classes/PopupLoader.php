@@ -51,6 +51,7 @@ class PopupLoader
 	{
 		if (isset($_GET['sg_popup_id']) || isset($_GET['sg_popup_preview_id'])) {
 			$args = array();
+			$previewPopups = array();
 			$getterId = isset($_GET['sg_popup_id']) ? (int)$_GET['sg_popup_id'] : 0;
 			$previewedPopupId = isset($_GET['sg_popup_preview_id']) ? (int)$_GET['sg_popup_preview_id'] : 0;
 			if (isset($_GET['sg_popup_preview_id'])) {
@@ -73,6 +74,10 @@ class PopupLoader
 				}
 				$popupFromUrl->setEvents($defaultEvent);
 				$popupsToLoad[] = $popupFromUrl;
+				$previewPopups[] = $popupFromUrl;
+				if (isset($_GET['sg_popup_preview_id'])) {
+					$popupsToLoad = $previewPopups;
+				}
 			}
 		}
 

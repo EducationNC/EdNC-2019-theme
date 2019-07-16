@@ -51,35 +51,6 @@
 }
 
 /*Subscription form messages*/
-.sgpb-alert {
-	padding: 15px;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	text-align: center;
-}
-
-.sgpb-alert-info {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.sgpb-alert-success {
-	color: #3c763d;
-	background-color: #dff0d8;
-	border-color: #d6e9c6;
-}
-
-.sgpb-alert-danger {
-	color: #a94442;
-	background-color: #f2dede;
-	border-color: #ebccd1;
-}
-
-.sgpb-alert p {
-	margin-bottom: 0px;
-}
-
 #sgpb-gdpr-field-label {
 	margin: 4px 0 0 0;
 	max-width: 5% !important;
