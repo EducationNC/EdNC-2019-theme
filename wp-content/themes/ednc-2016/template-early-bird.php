@@ -85,7 +85,7 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 
 	<div class="row">
 		<div class="col-md-12">
-			<?php// the_content(); ?>
+			<?php the_content(); ?>
 		</div>
 	</div>
 
