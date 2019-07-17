@@ -382,6 +382,21 @@
     margin-top: 10px;
     display: inline-block;
     vertical-align: top;
+    border: 1px solid red;
+  }
+
+  .article-social {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .article-social .icon {
+    width: 20%;
+    vertical-align: middle;
+    text-align: center;
+    border: 1px solid red;
+    padding: 5px 0px;
   }
 
   .author-article,

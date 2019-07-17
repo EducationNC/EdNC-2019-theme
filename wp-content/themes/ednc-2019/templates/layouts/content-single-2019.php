@@ -77,6 +77,12 @@ while (have_posts()) : the_post();
               <h1 class="article-header"><?php the_title(); ?></h1>
 
               <?php get_template_part('templates/components/author-info'); ?>
+              <div class="article-social">
+                <div class="icon icon-facebook"></div>
+                <div class="icon">Twitter</div>
+                <div class="icon">Email</div>
+                <div class="icon">Republish</div>
+              </div>
           </div>
         </div>
       </div>

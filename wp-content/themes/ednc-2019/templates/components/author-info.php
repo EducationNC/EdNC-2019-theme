@@ -42,7 +42,7 @@ $email = get_field('email');
             if ($bio->have_posts()) : while ($bio->have_posts()) : $bio->the_post(); ?>
               <?php
               $user = get_field('user');
-              //print_r ($user); 
+              //print_r ($user);
               ?>
               <div class="circle-image-article">
                 <?php the_post_thumbnail('bio-headshot'); ?>
@@ -50,7 +50,7 @@ $email = get_field('email');
               <div class="author-article">
                 <div class="margin-none">
                   <a href="<?php echo get_author_posts_url($user['ID']); ?>" class="read-more"><?php the_title(); ?></a>
-                  <?php get_template_part('templates/components/author', 'excerpt-2019'); ?>
+                  <?php// get_template_part('templates/components/author', 'excerpt-2019'); ?>
                 </div>
                 <?php endwhile; endif; wp_reset_query();?>
                 <div>

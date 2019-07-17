@@ -85,9 +85,18 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 
 	<div class="row">
 		<div class="col-md-12">
-			<?php the_content(); ?>
+			<?php// the_content(); ?>
 		</div>
 	</div>
+
+	<div class="row">
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<iframe id="embed81684" src="//publicinput.com/display/?projId=4279&embedId=81684" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=81684", "script");</script>
+		</div>
+		<div class="col-md-3"></div>
+	</div>
+
 
 	<hr>
 
