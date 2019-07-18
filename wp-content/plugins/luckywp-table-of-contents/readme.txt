@@ -1,0 +1,227 @@
+=== LuckyWP Table of Contents ===
+Contributors: theluckywp
+Donate link: https://theluckywp.com/product/table-of-contents/
+Tags: table of contents, toc, navigation, links, seo
+Requires at least: 4.7
+Tested up to: 5.2.2
+Stable tag: 1.6.1
+Requires PHP: 5.6.20
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+Creates SEO-friendly table of contents for your posts/pages. Works automatically or manually (via shortcode, Gutenberg block or widget).
+
+== Description ==
+
+Creates SEO-friendly table of contents for your posts, pages or custom post types. Great customizable appearance.
+
+#### Features
+
+* Automatical insertion a table of contents (configure post types and position).
+* SEO-friendly: table of contents code is ready to use by Google for snippets on result page.
+* Insert by shortcode, Gutenberg block or widget.
+* Button on toolbar of the classic editor.
+* Gutenberg block into "Common Blocks".
+* Setting the minimum number of headings to display table of contents.
+* Setting the depth of headings for table of contents.
+* Skip headings by level or text.
+* Hierarchical or linear view.
+* Numeration items: decimal or roman numbers in order or nested.
+* Customizable appearance: width, float, title font size and weight, items font size, colors.
+* Color schemes (dark, light, white, transparent) and the ability to override colors.
+* Toggle Show/Hide (optionally)
+* Customizalbe labels.
+* Smooth scroll (optionally).
+* Setting offset top for smooth scroll.
+* Wrap table of contents with &lt;!--noindex--&gt; tag (optionally).
+* Pretty hash in URL (like `example.com/faq/#how_do_this`).
+* RTL support.
+* Available override global settings for a particular post.
+* Highly compatible with WordPress themes and plugins.
+
+#### Auto Insert
+
+For automatical insertion a table of contents in a posts, select option "Auto Insert Table of Contents" in the plugin settings (tab "Auto Insert").
+
+Supported positions:
+
+* before first heading;
+* after first heading;
+* after first block (paragraph, list or heading);
+* top of post content;
+* bottom of post content.
+
+You can also select post types to which the table of contents will be automatically added.
+
+#### Pretty hash in URL
+
+By default, hash generated as heading text (for example, `#How_Do_This`). You can change hash format in global settings, tab "Misc.".
+
+For non-English websites it is recommended to enable the `Intl` PHP extension.
+
+### Hooks
+
+#### Filters `lwptoc_before`, `lwptoc_after`
+
+Use for add custom HTML before/after the table of contents.
+
+Example:
+
+    add_filter('lwptoc_before', function ($before) {
+        return '<p>Example text before TOC.</p>' . $before;
+    });
+
+#### Filter `lwptoc_shortcode_tag`
+
+Use this filter for change shortcode tag name `[lwptoc]`.
+
+Example:
+
+    add_filter('lwptoc_shortcode_tag', function ($tag) {
+        return 'toc';
+    });
+
+#### Filter `lwptoc_heading_id`
+
+Use for modify heading ID.
+
+Example:
+
+    add_filter('lwptoc_heading_id', function ($id, $label) {
+        return $id;
+    }, 10, 2);
+
+== Installation ==
+
+#### Installing from the WordPress control panel
+
+1. Go to the page "Plugins &gt; Add New".
+2. Input the name "LuckyWP Table of Contents" in the search field
+3. Find the "LuckyWP Table of Contents" plugin in the search result and click on the "Install Now" button, the installation process of plugin will begin.
+4. Click "Activate" when the installation is complete.
+
+#### Installing with the archive
+
+1. Go to the page "Plugins &gt; Add New" on the WordPress control panel
+2. Click on the "Upload Plugin" button, the form to upload the archive will be opened.
+3. Select the archive with the plugin and click "Install Now".
+4. Click on the "Activate Plugin" button when the installation is complete.
+
+#### Manual installation
+
+1. Upload the folder `luckywp-table-of-contents` to a directory with the plugin, usually it is `/wp-content/plugins/`.
+2. Go to the page "Plugins &gt; Add New" on the WordPress control panel
+3. Find "LuckyWP Table of Contents" in the plugins list and click "Activate".
+
+### After activation
+
+Into classic editor will appear button "Table of Contents" (available on edit post/page screen).
+
+Into Gutenberg editor will appear block "Table of Contents" (see "Common Blocks").
+
+The menu item "Table of Contents" will appear in the menu "Settings" of the WordPress control panel.
+
+For non-English websites it is recommended to enable the `Intl` PHP extension.
+
+== Screenshots ==
+
+1. Table of Contents
+2. Gutenberg Support
+3. Classic Editor Support
+4. Customize Window
+5. Examples of Color Solutions
+6. Widget Settings
+7. General Settings
+8. Appearance Settings
+9. Auto Insert Settings
+10. Processing Headings Settings
+11. Miscellaneous Settings
+
+== Changelog ==
+
+= 1.6.1 — 2019-07-14 =
++ For hash format added option "As heading w/o transliterate".
++ Added hebrew translate, thanks to @cdk-comp and @0enaro.
++ Added spanish translate, thanks to @fernandot, @sanbec and @nobnob.
+* Improved generate hash with option "As heading".
+
+= 1.6 — 2019-07-13 =
++ Added RTL support.
++ Added option "Numeration Suffix".
+* Changed text domain to "luckywp-table-of-contents".
+* Improved Beaver Builder plugin support.
+
+= 1.5.7 — 2019-07-10 =
+* Imporvement smooth scroll implementation for support lazy loading images in content.
+* Fix: in some cases, incorrectly worked smooth scroll to headings.
+
+= 1.5.6 — 2019-07-06 =
+* Fix: in some cases, incorrectly worked option "Minimal Count of Headers".
+
+= 1.5.5 — 2019-07-06 =
+* Modified code for compatibility with Toolset Access plugin.
+
+= 1.5.4 — 2019-06-29 =
+* Added support Beaver Builder plugin.
+* Fix: in some cases, headings processing did not work correctly.
+
+= 1.5.3 — 2019-06-27 =
+* Fix: when auto insert TOC do not overrided settings "Wrap table of contents with &lt;!--noindex--&gt; tag" and "Skip headings".
+* Fix: in some cases, auto insert after first block did not work.
+
+= 1.5.2 — 2019-06-17 =
++ Added hook filter `lwptoc_heading_id`.
++ Implemented classic behavior on click "Back" in browser.
+
+= 1.5.1 — 2019-06-05 =
+* Bug fix
+
+= 1.5 — 2019-06-04 =
++ Enhancements for search engines (Google and other).
+
+= 1.4.1 — 2019-06-01 =
+* Bug fix
+
+= 1.4 — 2019-06-01 =
++ Added widget "Table of Contents".
++ Added support output table of contents via `do_shortcode('[lwptoc]')`.
+* Enhancements for more compatible with themes.
+
+= 1.3.1 — 2019-05-09 =
+* Bug fix
+
+= 1.3.0 — 2019-05-08 =
++ Skip headings by level or text.
+
+= 1.2.2 — 2019-04-24 =
+* Bug fix
+
+= 1.2.1 — 2019-04-24 =
+* Enhancements for more compatible with themes.
+
+= 1.2.0 — 2019-04-23 =
++ Added float options: "Center" and "Right without flow".
++ Added setting "Hash Format".
+* In anchors instead "name" attribute used "id".
+* Minor enhancements in CSS for more compatible with themes.
+
+= 1.1.1 — 2019-04-15 =
+* Tag &lt;noindex&gt; replaced to &lt;!--noindex--&gt;.
+
+= 1.1.0 — 2019-04-14 =
++ Added option "Wrap table of contents with &lt;noindex&gt; tag".
++ Added hook filters `lwptoc_before`, `lwptoc_after`, `lwptoc_shortcode_tag`.
+* Fix: into Gutenberg editor in block "Classic editor" don't loaded CSS for shortcode.
+
+= 1.0.4 — 2019-11-18 =
+* Bug fix
+
+= 1.0.3 — 2019-11-17 =
+* Minor appearance changes
+* Bug fix
+
+= 1.0.2 — 2019-11-16 =
+* Bug fix
+
+= 1.0.1 — 2019-11-15 =
+* Bug fix

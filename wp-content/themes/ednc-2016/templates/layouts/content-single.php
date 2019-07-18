@@ -54,7 +54,7 @@ while (have_posts()) : the_post();
             <?php if ( empty($title_overlay) ) { ?>
               <div class="container">
                 <div class="row">
-                  <div class="col-md-8 col-centered">
+                  <div class="col-md-7 col-centered">
                     <?php get_template_part('templates/components/labels'); ?>
                     <h1 class="entry-title"><?php the_title(); ?></h1>
                   </div>
@@ -79,7 +79,7 @@ while (have_posts()) : the_post();
 
       <div class="container">
         <div class="row">
-          <div class="col-md-8 col-centered">
+          <div class="col-md-7 col-centered">
             <?php get_template_part('templates/components/entry-meta'); ?>
           </div>
         </div>
@@ -117,8 +117,9 @@ while (have_posts()) : the_post();
       ?>
       <header class="entry-header container">
         <div class="row">
-          <div class="col-md-8 col-centered">
+          <div class="col-md-7 col-centered">
             <?php get_template_part('templates/components/labels'); ?>
+
 
             <?php
             if (in_category('109')) {  // 1868 Constitutional Convention
@@ -173,14 +174,23 @@ while (have_posts()) : the_post();
             <?php get_template_part('templates/components/author', 'meta'); ?>
           </div>
 
-          <div class="col-md-2 col-md-pull-2 print-no">
-            <div id="chapters" class="chapters container print-no">
+          <div id="chapters" class="col-md-2 col-md-pull-2 print-no">
+            <div id="chapters-inside">
+              <?php
+              echo do_shortcode( '' );
+              echo do_shortcode( '[lwptoc]' );
+              $var = do_shortcode( '' );
+              echo $var;
+
+              ?>
+            <!-- <div id="chapters" class="chapters container print-no">
               <div class="row">
                 <div class="col-md-12 col-centered">
                   <ul class="nav"></ul>
                 </div>
               </div>
-            </div>
+            </div> -->
+              </div>
           </div>
 
           <div class="col-md-7 col-md-pull-1point5 print-only">
@@ -201,7 +211,7 @@ while (have_posts()) : the_post();
               echo '</div>';
             } ?>
 
-
+            <?php get_template_part('templates/components/social-share'); ?>
             <?php the_content(); ?>
 
 
@@ -255,6 +265,21 @@ while (have_posts()) : the_post();
         </div>
       </div>
     </div>
+
+
+
+
+    <div class="entry-content-comments">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-2 col-md-push-10 meta hidden-xs hidden-sm print-no"></div>
+          <div class="col-md-2 col-md-pull-2 print-no"></div>
+          <div class="col-md-7 col-md-pull-1point5 print-only comment-section"></div>
+        </div>
+      </div>
+    </div>
+
+
 
     <footer class="container print-no">
       <?php get_template_part('templates/layouts/block', 'recommended'); ?>

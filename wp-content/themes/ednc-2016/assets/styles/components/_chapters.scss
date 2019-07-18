@@ -165,3 +165,38 @@ a.chapter {
 //     margin-bottom: 3em;
 //   }
 // }
+
+#chapters-inside {
+  // position: fixed;
+  // top: 0px;
+}
+
+@media (max-width: 990px) {
+  .lwptoc:first-child {
+    margin-top: 0px;
+    // position: sticky;
+    // top: 0px;
+    width: 100%;
+    background-color: #DCDFE5;
+    z-index: 10000;
+  }
+  .lwptoc_item {
+    padding: 10px 0px;
+  }
+  .lwptoc-light .lwptoc_i {
+    color: #333;
+    background: #fafafa;
+    background-color: #DCDFE5;
+    z-index: 10000;
+  }
+  .lwptoc {
+    margin: 0;
+  }
+  #chapters {
+    position: sticky;
+    top: 0px;
+    z-index: 10000;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

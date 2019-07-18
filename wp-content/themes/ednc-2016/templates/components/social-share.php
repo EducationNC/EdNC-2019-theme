@@ -26,7 +26,7 @@ if (is_page('story-2015-16')) {
   $printLink = "href=\"https://www.printfriendly.com/print\" onclick=\"window.open('https://www.printfriendly.com/print?url='+document.location.href); return false;\"";
 }
 
-// Get current counts of social media shares & store in transient 
+// Get current counts of social media shares & store in transient
 
 $counts = get_transient('social-counts-' . $id);
 if ($counts === false) {
