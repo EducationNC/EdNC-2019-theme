@@ -115,6 +115,8 @@ while (have_posts()) : the_post();
         <?php
       }
       ?>
+
+
       <header class="entry-header container">
         <div class="row">
           <div class="col-md-7 col-centered">
@@ -145,6 +147,19 @@ while (have_posts()) : the_post();
         </div>
       </header>
     <?php } ?>
+
+    <div class="social-share-meta">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-2 col-md-push-10 meta hidden-xs hidden-sm print-no"></div>
+          <div class="col-md-2 col-md-pull-2 print-no"></div>
+          <div class="col-md-7 col-md-pull-1point5 print-only">
+            <?php get_template_part('templates/components/social-share'); ?>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <?php if (get_field('longform_intro') && $page < 2) { ?>
       <div class="longform-intro">
@@ -211,7 +226,7 @@ while (have_posts()) : the_post();
               echo '</div>';
             } ?>
 
-            <?php get_template_part('templates/components/social-share'); ?>
+
             <?php the_content(); ?>
 
 
@@ -265,8 +280,6 @@ while (have_posts()) : the_post();
         </div>
       </div>
     </div>
-
-
 
 
     <div class="entry-content-comments">
