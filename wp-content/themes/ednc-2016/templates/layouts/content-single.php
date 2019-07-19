@@ -191,12 +191,11 @@ while (have_posts()) : the_post();
 
           <div id="chapters" class="col-md-2 col-md-pull-2 print-no">
             <div id="chapters-inside">
-              <?php
+              <?php /*
               echo do_shortcode( '' );
               echo do_shortcode( '[lwptoc]' );
               $var = do_shortcode( '' );
-              echo $var;
-
+              echo $var; */
               ?>
             </div>
           </div>
