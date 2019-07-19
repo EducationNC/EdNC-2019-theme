@@ -15,6 +15,9 @@ use Roots\Sage\Titles;
     border-radius: 4px 4px 0 0 !important;
 		border-radius: 0px 0px !important;
 	}
+	/* .border {
+		border: 1px solid red;
+	} */
 	.text-purple{
 		color:#731454 !important;
 	}
@@ -100,6 +103,39 @@ use Roots\Sage\Titles;
 		display:block;
 		text-align:center;
 	}
+	.flex {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: row;
+		background: rgba(255, 255, 255, 0.91);
+		background: #FFFFFF;
+		margin-top: -50px;
+	}
+	.text {
+		width: 45%;
+		align-self: center;
+		text-align: center;
+		/* border: 1px solid white; */
+	}
+
+	.padding {
+		padding-bottom: 40px;
+	}
+
+	.text p {
+		font-family: Lato;
+	}
+	.img-bird {
+		width: 220px;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+		padding-bottom: 10px;
+	}
+
+	.embed {
+		width: 45%;
+	}
 
 	@media (max-width: 980px){
 		.page-header.photo-overlay {
@@ -114,11 +150,29 @@ use Roots\Sage\Titles;
 			margin-top:0%;
 		}
 		.col-centered{
-			padding:0px;
+			padding-top: 20px;
 		}
 		.no-padding-left, .no-padding-right{
 			padding-left: 10px;
 			padding-right: 10px;
+		}
+		.text {
+			width: 90%;
+			align-self: center;
+			text-align: center;
+			/* border: 1px solid white; */
+		}
+		.embed {
+			width: 90%;
+			align-self: center;
+		}
+		.flex {
+			display: flex;
+			justify-content: space-between;
+			flex-direction: column;
+			background: rgba(255, 255, 255, 0.91);
+			background: #FFFFFF;
+			margin-top: -50px;
 		}
 	}
 	@media (max-width: 640px){
@@ -153,18 +207,61 @@ use Roots\Sage\Titles;
 	?>
 
 	<?php if (has_post_thumbnail() && !is_search()) { ?>
-	  <header class="background" style="background-image: url('<?php echo $featured_image_lg[0]; ?>')">
+	  <header class="page-header photo-overlay" style="background-image: url('<?php echo $featured_image_lg[0]; ?>')">
 			<div class="article-title-overlay">
 			  <div class="container">
 					<div class="row">
-					  <div class="col-md-7 col-centered">
-							<iframe id="embed81684" src="//publicinput.com/display/?projId=4279&embedId=81684" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=81684", "script");</script>
+					  <div class="col-md-8 col-centered">
+						<?= Titles\title(); ?>
 					  </div>
 					</div>
 			  </div>
 			</div>
 	  </header>
+	<?php } else { ?>
+	  <div class="container page-header">
+			<div class="row">
+			  <div class="col-md-8 col-centered">
+				<?= Titles\title(); ?>
+			  </div>
+			</div>
+	  </div>
 	<?php } ?>
+
+
+	<div class="container">
+		<div class="row padding">
+			<div class="col-md-9 flex col-centered">
+				<div class="text">
+					<img class="img-bird" src="https://www.ednc.org/wp-content/uploads/2019/07/EarlyBird-Logo.png">
+					<p>Subscribe to Early Bird for an EdNC newsletter produced by Liz Bell launching in August on issues affecting our state's youngest learners.</p>
+				</div>
+				<div class="embed">
+					<iframe id="embed81684" src="//publicinput.com/display/?projId=4279&embedId=81684" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=81684", "script");</script>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12 height">
+			</div>
+
+
+
+
+			<!-- <div class="col-md-5 pink">
+				<div class="content">
+					Subscribe to Early Bird for an EdNC newsletter produced by Liz Bell launching in August on issues affecting our state's youngest learners.
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+			<div class="col-md-5">
+				<div class="content">
+					<iframe id="embed81684" src="//publicinput.com/display/?projId=4279&embedId=81684" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=81684", "script");</script>
+				</div>
+			</div> -->
+
+		</div>
+	</div>
 
 
 
