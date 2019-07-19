@@ -234,7 +234,9 @@ use Roots\Sage\Titles;
 			<div class="col-md-9 flex col-centered">
 				<div class="text">
 					<img class="img-bird" src="https://www.ednc.org/wp-content/uploads/2019/07/EarlyBird-Logo.png">
-					<p>Subscribe to Early Bird for an EdNC newsletter produced by Liz Bell launching in August on issues affecting our state's youngest learners.</p>
+					<p>Subscribe to Early Bird for coverage of issues affecting our state's youngest learners. Until then, follow
+						Liz Bell's coverage here. 
+					</p>
 				</div>
 				<div class="embed">
 					<iframe id="embed81684" src="//publicinput.com/display/?projId=4279&embedId=81684" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=81684", "script");</script>

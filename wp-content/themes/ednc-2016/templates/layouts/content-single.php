@@ -154,7 +154,7 @@ while (have_posts()) : the_post();
           <div class="col-md-2 col-md-push-10 meta hidden-xs hidden-sm print-no"></div>
           <div class="col-md-2 col-md-pull-2 print-no"></div>
           <div class="col-md-7 col-md-pull-1point5 print-only">
-            <?php// get_template_part('templates/components/social-share'); ?>
+            <?php get_template_part('templates/components/social-share'); ?>
           </div>
         </div>
       </div>
