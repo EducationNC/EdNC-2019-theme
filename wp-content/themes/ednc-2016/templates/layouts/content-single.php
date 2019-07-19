@@ -198,14 +198,7 @@ while (have_posts()) : the_post();
               echo $var;
 
               ?>
-            <!-- <div id="chapters" class="chapters container print-no">
-              <div class="row">
-                <div class="col-md-12 col-centered">
-                  <ul class="nav"></ul>
-                </div>
-              </div>
-            </div> -->
-              </div>
+            </div>
           </div>
 
           <div class="col-md-7 col-md-pull-1point5 print-only">
