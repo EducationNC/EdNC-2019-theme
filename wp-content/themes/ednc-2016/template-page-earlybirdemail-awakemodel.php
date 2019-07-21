@@ -105,11 +105,12 @@ use Roots\Sage\Titles;
 	}
 	.flex {
 		display: flex;
-		justify-content: space-between;
+		justify-content: space-around;
 		flex-direction: row;
 		background: rgba(255, 255, 255, 0.91);
 		background: #FFFFFF;
 		margin-top: -50px;
+		padding: 40px 0px;
 	}
 	.text {
 		width: 45%;
@@ -235,17 +236,14 @@ use Roots\Sage\Titles;
 				<div class="text">
 					<img class="img-bird" src="https://www.ednc.org/wp-content/uploads/2019/07/EarlyBird-Logo.png">
 					<p>Subscribe to Early Bird for coverage of issues affecting our state's youngest learners. Until then, follow
-						Liz Bell's coverage here. 
+						Liz Bell's coverage <a href="https://www.ednc.org/author/lbell/">here</a>.
 					</p>
 				</div>
 				<div class="embed">
-					<iframe id="embed81684" src="//publicinput.com/display/?projId=4279&embedId=81684" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=81684", "script");</script>
+					<iframe id="embed75412" src="//publicinput.com/display/?projId=4798&embedId=75412&compact=true" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=75412", "script");</script>
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-md-12 height">
-			</div>
 
 
 

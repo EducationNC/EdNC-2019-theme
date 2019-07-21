@@ -3,7 +3,7 @@
 use Roots\Sage\Assets;
 
 ?>
-<?php// get_template_part('templates/components/social-share'); ?>
+<?php get_template_part('templates/components/social-share'); ?>
 
 <div class="above-footer print-no">
   <div class="container">
