@@ -125,6 +125,7 @@ use Roots\Sage\Titles;
 
 	.text p {
 		font-family: Lato;
+		font-size: 17px;
 	}
 	.img-bird {
 		width: 220px;
