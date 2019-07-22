@@ -235,8 +235,8 @@ use Roots\Sage\Titles;
 			<div class="col-md-9 flex col-centered">
 				<div class="text">
 					<img class="img-bird" src="https://www.ednc.org/wp-content/uploads/2019/07/EarlyBird-Logo.png">
-					<p>Subscribe to Early Bird for coverage of issues affecting our state's youngest learners. Until then, follow
-						Liz Bell's coverage <a href="https://www.ednc.org/author/lbell/">here</a>.
+					<p>Subscribe to Early Bird for coverage of issues affecting our state's youngest learners. The newsletter is coming soon,
+						but until then, follow Liz Bell's coverage <a href="https://www.ednc.org/author/lbell/">here</a>.
 					</p>
 				</div>
 				<div class="embed">
