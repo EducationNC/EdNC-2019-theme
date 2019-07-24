@@ -9,6 +9,18 @@ use Roots\Sage\Titles;
 	.cz-outer {
 		padding: 50px 0px;
 	}
+	.banner-image {
+		background-image: url('https://3e9eq82l8dmn2cmrkf23oogn-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/DSC_8243-1-1024x683.jpg');
+		background-size: cover;
+		height: 400px;
+		width: 100%;
+		background-position: right -10px bottom -300px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 32px;
+	}
 	#content-wrapper-div {
     background: rgba(255, 255, 255, 0.91);
 		background: red;
@@ -29,6 +41,7 @@ use Roots\Sage\Titles;
 	}
 	.bg-purple, .wrap{
 		background-color:#731454 !important;
+		background-color:purple !important;
 	}
 	.bg-white{
 		background-color:#fff !important;
@@ -125,7 +138,7 @@ use Roots\Sage\Titles;
 
 	.text p {
 		font-family: Lato;
-		font-size: 17px;
+		font-size: 17px;acebo
 	}
 	.img-bird {
 		width: 220px;
@@ -146,6 +159,18 @@ use Roots\Sage\Titles;
 		.entry-title {
 			margin-bottom: 90px !important;
 		}
+		.banner-image {
+			background-image: url('https://3e9eq82l8dmn2cmrkf23oogn-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/DSC_8243-1-1024x683.jpg');
+			background-size: cover;
+			height: 300px;
+			width: 100%;
+			background-position: 0px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			margin-bottom: 32px;
+		}
 	}
 	@media (max-width: 780px){
 		.margin-top-20pc{
@@ -153,6 +178,18 @@ use Roots\Sage\Titles;
 		}
 		.col-centered{
 			padding-top: 20px;
+		}
+		.banner-image {
+			background-image: url('https://3e9eq82l8dmn2cmrkf23oogn-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/DSC_8243-1-1024x683.jpg');
+			background-size: cover;
+			height: 300px;
+			width: 100%;
+			background-position: 0px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			margin-bottom: 32px;
 		}
 		.no-padding-left, .no-padding-right{
 			padding-left: 10px;
@@ -164,6 +201,7 @@ use Roots\Sage\Titles;
 			text-align: center;
 			/* border: 1px solid white; */
 		}
+
 		.embed {
 			width: 90%;
 			align-self: center;
@@ -195,40 +233,42 @@ use Roots\Sage\Titles;
 </style>
 
 <?php while (have_posts()) : the_post(); ?>
-<?php //get_template_part('templates/components/page', 'header'); ?>
 
 <?php
 
-	$source = '';
-	if (isset($_GET['utm_source'])) {
-	  $source = $_GET['utm_source'];
-	}
+	// $source = '';
+	// if (isset($_GET['utm_source'])) {
+	//   $source = $_GET['utm_source'];
+	// }
 
-	$image_id = get_post_thumbnail_id();
-	$featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
+	//$image_id = get_post_thumbnail_id();
+	//$featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 	?>
 
-	<?php if (has_post_thumbnail() && !is_search()) { ?>
-	  <header class="page-header photo-overlay" style="background-image: url('<?php echo $featured_image_lg[0]; ?>')">
+		<div class="banner-image">
+		</div>
+
+	<!-- <?php// if (has_post_thumbnail() && !is_search()) { ?>
+		<header class="page-header photo-overlay" style="background-image: url('<?php //echo $featured_image_lg[0]; ?>')">
 			<div class="article-title-overlay">
-			  <div class="container">
+				<div class="container">
 					<div class="row">
-					  <div class="col-md-8 col-centered">
+						<div class="col-md-8 col-centered">
 						<?= Titles\title(); ?>
-					  </div>
+						</div>
 					</div>
-			  </div>
+				</div>
 			</div>
-	  </header>
-	<?php } else { ?>
-	  <div class="container page-header">
+		</header>
+	<?php// } else { ?>
+		<div class="container page-header">
 			<div class="row">
-			  <div class="col-md-8 col-centered">
+				<div class="col-md-8 col-centered">
 				<?= Titles\title(); ?>
-			  </div>
+				</div>
 			</div>
-	  </div>
-	<?php } ?>
+		</div>
+	<?php// } ?> -->
 
 
 	<div class="container">
@@ -244,22 +284,6 @@ use Roots\Sage\Titles;
 					<iframe id="embed75412" src="//publicinput.com/display/?projId=4798&embedId=75412&compact=true" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=75412", "script");</script>
 				</div>
 			</div>
-
-
-
-
-
-			<!-- <div class="col-md-5 pink">
-				<div class="content">
-					Subscribe to Early Bird for an EdNC newsletter produced by Liz Bell launching in August on issues affecting our state's youngest learners.
-				</div>
-			</div>
-			<div class="col-md-2"></div>
-			<div class="col-md-5">
-				<div class="content">
-					<iframe id="embed81684" src="//publicinput.com/display/?projId=4279&embedId=81684" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=81684", "script");</script>
-				</div>
-			</div> -->
 
 		</div>
 	</div>
