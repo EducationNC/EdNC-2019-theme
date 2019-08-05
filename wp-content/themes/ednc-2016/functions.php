@@ -104,7 +104,7 @@ function my_recent_posts_shortcode($atts){
 
 add_shortcode('recent-posts', 'my_recent_posts_shortcode');
 
-
+add_filter('acf/format_value/type=textarea', 'do_shortcode');
 //exclude private
 add_filter( 'pre_get_posts', 'exclude_private_post' );
 function exclude_private_post( $query ) {

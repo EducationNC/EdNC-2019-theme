@@ -24,7 +24,11 @@ class RangeValidator extends Validator
     {
         parent::init();
         if ($this->message === null) {
-            $this->message = __('{attribute} is invalid.', 'luckywp-table-of-contents');
+            $this->message = sprintf(
+            /* translators: %s: Attribute name */
+                esc_html__('%s is invalid.', 'luckywp-table-of-contents'),
+                '{attribute}'
+            );
         }
     }
 

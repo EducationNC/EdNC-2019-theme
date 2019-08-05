@@ -19,7 +19,7 @@ return [
                 'fields' => [
 
                     'min' => [
-                        'label' => esc_html__('Minimal Count of Headers', 'luckywp-table-of-contents'),
+                        'label' => esc_html__('Minimal Count of Headings', 'luckywp-table-of-contents'),
                         'widget' => 'textInput',
                         'params' => [
                             'inputOptions' => [
@@ -27,7 +27,7 @@ return [
                             ],
                         ],
                         'default' => 2,
-                        'desc' => esc_html__('If the count of headers in the post is less, then table of contents is not displayed.', 'luckywp-table-of-contents'),
+                        'desc' => esc_html__('If the count of headings in the post is less, then table of contents is not displayed.', 'luckywp-table-of-contents'),
                     ],
 
                     'depth' => [
@@ -73,6 +73,7 @@ return [
                         ],
                         'default' => 'none',
                         'desc' => sprintf(
+                        /* translators: %s: 1.3) */
                             esc_html__('The symbol will be added after numeration. For example, %s', 'luckywp-table-of-contents'),
                             '<code>1.3)</code>'
                         ),
@@ -297,7 +298,7 @@ return [
                                 'class' => 'js-lwptocAutoInsertEnableCheckbox',
                             ],
                         ],
-                        'default' => true,
+                        'default' => false,
                     ],
 
                     'position' => [
@@ -352,29 +353,6 @@ return [
     'misc' => [
         'label' => esc_html__('Misc.', 'luckywp-table-of-contents'),
         'sections' => [
-            'main' => [
-                'fields' => [
-                    'hashFormat' => [
-                        'label' => esc_html__('Hash Format', 'luckywp-table-of-contents'),
-                        'widget' => 'select',
-                        'params' => [
-                            'items' => Core::$plugin->getHashFormatsList(),
-                        ],
-                        'default' => 'asheading',
-                    ],
-
-                    'wrapNoindex' => [
-                        'label' => '',
-                        'widget' => 'checkbox',
-                        'params' => [
-                            'checkboxOptions' => [
-                                'label' => esc_html__('Wrap table of contents with <!--noindex--> tag', 'luckywp-table-of-contents'),
-                            ],
-                        ],
-                        'default' => false,
-                    ],
-                ],
-            ],
             'skipHeading' => [
                 'title' => esc_html__('Skip Headings', 'luckywp-table-of-contents'),
                 'fields' => [
@@ -400,6 +378,7 @@ return [
                             echo esc_html__('Specify headings (one per line) to be excluded from the table of contents.', 'luckywp-table-of-contents');
                             echo '<br>';
                             echo sprintf(
+                            /* translators: %s: Asterisk symbol (*) */
                                 esc_html__('Use an asterisk %s as a wildcard to match any text.', 'luckywp-table-of-contents'),
                                 '<code>*</code>'
                             );
@@ -411,8 +390,86 @@ return [
                     ],
                 ],
             ],
-            'postSettings' => [
-                'title' => esc_html__('Post Settings', 'luckywp-table-of-contents'),
+            'hash' => [
+                /* translators: Here, hash is a unique tracking string that is added to the URL after a # character */
+                'title' => esc_html__('Hash', 'luckywp-table-of-contents'),
+                'fields' => [
+
+                    'hashFormat' => [
+                        /* translators: Here, hash is a unique tracking string that is added to the URL after a # character */
+                        'label' => esc_html__('Hash Format', 'luckywp-table-of-contents'),
+                        'widget' => 'select',
+                        'params' => [
+                            'items' => Core::$plugin->getHashFormatsList(),
+                        ],
+                        'default' => 'asheading',
+                    ],
+
+                    'hashConvertToLowercase' => [
+                        'label' => '',
+                        'widget' => 'checkbox',
+                        'params' => [
+                            'checkboxOptions' => [
+                                'label' => esc_html__('Convert to lowercase', 'luckywp-table-of-contents'),
+                            ],
+                        ],
+                        'default' => false,
+                    ],
+
+                    'hashReplaceUnderlinesToDashes' => [
+                        'label' => '',
+                        'widget' => 'checkbox',
+                        'params' => [
+                            'checkboxOptions' => [
+                                'label' => sprintf(
+                                /* translators: 1: _ 2: - */
+                                    esc_html__('Replace underscores %1$s with dashes %2$s', 'luckywp-table-of-contents'),
+                                    '<code>_</code>',
+                                    '<code>-</code>'
+                                ),
+                            ],
+                        ],
+                        'default' => false,
+                    ],
+                ],
+            ],
+            'seo' => [
+                'title' => esc_html__('SEO', 'luckywp-table-of-contents'),
+                'fields' => [
+
+                    'wrapNoindex' => [
+                        'label' => '',
+                        'widget' => 'checkbox',
+                        'params' => [
+                            'checkboxOptions' => [
+                                'label' => sprintf(
+                                /* translators: %s: <!--noindex--> */
+                                    esc_html__('Wrap table of contents with %s tag', 'luckywp-table-of-contents'),
+                                    '<code>&lt;!--noindex--&gt;</code>'
+                                ),
+                            ],
+                        ],
+                        'default' => false,
+                    ],
+
+                    'useNofollow' => [
+                        'label' => '',
+                        'widget' => 'checkbox',
+                        'params' => [
+                            'checkboxOptions' => [
+                                'label' => sprintf(
+                                /* translators: %s: rel="nofollow" */
+                                    esc_html__('Use %s for links', 'luckywp-table-of-contents'),
+                                    '<code>rel="nofollow"</code>'
+                                ),
+                            ],
+                        ],
+                        'default' => false,
+                    ],
+                ],
+            ],
+            'otherSettings' => [
+                'title' => esc_html__('Other Settings', 'luckywp-table-of-contents'),
                 'fields' => [
                     'showMetaboxPostTypes' => [
                         'label' => esc_html__('Show Panel "Table of Contents" in Post Types', 'luckywp-table-of-contents'),
@@ -422,8 +479,17 @@ return [
                             ]);
                         },
                     ],
-                ]
-            ]
+                    'listMarkupTags' => [
+                        /* translators: User select DIV or UL/LI */
+                        'label' => esc_html__('List Markup Tags', 'luckywp-table-of-contents'),
+                        'widget' => 'select',
+                        'params' => [
+                            'items' => Core::$plugin->getListMarkupTagsList(),
+                        ],
+                        'default' => 'div',
+                    ],
+                ],
+            ],
         ],
     ],
 ];

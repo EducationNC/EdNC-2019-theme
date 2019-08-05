@@ -23,7 +23,11 @@ class ContentHandling
         static::$headingIds = [];
         $result->content = preg_replace_callback('#<h([1-6])(.*?)>(.*?)</h\d>#imsu', function ($m) use ($dto, $result, $skipRegex) {
             $label = trim(strip_tags($m[3]));
-            $headingId = static::makeHeadingId($label, $dto->hashFormat);
+            if ($label == '') {
+                return $m[0];
+            }
+
+            $headingId = static::makeHeadingId($label, $dto);
             $headingIndex = (int)$m[1];
 
             $result->headings[] = [
@@ -57,12 +61,12 @@ class ContentHandling
 
     /**
      * @param string $label
-     * @param string $hashFormat
+     * @param ContentHandlingDto $dto
      * @return string
      */
-    protected static function makeHeadingId($label, $hashFormat)
+    protected static function makeHeadingId($label, $dto)
     {
-        switch ($hashFormat) {
+        switch ($dto->hashFormat) {
             case 'counter':
                 $id = 'lwptoc' . ++static::$headingIdCounter;
                 break;
@@ -71,7 +75,7 @@ class ContentHandling
             case 'asheadingwotransliterate':
             default:
                 $id = html_entity_decode($label, ENT_QUOTES, get_option('blog_charset'));
-                if ($hashFormat == 'asheadingwotransliterate') {
+                if ($dto->hashFormat == 'asheadingwotransliterate') {
                     $id = htmlentities2($id);
                     $id = str_replace(['&amp;', '&nbsp;', '#', "\n\r", "\r\n", "\r", "\n"], '_', $id);
                 } else {
@@ -86,7 +90,16 @@ class ContentHandling
                 $id = trim($id);
                 $id = str_replace(' ', '_', $id);
                 $id = preg_replace('/__+/', '_', $id);
-                $id = trim($id, '_');
+                $id = trim($id, '-_');
+
+                if ($dto->hashConvertToLowercase) {
+                    $id = function_exists('mb_strtolower') ? mb_strtolower($id) : strtolower($id);
+                }
+
+                if ($dto->hashReplaceUnderlinesToDashes) {
+                    $id = str_replace('_', '-', $id);
+                }
+
                 if (!$id) {
                     $id = 'lwptoc';
                 }

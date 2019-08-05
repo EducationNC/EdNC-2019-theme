@@ -95,6 +95,7 @@ class Shortcode extends BaseObject
                              'hoverLinkColor',
                              'visitedLinkColor',
                              'wrapNoindex',
+                             'useNofollow',
                              'skipHeadingLevel',
                              'skipHeadingText',
                          ] as $var) {
@@ -117,7 +118,7 @@ class Shortcode extends BaseObject
         }
 
         if ($this->headingsCache === null) {
-            $dto = new ContentHandlingDto();
+            $dto = $this->makeContentHandlingDto();
             $dto->modify = false;
 
             $this->isTheContentEmulate = true;
@@ -136,14 +137,13 @@ class Shortcode extends BaseObject
      */
     public function theContent($content)
     {
-        if (!$this->needProcessHeadings($content)) {
+        if (!apply_filters('lwptoc_need_processing_headings', $this->needProcessHeadings($content), $content)) {
             return $content;
         }
 
-        $dto = new ContentHandlingDto();
+        $dto = $this->makeContentHandlingDto();
         $dto->content = $content;
         $dto->modify = true;
-        $dto->hashFormat = Core::$plugin->settings->getMiscHashFormat();
 
         $shortcodesAttrs = [];
         preg_match_all($this->getShortcodeRegex(), $content, $matches);
@@ -193,6 +193,18 @@ class Shortcode extends BaseObject
         return preg_replace_callback($this->getShortcodeRegex(), function ($m) use ($result) {
             return Toc::render($result->headings, shortcode_parse_atts($m[3]));
         }, $result->content);
+    }
+
+    /**
+     * @return ContentHandlingDto
+     */
+    protected function makeContentHandlingDto()
+    {
+        $dto = new ContentHandlingDto();
+        $dto->hashFormat = Core::$plugin->settings->getMiscHashFormat();
+        $dto->hashConvertToLowercase = Core::$plugin->settings->getMiscHashConvertToLowercase();
+        $dto->hashReplaceUnderlinesToDashes = Core::$plugin->settings->getMiscHashReplaceUnderlinesToDashes();
+        return $dto;
     }
 
     /**

@@ -15,7 +15,7 @@ use luckywp\tableOfContents\core\Core;
         </p>
     <?php } elseif ($settings->processHeadings) { ?>
         <p>
-            <?= __('The headings will be processing in this post for use in Table of Contens in widget or custom shortcode.', 'luckywp-table-of-contents') ?>
+            <?= __('The headings will be processing in this post for use in table of contents in widget or custom shortcode.', 'luckywp-table-of-contents') ?>
         </p>
     <?php } ?>
 

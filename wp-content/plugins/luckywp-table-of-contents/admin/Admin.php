@@ -97,6 +97,7 @@ class Admin extends BaseObject
             'postId' => in_array($hook, ['post.php', 'post-new.php']) ? ArrayHelper::getValue($post, 'ID') : null,
             'shortcodeTag' => Core::$plugin->shortcode->getTag(),
             'tableOfContents' => esc_html__('Table of Contents', 'luckywp-table-of-contents'),
+            /* translators: verb */
             'Edit' => esc_html__('Edit', 'luckywp-table-of-contents'),
         ]);
     }
@@ -127,7 +128,7 @@ class Admin extends BaseObject
             $rows[] = [esc_html__('Position', 'luckywp-table-of-contents'), ArrayHelper::getValue(Core::$plugin->positionsList, $v)];
         }
         if (null !== $v = $getValue($source, 'min')) {
-            $rows[] = [esc_html__('Minimal Count of Headers', 'luckywp-table-of-contents'), $v];
+            $rows[] = [esc_html__('Minimal Count of Headings', 'luckywp-table-of-contents'), $v];
         }
         if (null !== $v = $getValue($source, 'depth')) {
             $rows[] = [esc_html__('Depth', 'luckywp-table-of-contents'), $v];
@@ -193,7 +194,24 @@ class Admin extends BaseObject
             }
         }
         if (null !== $v = $getValue($source, 'wrapNoindex')) {
-            $rows[] = [esc_html__('Wrap table of contents with <!--noindex--> tag', 'luckywp-table-of-contents'), $v ? __('Enabled', 'luckywp-table-of-contents') : __('Disabled', 'luckywp-table-of-contents')];
+            $rows[] = [
+                sprintf(
+                /* translators: %s: <!--noindex--> */
+                    esc_html__('Wrap table of contents with %s tag', 'luckywp-table-of-contents'),
+                    '&lt;!--noindex--&gt;'
+                ),
+                $v ? __('Enabled', 'luckywp-table-of-contents') : __('Disabled', 'luckywp-table-of-contents')
+            ];
+        }
+        if (null !== $v = $getValue($source, 'useNofollow')) {
+            $rows[] = [
+                sprintf(
+                /* translators: %s: rel="nofollow" */
+                    esc_html__('Use %s for links', 'luckywp-table-of-contents'),
+                    'rel="nofollow"'
+                ),
+                $v ? __('Enabled', 'luckywp-table-of-contents') : __('Disabled', 'luckywp-table-of-contents')
+            ];
         }
         if (null !== $v = $getValue($source, 'skipHeadingLevel')) {
             $rows[] = [esc_html__('Skip headings', 'luckywp-table-of-contents'), Core::$plugin->skipHeadingLevelToLabel($v)];

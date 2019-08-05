@@ -56,6 +56,13 @@ class Toc
             return '';
         }
 
+
+        if (ValueHelper::assertBool(ArrayHelper::getValue($attrs, 'usenofollow', Core::$plugin->settings->getMiscUseNofollow()))) {
+            $relNofollow = ' rel="nofollow"';
+        } else {
+            $relNofollow = '';
+        }
+
         $items = [];
         $tree = [];
         foreach ($headings as $heading) {
@@ -76,6 +83,7 @@ class Toc
                 'number' => null,
                 'numberSuffix' => null,
                 'label' => $heading['label'],
+                'relNofollow' => $relNofollow,
                 'childrens' => [],
             ];
 
@@ -257,6 +265,9 @@ class Toc
         $colorScheme = str_replace(['_', ' ', '-'], '', strtolower($colorScheme));
         if (array_key_exists($colorScheme, Core::$plugin->getColorSchemesList())) {
             $containerOptions['class'][] = 'lwptoc-' . $colorScheme;
+            if ($colorScheme != 'inherit') {
+                $containerOptions['class'][] = 'lwptoc-notInherit';
+            }
         }
 
         // Запомним цвета для переопределения

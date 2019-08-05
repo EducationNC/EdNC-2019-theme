@@ -16,8 +16,8 @@ class RateController extends AdminController
             }
         });
         add_action('wp_ajax_lwptoc_rate', [$this, 'ajaxRate']);
-        add_action('wp_ajax_lwptoc_show_later', [$this, 'ajaxShowLater']);
-        add_action('wp_ajax_lwptoc_already_rate', [$this, 'ajaxAlreadyRate']);
+        add_action('wp_ajax_lwptoc_rate_show_later', [$this, 'ajaxShowLater']);
+        add_action('wp_ajax_lwptoc_rate_hide', [$this, 'ajaxHide']);
         parent::init();
     }
 
@@ -31,9 +31,9 @@ class RateController extends AdminController
         Core::$plugin->rate->rate();
     }
 
-    public function ajaxAlreadyRate()
+    public function ajaxHide()
     {
-        Core::$plugin->rate->alreadyRate();
+        Core::$plugin->rate->hide();
     }
 
     public function ajaxShowLater()

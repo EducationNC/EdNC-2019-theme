@@ -2,6 +2,7 @@
 
 use luckywp\tableOfContents\admin\Rate;
 use luckywp\tableOfContents\core\admin\helpers\AdminHtml;
+use luckywp\tableOfContents\core\Core;
 
 ?>
 <div class="notice notice-info lwptocRate">
@@ -9,8 +10,9 @@ use luckywp\tableOfContents\core\admin\helpers\AdminHtml;
         <?= esc_html__('Hello!', 'luckywp-table-of-contents') ?>
         <br>
         <?= sprintf(
-            esc_html__('We are very pleased that you are using the %s plugin within a few days.', 'luckywp-table-of-contents'),
-            '<b>LuckyWP Table of Contents</b>'
+        /* translators: %s: LuckyWP Table of Contents */
+            esc_html__('We are very pleased that you by now have been using the %s plugin a few days.', 'luckywp-table-of-contents'),
+            '<b>' . Core::$plugin->getName() . '</b>'
         ) ?>
         <br>
         <?= esc_html__('Please rate plugin. It will help us a lot.', 'luckywp-table-of-contents') ?>
@@ -25,13 +27,13 @@ use luckywp\tableOfContents\core\admin\helpers\AdminHtml;
         ]) ?>
         <?= AdminHtml::button(esc_html__('Remind later', 'luckywp-table-of-contents'), [
             'attrs' => [
-                'data-action' => 'lwptoc_show_later',
+                'data-action' => 'lwptoc_rate_show_later',
             ],
             'theme' => AdminHtml::BUTTON_THEME_LINK,
         ]) ?>
-        <?= AdminHtml::button(esc_html__('I\'ve already rated the plugin', 'luckywp-table-of-contents'), [
+        <?= AdminHtml::button(esc_html__('Don\'t show again', 'luckywp-table-of-contents'), [
             'attrs' => [
-                'data-action' => 'lwptoc_already_rate',
+                'data-action' => 'lwptoc_rate_hide',
             ],
             'theme' => AdminHtml::BUTTON_THEME_LINK,
         ]) ?>

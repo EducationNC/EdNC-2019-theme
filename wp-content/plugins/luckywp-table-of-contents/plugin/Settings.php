@@ -309,9 +309,33 @@ class Settings extends \luckywp\tableOfContents\core\wp\Settings
     /**
      * @return bool
      */
+    public function getMiscHashConvertToLowercase()
+    {
+        return (bool)$this->getValue('misc', 'hashConvertToLowercase', false);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getMiscHashReplaceUnderlinesToDashes()
+    {
+        return (bool)$this->getValue('misc', 'hashReplaceUnderlinesToDashes', false);
+    }
+
+    /**
+     * @return bool
+     */
     public function getMiscWrapNoindex()
     {
         return (bool)$this->getValue('misc', 'wrapNoindex', false);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getMiscUseNofollow()
+    {
+        return (bool)$this->getValue('misc', 'useNofollow', false);
     }
 
     /**
@@ -406,5 +430,17 @@ class Settings extends \luckywp\tableOfContents\core\wp\Settings
         }
         $postTypes = array_merge($postTypes, $this->getProcessingHeadingsAlwaysForPostTypes(), $this->getMiscShowMetaboxPostTypes());
         return array_unique($postTypes);
+    }
+
+    /**
+     * @return string
+     */
+    public function getListMarkupTags()
+    {
+        $tags = $this->getValue('misc', 'listMarkupTags');
+        if (!array_key_exists($tags, Core::$plugin->getListMarkupTagsList())) {
+            $tags = 'div';
+        }
+        return $tags;
     }
 }

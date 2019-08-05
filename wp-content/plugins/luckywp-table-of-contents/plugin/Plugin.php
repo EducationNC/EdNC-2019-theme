@@ -12,6 +12,8 @@ use luckywp\tableOfContents\core\helpers\ArrayHelper;
 use luckywp\tableOfContents\core\wp\Options;
 use luckywp\tableOfContents\front\Front;
 use luckywp\tableOfContents\integrations\BeaverBuilder;
+use luckywp\tableOfContents\integrations\RankMath;
+use luckywp\tableOfContents\integrations\ToolsetViews;
 use luckywp\tableOfContents\plugin\editorBlock\EditorBlock;
 use luckywp\tableOfContents\plugin\mcePlugin\McePlugin;
 use WP_Post_Type;
@@ -61,6 +63,12 @@ class Plugin extends BasePlugin
         add_action('plugins_loaded', function () {
             if (defined('FL_BUILDER_VERSION')) {
                 Core::createObject(BeaverBuilder::className());
+            }
+            if (class_exists('\RankMath')) {
+                Core::createObject(RankMath::className());
+            }
+            if (defined('WPV_VERSION')) {
+                Core::createObject(ToolsetViews::className());
             }
         });
     }
@@ -149,7 +157,7 @@ class Plugin extends BasePlugin
         return [
             'beforefirstheading' => esc_html__('Before first heading', 'luckywp-table-of-contents'),
             'afterfirstheading' => esc_html__('After first heading', 'luckywp-table-of-contents'),
-            'afterfirstblock' => esc_html__('After first block (paragraph, list or heading)', 'luckywp-table-of-contents'),
+            'afterfirstblock' => esc_html__('After first block (paragraph or heading)', 'luckywp-table-of-contents'),
             'top' => esc_html__('Top', 'luckywp-table-of-contents'),
             'bottom' => esc_html__('Bottom', 'luckywp-table-of-contents'),
         ];
@@ -240,6 +248,7 @@ class Plugin extends BasePlugin
             'dark' => esc_html__('Dark Colors', 'luckywp-table-of-contents'),
             'white' => esc_html__('White', 'luckywp-table-of-contents'),
             'transparent' => esc_html__('Transparent', 'luckywp-table-of-contents'),
+            'inherit' => esc_html__('Inherit from theme', 'luckywp-table-of-contents'),
         ];
     }
 
@@ -250,8 +259,12 @@ class Plugin extends BasePlugin
     {
         return [
             'asheading' => esc_html__('As heading (#Example_Heading_Text)', 'luckywp-table-of-contents'),
-            'asheadingwotransliterate' => esc_html__('As heading w/o transliterate (#Example_Heading_Text)', 'luckywp-table-of-contents'),
-            'counter' => esc_html__('Counter (#lwptoc1, #lwptoc2, …)', 'luckywp-table-of-contents'),
+            'asheadingwotransliterate' => esc_html__('As heading without transliterate (#Example_Heading_Text)', 'luckywp-table-of-contents'),
+            'counter' => sprintf(
+            /* translators: %s: (#lwptoc1, #lwptoc2, …) */
+                esc_html__('Counter %s', 'luckywp-table-of-contents'),
+                '(#lwptoc1, #lwptoc2, …)'
+            ),
         ];
     }
 
@@ -314,6 +327,17 @@ class Plugin extends BasePlugin
             'h4' => 'H4',
             'h5' => 'H5',
             'h6' => 'H6',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getListMarkupTagsList()
+    {
+        return [
+            'div' => 'DIV',
+            'ul' => 'UL/LI',
         ];
     }
 
@@ -422,6 +446,14 @@ class Plugin extends BasePlugin
             $regex[] = $t;
         }
         return $regex ? '#^(' . implode('|', $regex) . ')$#i' : false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'LuckyWP ' . esc_html__('Table of Contents', 'luckywp-table-of-contents');
     }
 
     private function pluginI18n()

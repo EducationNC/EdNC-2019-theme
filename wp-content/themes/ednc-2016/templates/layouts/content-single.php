@@ -154,7 +154,7 @@ while (have_posts()) : the_post();
           <div class="col-md-2 col-md-push-10 meta hidden-xs hidden-sm print-no"></div>
           <div class="col-md-2 col-md-pull-2 print-no"></div>
           <div class="col-md-7 col-md-pull-1point5 print-only">
-            <?php// get_template_part('templates/components/social-share'); ?>
+            <?php get_template_part('templates/components/social-share'); ?>
           </div>
         </div>
       </div>
@@ -191,11 +191,10 @@ while (have_posts()) : the_post();
 
           <div id="chapters" class="col-md-2 col-md-pull-2 print-no">
             <div id="chapters-inside">
-              <?php /*
-              echo do_shortcode( '' );
-              echo do_shortcode( '[lwptoc]' );
-              $var = do_shortcode( '' );
-              echo $var; */
+              <?php
+              if ( get_field('chapters') ) {
+              	echo do_shortcode( get_field('chapters') );
+              }
               ?>
             </div>
           </div>

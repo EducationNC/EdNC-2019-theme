@@ -6,6 +6,7 @@ use luckywp\tableOfContents\core\Core;
 ?>
 <div class="wrap">
     <a href="<?= Rate::LINK ?>" target="_blank" class="lwptocSettingsRate"><?= sprintf(
+        /* translators: %s: ★★★★★ */
             esc_html__('Leave a %s plugin review on WordPress.org', 'luckywp-table-of-contents'),
             '★★★★★'
         ) ?></a>

@@ -160,6 +160,11 @@ class PostSettings extends BaseObject
     public $wrapNoindex;
 
     /**
+     * @var bool
+     */
+    public $useNofollow;
+
+    /**
      * @var string|null
      */
     public $skipHeadingLevel;
@@ -215,6 +220,7 @@ class PostSettings extends BaseObject
                 $this->hoverLinkColor = ArrayHelper::getValue($data, 'hoverLinkColor');
                 $this->visitedLinkColor = ArrayHelper::getValue($data, 'visitedLinkColor');
                 $this->wrapNoindex = ArrayHelper::getValue($data, 'wrapNoindex');
+                $this->useNofollow = ArrayHelper::getValue($data, 'useNofollow');
                 $this->skipHeadingLevel = ArrayHelper::getValue($data, 'skipHeadingLevel');
                 $this->skipHeadingText = ArrayHelper::getValue($data, 'skipHeadingText');
             }
@@ -301,6 +307,9 @@ class PostSettings extends BaseObject
         }
         if ($this->wrapNoindex !== null) {
             $data['wrapNoindex'] = (bool)$this->wrapNoindex;
+        }
+        if ($this->useNofollow !== null) {
+            $data['useNofollow'] = (bool)$this->useNofollow;
         }
         if ($this->skipHeadingLevel !== null) {
             $data['skipHeadingLevel'] = $this->skipHeadingLevel;

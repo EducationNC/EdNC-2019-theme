@@ -35,12 +35,12 @@ class Rate extends BaseObject
 
     public function rate()
     {
-        Core::$plugin->options->set('rate_time', time() + YEAR_IN_SECONDS);
+        Core::$plugin->options->set('rate_time', time() + YEAR_IN_SECONDS * 5);
     }
 
-    public function alreadyRate()
+    public function hide()
     {
-        Core::$plugin->options->set('rate_time', time() + YEAR_IN_SECONDS);
+        Core::$plugin->options->set('rate_time', time() + YEAR_IN_SECONDS * 5);
     }
 
     public function showLater()

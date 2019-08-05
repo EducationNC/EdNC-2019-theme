@@ -56,6 +56,18 @@ class Html
         return "<$name" . static::renderTagAttributes($options) . '>';
     }
 
+    /**
+     * @param string|false|null $name
+     * @return string
+     */
+    public static function endTag($name)
+    {
+        if ($name === null || $name === false) {
+            return '';
+        }
+        return '</' . $name . '>';
+    }
+
     public static function renderTagAttributes($attributes)
     {
         $html = '';

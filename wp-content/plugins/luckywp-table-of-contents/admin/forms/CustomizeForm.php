@@ -89,6 +89,9 @@ class CustomizeForm extends Model
     public $defaultWrapNoindex;
     public $wrapNoindex;
 
+    public $defaultUseNofollow;
+    public $useNofollow;
+
     public $defaultSkipHeadingLevel;
     public $skipHeadingLevel;
 
@@ -136,6 +139,7 @@ class CustomizeForm extends Model
         'hoverLinkColor',
         'visitedLinkColor',
         'wrapNoindex',
+        'useNofollow',
         'skipHeadingLevel',
         'skipHeadingText',
     ];
@@ -216,6 +220,7 @@ class CustomizeForm extends Model
                 'filter' => [Core::$plugin->settings, 'sanitizeCallbackColor'],
             ],
             ['wrapNoindex', 'boolean'],
+            ['useNofollow', 'boolean'],
             ['skipHeadingLevel', 'filter', 'filter' => [Settings::className(), 'sanitizeSkipHeadingLevel']],
             [
                 'skipHeadingText',
@@ -295,6 +300,7 @@ class CustomizeForm extends Model
             'hoverLinkColor' => $this->defaultHoverLinkColor ? null : ($this->hoverLinkColor ? $this->hoverLinkColor : ''),
             'visitedLinkColor' => $this->defaultVisitedLinkColor ? null : ($this->visitedLinkColor ? $this->visitedLinkColor : ''),
             'wrapNoindex' => $this->defaultWrapNoindex ? null : (bool)$this->wrapNoindex,
+            'useNofollow' => $this->defaultUseNofollow ? null : (bool)$this->useNofollow,
             'skipHeadingLevel' => $this->defaultSkipHeadingLevel ? null : $this->skipHeadingLevel,
             'skipHeadingText' => $this->defaultSkipHeadingText ? null : $this->skipHeadingText,
         ];

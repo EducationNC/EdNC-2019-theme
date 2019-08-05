@@ -82,8 +82,7 @@ $count_num = num_format($counts->total);
 </div>
 
 <div class="social-share-modal print-no">
-    <a data-toggle="modal" data-target="#social-share-modal" class="icon-share" href="#"></a>
-
+    <!-- <a data-toggle="modal" data-target="#social-share-modal" class="icon-share" href="#"></a> -->
     <div class="modal fade" id="social-share-modal" tabindex="-1" role="dialog" aria-labelledby="social-share-modal">
       <div class="modal-dialog" role="document">
             <a rel="nofollow" class="icon-facebook social-share-link" href="<?php echo $facebookURL; ?>">

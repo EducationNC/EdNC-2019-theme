@@ -4,7 +4,7 @@ Donate link: https://theluckywp.com/product/table-of-contents/
 Tags: table of contents, toc, navigation, links, seo
 Requires at least: 4.7
 Tested up to: 5.2.2
-Stable tag: 1.6.1
+Stable tag: 1.9.1
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -28,9 +28,9 @@ Creates SEO-friendly table of contents for your posts, pages or custom post type
 * Hierarchical or linear view.
 * Numeration items: decimal or roman numbers in order or nested.
 * Customizable appearance: width, float, title font size and weight, items font size, colors.
-* Color schemes (dark, light, white, transparent) and the ability to override colors.
+* Color schemes (dark, light, white, transparent, inherit from theme) and the ability to override colors.
 * Toggle Show/Hide (optionally)
-* Customizalbe labels.
+* Customizable labels.
 * Smooth scroll (optionally).
 * Setting offset top for smooth scroll.
 * Wrap table of contents with &lt;!--noindex--&gt; tag (optionally).
@@ -47,7 +47,7 @@ Supported positions:
 
 * before first heading;
 * after first heading;
-* after first block (paragraph, list or heading);
+* after first block (paragraph or heading);
 * top of post content;
 * bottom of post content.
 
@@ -139,6 +139,33 @@ For non-English websites it is recommended to enable the `Intl` PHP extension.
 
 == Changelog ==
 
+= 1.9.1 — 2019-08-04 =
++ Added support Toolset Views plugin.
+
+= 1.9 — 2019-08-04 =
++ Added special color scheme "Inherit from theme".
++ Added option "List Markup Tags".
++ Added support Beaver Builder Themer Add-On.
++ Implemented automatic removal of empty headings from table of contents.
+* Automatic insertion of table of contents "after first block" takes into account only paragraphs and headings.
+* Improved JS code to prevent reinitialization.
+* Minor changes in strings, fixed typos.
+* Added tips for translators in code.
+
+= 1.8 — 2019-07-29 =
++ Added option "Use rel="nofollow" for links"
++ Added compatibility with Rank Math SEO plugin.
+* Option "Auto Insert Table of Contents" is disabled by default.
+* In notice "Rate the plugin" action "I've already rated the plugin" replaced to "Don't show again".
+* Added tips for translators in code.
+
+= 1.7 — 2019-07-18 =
++ Added option "Replace underscores (_) with dashes (-)" for hash.
++ Added option "Convert to lowercase" for hash.
+* Minor changes in strings.
+* Added tips for translators in code.
+* Fixed: in some cases, incorrectly worked skip headings.
+
 = 1.6.1 — 2019-07-14 =
 + For hash format added option "As heading w/o transliterate".
 + Added hebrew translate, thanks to @cdk-comp and @0enaro.
@@ -225,3 +252,6 @@ For non-English websites it is recommended to enable the `Intl` PHP extension.
 
 = 1.0.1 — 2019-11-15 =
 * Bug fix
+
+= 1.0.0 — 2018-11-14 =
++ Initial release.

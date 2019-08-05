@@ -15,6 +15,8 @@ use luckywp\tableOfContents\core\admin\helpers\AdminHtml;
 use luckywp\tableOfContents\core\Core;
 use luckywp\tableOfContents\core\helpers\Html;
 
+$clickToOverrideDefaultValue = esc_html__('Click to override default value', 'luckywp-table-of-contents');
+
 echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
 ?>
 <form
@@ -51,7 +53,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                         <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                     </div>
                     <div class="lwptocCustomize_field_override">
-                        <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                        <?= $clickToOverrideDefaultValue ?>
                     </div>
                     <div class="lwptocCustomize_field_el">
                         <?= Html::dropDownList(Html::getInputName($model, 'position'), $model->defaultPosition ? Core::$plugin->settings->autoInsertPosition : $model->position, Core::$plugin->positionsList, [
@@ -70,11 +72,11 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
             <?php $defaultValue = ($model->isPostOrWidgetSettings || is_null($model->postSettings->min)) ? Core::$plugin->settings->generalMin : $model->postSettings->min ?>
             <div class="lwptocCustomize_field<?= $model->defaultMin ? ' lwptocCustomize_field-default' : '' ?>">
                 <div class="lwptocCustomize_field_header">
-                    <span class="lwptocCustomize_field_label"><?= __('Minimal Count of Headers', 'luckywp-table-of-contents') ?></span>
+                    <span class="lwptocCustomize_field_label"><?= __('Minimal Count of Headings', 'luckywp-table-of-contents') ?></span>
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= Html::textInput(Html::getInputName($model, 'min'), $model->defaultMin ? $defaultValue : $model->min, ['class' => 'lwptocCustomize_field_el_textInput']) ?>
@@ -83,7 +85,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     ]) ?>
                 </div>
                 <div class="lwptocCustomize_field_desc">
-                    <?= __('If the count of headers in the post is less, then table of contents is not displayed.', 'luckywp-table-of-contents') ?>
+                    <?= __('If the count of headings in the post is less, then table of contents is not displayed.', 'luckywp-table-of-contents') ?>
                 </div>
                 <div class="lwptocCustomize_field_defaultValue">
                     <?= $defaultValue ?>
@@ -97,7 +99,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= Html::dropDownList(Html::getInputName($model, 'depth'), $model->defaultDepth ? $defaultValue : $model->depth, Core::$plugin->depthsList, [
@@ -119,7 +121,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <label>
@@ -142,7 +144,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= Html::dropDownList(Html::getInputName($model, 'numeration'), $model->defaultNumeration ? $defaultValue : $model->numeration, Core::$plugin->numerationsList, [
@@ -164,7 +166,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= Html::dropDownList(Html::getInputName($model, 'numerationSuffix'), $model->defaultNumerationSuffix ? $defaultValue : $model->numerationSuffix, Core::$plugin->getNumerationSuffixsList(), [
@@ -186,7 +188,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= Html::textInput(Html::getInputName($model, 'title'), $model->defaultTitle ? $defaultValue : $model->title, ['class' => 'lwptocCustomize_field_el_textInput']) ?>
@@ -212,7 +214,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <label>
@@ -235,7 +237,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= Html::textInput(Html::getInputName($model, 'labelShow'), $model->defaultLabelShow ? $defaultValue : $model->labelShow, ['class' => 'lwptocCustomize_field_el_textInput']) ?>
@@ -255,7 +257,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= Html::textInput(Html::getInputName($model, 'labelHide'), $model->defaultLabelHide ? $defaultValue : $model->labelHide, ['class' => 'lwptocCustomize_field_el_textInput']) ?>
@@ -275,7 +277,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <label>
@@ -298,7 +300,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <label>
@@ -321,7 +323,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= Html::textInput(Html::getInputName($model, 'smoothScrollOffset'), $model->defaultSmoothScrollOffset ? $defaultValue : $model->smoothScrollOffset, ['class' => 'lwptocCustomize_field_el_textInput']) ?>
@@ -345,7 +347,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= esc_html__('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= WidthField::widget([
@@ -368,7 +370,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= esc_html__('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= Html::dropDownList(Html::getInputName($model, 'float'), $model->defaultFloat ? $defaultValue : $model->float, Core::$plugin->floatsList, [
@@ -390,7 +392,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= esc_html__('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= FontSizeField::widget([
@@ -414,7 +416,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= esc_html__('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= Html::dropDownList(Html::getInputName($model, 'titleFontWeight'), $model->defaultTitleFontWeight ? $defaultValue : $model->titleFontWeight, Core::$plugin->fontWeightsList, [
@@ -436,7 +438,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= esc_html__('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= FontSizeField::widget([
@@ -460,7 +462,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= esc_html__('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= Html::dropDownList(Html::getInputName($model, 'colorScheme'), $model->defaultColorScheme ? $defaultValue : $model->colorScheme, Core::$plugin->colorSchemesList, [
@@ -490,7 +492,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                         <span class="lwptocCustomize_field_default"><?= esc_html__('default', 'luckywp-table-of-contents') ?></span>
                     </div>
                     <div class="lwptocCustomize_field_override">
-                        <?= esc_html__('Click for override default value', 'luckywp-table-of-contents') ?>
+                        <?= $clickToOverrideDefaultValue ?>
                     </div>
                     <div class="lwptocCustomize_field_defaultValue">
                         <?= OverrideColorBadge::widget(['color' => $defaultValue]) ?>
@@ -508,29 +510,6 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
 
         <div class="lwptocCustomize_fields lwptocCustomize_fields-misc">
 
-            <?php $defaultValue = ($model->isPostOrWidgetSettings || is_null($model->postSettings->wrapNoindex)) ? Core::$plugin->settings->miscWrapNoindex : $model->postSettings->wrapNoindex ?>
-            <div class="lwptocCustomize_field<?= $model->defaultWrapNoindex ? ' lwptocCustomize_field-default' : '' ?>">
-                <div class="lwptocCustomize_field_header">
-                    <span class="lwptocCustomize_field_label"><?= esc_html__('Wrap table of contents with <!--noindex--> tag', 'luckywp-table-of-contents') ?></span>
-                    <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
-                </div>
-                <div class="lwptocCustomize_field_override">
-                    <?= __('Click for override default value', 'luckywp-table-of-contents') ?>
-                </div>
-                <div class="lwptocCustomize_field_el">
-                    <label>
-                        <?= Html::checkbox(Html::getInputName($model, 'wrapNoindex'), $model->defaultWrapNoindex ? $defaultValue : $model->wrapNoindex, ['uncheck' => 0]) ?>
-                        <?= __('Enable', 'luckywp-table-of-contents') ?>
-                    </label>
-                    <?= Html::hiddenInput(Html::getInputName($model, 'defaultWrapNoindex'), $model->defaultWrapNoindex, [
-                        'class' => 'lwptocCustomize_field_inputDefault',
-                    ]) ?>
-                </div>
-                <div class="lwptocCustomize_field_defaultValue">
-                    <?= $defaultValue ? __('Enabled', 'luckywp-table-of-contents') : __('Disabled', 'luckywp-table-of-contents') ?>
-                </div>
-            </div>
-
             <?php $defaultValue = ($model->isPostOrWidgetSettings || is_null($model->postSettings->skipHeadingLevel)) ? Core::$plugin->settings->getMiscSkipHeadingLevel() : $model->postSettings->skipHeadingLevel ?>
             <div class="lwptocCustomize_field<?= $model->defaultSkipHeadingLevel ? ' lwptocCustomize_field-default' : '' ?>">
                 <div class="lwptocCustomize_field_header">
@@ -538,7 +517,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= esc_html__('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= esc_html__('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?= SkipHeadingLevelField::widget([
@@ -561,7 +540,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     <span class="lwptocCustomize_field_default"><?= esc_html__('default', 'luckywp-table-of-contents') ?></span>
                 </div>
                 <div class="lwptocCustomize_field_override">
-                    <?= esc_html__('Click for override default value', 'luckywp-table-of-contents') ?>
+                    <?= $clickToOverrideDefaultValue ?>
                 </div>
                 <div class="lwptocCustomize_field_el">
                     <?php
@@ -574,6 +553,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     echo esc_html__('Specify headings (one per line) to be excluded from the table of contents.', 'luckywp-table-of-contents');
                     echo '<br>';
                     echo sprintf(
+                    /* translators: %s: Asterisk symbol (*) */
                         esc_html__('Use an asterisk %s as a wildcard to match any text.', 'luckywp-table-of-contents'),
                         '<code>*</code>'
                     );
@@ -591,6 +571,60 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                         echo $defaultValue;
                     }
                     ?>
+                </div>
+            </div>
+
+            <?php $defaultValue = ($model->isPostOrWidgetSettings || is_null($model->postSettings->wrapNoindex)) ? Core::$plugin->settings->miscWrapNoindex : $model->postSettings->wrapNoindex ?>
+            <div class="lwptocCustomize_field<?= $model->defaultWrapNoindex ? ' lwptocCustomize_field-default' : '' ?>">
+                <div class="lwptocCustomize_field_header">
+                    <span class="lwptocCustomize_field_label"><?= sprintf(
+                        /* translators: %s: <!--noindex--> */
+                            esc_html__('Wrap table of contents with %s tag', 'luckywp-table-of-contents'),
+                            '<code>&lt;!--noindex--&gt;</code>'
+                        ) ?></span>
+                    <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
+                </div>
+                <div class="lwptocCustomize_field_override">
+                    <?= $clickToOverrideDefaultValue ?>
+                </div>
+                <div class="lwptocCustomize_field_el">
+                    <label>
+                        <?= Html::checkbox(Html::getInputName($model, 'wrapNoindex'), $model->defaultWrapNoindex ? $defaultValue : $model->wrapNoindex, ['uncheck' => 0]) ?>
+                        <?= __('Enable', 'luckywp-table-of-contents') ?>
+                    </label>
+                    <?= Html::hiddenInput(Html::getInputName($model, 'defaultWrapNoindex'), $model->defaultWrapNoindex, [
+                        'class' => 'lwptocCustomize_field_inputDefault',
+                    ]) ?>
+                </div>
+                <div class="lwptocCustomize_field_defaultValue">
+                    <?= $defaultValue ? __('Enabled', 'luckywp-table-of-contents') : __('Disabled', 'luckywp-table-of-contents') ?>
+                </div>
+            </div>
+
+            <?php $defaultValue = ($model->isPostOrWidgetSettings || is_null($model->postSettings->useNofollow)) ? Core::$plugin->settings->getMiscUseNofollow() : $model->postSettings->useNofollow ?>
+            <div class="lwptocCustomize_field<?= $model->defaultUseNofollow ? ' lwptocCustomize_field-default' : '' ?>">
+                <div class="lwptocCustomize_field_header">
+                    <span class="lwptocCustomize_field_label"><?= sprintf(
+                        /* translators: %s: rel="nofollow" */
+                            esc_html__('Use %s for links', 'luckywp-table-of-contents'),
+                            '<code>rel="nofollow"</code>'
+                        ) ?></span>
+                    <span class="lwptocCustomize_field_default"><?= __('default', 'luckywp-table-of-contents') ?></span>
+                </div>
+                <div class="lwptocCustomize_field_override">
+                    <?= $clickToOverrideDefaultValue ?>
+                </div>
+                <div class="lwptocCustomize_field_el">
+                    <label>
+                        <?= Html::checkbox(Html::getInputName($model, 'useNofollow'), $model->defaultUseNofollow ? $defaultValue : $model->useNofollow, ['uncheck' => 0]) ?>
+                        <?= __('Enable', 'luckywp-table-of-contents') ?>
+                    </label>
+                    <?= Html::hiddenInput(Html::getInputName($model, 'defaultUseNofollow'), $model->defaultUseNofollow, [
+                        'class' => 'lwptocCustomize_field_inputDefault',
+                    ]) ?>
+                </div>
+                <div class="lwptocCustomize_field_defaultValue">
+                    <?= $defaultValue ? __('Enabled', 'luckywp-table-of-contents') : __('Disabled', 'luckywp-table-of-contents') ?>
                 </div>
             </div>
 

@@ -2,18 +2,24 @@
 /**
  * @var $items array
  * @var $depth int
+ * @var $containerTag string
+ * @var $itemTag string
  */
-?>
-<div class="lwptoc_itemWrap">
-    <?php foreach ($items as $item) { ?>
-        <div class="lwptoc_item">
-            <a href="#<?= $item['id'] ?>" class="lwptoc_item">
-                <?php if ($item['number']) { ?>
-                    <span class="lwptoc_item_number"><?= $item['number'] . $item['numberSuffix'] ?></span>
-                <?php } ?>
-                <span class="lwptoc_item_label"><?= $item['label'] ?></span>
-            </a>
-            <?php lwptoc_items($item['childrens']) ?>
-        </div>
-    <?php } ?>
-</div>
+
+use luckywp\tableOfContents\core\helpers\Html;
+
+echo Html::beginTag($containerTag, ['class' => 'lwptoc_itemWrap']);
+foreach ($items as $item) {
+    echo Html::beginTag($itemTag, ['class' => 'lwptoc_item']);
+    ?>
+    <a href="#<?= $item['id'] ?>" class="lwptoc_item"<?= $item['relNofollow'] ?>>
+        <?php if ($item['number']) { ?>
+            <span class="lwptoc_item_number"><?= $item['number'] . $item['numberSuffix'] ?></span>
+        <?php } ?>
+        <span class="lwptoc_item_label"><?= $item['label'] ?></span>
+    </a>
+    <?php
+    lwptoc_items($item['childrens']);
+    echo Html::endTag($itemTag);
+}
+echo Html::endTag($containerTag);

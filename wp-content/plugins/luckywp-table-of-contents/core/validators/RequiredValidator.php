@@ -13,7 +13,11 @@ class RequiredValidator extends Validator
     {
         parent::init();
         if ($this->message === null) {
-            $this->message = __('{attribute} cannot be blank.', 'luckywp-table-of-contents');
+            $this->message = sprintf(
+            /* translators: %s: Attribute name */
+                esc_html__('%s cannot be blank.', 'luckywp-table-of-contents'),
+                '{attribute}'
+            );
         }
     }
 

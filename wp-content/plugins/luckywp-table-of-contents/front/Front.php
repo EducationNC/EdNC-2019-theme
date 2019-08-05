@@ -94,6 +94,10 @@ class Front extends BaseFront
             return $content;
         }
 
+        if (apply_filters('lwptoc_disable_autoinsert', false)) {
+            return $content;
+        }
+
         $settings = new PostSettings($post->ID);
         if (!$settings->enabled) {
             return $content;
@@ -125,6 +129,7 @@ class Front extends BaseFront
         $attrs['hoverLinkColor'] = $settings->hoverLinkColor;
         $attrs['visitedLinkColor'] = $settings->visitedLinkColor;
         $attrs['wrapNoindex'] = $settings->wrapNoindex;
+        $attrs['useNofollow'] = $settings->useNofollow;
         $attrs['skipHeadingLevel'] = $settings->skipHeadingLevel;
         $attrs['skipHeadingText'] = $settings->skipHeadingText;
 
@@ -142,7 +147,7 @@ class Front extends BaseFront
                 return $count ? $result : ($shortcode . $content);
 
             case 'afterfirstblock':
-                $result = preg_replace($this->generateRegexp('[^ >]+'), '$1 ' . $shortcode, $content, 1, $count);
+                $result = preg_replace($this->generateRegexp('p|h[1-6]'), '$1 ' . $shortcode, $content, 1, $count);
                 return $count ? $result : ($shortcode . $content);
 
             case 'bottom':
@@ -159,6 +164,6 @@ class Front extends BaseFront
      */
     protected function generateRegexp($tagsRe)
     {
-        return '#(<(' . $tagsRe . ')[^>]*>.*?(<\2[^>]*>.*?</\2>)*.*?</\2>)#imsu';
+        return '#(<(' . $tagsRe . ')[^>]*>.*?</\2>)#imsu';
     }
 }

@@ -67,7 +67,7 @@ class EditorBlockController extends AdminController
             echo '<div class="lwptocEditorBlock_items">';
             foreach ($rows as $row) {
                 echo '<div class="lwptocEditorBlock_item">';
-                echo '<span class="lwptocEditorBlock_item_label">' . esc_html($row[0]) . ':</span> ';
+                echo '<span class="lwptocEditorBlock_item_label">' . $row[0] . ':</span> ';
                 echo $row[1] === null ? '<i>' . __('empty', 'luckywp-table-of-contents') . '</i>' : $row[1];
                 echo '</div>';
             }

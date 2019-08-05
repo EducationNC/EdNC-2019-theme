@@ -24,7 +24,13 @@ class BooleanValidator extends Validator
     {
         parent::init();
         if ($this->message === null) {
-            $this->message = __('{attribute} must be either "{true}" or "{false}".', 'luckywp-table-of-contents');
+            $this->message = sprintf(
+            /* translators: 1: Attribute name 2: True 3: False */
+                esc_html__('%1$s must be either "%2$s" or "%3$s".', 'luckywp-table-of-contents'),
+                '{attribute}',
+                '{true}',
+                '{false}'
+            );
         }
     }
 
