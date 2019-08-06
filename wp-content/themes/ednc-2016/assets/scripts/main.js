@@ -57,6 +57,17 @@
     }
   });
 
+  $(window).scroll(function(e){
+  var $el = $('.chapters-full');
+  var isPositionFixed = ($el.css('position') === 'fixed');
+  if ($(this).scrollTop() > 200 && !isPositionFixed){
+    $el.css({'position': 'fixed', 'top': '10%'});
+  }
+  if ($(this).scrollTop() < 200 && isPositionFixed){
+    $el.css({'position': 'static', 'top': '75%'});
+  }
+});
+
 
   // Init popovers
   $('[data-toggle="popover"]').popover();

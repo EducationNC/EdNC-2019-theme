@@ -181,9 +181,16 @@ a.chapter {
   font-family: Lato;
 }
 
-#chapters-inside {
-  position: fixed;
+// #chapters-inside {
+//   position: fixed;
+//   width: 200px;
+//   top: 275px;
+// }
+
+.chapters-full {
+  position: static;
   width: 200px;
+  top: 85%;
 }
 
 @media (max-width: 1100px) {
