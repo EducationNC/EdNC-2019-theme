@@ -9,7 +9,8 @@ if (
   $author == 'nation-hahn' ||
   $author == 'nrose' ||
   $author == 'mosborne' ||
-  $author == 'cparker' ||
+  $author == 'alindenberg' ||
+  $author == 'rtuck' ||
   $author == 'annelisa-sorrells' ||
   $author == 'robert-kinlaw' ||
   $author == 'ybendaas' ||

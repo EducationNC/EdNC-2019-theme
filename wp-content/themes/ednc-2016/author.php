@@ -28,7 +28,8 @@
               $author->user_nicename != 'nation-hahn' &&
               $author->user_nicename != 'nrose' &&
               $author->user_nicename != 'mosborne' &&
-			        $author->user_nicename != 'cparker' &&
+			        $author->user_nicename != 'rtuck' &&
+              $author->user_nicename != 'alindenberg' &&
               $author->user_nicename != 'annelisa-sorrells' &&
               $author->user_nicename != 'robert-kinlaw' &&
               $author->user_nicename != 'ybendaas' &&

@@ -14,8 +14,7 @@
       <?php
       $args = array(
         'post_type' => 'bio',
-        'post__in' => array(1647, 1663, 13081, 26641, 32468, 26684, 46947, 41796, 52642, 49249,  65207),   // Mebane, Alex, Nation, Liz, Nancy, Laura37074, , Molly, Caroline, Analisa, Yasmin, Robert, Rupen
-        'posts_per_page' => -1,
+        'post__in' => array(1647, 1663, 13081, 26641, 32468, 26684, 84979, 41796, 52642, 49249, 65207, 84983),   // Mebane, Alex, Nation, Liz, Nancy, Molly, Alli, Analisa, Yasmin, Robert, Rupen, Ryan        'posts_per_page' => -1,
         'orderby' => 'post__in',
         'order' => 'ASC'
       );
