@@ -177,11 +177,21 @@ a.chapter {
 //   }
 // }
 
+.lwptoc_header, .lwptoc_item_label {
+  font-family: Lato;
+}
+
 #chapters-inside {
   position: fixed;
   width: 200px;
 }
 
+@media (max-width: 1100px) {
+  #chapters-inside {
+    position: fixed;
+    width: 150px;
+  }
+}
 
 @media (max-width: 990px) {
   .lwptoc:first-child {
