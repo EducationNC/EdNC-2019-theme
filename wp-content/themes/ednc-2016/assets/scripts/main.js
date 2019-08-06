@@ -55,7 +55,7 @@
          // var text = $('.lwptoc_toggle_label').text();
          // $('.lwptoc_toggle_label').text(text == "show" ? "show" : "hide");
     }
-   });
+  });
 
 
   // Init popovers
