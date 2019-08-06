@@ -177,10 +177,13 @@ a.chapter {
 //   }
 // }
 
-.lwptoc_header, .lwptoc_item_label {
+.lwptoc_header, .lwptoc_item_label, .lwptoc_item_number {
   font-family: Lato;
 }
 
+.lwptoc_item_label, .lwptoc_item_number {
+  font-size: 14px;
+}
 // #chapters-inside {
 //   position: fixed;
 //   width: 200px;
