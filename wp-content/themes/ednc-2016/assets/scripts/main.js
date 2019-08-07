@@ -60,10 +60,10 @@
   $(window).scroll(function(e){
     var $el = $('.chapters-full');
     var isPositionFixed = ($el.css('position') === 'fixed');
-    if ($(this).scrollTop() > 400 && !isPositionFixed){
+    if ($(this).scrollTop() > 800 && !isPositionFixed){
       $el.css({'position': 'fixed', 'top': '1%'});
     }
-    if ($(this).scrollTop() < 400 && isPositionFixed){
+    if ($(this).scrollTop() < 800 && isPositionFixed){
       $el.css({'position': 'static', 'top': '75%'});
     }
 
