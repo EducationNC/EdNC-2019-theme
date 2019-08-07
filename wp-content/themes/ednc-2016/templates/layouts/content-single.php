@@ -189,8 +189,8 @@ while (have_posts()) : the_post();
             <?php get_template_part('templates/components/author', 'meta'); ?>
           </div>
 
-          <div id="chapters" class="col-md-2 col-md-pull-2 print-no">
-            <div id="chapters-inside">
+          <div id="chapters" class="col-md-2 col-md-pull-2 print-no chapters-report">
+            <div id="chapters-inside" class="disable-scrollbars">
               <?php
               if ( get_field('chapters') ) {
               	echo do_shortcode( get_field('chapters') );
