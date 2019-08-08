@@ -1,6 +1,85 @@
 <?php
 if( function_exists('register_field_group') ):
 
+
+		acf_add_local_field_group(array(
+		'key' => 'group_5d4888f38e150',
+		'title' => 'Equity Page',
+		'fields' => array(
+			array(
+				'key' => 'field_5d4888f9f909a',
+				'label' => 'Embed 1',
+				'name' => 'embed-1',
+				'type' => 'wysiwyg',
+				'instructions' => '',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array(
+					'width' => '',
+					'class' => '',
+					'id' => '',
+				),
+				'default_value' => '',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+				'delay' => 0,
+			),
+			array(
+				'key' => 'field_5d4c094748e4e',
+				'label' => 'Embed 2',
+				'name' => 'embed-2',
+				'type' => 'wysiwyg',
+				'instructions' => '',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array(
+					'width' => '',
+					'class' => '',
+					'id' => '',
+				),
+				'default_value' => '',
+				'tabs' => 'all',
+				'toolbar' => 'full',
+				'media_upload' => 1,
+				'delay' => 0,
+			),
+			array(
+				'key' => 'field_5d4c124b69b3a',
+				'label' => 'Video',
+				'name' => 'video-equity',
+				'type' => 'oembed',
+				'instructions' => '',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array(
+					'width' => '',
+					'class' => '',
+					'id' => '',
+				),
+				'width' => '',
+				'height' => '',
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'page_template',
+					'operator' => '==',
+					'value' => 'template-equity-landing.php',
+				),
+			),
+		),
+		'menu_order' => 0,
+		'position' => 'normal',
+		'style' => 'default',
+		'label_placement' => 'top',
+		'instruction_placement' => 'label',
+		'hide_on_screen' => '',
+		'active' => true,
+		'description' => '',
+	));
+
 	acf_add_local_field_group(array(
 	'key' => 'group_5d484791710bf',
 	'title' => 'Chapters',
@@ -43,8 +122,6 @@ if( function_exists('register_field_group') ):
 	'active' => true,
 	'description' => '',
 ));
-
-
 
 	acf_add_local_field_group(array(
 	'key' => 'group_5d263b7601228',

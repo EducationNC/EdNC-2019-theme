@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Equity Landing Report
+Template Name: Equity Report
 */
 ?>
 
