@@ -177,9 +177,9 @@ $iframe = get_field('video-equity');
 
 		<div class="col-md-3">
 			<?php the_field('embed-1'); ?>
-			<hr>
+			<!-- <hr> -->
 			<?php the_field('embed-2'); ?>
-			<hr>
+			<!-- <hr> -->
 			<div class="embed-container">
 				<?php echo $iframe; ?>
 			</div>

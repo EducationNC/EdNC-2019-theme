@@ -10,16 +10,20 @@ use Roots\Sage\Titles;
 		padding: 50px 0px;
 	}
 	.banner-image {
-		background-image: url('https://3e9eq82l8dmn2cmrkf23oogn-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/DSC_8243-1-1024x683.jpg');
+		background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/1X2A6798.jpg');
+		background-repeat: no-repeat;
+		background-position: center -150px;
 		background-size: cover;
-		height: 400px;
-		width: 100%;
-		background-position: right -10px bottom -300px;
+		background-attachment: fixed;
+		height: 40vh;
+		/* height: 200px;
+		width: 100%; */
+		/* background-position: right -10px bottom -300px;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		margin-bottom: 32px;
+		margin-bottom: 32px; */
 	}
 	#content-wrapper-div {
     background: rgba(255, 255, 255, 0.91);
@@ -41,7 +45,6 @@ use Roots\Sage\Titles;
 	}
 	.bg-purple, .wrap{
 		background-color:#731454 !important;
-		background-color:purple !important;
 	}
 	.bg-white{
 		background-color:#fff !important;
@@ -160,16 +163,12 @@ use Roots\Sage\Titles;
 			margin-bottom: 90px !important;
 		}
 		.banner-image {
-			background-image: url('https://3e9eq82l8dmn2cmrkf23oogn-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/DSC_8243-1-1024x683.jpg');
+			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/1X2A6798.jpg');
+			background-repeat: no-repeat;
+			background-position: center -150px;
 			background-size: cover;
-			height: 300px;
-			width: 100%;
-			background-position: 0px;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			margin-bottom: 32px;
+			background-attachment: fixed;
+			height: 40vh;
 		}
 	}
 	@media (max-width: 780px){
@@ -180,15 +179,12 @@ use Roots\Sage\Titles;
 			padding-top: 20px;
 		}
 		.banner-image {
-			background-image: url('https://3e9eq82l8dmn2cmrkf23oogn-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/DSC_8243-1-1024x683.jpg');
+			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/1X2A6798.jpg');
+			background-repeat: no-repeat;
+			background-position: center -150px;
 			background-size: cover;
-			height: 300px;
-			width: 100%;
-			background-position: 0px;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
+			background-attachment: fixed;
+			height: 40vh;
 			margin-bottom: 32px;
 		}
 		.no-padding-left, .no-padding-right{
@@ -245,30 +241,7 @@ use Roots\Sage\Titles;
 	//$featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 	?>
 
-		<div class="banner-image">
-		</div>
-
-	<!-- <?php// if (has_post_thumbnail() && !is_search()) { ?>
-		<header class="page-header photo-overlay" style="background-image: url('<?php //echo $featured_image_lg[0]; ?>')">
-			<div class="article-title-overlay">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-8 col-centered">
-						<?= Titles\title(); ?>
-						</div>
-					</div>
-				</div>
-			</div>
-		</header>
-	<?php// } else { ?>
-		<div class="container page-header">
-			<div class="row">
-				<div class="col-md-8 col-centered">
-				<?= Titles\title(); ?>
-				</div>
-			</div>
-		</div>
-	<?php// } ?> -->
+	<div class="banner-image"></div>
 
 
 	<div class="container">
@@ -284,7 +257,6 @@ use Roots\Sage\Titles;
 					<iframe id="embed75412" src="//publicinput.com/display/?projId=4798&embedId=75412&compact=true" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=75412", "script");</script>
 				</div>
 			</div>
-
 		</div>
 	</div>
 
