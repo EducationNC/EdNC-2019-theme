@@ -139,7 +139,7 @@ $iframe = get_field('video-equity');
 				<?php
 				$args = array(
 					'posts_per_page' => -1,
-					'post_type' => 'post',
+					'post_type' => array('post', 'edtalk', 'flash-cards'),
 					'category_name' => 'innovate-conference',
 					'meta_key' => 'updated_date',
 					'orderby' => 'meta_value_num',
@@ -177,9 +177,9 @@ $iframe = get_field('video-equity');
 
 		<div class="col-md-3">
 			<?php the_field('embed-1'); ?>
-
+			<hr>
 			<?php the_field('embed-2'); ?>
-
+			<hr>
 			<div class="embed-container">
 				<?php echo $iframe; ?>
 			</div>
