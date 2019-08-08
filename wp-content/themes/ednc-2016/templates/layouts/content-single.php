@@ -272,6 +272,11 @@ while (have_posts()) : the_post();
       </div>
     </div>
 
+    <div class="editor-note">
+      <div class="container">
+      </div>
+    </div>
+
 
     <div class="entry-content-comments">
       <div class="container">

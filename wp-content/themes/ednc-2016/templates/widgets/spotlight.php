@@ -124,4 +124,16 @@
     }
     ?>
   </div>
+
+  <?php //echo $category; ?>
+
+  <?php if ($category == 1436) { ?>
+    <div class="row">
+      <p class="text-center">
+        <a href="/equity/" class="btn btn-default no-margin">See the full Equity Report</a><br />
+      </p>
+    </div>
+  <?php } ?>
+
+
 </div>
