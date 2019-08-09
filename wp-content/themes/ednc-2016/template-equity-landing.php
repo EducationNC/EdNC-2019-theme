@@ -57,6 +57,62 @@ Template Name: Equity Report
 	justify-content: center;
 	padding: 0;
 	}
+	
+  .pdf-cta {
+  	margin-bottom: 4rem;
+  	text-decoration: none;
+  	color: #44474D;
+  	justify-content: center;
+  	align-items: center;
+  }
+  
+  .pdf-cta:hover {
+  	text-decoration: none;
+  }
+  
+  .pdf-cta--desktop {
+  	display: none;
+  }
+  
+  .pdf-cta--mobile {
+  	display: flex;
+  }
+	
+  .pdf-cta__image {
+  	box-shadow: 2px 2px 4px rgba(121, 121, 121, 0.2);
+  	width: 40%;
+  	margin-right: 25px;
+  }
+  
+  .pdf-cta__description {
+  	color: #44474D;
+  	margin-bottom: .75em;
+  }
+  
+  .pdf-cta__title {
+  	display: block;
+  	margin: 1.5rem 0 .5rem;
+  	color: #1C2957;
+  	font-size: 22px;
+  }
+  
+  .pdf-cta__button {
+    border-radius: 4px;
+    text-transform: none;
+  }
+  
+  .pdf-cta--desktop .pdf-cta__image {
+  	margin-right: 15px;
+  }
+  
+  .pdf-cta--desktop .pdf-cta__description {
+ 	font-size: 16px;
+  }
+  
+  .pdf-cta--desktop .pdf-cta__button {
+  	font-size: 13px;
+  }
+  
   @media (min-width: 1280px) {
     /* .container {
         width: 1260px;
@@ -66,6 +122,14 @@ Template Name: Equity Report
     /* .container {
         width: 100%;
     } */
+    
+	  .pdf-cta--desktop {
+	  	display: flex;
+	  }
+	  
+	  .pdf-cta--mobile {
+	  	display: none;
+	  }
   }
   @media (min-width: 768px) {
     /* .container {
@@ -90,7 +154,6 @@ $image_id = get_post_thumbnail_id();
 $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 $iframe = get_field('video-equity');
 
-
 ?>
 <?php// while (have_posts()) : the_post(); ?>
 
@@ -112,6 +175,15 @@ $iframe = get_field('video-equity');
 
 		<div class="col-md-8">
 			<?php the_content(); ?>
+			
+			<a href="https://app.monstercampaigns.com/c/pnsvj7k4pmbtxk061iyx/" target="_blank" rel="noopener noreferrer" class="pdf-cta pdf-cta--mobile">
+				<img src="http://www.ednc.org/wp-content/uploads/2019/08/eracing-inequities-cover.png" class="pdf-cta__image">
+				<div class="pdf-cta__text">
+					<b class="pdf-cta__title">Full Report</b>
+					<div class="pdf-cta__description">Access a PDF of the full report.</div>
+					<div class="btn btn-primary pdf-cta__button">Read Now</div>
+				</div>
+			</a>
 
 			<div class="row">
 				<div class="col-md-12">
@@ -176,6 +248,15 @@ $iframe = get_field('video-equity');
 		<div class="col-md-1"></div>
 
 		<div class="col-md-3">
+			
+			<a href="https://app.monstercampaigns.com/c/pnsvj7k4pmbtxk061iyx/" target="_blank" rel="noopener noreferrer" class="pdf-cta pdf-cta--desktop">
+				<img src="http://www.ednc.org/wp-content/uploads/2019/08/eracing-inequities-cover.png" class="pdf-cta__image">
+				<div class="pdf-cta__text">
+					<div class="pdf-cta__description">Access a PDF of the full report.</div>
+					<div class="btn btn-primary pdf-cta__button">Read Now</div>
+				</div>
+			</a>
+			
 			<?php the_field('embed-1'); ?>
 			<!-- <hr> -->
 			<?php the_field('embed-2'); ?>
