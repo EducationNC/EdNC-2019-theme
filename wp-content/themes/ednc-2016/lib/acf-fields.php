@@ -2,6 +2,57 @@
 if( function_exists('register_field_group') ):
 
 
+	acf_add_local_field_group(array(
+	'key' => 'group_5d484791710bf',
+	'title' => 'Chapters',
+	'fields' => array(
+		array(
+			'key' => 'field_5d48479650405',
+			'label' => 'Chapters',
+			'name' => 'chapters',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '[lwptoc]',
+			'append' => '',
+			'maxlength' => '',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'post',
+			),
+		),
+		array(
+			array(
+				'param' => 'page_template',
+				'operator' => '==',
+				'value' => 'default',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'side',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+
 		acf_add_local_field_group(array(
 		'key' => 'group_5d4888f38e150',
 		'title' => 'Equity Page',
@@ -80,48 +131,6 @@ if( function_exists('register_field_group') ):
 		'description' => '',
 	));
 
-	acf_add_local_field_group(array(
-	'key' => 'group_5d484791710bf',
-	'title' => 'Chapters',
-	'fields' => array(
-		array(
-			'key' => 'field_5d48479650405',
-			'label' => 'Chapters',
-			'name' => 'chapters',
-			'type' => 'text',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'default_value' => '',
-			'placeholder' => '',
-			'prepend' => '[lwptoc]',
-			'append' => '',
-			'maxlength' => '',
-		),
-	),
-	'location' => array(
-		array(
-			array(
-				'param' => 'post_type',
-				'operator' => '==',
-				'value' => 'post',
-			),
-		),
-	),
-	'menu_order' => 0,
-	'position' => 'side',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
-	'active' => true,
-	'description' => '',
-));
 
 	acf_add_local_field_group(array(
 	'key' => 'group_5d263b7601228',
