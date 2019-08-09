@@ -9,29 +9,43 @@ Template Name: Equity Report
     padding: 30px;
   }
 
-	.iframe-equity iframe {
+	/* .iframe-equity iframe {
 		display: block;
 		margin: 0 auto;
 		margin-bottom: 30px;
+		width: 75%;
+		height: 75%;
+	} */
+
+	iframe {
+		display: block;
+		margin: 0 auto;
 	}
 
+	.text-link {
+		font-family: Lato;
+		margin-bottom: 20px;
+	}
+	.link {
+		margin-bottom: 20px;
+	}
 	.embed-container {
 	position: relative;
 	padding-bottom: 56.25%;
 	overflow: hidden;
 	max-width: 100%;
 	height: auto;
-}
+	}
 
-.embed-container iframe,
-.embed-container object,
-.embed-container embed {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-}
+	.embed-container iframe,
+	.embed-container object,
+	.embed-container embed {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
   .border {
     /* border: 1px solid black;
     padding: 20px 0px; */
@@ -57,7 +71,7 @@ Template Name: Equity Report
 	justify-content: center;
 	padding: 0;
 	}
-	
+
   .pdf-cta {
   	margin-bottom: 4rem;
   	text-decoration: none;
@@ -65,54 +79,54 @@ Template Name: Equity Report
   	justify-content: center;
   	align-items: center;
   }
-  
+
   .pdf-cta:hover {
   	text-decoration: none;
   }
-  
+
   .pdf-cta--desktop {
   	display: none;
   }
-  
+
   .pdf-cta--mobile {
   	display: flex;
   }
-	
+
   .pdf-cta__image {
   	box-shadow: 2px 2px 4px rgba(121, 121, 121, 0.2);
   	width: 40%;
   	margin-right: 25px;
   }
-  
+
   .pdf-cta__description {
   	color: #44474D;
   	margin-bottom: .75em;
   }
-  
+
   .pdf-cta__title {
   	display: block;
   	margin: 1.5rem 0 .5rem;
   	color: #1C2957;
   	font-size: 22px;
   }
-  
+
   .pdf-cta__button {
     border-radius: 4px;
     text-transform: none;
   }
-  
+
   .pdf-cta--desktop .pdf-cta__image {
   	margin-right: 15px;
   }
-  
+
   .pdf-cta--desktop .pdf-cta__description {
  	font-size: 16px;
   }
-  
+
   .pdf-cta--desktop .pdf-cta__button {
   	font-size: 13px;
   }
-  
+
   @media (min-width: 1280px) {
     /* .container {
         width: 1260px;
@@ -122,11 +136,12 @@ Template Name: Equity Report
     /* .container {
         width: 100%;
     } */
-    
+
+
 	  .pdf-cta--desktop {
 	  	display: flex;
 	  }
-	  
+
 	  .pdf-cta--mobile {
 	  	display: none;
 	  }
@@ -152,7 +167,10 @@ $image_crop = get_field('image-crop');
 $size = 'medium-square'; // (thumbnail, medium, large, full or custom size)
 $image_id = get_post_thumbnail_id();
 $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
-$iframe = get_field('video-equity');
+// $iframe = get_field('video-equity');
+// $iframe2 = get_field('video-2');
+// $iframe3 = get_field('video-3');
+// $iframe4 = get_field('video-4');
 
 ?>
 <?php// while (have_posts()) : the_post(); ?>
@@ -175,7 +193,7 @@ $iframe = get_field('video-equity');
 
 		<div class="col-md-8">
 			<?php the_content(); ?>
-			
+
 			<a href="https://app.monstercampaigns.com/c/pnsvj7k4pmbtxk061iyx/" target="_blank" rel="noopener noreferrer" class="pdf-cta pdf-cta--mobile">
 				<img src="http://www.ednc.org/wp-content/uploads/2019/08/eracing-inequities-cover.png" class="pdf-cta__image">
 				<div class="pdf-cta__text">
@@ -201,9 +219,13 @@ $iframe = get_field('video-equity');
 
 			<div class="row">
 				<div class="col-md-12">
-					<div class="iframe-equity">
-						<?php echo $iframe; ?>
-					</div>
+					<!-- <div class="iframe-equity"> -->
+						<?php the_field('video_test'); ?>
+						<?php //echo $iframe; ?>
+						<?php// echo $iframe2; ?>
+						<?php// echo $iframe3; ?>
+						<?php// echo $iframe4; ?>
+					<!-- </div> -->
 				</div>
 			</div>
 
@@ -248,7 +270,7 @@ $iframe = get_field('video-equity');
 		<div class="col-md-1"></div>
 
 		<div class="col-md-3">
-			
+
 			<a href="https://app.monstercampaigns.com/c/pnsvj7k4pmbtxk061iyx/" target="_blank" rel="noopener noreferrer" class="pdf-cta pdf-cta--desktop">
 				<img src="http://www.ednc.org/wp-content/uploads/2019/08/eracing-inequities-cover.png" class="pdf-cta__image">
 				<div class="pdf-cta__text">
@@ -256,14 +278,15 @@ $iframe = get_field('video-equity');
 					<div class="btn btn-primary pdf-cta__button">Read Now</div>
 				</div>
 			</a>
-			
-			<?php the_field('embed-1'); ?>
-			<!-- <hr> -->
-			<?php the_field('embed-2'); ?>
-			<!-- <hr> -->
-			<div class="embed-container">
-				<?php echo $iframe; ?>
+
+			<div class="link">
+				<a href="https://www.ednc.org/2019/08/11/deep-rooted-a-brief-history-of-race-and-education-in-north-carolina/" target="_blank" rel="" class="text-link">Read the “Deep Rooted” report
+				</a>
 			</div>
+
+			<?php the_field('embed-1'); ?>
+			<?php the_field('embed-2'); ?>
+
 		</div>
 
 	</div>
