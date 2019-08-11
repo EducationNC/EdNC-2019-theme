@@ -218,18 +218,6 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 			</div>
 
 			<div class="row">
-				<div class="col-md-12">
-					<!-- <div class="iframe-equity"> -->
-						<?php the_field('video_test'); ?>
-						<?php //echo $iframe; ?>
-						<?php// echo $iframe2; ?>
-						<?php// echo $iframe3; ?>
-						<?php// echo $iframe4; ?>
-					<!-- </div> -->
-				</div>
-			</div>
-
-			<div class="row">
 				<?php
 				$args = array(
 					'posts_per_page' => -1,
@@ -254,6 +242,18 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 
 				<div class="col-md-3 col-lg-push-1">
 					<?php// get_template_part('templates/components/sidebar', 'archives'); ?>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<!-- <div class="iframe-equity"> -->
+						<?php the_field('video_test'); ?>
+						<?php //echo $iframe; ?>
+						<?php// echo $iframe2; ?>
+						<?php// echo $iframe3; ?>
+						<?php// echo $iframe4; ?>
+					<!-- </div> -->
 				</div>
 			</div>
 
@@ -287,7 +287,7 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 				<a href="https://www.ednc.org/2019/08/11/deep-rooted-a-brief-history-of-race-and-education-in-north-carolina/" target="_blank" rel="" class="text-link">Read the “Deep Rooted” report
 				</a>
 			</div>
-			
+
 			<?php the_field('embed-2'); ?>
 
 		</div>
