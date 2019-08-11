@@ -225,6 +225,13 @@ a.chapter {
     background-color: #DCDFE5;
     z-index: 10000;
   }
+  .lwptoc_item_label, .lwptoc_item_number {
+    font-size: 12px;
+    line-height: 11px;
+  }
+  .lwptoc_item {
+    padding: 5px 0px;
+  }
   .lwptoc {
     margin: 0;
   }
