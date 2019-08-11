@@ -130,7 +130,7 @@
   <?php if ($category == 1436) { ?>
     <div class="row">
       <p class="text-center">
-        <a href="/equity/" class="btn btn-default no-margin">Read the full report</a><br />
+        <a href="/equity-report/" class="btn btn-default no-margin">Read the full report</a><br />
       </p>
     </div>
   <?php } ?>
