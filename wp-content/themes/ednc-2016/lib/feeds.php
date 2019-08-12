@@ -16,7 +16,9 @@ function custom_rss() {
   add_feed('boardnotes', __NAMESPACE__ . '\\boardnotes');
   add_feed('wrapnotes', __NAMESPACE__ . '\\wrapnotes');
   add_feed('weekend', __NAMESPACE__ . '\\weekend');
+  add_feed('equity', __NAMESPACE__ . '\\equity');
   add_feed('digestspotlight', __NAMESPACE__ . '\\digestspotlight');
+  // add_feed('equity', __NAMESPACE__ . '\\equity');
 }
 add_action('init', __NAMESPACE__ . '\\custom_rss');
 
@@ -52,7 +54,12 @@ function weekly() {
 
 // Function for Weekend Reads feed
 function weekend() {
-  get_template_part('templates/feeds/weekend-features');
+  get_template_part('templates/feeds/weekend');
+}
+
+// Function for Weekend Reads feed
+function equity() {
+  get_template_part('templates/feeds/equity');
 }
 
 // Function for Daily Spotlight feed

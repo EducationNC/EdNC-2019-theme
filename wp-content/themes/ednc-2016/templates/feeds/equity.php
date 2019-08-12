@@ -1,32 +1,50 @@
 <?php
 /**
-* Board Notes RSS2 Template
+* Featured Stories RSS2 Template
 */
 
-//
-//   $args = array(
-//     'post_type' => array('post', 'edtalk', 'flash-cards'),
-//     'category_name' => 'eraceing-inequities',
-//     'posts_per_page' => 1
-//   );
-//
-// $equity = new WP_Query($args);
-//
-// header('Content-Type: '.feed_content_type('rss-http').'; charset='.get_option('blog_charset'), true);
-// echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>';
-// ?>
+use Roots\Sage\Media;
 
-<!-- <rss version="2.0"
+// Get today's date
+$today = getdate();
+// Get yesterday's date
+$yesterday = getdate(strtotime('-1 days'));
+
+$args = array(
+  'posts_per_page' => -1,
+  'post_type' => array('post', 'map', 'edtalk'),
+  'tax_query' => array(
+    array(
+      'taxonomy' => 'appearance',
+      'field' => 'slug',
+      'terms' => 'featured',
+    )
+  ),
+  'date_query' => array(
+    array(
+      'after' => "{$yesterday['year']}-{$yesterday['mon']}-{$yesterday['mday']} 23:59:59",
+      'before' => "{$today['year']}-{$today['mon']}-{$today['mday']} 8:00:00"
+    )
+  )
+);
+
+$features = new WP_Query($args);
+
+header('Content-Type: '.feed_content_type('rss-http').'; charset='.get_option('blog_charset'), true);
+echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>';
+?>
+<rss version="2.0"
 xmlns:content="http://purl.org/rss/1.0/modules/content/"
 xmlns:wfw="http://wellformedweb.org/CommentAPI/"
 xmlns:dc="http://purl.org/dc/elements/1.1/"
 xmlns:atom="http://www.w3.org/2005/Atom"
 xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
 xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
-<?php do_action('rss2_ns'); ?>> -->
+xmlns:media="http://search.yahoo.com/mrss/"
+<?php do_action('rss2_ns'); ?>>
 
-<!-- <channel>
-  <title><?php bloginfo_rss('name'); ?> - Board Notes Feed</title>
+<channel>
+  <title><?php bloginfo_rss('name'); ?> - Weekend Stories Feed</title>
   <atom:link href="<?php self_link(); ?>" rel="self" type="application/rss+xml" />
   <link><?php bloginfo_rss('url') ?></link>
   <description><?php bloginfo_rss('description') ?></description>
@@ -35,67 +53,29 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
   <sy:updatePeriod><?php echo apply_filters( 'rss_update_period', 'hourly' ); ?></sy:updatePeriod>
   <sy:updateFrequency><?php echo apply_filters( 'rss_update_frequency', '1' ); ?></sy:updateFrequency>
   <?php do_action('rss2_head'); ?>
-  <?php while($equity->have_posts()) : $equity->the_post(); ?>
+  <?php while($features->have_posts()) : $features->the_post(); ?>
     <item>
       <title><?php the_title_rss(); ?></title>
       <link><?php the_permalink_rss(); ?></link>
       <pubDate><?php echo mysql2date('D, d M Y H:i:s +0000', get_post_time('Y-m-d H:i:s', true), false); ?></pubDate>
-      <dc:creator><?php the_author(); ?></dc:creator>
+      <dc:creator><?php
+      if ( function_exists( 'coauthors_posts_links' ) ) {
+        coauthors();
+      } else {
+        the_author();
+      }
+      ?></dc:creator>
       <guid isPermaLink="false"><?php the_guid(); ?></guid>
-      <content:encoded><![CDATA[<?php
-      echo '<div style="font-size: 18px;">';
-      the_field('notes');
-      echo '</div>';
-
-      $feature = get_field('featured_read');
-      echo '<table border="0" cellpadding="18" cellspacing="0" width="100%" style="min-width: 100%;background-color: #DCDFE5;margin-bottom: 1em;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">';
-        echo '<tbody>';
-          echo '<tr>';
-            echo '<td valign="top" style="color: #2B2E34;font-size: 14px;font-weight: normal;text-align: left;">';
-              echo '<h4 style="text-align: left;margin: 0 0 .5em;padding: 0;display: block;font-family: Helvetica;font-size: 16px;font-style: normal;font-weight: normal;line-height: 125%;color: #44474D !important; border-bottom: 1px solid #AAADB3;">What we\'re reading</h4>';
-              echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:normal;" href="' . $feature[0]['link'] . '" target="_blank">' . $feature[0]['title'] . '</a></h2>';
-              echo '<p style="margin: .5em 0;font-size:12px;">' . $feature[0]['source_name'] . ' | ' . $feature[0]['original_date'] . '</p>';
-              echo '<p style="margin: .5em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #666666;font-family: Georgia, Times, \'Times New Roman\', serif;font-size: 16px;line-height: 150%;text-align: left;">' . $feature[0]['intro_text'] . '</p>';
-              echo '<p style="margin: .5em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #666666;font-family: Georgia, Times, \'Times New Roman\', serif;font-size: 16px;line-height: 150%;text-align: left;">';
-                echo '<a href="' . $feature[0]['link'] . '" style="color: #8b185e;font-weight: bold;word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: underline;" target="_blank">Full story &raquo;</a>';
-              echo '</p>';
-            echo '</td>';
-          echo '</tr>';
-        echo '</tbody>';
-      echo '</table>';
-
-      $items = get_field('news_item');
-      echo '<table border="0" cellpadding="0" cellspacing="0" id="templateRows" width="100%">';
-        echo '<tbody>';
-          echo '<tr>';
-            $i = 0;
-            foreach ($items as $item) {
-              // end row after ever other item
-              if ($i % 2 == 0 && $i != 0) {
-                echo '</tr><tr>';
-              }
-              echo '<td align="center" class="templateColumnContainer" valign="top" width="50%">';
-                echo '<table border="0" cellpadding="10" cellspacing="0" width="100%">';
-                  echo '<tbody>';
-                    echo '<tr>';
-                      echo '<td class="columnContent" style="padding:9px 10px 9px 0;">';
-                        echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:normal;" href="' . $item['link'] . '" target="_blank">' . $item['title'] . '</a></h2>';
-                        echo '<p style="color:#999999;font-size:12px;border-bottom:2px solid #eaeaea;padding-bottom:1em;">' . $item['source_name'] . ' | ' . $item['original_date'] . '</p>';
-                      echo '</td>';
-                    echo '</tr>';
-                  echo '</tbody>';
-                echo '</table>';
-              echo '</td>';
-              $i++;
-            }
-          echo '</tr>';
-        echo '</tbody>';
-      echo '</table>';
-      ?>]]></content:encoded>
+      <?php
+      $featured_image = Media\get_featured_image('small');
+      ?>
+      <media:content url="<?php echo $featured_image; ?>" width="564" height="239" medium="image" />
+      <description><![CDATA[<?php get_template_part('templates/components/labels', 'feed'); ?>]]></description>
+      <content:encoded><![CDATA[<?php the_advanced_excerpt('length=20&length_type=words&add_link=0&finish=exact'); ?>]]></content:encoded>
       <?php rss_enclosure(); ?>
       <?php do_action('rss2_item'); ?>
     </item>
   <?php endwhile; wp_reset_query(); ?>
-</channel> -->
+</channel>
 
 </rss>
