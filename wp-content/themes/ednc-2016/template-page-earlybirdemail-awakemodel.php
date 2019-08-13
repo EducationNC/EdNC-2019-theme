@@ -9,21 +9,13 @@ use Roots\Sage\Titles;
 	.cz-outer {
 		padding: 50px 0px;
 	}
-	.banner-image {
+	.banner-image-background {
 		background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jpg');
 		background-repeat: no-repeat;
 		background-position: center -150px;
 		background-size: cover;
 		background-attachment: fixed;
 		height: 40vh;
-		/* height: 200px;
-		width: 100%; */
-		/* background-position: right -10px bottom -300px;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		margin-bottom: 32px; */
 	}
 	#content-wrapper-div {
     background: rgba(255, 255, 255, 0.91);
@@ -48,6 +40,9 @@ use Roots\Sage\Titles;
 	}
 	.bg-white{
 		background-color:#fff !important;
+	}
+	.banner-image {
+		display: none;
 	}
 	.entry-title{
 		text-align:center;
@@ -162,14 +157,24 @@ use Roots\Sage\Titles;
 		.entry-title {
 			margin-bottom: 90px !important;
 		}
+		.banner-image-background {
+			display: none;
+		}
 		.banner-image {
-			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jp');
+			display: block;
+		}
+		.bg {
+			width: 100%;
+			z-index: 1;
+		}
+		/* .banner-image {
+			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jpg');
 			background-repeat: no-repeat;
 			background-position: center -150px;
 			background-size: cover;
 			background-attachment: fixed;
 			height: 40vh;
-		}
+		} */
 	}
 	@media (max-width: 780px){
 		.margin-top-20pc{
@@ -178,15 +183,15 @@ use Roots\Sage\Titles;
 		.col-centered{
 			padding-top: 20px;
 		}
-		.banner-image {
-			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jp');
+		/* .banner-image {
+			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jpg');
 			background-repeat: no-repeat;
 			background-position: center -150px;
 			background-size: cover;
 			background-attachment: fixed;
 			height: 40vh;
 			margin-bottom: 32px;
-		}
+		} */
 		.no-padding-left, .no-padding-right{
 			padding-left: 10px;
 			padding-right: 10px;
@@ -241,7 +246,11 @@ use Roots\Sage\Titles;
 	//$featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 	?>
 
-	<div class="banner-image"></div>
+	<div class="banner-image">
+		<img class="bg" src="https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jpg" />
+	</div>
+
+	<div class="banner-image-background"></div>
 
 
 	<div class="container">
