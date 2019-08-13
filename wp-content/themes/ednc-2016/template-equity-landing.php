@@ -281,10 +281,17 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 
 
 
+
+
 			<?php the_field('embed-1'); ?>
 
 			<div class="link">
 				<a href="https://www.ednc.org/2019/08/11/deep-rooted-a-brief-history-of-race-and-education-in-north-carolina/" target="_blank" rel="" class="text-link">Read the “Deep Rooted” report
+				</a>
+			</div>
+
+			<div class="link">
+				<a href="https://www.ednc.org/wp-content/uploads/2019/08/Deep-Rooted_REVIEW-3.pdf" target="_blank" rel="" class="text-link">Download the full PDF of the report
 				</a>
 			</div>
 
