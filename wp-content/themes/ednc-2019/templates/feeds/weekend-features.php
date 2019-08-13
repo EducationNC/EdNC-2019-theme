@@ -1,34 +1,47 @@
 <?php
 /**
-* Featured Stories RSS2 Template
+* Equity Articles
 */
 
 use Roots\Sage\Media;
 
-// Get today's date
+// check day of week
+$whichday = current_time('w');
+// get today's date
 $today = getdate();
-// Get yesterday's date
-$yesterday = getdate(strtotime('-1 days'));
 
-$args = array(
+// if today is Monday, set "yesterday" to Friday
+if ($whichday == 1) {
+  $yesterday = getdate(strtotime('-3 days'));
+} else {
+  $yesterday = getdate(strtotime('-1 days'));
+}
+
+$features = array(
+  'post_type' => array('post', 'map'),
   'posts_per_page' => -1,
-  'post_type' => array('post', 'map', 'edtalk'),
   'tax_query' => array(
     array(
       'taxonomy' => 'appearance',
       'field' => 'slug',
-      'terms' => 'featured',
+      'terms' => array('featured', 'hide-from-home', 'hide-from-archives', 'digest-spotlight', 'press-release'),
+      'operator' => 'NOT IN'
     )
   ),
-  'date_query' => array(
+  'meta_query' => array(
     array(
-      'after' => "{$yesterday['year']}-{$yesterday['mon']}-{$yesterday['mday']} 23:59:59",
-      'before' => "{$today['year']}-{$today['mon']}-{$today['mday']} 8:00:00"
+      'key' => 'updated_date',
+      'value' => array(
+        strtotime("{$yesterday['year']}-{$yesterday['mon']}-{$yesterday['mday']} 7:59:59"),
+        strtotime("{$today['year']}-{$today['mon']}-{$today['mday']} 12:00:00")
+      ),
+      'compare' => 'BETWEEN'
     )
-  )
+  ),
+  'meta_key' => 'updated_date',
+  'orderby' => 'meta_value_num',
+  'order' => 'DESC'
 );
-
-$features = new WP_Query($args);
 
 header('Content-Type: '.feed_content_type('rss-http').'; charset='.get_option('blog_charset'), true);
 echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>';
@@ -44,7 +57,7 @@ xmlns:media="http://search.yahoo.com/mrss/"
 <?php do_action('rss2_ns'); ?>>
 
 <channel>
-  <title><?php bloginfo_rss('name'); ?> - Weekend Stories Feed</title>
+  <title><?php bloginfo_rss('name'); ?> - Daily Digest Spotlight Feed</title>
   <atom:link href="<?php self_link(); ?>" rel="self" type="application/rss+xml" />
   <link><?php bloginfo_rss('url') ?></link>
   <description><?php bloginfo_rss('description') ?></description>

@@ -10,7 +10,7 @@ use Roots\Sage\Titles;
 		padding: 50px 0px;
 	}
 	.banner-image {
-		background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/1X2A6798.jpg');
+		background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jpg');
 		background-repeat: no-repeat;
 		background-position: center -150px;
 		background-size: cover;
