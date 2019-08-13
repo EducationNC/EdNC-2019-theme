@@ -163,7 +163,7 @@ use Roots\Sage\Titles;
 			margin-bottom: 90px !important;
 		}
 		.banner-image {
-			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/1X2A6798.jpg');
+			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jp');
 			background-repeat: no-repeat;
 			background-position: center -150px;
 			background-size: cover;
@@ -179,7 +179,7 @@ use Roots\Sage\Titles;
 			padding-top: 20px;
 		}
 		.banner-image {
-			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/1X2A6798.jpg');
+			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jp');
 			background-repeat: no-repeat;
 			background-position: center -150px;
 			background-size: cover;
