@@ -17,11 +17,13 @@ $args = array(
   'cat' => 'eraceing-inequities',
   'date_query' => array(
     array(
-      'before'    => 'Sunday previous week',
-       'after'     => 'Monday previous week',
+       'after' => strtotime( 'last Sunday' ),
        'inclusive' => true
     )
   )
+  'post_status' => 'publish',
+  'orderby' => 'date',
+  'order' => 'DESC',
 );
 
 $features = new WP_Query($args);
