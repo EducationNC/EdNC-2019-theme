@@ -9,6 +9,7 @@ use Roots\Sage\Media;
 $today = getdate();
 // Get yesterday's date
 $yesterday = getdate(strtotime('-1 days'));
+$thismonday = strtotime('Monday this week');
 
 $args = array(
   'posts_per_page' => -1,
@@ -16,8 +17,9 @@ $args = array(
   'cat' => 'eraceing-inequities',
   'date_query' => array(
     array(
-      'after' => "{$yesterday['year']}-{$yesterday['mon']}-{$yesterday['mday']} 8:59:59",
-      'before' => "{$today['year']}-{$today['mon']}-{$today['mday']} 8:00:00"
+      'before'    => 'Sunday previous week',
+       'after'     => 'Monday previous week',
+       'inclusive' => true
     )
   )
 );
