@@ -14,7 +14,7 @@ $thismonday = strtotime('Monday this week');
 $args = array(
   'posts_per_page' => -1,
   'post_type' => array('post', 'map', 'edtalk'),
-  'cat' => 'eraceing-inequities',
+  'cat' => 1436,
   'date_query' => array(
     array(
        'after' => strtotime( 'last Sunday' ),
