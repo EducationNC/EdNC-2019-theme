@@ -1,6 +1,6 @@
 <?php
 /**
-* Featured Stories RSS2 Template
+* Weekend Equity Emails
 */
 
 use Roots\Sage\Media;
@@ -11,21 +11,9 @@ $today = getdate();
 $yesterday = getdate(strtotime('-1 days'));
 
 $args = array(
-  'posts_per_page' => -1,
+  'posts_per_page' => 1,
   'post_type' => array('post', 'map', 'edtalk'),
-  'tax_query' => array(
-    array(
-      'taxonomy' => 'appearance',
-      'field' => 'slug',
-      'terms' => 'featured',
-    )
-  ),
-  'date_query' => array(
-    array(
-      'after' => "{$yesterday['year']}-{$yesterday['mon']}-{$yesterday['mday']} 23:59:59",
-      'before' => "{$today['year']}-{$today['mon']}-{$today['mday']} 8:00:00"
-    )
-  )
+  'cat' => 'eraceing-inequities',
 );
 
 $features = new WP_Query($args);
@@ -44,7 +32,7 @@ xmlns:media="http://search.yahoo.com/mrss/"
 <?php do_action('rss2_ns'); ?>>
 
 <channel>
-  <title><?php bloginfo_rss('name'); ?> - Weekend Stories Feed</title>
+  <title><?php bloginfo_rss('name'); ?> - Equity Emails</title>
   <atom:link href="<?php self_link(); ?>" rel="self" type="application/rss+xml" />
   <link><?php bloginfo_rss('url') ?></link>
   <description><?php bloginfo_rss('description') ?></description>

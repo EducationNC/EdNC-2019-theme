@@ -65,6 +65,14 @@ function be_register_blocks() {
 		'category'		=> 'widgets',
 		'icon'			=> 'list-view',
 	));
+	acf_register_block( array(
+		'name'			=> 'recommended-articles',
+		'title'			=> __( 'Recommended Articles', 'client-name' ),
+		'description'		=> '',
+		'render_template'	=> 'templates/gutenberg/recommended-articles',
+		'category'		=> 'widgets',
+		'icon'			=> 'list-view',
+	));
 }
 
 add_action('acf/init', 'be_register_blocks' );
