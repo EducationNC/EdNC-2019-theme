@@ -18,10 +18,9 @@ $args = array(
   'date_query' => array(
     array(
        'after' => strtotime( 'last Sunday' ),
-       'inclusive' => true
+       'inclusive' => true,
     )
   )
-  'post_status' => 'publish',
   'orderby' => 'date',
   'order' => 'DESC',
 );
