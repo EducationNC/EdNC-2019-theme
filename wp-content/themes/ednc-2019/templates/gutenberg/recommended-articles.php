@@ -1,28 +1,78 @@
 <?php
  /**
-  * Team Member block
+  * Recommended Articles Block
   *
   * @package      ClientName
   * @author       Bill Erickson
   * @since        1.0.0
   * @license      GPL-2.0+
  **/
- $name = get_field( 'name' );
- $title = get_field( 'title' );
- $photo = get_field( 'photo' );
- $description = get_field( 'description' );
+ $posts = get_field('recommended-articles-2019-block');
+
  ?>
-<div class="block-team" style="background-color: red;">
-<?php
- echo '<div class="team-member">';
- 	echo '<div class="team-member--header">';
- 		if( !empty( $photo ) )
- 			echo wp_get_attachment_image( $photo['ID'], 'thumbnail', null, array( 'class' => 'team-member--avatar' ) );
- 		if( !empty( $name ) )
- 			echo '<h4>' . esc_html( $name ) . '</h4>';
- 		if( !empty( $title ) )
- 			echo '<h6 class="alt">' . esc_html( $title ) . '</h6>';
- 	echo '</div>';
- 	echo '<div class="team-member--content">' . apply_filters( 'ea_the_content', $description ) . '</div>';
- echo '</div>'; ?>
-</div>
+
+ <div class="container-full">
+ <?php
+ if (!empty($posts)) : ?>
+   <div class="row">
+     <h3 class="rd no-span"><?php the_field('recommended_articles_header', 'option'); ?></h3>
+     <div class="recommended-blocks">
+       <!-- <div class="recirculation__headline">More Stories</div> -->
+         <!-- <div class="recommended-line"> -->
+           <?php foreach( $posts as $post): // variable must be called $post (IMPORTANT) ?>
+               <?php setup_postdata($post); ?>
+               <?php $featured_image = Media\get_featured_image('featured-four-block');
+               $column = wp_get_post_terms(get_the_id(), 'column');
+               if ($column) {
+                 $post_type = $column[0]->name;
+               }
+               elseif ( has_term( 'press-release', 'appearance' ) ) {
+                 $post_type = "Press Release";
+               }
+               elseif ( has_term ( 'issues', 'appearance' ) ) {
+                 $post_type = "Issues";
+               }
+               else {
+                 $post_type = "News";
+               }
+               ?>
+               <div class="block-recommended">
+                 <a href="<?php the_permalink(); ?>">
+                    <?php if (!empty($featured_image)) {
+                     echo '<img class="" src="' . $featured_image . '" />';
+                   } ?>
+                   <p class="small"><?php echo $post_type ?></p>
+                   <h3 class="post-title"><?php the_title(); ?></h3>
+                   <?php get_template_part('templates/components/entry-meta'); ?>
+                   <!-- <a class="mega-link" href="<?php the_permalink(); ?>"></a> -->
+                 </a>
+               </div>
+           <?php endforeach; ?>
+           <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
+       <!-- </div> -->
+     </div>
+   </div>
+ <?php
+ else:
+ $post = Extras\get_adjacent_author_post(true); ?>
+   <div class="row">
+       <h3 class="rd no-span"><?php the_field('recommended_articles_header', 'option'); ?></h3>
+       <div class="recommended-blocks-auto">
+         <?php setup_postdata($post); ?>
+         <?php $featured_image = Media\get_featured_image('featured-four-block'); ?>
+         <div class="block-recommended-auto">
+           <a href="<?php the_permalink(); ?>">
+             <?php if (!empty($featured_image)) {
+              echo '<img class="" src="' . $featured_image . '" />';
+              } ?>
+             <p class="small"><?php// echo $post_type ?></p>
+             <h3 class="post-title"><?php the_title(); ?></h3>
+             <?php get_template_part('templates/components/entry-meta'); ?>
+             <!-- <a class="mega-link" href="<?php the_permalink(); ?>"></a> -->
+           </a>
+         </div>
+         <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
+     </div>
+   </div>
+ <?php endif; ?>
+ </div>

@@ -25,7 +25,6 @@ $sage_includes = [
   'lib/resize.php',             // Magic image resizer
   'lib/shortcodes.php',         // Shortcodes and UI
   'lib/titles.php',             // Page titles
-  'lib/soil.php',             // Page titles
   'lib/nav.php',                // Clean up nav menus
   'lib/aquaresizer.php',       // Force resize images
   'lib/nav-data-dashboard.php', // Data dashboard nav walker

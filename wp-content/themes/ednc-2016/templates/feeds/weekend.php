@@ -11,9 +11,15 @@ $today = getdate();
 $yesterday = getdate(strtotime('-1 days'));
 
 $args = array(
-  'posts_per_page' => 1,
+  'posts_per_page' => -1,
   'post_type' => array('post', 'map', 'edtalk'),
   'cat' => 'eraceing-inequities',
+  'date_query' => array(
+    array(
+      'after' => "{$yesterday['year']}-{$yesterday['mon']}-{$yesterday['mday']} 8:59:59",
+      'before' => "{$today['year']}-{$today['mon']}-{$today['mday']} 8:00:00"
+    )
+  )
 );
 
 $features = new WP_Query($args);

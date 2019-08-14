@@ -2,6 +2,61 @@
 if( function_exists('register_field_group') ):
 
 	acf_add_local_field_group(array(
+	'key' => 'group_5d540f4d25ff7',
+	'title' => 'Recommended Articles Block',
+	'fields' => array(
+		array(
+			'key' => 'field_5d540f4d36df4',
+			'label' => 'Recommended Articles Block',
+			'name' => 'recommended-articles-2019-block',
+			'type' => 'relationship',
+			'instructions' => 'Choose an article to appear at bottom of post as a recommended article.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'post_type' => array(
+				0 => 'post',
+				1 => 'map',
+				2 => 'reach-question',
+			),
+			'taxonomy' => '',
+			'filters' => array(
+				0 => 'search',
+				1 => 'post_type',
+				2 => 'taxonomy',
+			),
+			'elements' => array(
+				0 => 'featured_image',
+			),
+			'min' => '',
+			'max' => 5,
+			'return_format' => 'object',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'block',
+				'operator' => '==',
+				'value' => 'acf/recommended-articles',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'seamless',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+	acf_add_local_field_group(array(
 	'key' => 'group_5cffcd43ec239',
 	'title' => 'Long Row Repeater',
 	'fields' => array(
