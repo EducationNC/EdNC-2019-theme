@@ -9,6 +9,7 @@ use Roots\Sage\Media;
 $whichday = current_time('w');
 // get today's date
 $today = getdate();
+$thismonday = strtotime('Monday this week');
 
 // if today is Monday, set "yesterday" to Friday
 if ($whichday == 1) {
@@ -30,8 +31,9 @@ $features = new WP_Query([
   ),
   'date_query' => array(
     array(
-      'after' => "{$yesterday['year']}-{$yesterday['mon']}-{$yesterday['mday']} 8:59:59",
-      'before' => "{$today['year']}-{$today['mon']}-{$today['mday']} 8:00:00"
+      'before'    => 'Sunday previous week',
+       'after'     => 'Monday previous week',
+       'inclusive' => true 
     )
   )
 ]);
