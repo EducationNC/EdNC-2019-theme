@@ -21,8 +21,6 @@ $args = array(
        'inclusive' => true,
     )
   )
-  'orderby' => 'date',
-  'order' => 'DESC',
 );
 
 $features = new WP_Query($args);
