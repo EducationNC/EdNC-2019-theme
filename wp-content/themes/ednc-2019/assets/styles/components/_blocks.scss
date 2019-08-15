@@ -232,6 +232,17 @@
   border: 1px solid red;
 }
 
+.container-wide_reach {
+
+}
+
+.block-recommended_block {
+  @include block-3(20px);
+  a {
+    text-decoration: none;
+  }
+}
+
 // .fullwidth {
 // 	margin: 32px calc(50% - 50vw);
 // 	max-width: 100vw;

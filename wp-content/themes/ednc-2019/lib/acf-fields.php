@@ -44,17 +44,16 @@ if( function_exists('register_field_group') ):
 	'description' => '',
 ));
 
-	/*
-	acf_add_local_field_group(array(
-	'key' => 'group_5d540f4d25ff7',
-	'title' => 'Recommended Articles Block',
+acf_add_local_field_group(array(
+	'key' => 'group_5d54586c0ac62',
+	'title' => 'Recommended Articles New',
 	'fields' => array(
 		array(
-			'key' => 'field_5d540f4d36df4',
-			'label' => 'Recommended Articles Block',
-			'name' => 'recommended-articles-2019-block',
-			'type' => 'relationship',
-			'instructions' => 'Choose an article to appear at bottom of post as a recommended article.',
+			'key' => 'field_5d545878b48e4',
+			'label' => 'Recommended Articles Text',
+			'name' => 'recommended_articles-test',
+			'type' => 'text',
+			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -62,22 +61,35 @@ if( function_exists('register_field_group') ):
 				'class' => '',
 				'id' => '',
 			),
-			'post_type' => array(
-				0 => 'post',
-				1 => 'map',
-				2 => 'reach-question',
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
+		array(
+			'key' => 'field_5d547ff8506ad',
+			'label' => 'Recommended Articles Block',
+			'name' => 'recommended_articles_block',
+			'type' => 'relationship',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
 			),
+			'post_type' => '',
 			'taxonomy' => '',
 			'filters' => array(
 				0 => 'search',
 				1 => 'post_type',
 				2 => 'taxonomy',
 			),
-			'elements' => array(
-				0 => 'featured_image',
-			),
+			'elements' => '',
 			'min' => '',
-			'max' => 5,
+			'max' => 3,
 			'return_format' => 'object',
 		),
 	),
@@ -86,19 +98,19 @@ if( function_exists('register_field_group') ):
 			array(
 				'param' => 'block',
 				'operator' => '==',
-				'value' => 'acf/recommended-articles',
+				'value' => 'acf/recommended-articles-block',
 			),
 		),
 	),
 	'menu_order' => 0,
 	'position' => 'normal',
-	'style' => 'seamless',
+	'style' => 'default',
 	'label_placement' => 'top',
 	'instruction_placement' => 'label',
 	'hide_on_screen' => '',
 	'active' => true,
 	'description' => '',
-)); */
+));
 
 	acf_add_local_field_group(array(
 	'key' => 'group_5cffcd43ec239',

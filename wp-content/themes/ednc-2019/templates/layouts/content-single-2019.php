@@ -79,9 +79,9 @@ while (have_posts()) : the_post();
               <?php get_template_part('templates/components/author-info'); ?>
               <div class="article-social">
                 <div class="icon icon-facebook"></div>
-                <div class="icon">Twitter</div>
-                <div class="icon">Email</div>
-                <div class="icon">Republish</div>
+                <div class="icon icon-twitter"></div>
+                <div class="icon icon-email"></div>
+                <div class="icon icon-rss"></div>
               </div>
           </div>
         </div>

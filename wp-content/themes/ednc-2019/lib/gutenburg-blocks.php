@@ -84,7 +84,7 @@ function be_register_blocks() {
 		'mode'			=> 'preview',
 		'icon'			=> 'list-view',
 		'supports' => array(
-			'align' => array( 'left', 'right', 'center', 'wide' ),
+			'align' => array( 'left', 'right', 'center', 'wide', 'full' ),
 		 ),
 	));
 }

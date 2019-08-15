@@ -382,7 +382,6 @@
     margin-top: 10px;
     display: inline-block;
     vertical-align: top;
-    border: 1px solid red;
   }
 
   .article-social {
@@ -395,8 +394,24 @@
     width: 20%;
     vertical-align: middle;
     text-align: center;
-    border: 1px solid red;
-    padding: 5px 0px;
+    padding: 3px 0px;
+    color: white;
+  }
+
+  .article-social .icon-facebook {
+    background-color: $dark-blue;
+  }
+
+  .article-social .icon-twitter {
+    background-color: $green;
+  }
+
+  .article-social .icon-email {
+    background-color: $coral;
+  }
+
+  .article-social .icon-rss {
+    background-color: $golden;
   }
 
   .author-article,
