@@ -207,7 +207,8 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 			<a href="http://www.ednc.org/wp-content/uploads/2019/08/Deep-Rooted.pdf" target="_blank" class="pdf-cta pdf-cta--mobile">
 				<img src="//www.ednc.org/wp-content/uploads/2019/08/deep-rooted-cover.jpg" class="pdf-cta__image">
 				<div class="pdf-cta__text">
-					<div class="pdf-cta__description">Access a PDF of the “Deep Rooted” report.</div>
+					<b class="pdf-cta__title">“Deep Rooted” Report</b>
+					<div class="pdf-cta__description">Access a PDF of the report.</div>
 					<div class="btn btn-primary pdf-cta__button">Read Now</div>
 				</div>
 			</a>
