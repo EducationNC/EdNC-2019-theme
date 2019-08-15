@@ -76,7 +76,7 @@ Template Name: Equity Report
   	margin-bottom: 4rem;
   	text-decoration: none;
   	color: #44474D;
-  	justify-content: center;
+  	justify-content: flex-start;
   	align-items: center;
   }
 
@@ -95,6 +95,7 @@ Template Name: Equity Report
   .pdf-cta__image {
   	box-shadow: 2px 2px 4px rgba(121, 121, 121, 0.2);
   	width: 40%;
+  	max-width: 200px;
   	margin-right: 25px;
   }
 
@@ -202,6 +203,14 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 					<div class="btn btn-primary pdf-cta__button">Read Now</div>
 				</div>
 			</a>
+			
+			<a href="http://www.ednc.org/wp-content/uploads/2019/08/Deep-Rooted.pdf" target="_blank" class="pdf-cta pdf-cta--mobile">
+				<img src="//www.ednc.org/wp-content/uploads/2019/08/deep-rooted-cover.jpg" class="pdf-cta__image">
+				<div class="pdf-cta__text">
+					<div class="pdf-cta__description">Access a PDF of the “Deep Rooted” report.</div>
+					<div class="btn btn-primary pdf-cta__button">Read Now</div>
+				</div>
+			</a>
 
 			<div class="row">
 				<div class="col-md-12">
@@ -265,14 +274,6 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 				</div>
 			</div>
 			
-			<a href="http://www.ednc.org/wp-content/uploads/2019/08/Deep-Rooted.pdf" target="_blank" class="pdf-cta pdf-cta--mobile">
-				<img src="//www.ednc.org/wp-content/uploads/2019/08/deep-rooted-cover.jpg" class="pdf-cta__image">
-				<div class="pdf-cta__text">
-					<div class="pdf-cta__description">Access a PDF of the “Deep Rooted” report.</div>
-					<div class="btn btn-primary pdf-cta__button">Read Now</div>
-				</div>
-			</a>
-			
 		</div>
 
 
@@ -288,6 +289,14 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 				</div>
 			</a>
 			
+			<a href="http://www.ednc.org/wp-content/uploads/2019/08/Deep-Rooted.pdf" target="_blank" class="pdf-cta pdf-cta--desktop">
+				<img src="//www.ednc.org/wp-content/uploads/2019/08/deep-rooted-cover.jpg" class="pdf-cta__image">
+				<div class="pdf-cta__text">
+					<div class="pdf-cta__description">Access a PDF of the “Deep Rooted” report.</div>
+					<div class="btn btn-primary pdf-cta__button">Read Now</div>
+				</div>
+			</a>
+			
 			<?php the_field('embed-1'); ?>
 
 			<?php /*
@@ -297,13 +306,7 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 			</div>
 			*/ ?>
 
-			<a href="http://www.ednc.org/wp-content/uploads/2019/08/Deep-Rooted.pdf" target="_blank" class="pdf-cta pdf-cta--desktop">
-				<img src="//www.ednc.org/wp-content/uploads/2019/08/deep-rooted-cover.jpg" class="pdf-cta__image">
-				<div class="pdf-cta__text">
-					<div class="pdf-cta__description">Access a PDF of the “Deep Rooted” report.</div>
-					<div class="btn btn-primary pdf-cta__button">Read Now</div>
-				</div>
-			</a>
+
 
 			<?php the_field('embed-2'); ?>
 
