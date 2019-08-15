@@ -240,3 +240,11 @@
   margin-bottom: 0;
   padding: 10px 0px;
 }
+
+.page-id-XX .site-header, .page-id-XX .site-footer {
+  display: none;
+}
+
+body.page-template-template-page-earlybirdemail-background > footer.content-info {
+  display: none;
+}

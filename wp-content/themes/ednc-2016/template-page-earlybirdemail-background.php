@@ -1,13 +1,23 @@
 <?php
 /*
-Template Name: Early Bird Email (FW Background Image)
+Template Name: Early Bird Email (without header or footer)
 */
 
 use Roots\Sage\Titles;
 ?>
 <style>
+	body {
+		background-color:#731454 !important;
+	}
 	.cz-outer {
 		padding: 50px 0px;
+	}
+	.banner-image-background {
+		background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jpg');
+		background-repeat: no-repeat;
+		background-position: center -150px;
+		background-size: cover;
+		height: 40vh;
 	}
 	#content-wrapper-div {
     background: rgba(255, 255, 255, 0.91);
@@ -15,6 +25,9 @@ use Roots\Sage\Titles;
     border-radius: 4px 4px 0 0 !important;
 		border-radius: 0px 0px !important;
 	}
+	/* .border {
+		border: 1px solid red;
+	} */
 	.text-purple{
 		color:#731454 !important;
 	}
@@ -29,6 +42,9 @@ use Roots\Sage\Titles;
 	}
 	.bg-white{
 		background-color:#fff !important;
+	}
+	.banner-image {
+		display: none;
 	}
 	.entry-title{
 		text-align:center;
@@ -100,6 +116,41 @@ use Roots\Sage\Titles;
 		display:block;
 		text-align:center;
 	}
+	.flex {
+		display: flex;
+		justify-content: space-around;
+		flex-direction: row;
+		background: rgba(255, 255, 255, 0.91);
+		background: #FFFFFF;
+		margin-top: -50px;
+		padding: 40px 0px;
+	}
+	.text {
+		width: 45%;
+		align-self: center;
+		text-align: center;
+		/* border: 1px solid white; */
+	}
+
+	.padding {
+		padding-bottom: 40px;
+	}
+
+	.text p {
+		font-family: Lato;
+		font-size: 17px;acebo
+	}
+	.img-bird {
+		width: 220px;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+		padding-bottom: 10px;
+	}
+
+	.embed {
+		width: 45%;
+	}
 
 	@media (max-width: 980px){
 		.page-header.photo-overlay {
@@ -108,17 +159,63 @@ use Roots\Sage\Titles;
 		.entry-title {
 			margin-bottom: 90px !important;
 		}
+		.banner-image-background {
+			display: none;
+		}
+		.banner-image {
+			display: block;
+		}
+		.bg {
+			width: 100%;
+			z-index: 1;
+		}
+		/* .banner-image {
+			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jpg');
+			background-repeat: no-repeat;
+			background-position: center -150px;
+			background-size: cover;
+			background-attachment: fixed;
+			height: 40vh;
+		} */
 	}
 	@media (max-width: 780px){
 		.margin-top-20pc{
 			margin-top:0%;
 		}
 		.col-centered{
-			padding:0px;
+			padding-top: 20px;
 		}
+		/* .banner-image {
+			background-image: url('https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jpg');
+			background-repeat: no-repeat;
+			background-position: center -150px;
+			background-size: cover;
+			background-attachment: fixed;
+			height: 40vh;
+			margin-bottom: 32px;
+		} */
 		.no-padding-left, .no-padding-right{
 			padding-left: 10px;
 			padding-right: 10px;
+		}
+		.text {
+			width: 90%;
+			align-self: center;
+			text-align: center;
+			/* border: 1px solid white; */
+		}
+
+		.embed {
+			width: 90%;
+			align-self: center;
+		}
+		.flex {
+			display: flex;
+			justify-content: space-between;
+			flex-direction: column;
+			background: rgba(255, 255, 255, 0.91);
+			background: #FFFFFF;
+			margin-top: -50px;
 		}
 	}
 	@media (max-width: 640px){
@@ -139,32 +236,40 @@ use Roots\Sage\Titles;
 </style>
 
 <?php while (have_posts()) : the_post(); ?>
-<?php //get_template_part('templates/components/page', 'header'); ?>
 
 <?php
 
-	$source = '';
-	if (isset($_GET['utm_source'])) {
-	  $source = $_GET['utm_source'];
-	}
+	// $source = '';
+	// if (isset($_GET['utm_source'])) {
+	//   $source = $_GET['utm_source'];
+	// }
 
-	$image_id = get_post_thumbnail_id();
-	$featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
+	//$image_id = get_post_thumbnail_id();
+	//$featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 	?>
 
-	<?php if (has_post_thumbnail() && !is_search()) { ?>
-	  <header class="background" style="background-image: url('<?php echo $featured_image_lg[0]; ?>')">
-			<div class="article-title-overlay">
-			  <div class="container">
-					<div class="row">
-					  <div class="col-md-7 col-centered">
-							<iframe id="embed81684" src="//publicinput.com/display/?projId=4279&embedId=81684" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=81684", "script");</script>
-					  </div>
-					</div>
-			  </div>
+	<div class="banner-image">
+		<img class="bg" src="https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jpg" />
+	</div>
+
+	<div class="banner-image-background"></div>
+
+
+	<div class="container">
+		<div class="row padding">
+			<div class="col-md-9 flex col-centered">
+				<div class="text">
+					<img class="img-bird" src="https://www.ednc.org/wp-content/uploads/2019/07/EarlyBird-Logo.png">
+					<p>Subscribe to Early Bird for coverage of issues affecting our state's youngest learners. The newsletter is coming soon,
+						but until then, follow Liz Bell's coverage <a href="https://www.ednc.org/author/lbell/">here</a>.
+					</p>
+				</div>
+				<div class="embed">
+					<iframe id="embed75412" src="//publicinput.com/display/?projId=4798&embedId=75412&compact=true" height="425" frameborder="0" scrolling="yes"></iframe><script type="text/javascript">(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); })(document, window, "//publicinput.com/Link?embedId=75412", "script");</script>
+				</div>
 			</div>
-	  </header>
-	<?php } ?>
+		</div>
+	</div>
 
 
 
