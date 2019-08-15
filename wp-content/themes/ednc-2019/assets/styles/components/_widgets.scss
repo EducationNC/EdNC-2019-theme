@@ -289,6 +289,12 @@ section.videos .content-box-container {
   background-color: red;
 }
 
+#content-wrapper-div > div.poll-content-div.new-header > div.customer-color.prepend.topbar.show {
+  visibility: hidden !important;
+  height: 0 !important;
+}
+
+
 .full-width-reach {
   padding: 30px;
 }
@@ -881,6 +887,19 @@ color: white;
   a:hover {
     @include link;
   }
+}
+
+h3.reach-header {
+   width: 100%;
+   text-align: center;
+   border-bottom: 1px solid #000;
+   line-height: 0.1em;
+   margin: 10px 0 20px;
+}
+
+h3.reach-header span {
+    background:#fff;
+    padding:0 10px;
 }
 
 

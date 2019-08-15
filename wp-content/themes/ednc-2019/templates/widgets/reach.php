@@ -9,6 +9,7 @@ global $featured_ids;
 // global $date;
 // global $content_reach;
 //$content_reach = array();
+$reach_question = get_field( "reach_question_input" );
 
 if (empty($featured_ids)) {
   $featured_ids = array();
@@ -58,6 +59,7 @@ $title_overlay = get_field('title_overlay');
         $reach_title[$currentpost] = get_the_title();
         $reach_id[$currentpost] = get_the_id();
         $reach_date[$currentpost] = get_field('date');
+        $reach_question[$currentpost] = get_field('reach_question_input');
         $reach_content[$currentpost] = get_the_content();
         $featured_image = Media\get_featured_image('featured-four-block');
         // $featured_image[$currentpost] = Media\get_featured_image('medium');
@@ -88,12 +90,18 @@ $title_overlay = get_field('title_overlay');
       <div class="full-width-reach">
         <div class="box0" id="box0">
           <?php echo $reach_content[0];?>
+          <h3 class="reach-header"><span>Reach NC Voices</span></h3>
+          <div class="reach-embed"><?php echo $reach_question[0] ?></div>
         </div>
         <div class="box1 hide" id="box1">
           <?php echo $reach_content[1];?>
+          <h3 class="reach-header"><span>Reach NC Voices</span></h3>
+          <div class="reach-embed"><?php echo $reach_question[1] ?></div>
         </div>
         <div class="box2 hide" id="box2">
           <?php echo $reach_content[2];?>
+          <h3 class="reach-header"><span>Reach NC Voices</span></h3>
+          <div class="reach-embed"><?php echo $reach_question[2] ?></div>
         </div>
       </div>
 
