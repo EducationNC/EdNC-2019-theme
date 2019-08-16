@@ -76,7 +76,7 @@ Template Name: Equity Report
   	margin-bottom: 4rem;
   	text-decoration: none;
   	color: #44474D;
-  	justify-content: center;
+  	justify-content: flex-start;
   	align-items: center;
   }
 
@@ -95,6 +95,7 @@ Template Name: Equity Report
   .pdf-cta__image {
   	box-shadow: 2px 2px 4px rgba(121, 121, 121, 0.2);
   	width: 40%;
+  	max-width: 200px;
   	margin-right: 25px;
   }
 
@@ -202,6 +203,15 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 					<div class="btn btn-primary pdf-cta__button">Read Now</div>
 				</div>
 			</a>
+			
+			<a href="http://www.ednc.org/wp-content/uploads/2019/08/Deep-Rooted.pdf" target="_blank" class="pdf-cta pdf-cta--mobile">
+				<img src="//www.ednc.org/wp-content/uploads/2019/08/deep-rooted-cover.jpg" class="pdf-cta__image">
+				<div class="pdf-cta__text">
+					<b class="pdf-cta__title">“Deep Rooted” Report</b>
+					<div class="pdf-cta__description">Access a PDF of the full report.</div>
+					<div class="btn btn-primary pdf-cta__button">Read Now</div>
+				</div>
+			</a>
 
 			<div class="row">
 				<div class="col-md-12">
@@ -264,6 +274,7 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 					<p>Editor’s Note: James Ford is on contract with the N.C. Center for Public Policy Research from 2017-2020 while he leads this statewide study of equity in our schools. Center staff is supporting Ford’s leadership of the study, conducted an independent verification of the data, and edited the reports.</p>
 				</div>
 			</div>
+			
 		</div>
 
 
@@ -272,28 +283,31 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 		<div class="col-md-3">
 
 			<a href="https://app.monstercampaigns.com/c/pnsvj7k4pmbtxk061iyx/" target="_blank" rel="noopener noreferrer" class="pdf-cta pdf-cta--desktop">
-				<img src="http://www.ednc.org/wp-content/uploads/2019/08/eracing-inequities-cover.png" class="pdf-cta__image">
+				<img src="//www.ednc.org/wp-content/uploads/2019/08/eracing-inequities-cover.png" class="pdf-cta__image">
 				<div class="pdf-cta__text">
 					<div class="pdf-cta__description">Access a PDF of the full report.</div>
 					<div class="btn btn-primary pdf-cta__button">Read Now</div>
 				</div>
 			</a>
-
-
-
-
-
+			
+			<a href="http://www.ednc.org/wp-content/uploads/2019/08/Deep-Rooted.pdf" target="_blank" class="pdf-cta pdf-cta--desktop">
+				<img src="//www.ednc.org/wp-content/uploads/2019/08/deep-rooted-cover.jpg" class="pdf-cta__image">
+				<div class="pdf-cta__text">
+					<div class="pdf-cta__description">Access a PDF of the “Deep Rooted” report.</div>
+					<div class="btn btn-primary pdf-cta__button">Read Now</div>
+				</div>
+			</a>
+			
 			<?php the_field('embed-1'); ?>
 
+			<?php /*
 			<div class="link">
 				<a href="https://www.ednc.org/2019/08/11/deep-rooted-a-brief-history-of-race-and-education-in-north-carolina/" target="_blank" rel="" class="text-link">Read the “Deep Rooted” report
 				</a>
 			</div>
+			*/ ?>
 
-			<div class="link">
-				<a href="https://www.ednc.org/wp-content/uploads/2019/08/Deep-Rooted_REVIEW-3.pdf" target="_blank" rel="" class="text-link">Download the full PDF of the report
-				</a>
-			</div>
+
 
 			<?php the_field('embed-2'); ?>
 
