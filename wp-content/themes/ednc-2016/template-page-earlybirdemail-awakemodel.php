@@ -247,7 +247,7 @@ use Roots\Sage\Titles;
 	?>
 
 	<div class="banner-image">
-		<img class="bg" src="https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jpg" />
+		<!-- <img class="bg" src="https://www.ednc.org/wp-content/uploads/2019/08/DSC_8087-1.jpg" /> -->
 	</div>
 
 	<div class="banner-image-background"></div>
