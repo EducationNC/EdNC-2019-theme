@@ -7,6 +7,7 @@ use Roots\Sage\Titles;
 ?>
 <style>
 	body {
+		/* background-color:#731454 !important; */
 		background-color:#731454 !important;
 	}
 	.cz-outer {
