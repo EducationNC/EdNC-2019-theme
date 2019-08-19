@@ -1,5 +1,7 @@
 # Soil
-[![Build Status](https://travis-ci.org/roots/soil.svg)](https://travis-ci.org/roots/soil)
+[![Packagist](https://img.shields.io/packagist/v/roots/soil.svg?style=flat-square)](https://packagist.org/packages/roots/soil)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/roots/soil.svg?style=flat-square)](https://packagist.org/packages/roots/soil)
+[![Build Status](https://img.shields.io/travis/roots/soil.svg?style=flat-square)](https://travis-ci.org/roots/soil)
 
 A WordPress plugin which contains a collection of modules to apply theme-agnostic front-end modifications.
 
@@ -35,7 +37,7 @@ You can install this plugin via the command-line or the WordPress admin panel.
 If you're [using Composer to manage WordPress](https://roots.io/using-composer-with-wordpress/), add Soil to your project's dependencies.
 
 ```sh
-composer require roots/soil 3.7.0
+composer require roots/soil
 ```
 
 Then activate the plugin via [wp-cli](http://wp-cli.org/commands/plugin/activate/).
@@ -56,6 +58,9 @@ wp plugin activate soil
 * **Cleaner WordPress markup**<br>
   `add_theme_support('soil-clean-up');`
 
+* **Disable REST API**<br>
+  `add_theme_support('soil-disable-rest-api');`
+
 * **Disable asset versioning**<br>
   `add_theme_support('soil-disable-asset-versioning');`
 
@@ -64,9 +69,6 @@ wp plugin activate soil
 
 * **Google Analytics** ([more info](https://github.com/roots/soil/wiki/Google-Analytics))<br>
   `add_theme_support('soil-google-analytics', 'UA-XXXXX-Y');`
-
-* **Load jQuery from the jQuery CDN**<br>
-  `add_theme_support('soil-jquery-cdn');`
 
 * **Move all JS to the footer**<br>
   `add_theme_support('soil-js-to-footer');`
@@ -80,6 +82,37 @@ wp plugin activate soil
 * **Root relative URLs**<br>
   `add_theme_support('soil-relative-urls');`
 
+And in a format you can copy & paste into your theme:
+```php
+/**
+ * Enable features from Soil when plugin is activated
+ * @link https://roots.io/plugins/soil/
+ */
+add_theme_support('soil-clean-up');
+add_theme_support('soil-disable-rest-api');
+add_theme_support('soil-disable-asset-versioning');
+add_theme_support('soil-disable-trackbacks');
+add_theme_support('soil-google-analytics', 'UA-XXXXX-Y');
+add_theme_support('soil-js-to-footer');
+add_theme_support('soil-nav-walker');
+add_theme_support('soil-nice-search');
+add_theme_support('soil-relative-urls');
+```
+
 ## Support
 
 Use the [Roots Discourse](https://discourse.roots.io/) to ask questions and get support. License is required.
+
+## Contributing
+
+Contributions are welcome from everyone. We have [contributing guidelines](https://github.com/roots/guidelines/blob/master/CONTRIBUTING.md) to help you get started.
+
+## Community
+
+Keep track of development and community news.
+
+* Participate on the [Roots Discourse](https://discourse.roots.io/)
+* Follow [@rootswp on Twitter](https://twitter.com/rootswp)
+* Read and subscribe to the [Roots Blog](https://roots.io/blog/)
+* Subscribe to the [Roots Newsletter](https://roots.io/subscribe/)
+* Listen to the [Roots Radio podcast](https://roots.io/podcast/)
