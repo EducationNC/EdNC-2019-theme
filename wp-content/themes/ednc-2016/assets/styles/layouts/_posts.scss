@@ -321,6 +321,50 @@
   border: 1px solid black;
 }
 
-// .comment-section {
-//   border: 1px solid red;
-// }
+.mc4wp-form {
+  border-top: 1px solid #C3C6CC;
+  border-bottom: 1px solid #C3C6CC;
+  margin-bottom: 35px;
+}
+
+.mc4wp-form label, input {
+  font-family: Lato;
+}
+
+.mc4wp-form p:nth-of-type(1) input,
+.mc4wp-form p:nth-of-type(2) input {
+  font-family: Lato;
+  width: 100%;
+  padding-left: 10px;
+}
+
+.mc4wp-form label {
+  display: block;
+}
+
+.mc4wp-form p {
+  margin-bottom: 15px;
+}
+
+.mc4wp-form p:nth-of-type(1) {
+  width: 45%;
+  margin-right: 9%;
+  display: inline-block;
+}
+
+.mc4wp-form p:nth-of-type(2) {
+  width: 45%;
+  display: inline-block;
+}
+.mc4wp-form p:nth-of-type(3) input {
+  width: 100%;
+  display: inline-block;
+  padding-left: 10px;
+}
+
+.mc4wp-form input[type=submit] {
+  background-color: #98A942;
+  text-transform: uppercase;
+  color: white;
+  padding: 5px 10px;
+}
