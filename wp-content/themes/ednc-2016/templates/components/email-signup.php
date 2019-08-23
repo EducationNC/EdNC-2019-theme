@@ -21,6 +21,7 @@ if (isset($_GET['utm_source'])) {
           	<li><input id="mce-group[13145]-13145-5" name="group[13145][8388608]" type="checkbox" value="8388608" /><label for="mce-group[13145]-13145-5">Awake 58</label></li>
             <li><input type="checkbox" value="16777216" name="group[13145][16777216]" id="mce-group[13145]-13145-6"><label for="mce-group[13145]-13145-6">EdNC STEM</label></li>
             <li><input type="checkbox" value="134217728" name="group[13145][134217728]" id="mce-group[13145]-13145-8"><label for="mce-group[13145]-13145-8">Early Bird</label></li>
+            <li><input type="checkbox" value="1" name="group[13221][1]" id="mce-group[13221]-13221-0"><label for="mce-group[13221]-13221-0">Early Bird Test</label></li>
           </ul>
         </div>
 
