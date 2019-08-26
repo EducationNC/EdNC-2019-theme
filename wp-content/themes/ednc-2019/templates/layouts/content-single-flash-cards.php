@@ -7,12 +7,12 @@ $fcs = get_field('flash_cards');
 
 <div class="fixed-background-image" style="background-image:url('<?php echo $featured_image_src[0]; ?>')"></div>
 
-<div class="flash-cards-content container">
+<div class="flash-cards-content container h-item">
   <div class="row">
     <div class="col-lg-8">
       <div class="entry-header">
         <?php get_template_part('templates/components/labels'); ?>
-        <h1 class="entry-title"><?php the_title(); ?></h1>
+        <h1 class="entry-title p-name"><?php the_title(); ?></h1>
         <?php get_template_part('templates/components/entry-meta'); ?>
       </div>
     </div>
@@ -45,7 +45,7 @@ $fcs = get_field('flash_cards');
     </div>
 
     <div <?php post_class('col-md-8 col-lg-push-1'); ?>>
-      <div class="entry-content">
+      <div class="entry-content e-content">
         <div class="fc-nav clearfix">
           <div class="fc-prev">&laquo; Prev</div>
           <div class="fc-next">Next &raquo;</div>

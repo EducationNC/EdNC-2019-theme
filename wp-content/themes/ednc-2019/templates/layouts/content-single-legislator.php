@@ -1,14 +1,14 @@
 <?php while (have_posts()) : the_post(); ?>
-  <div <?php post_class('container'); ?>>
+  <div <?php post_class('container h-card'); ?>>
     <div class="page-header">
       <div class="row">
         <div class="col-md-12">
-          <h1 class="entry-title"><?php the_field('title'); ?> <?php the_title(); ?></h1>
+          <h1 class="entry-title p-name"><?php the_field('title'); ?> <?php the_title(); ?></h1>
           <?php
           $leadership = get_field('leadership');
           if ($leadership) {
             ?>
-            <h2><?php echo $leadership; ?></h2>
+            <h2 class="p-role"><?php echo $leadership; ?></h2>
             <?php
           }
           ?>
@@ -33,11 +33,11 @@
 
             <div class="callout">
               <h6>Office</h6>
-              <p><?php the_field('office'); ?></p>
+              <p class="p-tel"><?php the_field('office'); ?></p>
               <h6>Phone</h6>
-              <p><?php the_field('phone'); ?></p>
+              <p class="p-tel"><?php the_field('phone'); ?></p>
               <h6 class="overflow-ellipsis">Email</h6>
-              <p><?php $email = get_field('email'); ?><a href="mailto: <?php echo antispambot($email); ?>" target="_blank"><?php echo antispambot($email); ?></a></p>
+              <p class="p-email"><?php $email = get_field('email'); ?><a href="mailto: <?php echo antispambot($email); ?>" target="_blank"><?php echo antispambot($email); ?></a></p>
             </div>
 
             <a class="button btn-default btn-wide bottom-margin" href="<?php the_field('webpage'); ?>" target="_blank">Go to NCGA profile <span class="icon-external-link"></span></a>

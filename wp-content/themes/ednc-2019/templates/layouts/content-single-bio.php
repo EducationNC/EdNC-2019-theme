@@ -16,7 +16,7 @@ $website = get_field('website');
           $title = get_field('title');
           if ($title) {
             ?>
-            <h2 class="rd"><?php echo $title; ?></h2>
+            <h2 class="rd p-role"><?php echo $title; ?></h2>
             <?php
           }
           ?>
