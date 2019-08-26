@@ -7,11 +7,11 @@ $website = get_field('website');
 ?>
 
 <?php while (have_posts()) : the_post(); ?>
-  <div <?php post_class('container'); ?>>
+  <div <?php post_class('container h-entry'); ?>>
     <div class="page-header">
       <div class="row">
         <div class="col-md-12">
-          <h1 class="entry-title rd"><?php the_title(); ?></h1>
+          <h1 class="entry-title rd p-name"><?php the_title(); ?></h1>
           <?php
           $title = get_field('title');
           if ($title) {
@@ -26,7 +26,7 @@ $website = get_field('website');
 
     <div class="row">
       <div class="col-md-9 col-lg-8">
-        <div class="entry-content">
+        <div class="entry-content e-content">
           <h3 class="rd"><?php the_field('tagline'); ?></h3>
           <?php the_content(); ?>
         </div>

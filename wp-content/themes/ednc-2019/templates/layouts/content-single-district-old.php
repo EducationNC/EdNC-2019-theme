@@ -15,12 +15,12 @@
   <section id="districts" class="block color-districts">
     <div class="site-wrapper">
 
-    <div class="container">
+    <div class="container h-item">
         <div class="row">
           <div class="col-md-12">
             <header class="">
                <div class="search-intro">
-                  <h1 class="entry-title white">School District: <?php the_title(); ?></h1>
+                  <h1 class="entry-title white p-name">School District: <?php the_title(); ?></h1>
                </div>
             </header>
           </div>
