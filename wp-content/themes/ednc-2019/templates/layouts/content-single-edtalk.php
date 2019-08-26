@@ -4,7 +4,7 @@ while (have_posts()) : the_post();
 
 $comments_open = comments_open();
 ?>
-  <article <?php post_class('article'); ?>>
+  <article <?php post_class('article h-entry'); ?>>
     <?php get_template_part('templates/components/edtalk', 'header-2019'); ?>
 
     <div class="container">
@@ -13,11 +13,11 @@ $comments_open = comments_open();
           <header class="entry-header">
             <?php get_template_part('templates/components/labels-2019'); ?>
 
-            <h1 class="rd entry-title"><?php the_title(); ?></h1>
+            <h1 class="rd entry-title p-name"><?php the_title(); ?></h1>
             <?php get_template_part('templates/components/entry-meta'); ?>
           </header>
 
-          <div class="entry-content">
+          <div class="entry-content e-content">
             <?php the_content(); ?>
           </div>
 

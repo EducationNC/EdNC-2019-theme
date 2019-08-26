@@ -3,7 +3,7 @@
 use Roots\Sage\Assets;
 
 while (have_posts()) : the_post(); ?>
-  <article <?php post_class(); ?>>
+  <article <?php post_class('h-entry'); ?>>
 
     <div class="bg-image">
     <?php
@@ -19,10 +19,10 @@ while (have_posts()) : the_post(); ?>
       <div class="row">
         <div class="col-lg-8 col-md-9">
           <header class="entry-header">
-            <h2 class="h1 entry-title"><?php the_title(); ?></h2>
+            <h2 class="h1 entry-title p-name"><?php the_title(); ?></h2>
           </header>
 
-          <div class="entry-content">
+          <div class="entry-content e-content">
             <?php the_field('notes'); ?>
 
             <hr />

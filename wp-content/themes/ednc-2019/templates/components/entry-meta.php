@@ -1,4 +1,4 @@
-<p class="byline author vcard">
+<p class="byline author vcard h-card">
   by
   <?php
   // $author = get_the_author();
@@ -12,7 +12,7 @@
   }
   ?>
   |
-  <time class="published pf-date" datetime="<?php echo get_the_time('c'); ?>">
+  <time class="published pf-date dt-published" datetime="<?php echo get_the_time('c'); ?>">
     <?php the_time(get_option('date_format')); ?>
   </time>
 </p>
