@@ -17,6 +17,7 @@ use Roots\Sage\Titles;
 	}
 	.bg-purple, .wrap{
 		background-color:#731454 !important;
+				background-color:#731454 !important;
 	}
 	.bg-white{
 		background-color:#fff !important;
@@ -75,7 +76,7 @@ use Roots\Sage\Titles;
 	.no-padding-left{
 		padding-left:0px;
 	}
-	
+
 	.margin-top-20pc{
 		margin-top:20%;
 	}
@@ -84,7 +85,7 @@ use Roots\Sage\Titles;
 		display:block;
 		text-align:center;
 	}
-	
+
 	@media (max-width: 980px){
 		.page-header.photo-overlay {
 			height: 230px;
@@ -131,7 +132,7 @@ use Roots\Sage\Titles;
 	if (isset($_GET['utm_source'])) {
 	  $source = $_GET['utm_source'];
 	}
-	
+
 	$image_id = get_post_thumbnail_id();
 	$featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 	?>
@@ -158,15 +159,15 @@ use Roots\Sage\Titles;
 	  </div>
 	<?php } ?>
 
-  
+
   <?php //get_template_part('templates/layouts/content', 'page'); ?>
-  
+
 	<div class="container ">
 	  <div class="row">
 		<div class="col-md-8 col-centered">
 		  <?php the_content(); ?>
 		  <?php get_template_part('templates/components/email-signup-for-awake-page'); ?>
-		  
+
 		  <?php wp_link_pages(['before' => '<nav class="page-nav"><p>' . __('Pages:', 'sage'), 'after' => '</p></nav>']); ?>
 		</div>
 	  </div>
