@@ -8,7 +8,7 @@
           $leadership = get_field('leadership');
           if ($leadership) {
             ?>
-            <h2 class="p-role"><?php echo $leadership; ?></h2>
+            <h2 class="p-job-title"><?php echo $leadership; ?></h2>
             <?php
           }
           ?>

@@ -27,7 +27,7 @@ while (have_posts()) : the_post();
     }
   }
   ?>
-  <article <?php post_class('article'); ?>>
+  <article <?php post_class('article h-entry'); ?>>
     <?php if (isset($banner)) { ?>
       <div class="column-banner <?php echo $banner_slug; ?>" style="background-image: url('<?php echo $banner[0]; ?>')"></div>
     <?php } ?>
@@ -36,7 +36,7 @@ while (have_posts()) : the_post();
       <div class="row">
         <div class="col-md-8 col-centered">
           <?php get_template_part('templates/components/labels'); ?>
-          <h1 class="entry-title"><?php the_title(); ?></h1>
+          <h1 class="entry-title p-name"><?php the_title(); ?></h1>
           <?php get_template_part('templates/components/entry-meta'); ?>
         </div>
       </div>
@@ -84,7 +84,7 @@ while (have_posts()) : the_post();
             </div>
           </div>
 
-          <div class="col-md-7 col-md-pull-1point5">
+          <div class="col-md-7 col-md-pull-1point5 e-entry">
 
             <?php the_content(); ?>
 

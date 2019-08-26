@@ -49,7 +49,7 @@ while (have_posts()) : the_post();
     }
   }
   ?>
-  <article <?php post_class('article'); ?>>
+  <article <?php post_class('article h-item'); ?>>
 
     <?php if (has_post_thumbnail() && $featured_image_align == 'hero') { ?>
       <header class="entry-header hero-image">
@@ -68,7 +68,7 @@ while (have_posts()) : the_post();
                 <div class="row">
                   <div class="col-md-8 col-centered">
                     <?php get_template_part('templates/components/labels'); ?>
-                    <h1 class="entry-title"><?php the_title(); ?></h1>
+                    <h1 class="entry-title p-name"><?php the_title(); ?></h1>
                   </div>
                 </div>
               </div>
@@ -177,7 +177,7 @@ while (have_posts()) : the_post();
       </div>
     </div>
 
-    <div class="entry-content">
+    <div class="entry-content e-content">
       <div class="container">
         <div class="row">
           <div class="col-md-2 col-md-push-10 meta hidden-xs hidden-sm print-no">

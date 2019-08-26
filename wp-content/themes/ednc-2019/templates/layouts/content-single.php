@@ -39,7 +39,7 @@ while (have_posts()) : the_post();
     }
   }
   ?>
-  <article <?php post_class('article'); ?>>
+  <article <?php post_class('article h-entry'); ?>>
 
     <?php if (has_post_thumbnail() && $featured_image_align == 'hero') { ?>
       <header class="entry-header hero-image">
@@ -58,7 +58,7 @@ while (have_posts()) : the_post();
                 <div class="row">
                   <div class="col-md-8 col-centered">
                     <?php get_template_part('templates/components/labels'); ?>
-                    <h1 class="entry-title"><?php the_title(); ?></h1>
+                    <h1 class="entry-title p-name"><?php the_title(); ?></h1>
                   </div>
                 </div>
               </div>
@@ -177,7 +177,7 @@ while (have_posts()) : the_post();
 
           <div class="col-md-2 col-md-pull-2 print-no"></div>
 
-          <div class="col-md-7 col-md-pull-1point5 print-only">
+          <div class="col-md-7 col-md-pull-1point5 print-only e-content">
 
             <?php if (has_post_thumbnail() && $featured_image_align == 'contained') {
               echo '<div class="alignnone no-top-margin">';
