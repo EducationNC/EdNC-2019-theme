@@ -17,9 +17,9 @@ $email = get_field('email');
         if ($coauthors_count > 1) { ?>
           <div class="author-article">
             <div class="margin-none">
-              <p><?php echo $author = coauthors_posts_links( null, null, null, null, false ); ?></p>
+              <p class="p-author h-card"><?php echo $author = coauthors_posts_links( null, null, null, null, false ); ?></p>
             </div>
-            <time class="published pf-date" datetime="<?php echo get_the_time('c'); ?>">
+            <time class="published pf-date dt-published" datetime="<?php echo get_the_time('c'); ?>">
               <?php the_time(get_option('date_format')); ?>
             </time>
           </div>

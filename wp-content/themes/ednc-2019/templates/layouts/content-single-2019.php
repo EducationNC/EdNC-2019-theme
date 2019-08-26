@@ -59,7 +59,7 @@ while (have_posts()) : the_post();
     }
   }
   ?>
-  <article <?php post_class('article 2019-template'); ?>>
+  <article <?php post_class('article 2019-template h-entry'); ?>>
 
     <!-- <?php //if (isset($banner)) { ?> -->
     <?php if (! empty($banner)) { ?>
@@ -74,7 +74,7 @@ while (have_posts()) : the_post();
       <div class="container">
         <div class="row">
           <div class="col-md-8 col-centered author-intro">
-              <h1 class="article-header"><?php the_title(); ?></h1>
+              <h1 class="article-header p-name"><?php the_title(); ?></h1>
 
               <?php get_template_part('templates/components/author-info'); ?>
               <div class="article-social">
@@ -118,7 +118,7 @@ while (have_posts()) : the_post();
           }
         ?>
         " />
-        <p class="lato"><?php echo $thumb_post->post_excerpt; ?></p>
+        <p class="lato p-summary"><?php echo $thumb_post->post_excerpt; ?></p>
       </div>
     <?php } ?>
 
@@ -126,7 +126,7 @@ while (have_posts()) : the_post();
       <div class="container">
         <div class="row">
 
-          <div class="col-md-8 col-centered print-only article-section">
+          <div class="col-md-8 col-centered print-only article-section e-content">
             <h1 class="entry-title"><?php// the_title(); ?></h1>
             <?php// get_template_part('templates/components/author', 'meta'); ?>
             <?php if (has_post_thumbnail() && $featured_image_align == 'contained-new') {
