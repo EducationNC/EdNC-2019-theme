@@ -61,25 +61,25 @@ if (!function_exists('num_format')) {
 $count_num = num_format($counts->total);
 ?>
 
-<!-- <div class="social-share-buttons print-no">
+<div class="social-share-buttons print-no">
   <?php //if ($count_num != 0) { ?>
   <?php //} ?>
-  <a rel="nofollow" class="icon-facebook social-share-link" href="<?php// echo $facebookURL; ?>">
+  <a rel="nofollow" class="icon-facebook social-share-link" href="<?php echo $facebookURL; ?>">
     Share on facebook
   </a>
-  <a rel="nofollow" class="icon-twitter social-share-link " href="<?php// echo $twitterURL; ?>">
+  <a rel="nofollow" class="icon-twitter social-share-link " href="<?php echo $twitterURL; ?>">
     Tweet on Twitter
   </a>
-  <a rel="nofollow" class="icon-linkedin social-share-link" href="<?php// echo $linkedinURL; ?>">
+  <a rel="nofollow" class="icon-linkedin social-share-link" href="<?php echo $linkedinURL; ?>">
     Share on LinkedIn
   </a>
-  <a rel="nofollow" class="icon-email social-share-link" href="<?php// echo $emailURL; ?>">
+  <a rel="nofollow" class="icon-email social-share-link" href="<?php echo $emailURL; ?>">
     Email this page
   </a>
-  <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" <?php// echo $printLink; ?> target="_blank">
+  <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" <?php echo $printLink; ?> target="_blank">
     Print this page
   </a>
-</div> -->
+</div>
 
 <!-- <div class="social-share-modal print-no">
     <a data-toggle="modal" data-target="#social-share-modal" class="icon-share" href="#"></a>
