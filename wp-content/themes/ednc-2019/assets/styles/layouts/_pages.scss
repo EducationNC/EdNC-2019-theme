@@ -62,71 +62,13 @@ color: white;
   background: #F6B041; /* Gecko Browsers */
 }
 
-.circle-image-article {
-  display: inline-block;
-}
 
-.author .circle-image img {
-  display:block;
-  margin:auto;
-}
 
-.author .circle-image {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.author .nowrap {
-  margin: 0px 20px;
-}
-
-.author-desc {
-  margin-top: 30px;
-  @include p-rd;
-}
-
-.author-tagline {
-  // border-top: 1px solid red;
-  // border-top-width: 10px;
-  // border-bottom-width: 10px;
-  // border-bottom: 1px solid red;
-  text-align: center;
-}
-
-.author-tagline:after {
-  content:"";
-   background: #ccc;
-   height: 1px;
-   width: 50%;
-}
-
-.author-tagline h3.rd{
-  margin: 30px 0px;
-  text-align: center;
+.border {
+  border: 1px solid red;
 }
 
 
-.author .circle-image a {
-  font-family: $font-family-sans-serif;
-  color: $text;
-  vertical-align: top;
-}
-
-
-.author .circle-image .big {
-  margin-right: 10px;
-}
-
-.author h1 {
-  color: $text;
-  text-align: center;
-  margin-top: 15px;
-  margin-bottom: 0px;
-}
-
-.author {
-  // margin-bottom: 20px;
-}
 //PAGE STYLING
 
 .page-header {

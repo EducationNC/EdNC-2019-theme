@@ -12,7 +12,7 @@ $email = get_field('email');
   $coauthors_count = count($coauthors); ?>
 
   <div class="row bio">
-    <div class="col-xs-12 col-md-12">
+    <div class="col-xs-12 col-md-12 flex-box border">
       <?php
         if ($coauthors_count > 1) { ?>
           <div class="author-article">
@@ -44,23 +44,35 @@ $email = get_field('email');
               $user = get_field('user');
               //print_r ($user);
               ?>
-              <div class="circle-image-article">
-                <?php the_post_thumbnail('bio-headshot'); ?>
-              </div>
-              <div class="author-article">
-                <div class="margin-none">
-                  <a href="<?php echo get_author_posts_url($user['ID']); ?>" class="read-more"><?php the_title(); ?></a>
-                  <?php// get_template_part('templates/components/author', 'excerpt-2019'); ?>
+              <div class="author-info">
+                <div class="circle-image-article border">
+                  <?php the_post_thumbnail('bio-headshot'); ?>
                 </div>
-                <?php endwhile; endif; wp_reset_query();?>
-                <div>
-                  <time class="published pf-date" datetime="<?php echo get_the_time('c'); ?>">
-                    <?php the_time(get_option('date_format')); ?>
-                  </time>
+                <div class="author-article border">
+                  <div class="">
+                    <a href="<?php echo get_author_posts_url($user['ID']); ?>" class="read-more"><?php the_title(); ?></a>
+                    <?php// get_template_part('templates/components/author', 'excerpt-2019'); ?>
+                  </div>
+                  <?php endwhile; endif; wp_reset_query();?>
+                  <div>
+                    <time class="published pf-date" datetime="<?php echo get_the_time('c'); ?>">
+                      <?php the_time(get_option('date_format')); ?>
+                    </time>
+                  </div>
                 </div>
               </div>
+
           <?php } ?>
         <?php } ?>
+
+        <div class="share-buttons border">
+            <div class="icon icon-facebook"></div>
+            <div class="icon icon-twitter"></div>
+            <div class="icon icon-email"></div>
+            <div class="icon icon-rss"></div>
+        </div>
+
+
       </div>
     </div>
 <?php

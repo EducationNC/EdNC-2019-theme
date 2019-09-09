@@ -73,16 +73,16 @@ while (have_posts()) : the_post();
     <div class="title">
       <div class="container">
         <div class="row">
-          <div class="col-md-8 col-centered author-intro">
+          <div class="col-md-8 col-centered author-intro-2019">
               <h1 class="article-header"><?php the_title(); ?></h1>
 
               <?php get_template_part('templates/components/author-info'); ?>
-              <div class="article-social">
+              <!-- <div class="article-social">
                 <div class="icon icon-facebook"></div>
                 <div class="icon icon-twitter"></div>
                 <div class="icon icon-email"></div>
                 <div class="icon icon-rss"></div>
-              </div>
+              </div> -->
           </div>
         </div>
       </div>

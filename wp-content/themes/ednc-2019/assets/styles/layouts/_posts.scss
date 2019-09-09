@@ -359,29 +359,34 @@
     width: 100%;
   }
 
-  // .parallax-img {
-  //   position: relative;
-  //   top: 0;
-  //   left: 0;
-  //   height: 100%;
-  //   background-size: cover;
-  // }
-
   .margin-none p {
     margin: 0;
     display: inline-block;
   }
 
-  .bio {
-    margin-bottom: 20px;
-    width: 95%;
+  .share-buttons .icon {
+    display: inline-block;
+    border: 1px solid red;
+    width: auto;
+    padding: 10px;
+    border-radius: 50%;
+    margin-left: 10px;
+  }
+  [class*=" icon-"]:before, [class^=icon-]:before {
+    font-size: 20px;
+    line-height: 20px;
+  }
+
+  .flex-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
   }
 
   .author-article {
     margin-left: 10px;
-    margin-top: 10px;
     display: inline-block;
-    vertical-align: top;
   }
 
   .article-social {
@@ -558,4 +563,99 @@ h3.no-span {
 .margin-icon {
   margin-right: 10px;
   vertical-align: middle;
+}
+
+
+//AUTHOR Section
+
+.author-intro-2019 {
+  font-family: Merriweather,serif;
+  font-weight: 300;
+  font-size: 14px;
+  // line-height: 1.7em;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+}
+
+.circle-image {
+  img {
+    border-radius: 50%;
+  }
+}
+
+.circle-image-article {
+  img {
+    border-radius: 50%;
+    max-width: 80px;
+  }
+}
+
+.circle-image-article, .share-buttons {
+  display: inline-block;
+}
+
+.author .circle-image img {
+  display:block;
+  margin:auto;
+}
+
+.author .circle-image {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.author .nowrap {
+  margin: 0px 20px;
+}
+
+.author-desc {
+  margin-top: 30px;
+  @include p-rd;
+}
+
+.author-tagline {
+  // border-top: 1px solid red;
+  // border-top-width: 10px;
+  // border-bottom-width: 10px;
+  // border-bottom: 1px solid red;
+  text-align: center;
+}
+
+
+.author-tagline:after {
+  content:"";
+   background: #ccc;
+   height: 1px;
+   width: 50%;
+}
+
+.author-tagline h3.rd{
+  margin: 30px 0px;
+  text-align: center;
+}
+
+
+.author .circle-image a {
+  font-family: $font-family-sans-serif;
+  color: $text;
+  vertical-align: top;
+}
+
+
+.author .circle-image .big {
+  margin-right: 10px;
+}
+
+.author h1 {
+  color: $text;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+.author {
+  // margin-bottom: 20px;
 }
