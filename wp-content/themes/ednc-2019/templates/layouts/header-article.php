@@ -22,7 +22,12 @@ use Roots\Sage\Nav;
   </div>
   <div class="flex-3">
     <div class="content">
-      <button class="btn" type="button">Subscribe</button>
+      <form action="/action_page.php">
+        <input class="subscribe" type="text" name="name" placeholder="Your Email Address">
+        <input class="btn" type="submit" value="Subscribe">
+      </form>
+      <!-- <input class="subscribe" type="text" placeholder="Your email address"></input>
+      <button class="btn" type="button">Subscribe</button> -->
     </div>
   </div>
 </div>

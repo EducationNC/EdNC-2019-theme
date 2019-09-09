@@ -12,7 +12,7 @@ $email = get_field('email');
   $coauthors_count = count($coauthors); ?>
 
   <div class="row bio">
-    <div class="col-xs-12 col-md-12 flex-box border">
+    <div class="col-xs-12 col-md-12 flex-box">
       <?php
         if ($coauthors_count > 1) { ?>
           <div class="author-article">
@@ -45,10 +45,10 @@ $email = get_field('email');
               //print_r ($user);
               ?>
               <div class="author-info">
-                <div class="circle-image-article border">
+                <div class="circle-image-article">
                   <?php the_post_thumbnail('bio-headshot'); ?>
                 </div>
-                <div class="author-article border">
+                <div class="author-article">
                   <div class="">
                     <a href="<?php echo get_author_posts_url($user['ID']); ?>" class="read-more"><?php the_title(); ?></a>
                     <?php// get_template_part('templates/components/author', 'excerpt-2019'); ?>
@@ -65,7 +65,7 @@ $email = get_field('email');
           <?php } ?>
         <?php } ?>
 
-        <div class="share-buttons border">
+        <div class="share-buttons">
             <div class="icon icon-facebook"></div>
             <div class="icon icon-twitter"></div>
             <div class="icon icon-email"></div>

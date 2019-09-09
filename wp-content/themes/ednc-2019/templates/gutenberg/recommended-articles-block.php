@@ -22,7 +22,7 @@ $query = new WP_Query(array(
 ));
 //print_r ($query); ?>
 
-<?php echo '<div class="container-full alignwide">'; ?>
+<?php echo '<div class="container-full">'; ?>
   <div class="row">
     <h3 class="rd no-span"><?php the_field('recommended_articles_header', 'option'); ?></h3>
     <div class="recommended-blocks">
@@ -46,9 +46,9 @@ $query = new WP_Query(array(
 
       <div class="block-recommended_block">
         <a href="<?php the_permalink(); ?>">
-           <?php if (!empty($featured_image)) {
-            echo '<img class="" src="' . $featured_image . '" />';
-          } ?>
+          <?php if (!empty($featured_image)) {
+           echo '<img class="" src="' . $featured_image . '" />';
+         } ?>
           <p class="small"><?php echo $post_type ?></p>
           <h3 class="post-title"><?php the_title(); ?></h3>
           <?php get_template_part('templates/components/entry-meta'); ?>

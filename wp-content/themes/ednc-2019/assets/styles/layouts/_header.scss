@@ -909,6 +909,47 @@ img.main-logo-article {
   line-height: 1em;
 }
 
-.flex-3 .content .btn {
+
+.flex-3 .content {
   margin-bottom: 0;
+  input {
+    display: inline-block;
+    color: $text;
+  }
+  .btn {
+    border: 1px solid $bright-blue;
+    color: $white;
+    background-color: $bright-blue;
+  }
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: $text;
+  font-family: $font-family-sans-serif;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: $text;
+  font-family: $font-family-sans-serif;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: $text;
+  font-family: $font-family-sans-serif;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: $text;
+  font-family: $font-family-sans-serif;
+}
+
+.subscribe {
+  border: none;
+  border-bottom: 1px solid $text;
+  color: $text;
+  font-family: $font-family-sans-serif;
+  height: 100%;
+  padding: 6px;
+  margin-right: 10px;
+}
+
+.subscribe:focus {
+  outline: none;
 }

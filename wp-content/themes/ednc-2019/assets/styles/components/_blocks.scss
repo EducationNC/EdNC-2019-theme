@@ -238,6 +238,13 @@
 
 .block-recommended_block {
   @include block-3(20px);
+  h3 {
+    font-weight: 600 !important;
+    font-size: 17px !important;
+  }
+  p {
+    font-size: 14px !important;
+  }
   a {
     text-decoration: none;
   }
