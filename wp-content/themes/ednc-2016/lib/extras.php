@@ -398,7 +398,7 @@ function mz_ninja_forms_after_submission( $form_data ){
 		}
 	}
 
-	$apikey = "98ea6eb724828eca4712b5935fe337f9-us9";	// replace with your API key
+	$apikey = "98ea6eb724828eca4712b5935fe337f9";	// replace with your API key
 	$auth = base64_encode("user:$apikey");
 	$server = "us9";
 	$url = "https://$server.api.mailchimp.com/3.0/lists/$list_id/members";
