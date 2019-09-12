@@ -80,8 +80,7 @@ xmlns:media="http://search.yahoo.com/mrss/"
       <guid isPermaLink="false"><?php the_guid(); ?></guid>
 	    <media:content url="<?php the_post_thumbnail_url( 'full' ); ?>" width="564" height="239" medium="image" />
       <description><![CDATA[<?php get_template_part('templates/components/labels', 'feed'); ?>]]></description>
-      <!-- <content:encoded><![CDATA[<?php// the_advanced_excerpt('length=40&length_type=words&finish=exact&add_link=0'); ?> <a href="<?php// the_permalink(); ?>" style="color:#8b185e;">Full story &raquo;</a>]]></content:encoded> -->
-      <content:encoded><![CDATA[<?php the_advanced_excerpt('length=40&length_type=words&finish=exact&add_link=0'); ?>]]></content:encoded>
+      <content:encoded><![CDATA[<?php the_advanced_excerpt('length=40&length_type=words&finish=exact&add_link=0'); ?> <a href="<?php the_permalink(); ?>" style="color:#8b185e;">Full story &raquo;</a>]]></content:encoded>
       <?php rss_enclosure(); ?>
       <?php do_action('rss2_item'); ?>
     </item>
