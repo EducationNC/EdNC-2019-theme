@@ -75,7 +75,7 @@ while (have_posts()) : the_post();
           //if(!empty($featured_image_hero)){
             //echo 'featured-image-hero';
             //echo $featured_image_hero[0];
-          }// else {
+        //  } else {
             //echo 'force-crop';
           //  echo $image_hero;
         //  }
