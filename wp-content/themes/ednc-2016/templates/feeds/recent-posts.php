@@ -78,12 +78,10 @@ xmlns:media="http://search.yahoo.com/mrss/"
       }
       ?></dc:creator>
       <guid isPermaLink="false"><?php the_guid(); ?></guid>
-      <?php
-      $featured_image = Media\get_featured_image('small');
-      ?>
-	    <media:content url="<?php the_post_thumbnail_url( 'small' ); ?>" width="564" height="239" medium="image" />
+	    <media:content url="<?php the_post_thumbnail_url( 'full' ); ?>" width="564" height="239" medium="image" />
       <description><![CDATA[<?php get_template_part('templates/components/labels', 'feed'); ?>]]></description>
-      <content:encoded><![CDATA[<?php the_advanced_excerpt('length=40&length_type=words&finish=exact&add_link=0'); ?> <a href="<?php the_permalink(); ?>" style="color:#8b185e;">Full story &raquo;</a>]]></content:encoded>
+      <!-- <content:encoded><![CDATA[<?php// the_advanced_excerpt('length=40&length_type=words&finish=exact&add_link=0'); ?> <a href="<?php// the_permalink(); ?>" style="color:#8b185e;">Full story &raquo;</a>]]></content:encoded> -->
+      <content:encoded><![CDATA[<?php the_advanced_excerpt('length=40&length_type=words&finish=exact&add_link=0'); ?>]]></content:encoded>
       <?php rss_enclosure(); ?>
       <?php do_action('rss2_item'); ?>
     </item>
