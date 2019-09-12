@@ -460,7 +460,6 @@ SGPBBackend.prototype.multipleChoiceButton = function()
 	if (!jQuery('.sgpb-choice-wrapper input').length) {
 		return false;
 	}
-
 	var that = this;
 
 	jQuery('.sgpb-choice-option-wrapper input').each(function() {
@@ -938,20 +937,19 @@ SGPBBackend.prototype.popupSelect2 = function()
 					delay: 250,
 					type: "POST",
 					data: function(params) {
-
 						var searchKey = jQuery(this).attr('data-value-param');
-
+						var dataCallback = jQuery(this).attr('data-select-callback');
 						return {
 							action: 'select2_search_data',
 							nonce_ajax: SGPB_JS_PARAMS.nonce,
 							searchTerm: params.term,
+							searchCallback: dataCallback,
 							searchKey: searchKey
 						};
 					},
 					processResults: function(data) {
 						return {
 							results: jQuery.map(data.items, function(item) {
-
 								return {
 									text: item.text,
 									id: item.id

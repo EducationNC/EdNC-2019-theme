@@ -1,7 +1,10 @@
 <?php
 	namespace sgpb;
 	$defaultData = \ConfigDataHelper::defaultData();
-	$excludePostId = @$_GET['post'];
+	$excludePostId = 0;
+	if (isset($_GET['post']) && !empty($_GET['post'])) {
+		$excludePostId = $_GET['post'];
+	}
 	$excludedPopups = array($excludePostId);
 	$allPopups = AdminHelper::getPopupsIdAndTitle($excludedPopups);
 ?>

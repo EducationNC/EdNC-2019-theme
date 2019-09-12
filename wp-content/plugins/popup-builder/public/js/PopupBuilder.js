@@ -1134,6 +1134,7 @@ SGPBPopup.prototype.htmlIframeFilterForOpen = function(popupId, popupEventName)
 	}
 
 	popupContent.find('iframe').each(function() {
+
 		if (popupEventName != 'open') {
 			/* for do not affect facebook type buttons iframe only */
 			if (jQuery(this).closest('.fb_iframe_widget').length) {
@@ -1157,7 +1158,6 @@ SGPBPopup.prototype.htmlIframeFilterForOpen = function(popupId, popupEventName)
 				}
 				return true;
 			}
-
 		}
 		else {
 			/*open*/
@@ -1166,6 +1166,7 @@ SGPBPopup.prototype.htmlIframeFilterForOpen = function(popupId, popupEventName)
 				if (src != '') {
 					jQuery(this).attr('data-attr-src', src);
 				}
+
 				return true;
 			}
 			else {
@@ -1175,6 +1176,27 @@ SGPBPopup.prototype.htmlIframeFilterForOpen = function(popupId, popupEventName)
 					jQuery(this).attr('data-attr-src', src);
 				}
 				return true;
+			}
+		}
+	});
+};
+
+SGPBPopup.prototype.iframeSizesInHtml = function(args)
+{
+	var popupId = args['popupId'];
+	var popupOptions = args.popupData;
+	var popupContent = jQuery('.sgpb-content-' + popupId);
+
+	if (!popupContent.length) {
+		return false;
+	}
+	popupContent.find('iframe').each(function() {
+		if (typeof jQuery(this) == 'undefined') {
+			return false;
+		}
+		if (popupOptions['sgpb-popup-dimension-mode'] == 'customMode') {
+			if (typeof jQuery(this).attr('width') == 'undefined' && typeof popupContent.attr('height') == 'undefined') {
+				jQuery(this).css({'width': popupOptions['sgpb-width'], 'height': popupOptions['sgpb-height']});
 			}
 		}
 	});
@@ -1208,7 +1230,6 @@ SGPBPopup.prototype.replaceWithCustomShortcode = function(popupId)
 {
 	var currentHtmlContent = jQuery('.sgpb-content-'+popupId).html();
 	var searchData = this.getSearchDataFromContent(currentHtmlContent);
-
 	var that = this;
 
 	if (!searchData.length) {
@@ -1242,7 +1263,6 @@ SGPBPopup.prototype.replaceWithCustomShortcode = function(popupId)
 			var replaceName = jQuery(searchAttributes['selector']).attr(searchAttributes['attribute']);
 		}
 
-
 		if (typeof replaceName == 'undefined') {
 			that.replaceShortCode(currentSearchData['replaceString'], '', popupId);
 			continue;
@@ -1273,9 +1293,9 @@ SGPBPopup.prototype.replaceShortCode = function(shortCode, replaceText, popupId)
 			return false;
 		}
 
-    	currentHtmlContent.html(function(i, v) {
+		currentHtmlContent.html(function(i, v) {
 			if (typeof v != 'undefined') {
-		  		return v.replace(shortCode, replaceText);
+				return v.replace(shortCode, replaceText);
 			}
 		});
 	});
@@ -1291,6 +1311,7 @@ SGPBPopup.prototype.popupTriggeringListeners = function()
 
 	sgAddEvent(window, 'sgpbDidOpen', function(e) {
 		var args = e.detail;
+		that.iframeSizesInHtml(args);
 		that.formSubmissionDetection(args);
 		var popupOptions = args.popupData;
 
@@ -1305,6 +1326,7 @@ SGPBPopup.prototype.popupTriggeringListeners = function()
 		if (SGPBPopup.varToBool(disablePageScrolling)) {
 			jQuery('html, body').addClass('sgpb-overflow-hidden');
 		}
+
 	});
 
 	sgAddEvent(window, 'sgpbWillOpen', function(e) {
@@ -2169,8 +2191,8 @@ SGPBPopup.setCookie = function(cName, cValue, exDays, cPageLevel)
 	}
 	var expires = 'expires='+cookieExpirationData;
 	if (exDays == -1) {
-        expires = '';
-    }
+		expires = '';
+	}
 
 	if (cPageLevel && typeof cPageLevel != 'boolean') {
 		cookiePageLevel = 'path=' + cPageLevel;
@@ -2274,6 +2296,7 @@ SgpbEventListener.prototype.getPopupObj = function()
 SgpbEventListener.eventsListenerAfterDocumentReady = function()
 {
 	window.SGPB_SOUND = [];
+
 	sgAddEvent(window, 'sgpbDidOpen', function(e) {
 		SGPBPopup.playMusic(e);
 	});
@@ -2493,6 +2516,7 @@ SgpbEventListener.prototype.sgpbClick = function(listenerObj, eventData)
 		var delay = parseInt(popupOptions['sgpb-popup-delay']) * 1000;
 		var clickCount = 1;
 		targetClick.each(function() {
+
 			if (!jQuery(this).attr('data-popup-id')) {
 				jQuery(this).attr('data-popup-id', popupId);
 			}
@@ -2501,8 +2525,16 @@ SgpbEventListener.prototype.sgpbClick = function(listenerObj, eventData)
 				if (clickCount > 1) {
 					return true;
 				}
-				var allowToOpen = popupObj.forceCheckCurrentPopupType(popupObj);
 
+				var attr = jQuery(e.originalEvent.target).parent().attr('data-popup-id');
+				var attr2 = jQuery(e.originalEvent.target).attr('data-popup-id');
+				if (jQuery(e.originalEvent.target).closest('header').length && (typeof attr == 'undefined' || !attr)) {
+					if (typeof attr2 == 'undefined' || !attr2) {
+						return true;
+					}
+				}
+
+				var allowToOpen = popupObj.forceCheckCurrentPopupType(popupObj);
 				if (!allowToOpen) {
 					return true;
 				}

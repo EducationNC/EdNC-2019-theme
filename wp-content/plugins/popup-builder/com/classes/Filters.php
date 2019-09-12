@@ -188,7 +188,7 @@ class Filters
 		foreach ($events as $eventKey => $eventData) {
 			if (isset($eventData['param'])) {
 				if ($eventData['param'] == SGPB_CSS_CLASS_ACTIONS_KEY) {
-					unset($events[$eventKey]);
+					unset($events);
 					$events[] = array('param' => 'click');
 					$events[] = array('param' => 'hover');
 					$events[] = array('param' => 'confirm');
@@ -536,3 +536,5 @@ class Filters
 		return $cssFiles;
 	}
 }
+
+

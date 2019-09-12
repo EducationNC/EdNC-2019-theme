@@ -156,7 +156,7 @@ class ConditionBuilder
 
 		foreach($conditionData as $groupId => $groupData) {
 
-			if(empty($groupData)) {
+			if(empty($groupData) || !is_array($groupData)) {
 				continue;
 			}
 

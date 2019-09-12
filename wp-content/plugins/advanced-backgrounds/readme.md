@@ -3,7 +3,7 @@
 * Tags: parallax, video, youtube, background, gutenberg
 * Requires at least: 4.0.0
 * Tested up to: 5.0
-* Stable tag: 1.5.8
+* Stable tag: 1.6.0
 * License: GPLv2 or later
 * License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,6 +118,22 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 
 ## Changelog ##
+
+= 1.6.0 =
+
+* added Focal Point picker in block background settings
+* added Lazy Loading for background videos
+* changed block background img tag output (fixes bug, when user with Editor permission save background image and block crashed)
+* fixed background image jumping on mobile devices when scroll
+* fixed reusable block error
+
+= 1.5.10 =
+
+* fixed WPBakery Page Builder FullWidth Row background position
+
+= 1.5.9 =
+
+* fixed WPBakery Page Builder Row background position
 
 = 1.5.8 =
 

@@ -23,17 +23,9 @@ class HtmlPopup extends SGPopup
 	{
 		$htmlContent = '';
 		$popupContent = $this->getContent();
-		$htmlContent .= '<div class="sgpb-scroll-wrapper sgpb-main-html-content-wrapper">';
+		$htmlContent .= '<div class="sgpb-main-html-content-wrapper">';
 		$htmlContent .= $popupContent;
 		$htmlContent .= '</div>';
-
-		$htmlContent .= '<style>';
-		$htmlContent .= '.sgpb-popup-builder-content-html {';
-		$htmlContent .= 'width: 100%;';
-		$htmlContent .= 'height: 100%;';
-		$htmlContent .= 'overflow: auto;}';
-		$htmlContent .= '.sgpb-main-html-content-wrapper{overflow: auto !important;}';
-		$htmlContent .= '</style>';
 
 		return $htmlContent;
 	}
@@ -43,3 +35,4 @@ class HtmlPopup extends SGPopup
 		return array();
 	}
 }
+

@@ -10,13 +10,15 @@ use WP_Widget;
 class WpWidget extends WP_Widget
 {
 
+    const ID_BASE = 'lpwtoc_widget';
+
     /**
      * Конструктор
      */
     public function __construct()
     {
         parent::__construct(
-            'lpwtoc_widget',
+            self::ID_BASE,
             esc_html__('Table of Contents', 'luckywp-table-of-contents')
         );
     }
@@ -28,6 +30,7 @@ class WpWidget extends WP_Widget
     public function widget($args, $instance)
     {
         $attrs = Shortcode::attrsFromJson(ArrayHelper::getValue($instance, 'config', ''));
+        $attrs = apply_filters('lwptoc_widget_attrs', $attrs, $this);
         echo do_shortcode(Core::$plugin->shortcode->make($attrs));
     }
 
@@ -51,6 +54,7 @@ class WpWidget extends WP_Widget
      */
     public function update($newInstance, $oldInstance)
     {
+        do_action('lwptoc_widget_attrs_update', $newInstance, $oldInstance, $this);
         return ['config' => ArrayHelper::getValue($newInstance, 'config', '')];
     }
 }

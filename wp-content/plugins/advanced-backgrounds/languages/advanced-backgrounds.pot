@@ -19,7 +19,7 @@ msgstr ""
 msgid "Provide image ID."
 msgstr ""
 
-#: dist/advanced-backgrounds/classes/class-rest.php:106
+#: dist/advanced-backgrounds/classes/class-rest.php:135
 msgid "Image not found."
 msgstr ""
 

@@ -30,6 +30,11 @@ class CustomizeModal extends Widget
     public $model;
 
     /**
+     * @var string
+     */
+    public $context = 'default';
+
+    /**
      * @var bool
      */
     public $onlyBody;
@@ -41,6 +46,7 @@ class CustomizeModal extends Widget
             'widgetId' => $this->widgetId,
             'action' => $this->action,
             'model' => $this->model,
+            'context' => $this->context,
             'onlyBody' => $this->onlyBody,
         ]);
     }

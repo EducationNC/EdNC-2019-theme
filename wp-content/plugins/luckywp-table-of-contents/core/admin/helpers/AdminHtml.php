@@ -61,6 +61,8 @@ class AdminHtml
             $attrs['type'] = $submit ? 'submit' : 'button';
         }
 
+        $attrs = apply_filters('lwptoc_admin_html_button_attrs', $attrs, $options);
+
         return Html::tag($tag, $content, $attrs);
     }
 

@@ -569,7 +569,22 @@ class Actions
 		$allAvailableShortcodes['patternLastName'] = '/\[Last name]/';
 		$allAvailableShortcodes['patternBlogName'] = '/\[Blog name]/';
 		$allAvailableShortcodes['patternUserName'] = '/\[User name]/';
-		$allAvailableShortcodes['patternUnsubscribe'] = '/\[Unsubscribe]/';
+
+		$pattern = "/\[(\[?)(Unsubscribe)(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]\*+(?:\[(?!\/\2\])[^\[]\*+)\*+)\[\/\2\])?)(\]?)/";
+		preg_match($pattern, $emailMessage, $matches);
+		$title = 'Unsubscribe';
+		if ($matches) {
+			$patternUnsubscribe = $matches[0];
+			// If user didn't change anything inside the [unsubscribe] shortcode $matches[2] will be equal to 'Unsubscribe'
+			if ($matches[2] == 'Unsubscribe') {
+				$pattern = '/\s(\w+?)="(.+?)"]/';
+				preg_match($pattern, $matches[0], $matchesTitle);
+				if (!empty($matchesTitle[2])) {
+					$title = AdminHelper::removeAllNonPrintableCharacters($matchesTitle[2], 'Unsubscribe');
+				}
+			}
+			$allAvailableShortcodes['patternUnsubscribe'] = $patternUnsubscribe;
+		}
 
 		// When email is not valid we don't continue
 		if (!preg_match('/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/', $fromEmail)) {
@@ -628,14 +643,14 @@ class Actions
 			$replacementUnsubscribe .= '?sgpbUnsubscribe='.md5($replacementId.$replacementEmail);
 			$replacementUnsubscribe .= '&email='.$subscriber['email'];
 			$replacementUnsubscribe .= '&popup='.$subscriptionFormId;
-			$replacementUnsubscribe = '<br><a href="'.$replacementUnsubscribe.'">'.__('Unsubscribe', SG_POPUP_TEXT_DOMAIN).'</a>';
+			$replacementUnsubscribe = '<br><a href="'.$replacementUnsubscribe.'">'.$title.'</a>';
 
 			// Replace First name and Last name from email message
 			$emailMessageCustom = preg_replace($allAvailableShortcodes['patternFirstName'], $replacementFirstName, $emailMessage);
 			$emailMessageCustom = preg_replace($allAvailableShortcodes['patternLastName'], $replacementLastName, $emailMessageCustom);
 			$emailMessageCustom = preg_replace($allAvailableShortcodes['patternBlogName'], $replacementBlogName, $emailMessageCustom);
 			$emailMessageCustom = preg_replace($allAvailableShortcodes['patternUserName'], $replacementUserName, $emailMessageCustom);
-			$emailMessageCustom = preg_replace($allAvailableShortcodes['patternUnsubscribe'], $replacementUnsubscribe, $emailMessageCustom);
+			$emailMessageCustom = str_replace($allAvailableShortcodes['patternUnsubscribe'], $replacementUnsubscribe, $emailMessageCustom);
 			if (!empty($allAvailableShortcodes['extraShortcodesWithValues'])) {
 				$customFields = $allAvailableShortcodes['extraShortcodesWithValues'];
 				foreach ($customFields as $customFieldKey => $customFieldValue) {

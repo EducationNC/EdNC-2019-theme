@@ -298,6 +298,7 @@ class ConditionCreator
 		$conditionConfig = $SGPB_DATA_CONFIG_ARRAY[$conditionName];
 		$rulesType = $conditionConfig['columnTypes'];
 		$paramsData = $conditionConfig['paramsData'];
+
 		$attrs = $conditionConfig['attrs'];
 
 		if (!empty($saveData[$ruleName])) {
@@ -339,7 +340,7 @@ class ConditionCreator
 		}
 
 		$ruleElementData['type'] = $type;
-		$ruleElementData['data'] = $data;
+		$ruleElementData['data'] = apply_filters('sgpb'.$ruleName.'ConditionCreator', $data, $saveData);
 		$ruleElementData['saved'] = $savedParam;
 		$ruleElementData['attr'] = $attr;
 		$ruleElementData['conditionDataObj'] = $conditionDataObj;

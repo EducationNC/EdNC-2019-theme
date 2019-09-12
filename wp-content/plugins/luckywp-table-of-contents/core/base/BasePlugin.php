@@ -70,12 +70,7 @@ abstract class BasePlugin extends ServiceLocator
     protected function bootstrap($bootstrap)
     {
         foreach ($bootstrap as $mixed) {
-            $component = null;
-            if (is_callable($mixed)) {
-                if (!$component = call_user_func($mixed, $this)) {
-                    continue;
-                }
-            } elseif (is_string($mixed) && $this->has($mixed)) {
+            if (is_string($mixed) && $this->has($mixed)) {
                 $this->get($mixed);
             }
         }

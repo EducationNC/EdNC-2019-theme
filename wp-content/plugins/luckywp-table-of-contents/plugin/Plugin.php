@@ -12,8 +12,10 @@ use luckywp\tableOfContents\core\helpers\ArrayHelper;
 use luckywp\tableOfContents\core\wp\Options;
 use luckywp\tableOfContents\front\Front;
 use luckywp\tableOfContents\integrations\BeaverBuilder;
+use luckywp\tableOfContents\integrations\elementor\Elementor;
 use luckywp\tableOfContents\integrations\RankMath;
 use luckywp\tableOfContents\integrations\ToolsetViews;
+use luckywp\tableOfContents\integrations\Wpml;
 use luckywp\tableOfContents\plugin\editorBlock\EditorBlock;
 use luckywp\tableOfContents\plugin\mcePlugin\McePlugin;
 use WP_Post_Type;
@@ -69,6 +71,12 @@ class Plugin extends BasePlugin
             }
             if (defined('WPV_VERSION')) {
                 Core::createObject(ToolsetViews::className());
+            }
+            if (defined('ELEMENTOR_VERSION')) {
+                Core::createObject(Elementor::className());
+            }
+            if (class_exists('\SitePress')) {
+                Core::createObject(Wpml::className());
             }
         });
     }

@@ -358,7 +358,17 @@
 					<input type="checkbox" id="sgpb-subs-show-form-to-top" name="sgpb-subs-show-form-to-top" <?php echo esc_attr($popupTypeObj->getOptionValue('sgpb-subs-show-form-to-top')); ?>>
 				</div>
 			</div>
+			<div class="row form-group">
+				<label class="col-md-6 control-label sgpb-static-padding-top" for="sgpb-subs-hide-subs-users">
+					<?php _e('Hide for already subscribed users', SG_POPUP_TEXT_DOMAIN); ?>:
+				</label>
+				<div class="col-md-6">
+					<input type="checkbox" id="sgpb-subs-hide-subs-users" name="sgpb-subs-hide-subs-users" <?php echo esc_attr($popupTypeObj->getOptionValue('sgpb-subs-hide-subs-users')); ?>>
+				</div>
+			</div>
+
 			<!-- submit styles end -->
+
 			<div class="row form-group">
 				<label class="col-md-12 control-label sgpb-static-padding-top">
 					<?php _e('After successful subscription', SG_POPUP_TEXT_DOMAIN); ?>:

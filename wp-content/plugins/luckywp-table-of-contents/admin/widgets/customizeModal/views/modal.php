@@ -4,6 +4,7 @@
  * @var $widgetId string|null
  * @var $action string
  * @var $model \luckywp\tableOfContents\admin\forms\CustomizeForm
+ * @var $context string
  * @var $onlyBody bool
  */
 
@@ -634,9 +635,11 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
     <div class="lwptocModalBox_footer">
         <div class="lwptocModalBox_footer_buttons">
             <?= AdminHtml::button(__('Cancel', 'luckywp-table-of-contents'), [
+                'context' => $context,
                 'class' => 'lwptocModal-close' . (is_rtl() ? 'lwptocFloatRight' : ' lwptocFloatLeft')
             ]) ?>
             <?= AdminHtml::button(__('Save', 'luckywp-table-of-contents'), [
+                'context' => $context,
                 'theme' => AdminHtml::BUTTON_THEME_PRIMARY,
                 'submit' => true,
                 'class' => is_rtl() ? 'lwptocFloatLeft' : 'lwptocFloatRight',

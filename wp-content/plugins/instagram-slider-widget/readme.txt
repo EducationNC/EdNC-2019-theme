@@ -1,16 +1,15 @@
-=== Instagram Slider Widget ===
-Contributors: jetonr
-Tags: instagram, slider, widget, images
-Donate link: http://bit.ly/2EseW2p
+=== Social Slider Widget ===
+Contributors: creativemotion
+Tags: instagram, instagram feed, instagram gallery, Instagram widget
 Requires at least: 3.5
-Tested up to: 4.9.5
+Tested up to: 5.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Instagram Slider Widget is a responsive slider widget that shows 12 latest images from a public instagram user or a hashtag.
+Social Slider Widget is a responsive slider widget that shows 12 latest images from a public instagram user or a hashtag.
 
 == Description ==
-= Instagram Slider Widget is a responsive slider widget that shows 12 latest images from a public instagram user or a hashtag. =
+= Social Slider Widget is a responsive slider widget that shows 12 latest images from a public instagram user or a hashtag. =
 
 
 = Features =
@@ -19,20 +18,20 @@ Instagram Slider Widget is a responsive slider widget that shows 12 latest image
 * No API Key Needed
 * Link images to user profile, image URL, attachment URL, custom URL or none
 * Sort images Randomly, Popularity, Date
-* For more info visit http://instagram.jrwebstudio.com
+* For more info visit https://cm-wp.com/instagram-slider-widget/
 
 = Where can I get support =
-I will try to respond to all on plugin support forum but users showing back-link on their website will be more privileged!
+We will try to respond to all on plugin support forum but users showing back-link on their website will be more privileged!
 
 
-= If you like this plugin. Rate it and Donate =
+= If you like this plugin. Rate it =
 
 == Installation ==
 
 = Installation =
 1. Upload `instagram-slider-widget` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the \'Plugins\' menu in WordPress
-3. Go to Appearance > Widgets and drag \'Instagram Slider Widget\' to your sidebar
+3. Go to Appearance > Widgets and drag \'Social Slider Widget\' to your sidebar
 4. Update the settings in the widget: Instagram Username, Images Layout, Number of Images to show, Check for new images hours 
 
 = Requirements =
@@ -46,6 +45,9 @@ I will try to respond to all on plugin support forum but users showing back-link
 3. Backend Configuration
 
 == Changelog ==
+= 1.5.0 =
+* Renamed the plugin to conform to Facebook and Instagram
+
 = 1.4.3 =
 * Fix for instagram api change
 

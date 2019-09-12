@@ -132,7 +132,7 @@ class PopupLoader
 			$popupBuilderPosts->next_post();
 			$popupPost = $popupBuilderPosts->post;
 			$popup = SGPopup::find($popupPost);
-			if (empty($popup)) {
+			if (empty($popup) || !is_object($popup)) {
 				continue;
 			}
 			if ($popup->allowToLoad() || (is_preview() && get_post_type() == SG_POPUP_POST_TYPE)) {

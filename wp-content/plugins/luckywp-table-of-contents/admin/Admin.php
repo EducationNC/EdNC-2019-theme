@@ -85,7 +85,18 @@ class Admin extends BaseObject
     public function assets($hook)
     {
         global $post;
-        if (in_array($hook, [$this->pageSettingsHook, 'post.php', 'post-new.php', 'widgets.php', 'settings_page_lwptoc_settings'])) {
+        $this->enqueueAssets([
+            'enqueueWpColorPicker' => in_array($hook, [$this->pageSettingsHook, 'post.php', 'post-new.php', 'widgets.php', 'settings_page_lwptoc_settings']),
+            'postId' => in_array($hook, ['post.php', 'post-new.php']) ? ArrayHelper::getValue($post, 'ID') : null,
+        ]);
+    }
+
+    /**
+     * @param array $args
+     */
+    public function enqueueAssets($args)
+    {
+        if (ArrayHelper::getValue($args, 'enqueueWpColorPicker', false)) {
             wp_enqueue_style('wp-color-picker');
             wp_enqueue_script('wp-color-picker');
         }
@@ -94,7 +105,7 @@ class Admin extends BaseObject
         wp_localize_script(Core::$plugin->prefix . 'adminMain', 'lwptocMain', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce(Core::$plugin->prefix . 'adminMain'),
-            'postId' => in_array($hook, ['post.php', 'post-new.php']) ? ArrayHelper::getValue($post, 'ID') : null,
+            'postId' => ArrayHelper::getValue($args, 'postId'),
             'shortcodeTag' => Core::$plugin->shortcode->getTag(),
             'tableOfContents' => esc_html__('Table of Contents', 'luckywp-table-of-contents'),
             /* translators: verb */

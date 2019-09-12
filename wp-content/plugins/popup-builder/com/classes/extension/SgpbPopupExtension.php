@@ -37,6 +37,7 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 				'extendPage' => SG_POPUP_EXTEND_PAGE,
 				'supportUrl' => SG_POPUP_SUPPORT_URL,
 				'allExtensionsUrl' => SG_POPUP_ALL_EXTENSIONS_URL,
+				'supportPage' => SG_POPUP_SUPPORT_PAGE,
 				'reviewUrl' => SG_POPUP_RATE_US_URL
 			)
 		);

@@ -20,7 +20,7 @@ class SgpbPopupConfig
 		self::addDefine('SG_POPUP_PRO_URL', 'https://popup-builder.com/#prices');
 		self::addDefine('SG_POPUP_EXTENSIONS_URL', 'https://popup-builder.com/#extensions');
 		self::addDefine('SG_POPUP_SUPPORT_URL', 'https://wordpress.org/support/plugin/popup-builder');
-		self::addDefine('SG_POPUP_TICKET_URL', 'https://sygnoos.ladesk.com/submit_ticket');
+		self::addDefine('SG_POPUP_TICKET_URL', 'https://help.popup-builder.com');
 		self::addDefine('SG_POPUP_RATE_US_URL', 'https://wordpress.org/support/plugin/popup-builder/reviews/?filter=5');
 		self::addDefine('SG_POPUP_IFRAME_URL', 'https://popup-builder.com/downloads/iframe/');
 		self::addDefine('SG_POPUP_SCROLL_URL', 'https://popup-builder.com/downloads/scroll/');
@@ -102,7 +102,7 @@ class SgpbPopupConfig
 		self::addDefine('SGPB_CRON_REPEAT_INTERVAL', 1);
 		self::addDefine('SGPB_BANNER_CRON_TEXT_URL', 'https://popup-builder.com/sgpb-banner.php?banner=main');
 		self::addDefine('SGPB_METABOX_BANNER_CRON_TEXT_URL', 'https://popup-builder.com/sgpb-banner.php?banner=sidebar1');
-		self::addDefine('SGPB_FACEBOOK_APP_ID', 1725074220856984);
+		self::addDefine('SGPB_FACEBOOK_APP_ID', 540547196484707);
 		self::addDefine('SGPB_POPUP_TYPE_RESTRICTION', 'ageRestriction');
 		self::addDefine('SGPB_POPUP_DEFAULT_SOUND', 'popupOpenSound.wav');
 		self::addDefine('SGPB_POPUP_EXTENSIONS_PATH', SG_POPUP_COM_PATH.'extensions/');

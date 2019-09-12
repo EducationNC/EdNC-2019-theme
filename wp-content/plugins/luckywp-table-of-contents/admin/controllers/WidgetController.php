@@ -9,6 +9,7 @@ use luckywp\tableOfContents\admin\widgets\widget\Widget;
 use luckywp\tableOfContents\core\admin\AdminController;
 use luckywp\tableOfContents\core\Core;
 use luckywp\tableOfContents\core\helpers\Json;
+use luckywp\tableOfContents\core\helpers\ValueHelper;
 use luckywp\tableOfContents\plugin\Shortcode;
 
 class WidgetController extends AdminController
@@ -52,19 +53,22 @@ class WidgetController extends AdminController
                             'id' => $widgetId,
                             'override' => Widget::overrideHtml($attrs),
                             'value' => Json::encode($attrs),
-                        ]) . ');</script>',
+                        ]) . ')</script>',
                 ]);
                 wp_die();
             }
             $onlyBody = true;
         }
 
-        echo CustomizeModal::widget([
+        $config = apply_filters('lwptoc_widget_customize_modal_config', []);
+        $config = array_merge(ValueHelper::assertArray($config), [
             'onlyBody' => $onlyBody,
             'action' => 'lwptoc_widget_customize',
             'widgetId' => $widgetId,
             'model' => $model,
         ]);
+
+        echo CustomizeModal::widget($config);
         wp_die();
     }
 }

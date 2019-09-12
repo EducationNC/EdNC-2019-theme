@@ -18,7 +18,7 @@ class ConfigDataHelper
 	public static function getQueryDataByArgs($args = array())
 	{
 		$defaultArgs = array(
-			'offset'           =>  0,
+			'offset'           => '',
 			'orderby'          => 'date',
 			'order'            => 'DESC',
 			'post_status'      => 'publish',

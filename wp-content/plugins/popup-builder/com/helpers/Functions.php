@@ -40,6 +40,10 @@ class Functions
 			$gdprWrapperStyles = '';
 			$gdprText = '';
 			$errorMessageBoxStyles = '';
+
+			if (!isset($formField['attrs']['name']) || $formField['attrs']['name'] == '') {
+				continue;
+			}
 			$errorWrapperClassName = @$formField['attrs']['name'].'-error-message';
 			if (isset($formField['errorMessageBoxStyles'])) {
 				$errorMessageBoxStyles = 'style="width:'.$formField['errorMessageBoxStyles'].'"';
@@ -77,7 +81,7 @@ class Functions
 				}
 			}
 
-			if (!$formField['isShow']) {
+			if (isset($formField['isShow']) && !$formField['isShow']) {
 				$hideClassName = 'sg-js-hide';
 			}
 

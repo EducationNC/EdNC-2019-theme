@@ -809,6 +809,7 @@ class SgpbDataConfig
 		$options[] = array('name' => 'sgpb-enable-content-scrolling', 'type' => 'checkbox', 'defaultValue' => 'on');
 		$options[] = array('name' => 'sgpb-overlay-click', 'type' => 'checkbox', 'defaultValue' => 'on');
 		$options[] = array('name' => 'sgpb-content-click', 'type' => 'checkbox', 'defaultValue' => '');
+		$options[] = array('name' => 'sgpb-subs-hide-subs-users', 'type' => 'checkbox', 'defaultValue' => 'on');
 		$options[] = array('name' => 'sgpb-content-click-behavior', 'type' => 'text', 'defaultValue' => 'close');
 		$options[] = array('name' => 'sgpb-click-redirect-to-url', 'type' => 'text', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-redirect-to-new-tab', 'type' => 'checkbox', 'defaultValue' => '');

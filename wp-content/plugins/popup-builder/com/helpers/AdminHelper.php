@@ -138,11 +138,11 @@ class AdminHelper
 		}
 
 		$selectBox = '<select '.$attrString.'>';
-
-		if (empty($data)) {
+		if (empty($data) || !is_array($data)) {
 			$selectBox .= $selectBoxCloseTag;
 			return $selectBox;
 		}
+
 		foreach ($data as $value => $label) {
 			// When is multiSelect
 			if (is_array($selectedValue)) {
@@ -998,11 +998,11 @@ class AdminHelper
 		$popupContent = '';
 		$maxOpenPopupStatus = self::shouldOpenForMaxOpenPopupMessage();
 
-		if ($maxOpenPopupStatus) {
+		/*if ($maxOpenPopupStatus) {
 			$popupContent = self::getMaxOpenPopupsMessage();
 			self::addContentToFooter($popupContent);
 			return;
-		}
+		}*/
 
 		$shouldOpenForDays = self::shouldOpenReviewPopupForDays();
 
@@ -1059,6 +1059,9 @@ class AdminHelper
 				border:2px solid #03A9F4;
 				color: #FFF;
 			}
+			.sgpb-buttons-wrapper {
+				text-align: center;
+			}
 			.sgpb-review-wrapper{
 				text-align: center;
 				padding: 20px;
@@ -1103,16 +1106,95 @@ class AdminHelper
 		return $popupContent;
 	}
 
+	public static function getReviewBannerContent()
+	{
+		ob_start();
+		?>
+		<style>
+			.sgpb-buttons-wrapper .press{
+				box-sizing:border-box;
+				cursor:pointer;
+				display:inline-block;
+				font-size:1em;
+				margin:0;
+				padding:0.5em 0.75em;
+				text-decoration:none;
+				transition:background 0.15s linear
+			}
+			.sgpb-buttons-wrapper .press-grey {
+				background-color:#9E9E9E;
+				border:2px solid #9E9E9E;
+				color: #FFF;
+			}
+			.sgpb-buttons-wrapper .press-lightblue {
+				background-color:#03A9F4;
+				border:2px solid #03A9F4;
+				color: #FFF;
+			}
+			.sgpb-review-wrapper .sgpb-buttons-wrapper {
+				text-align: center;
+			}
+			.sgpb-review-wrapper{
+				text-align: center;
+				padding: 20px;
+				padding-top: 0;
+			}
+			.sgpb-review-wrapper p {
+				color: black;
+			}
+			.sgpb-review-h1 {
+				font-size: 22px;
+				font-weight: normal;
+				line-height: 1.384;
+			}
+			.sgrb-review-h2 {
+				font-size: 20px;
+				font-weight: normal;
+				margin-top: 0 !important;
+			}
+			:root {
+				--main-bg-color: #1ac6ff;
+			}
+			.sgrb-review-strong{
+				color: var(--main-bg-color);
+			}
+			.sgrb-review-mt20{
+				margin-top: 20px
+			}
+			.sgpb-review-description h1:first-child {
+				font-size: 30px !important;
+			}
+		</style>
+		<div class="sgpb-review-wrapper">
+			<div class="sgpb-review-description">
+				<h1 class="sgpb-review-h1"><strong class="sgrb-review-strong"><?php _e('Wow!', SG_POPUP_TEXT_DOMAIN); ?></strong></h1>
+				<h1 class="sgpb-review-h1"><?php _e('You\'ve got a lot of conversion with Popup Builder! Congratulations!', SG_POPUP_TEXT_DOMAIN); ?></h1>
+				<h2 class="sgrb-review-h2"><?php _e('Share your positive feedback to keep our service up for better results!', SG_POPUP_TEXT_DOMAIN); ?></h2>
+			</div>
+			<div class="sgpb-buttons-wrapper">
+				<button class="press press-grey sgpb-button-1 sg-already-did-review"><?php _e('I already did', SG_POPUP_TEXT_DOMAIN); ?></button>
+				<button class="press press-lightblue sgpb-button-3 sg-you-worth-it"><?php _e('You worth it!', SG_POPUP_TEXT_DOMAIN); ?></button>
+				<button class="press press-grey sgpb-button-2 sg-show-popup-period" data-message-type="hide"><?php _e('Maybe later', SG_POPUP_TEXT_DOMAIN); ?></button></div>
+			<div> </div>
+		</div>
+		<?php
+		$popupContent = ob_get_clean();
+
+		return $popupContent;
+	}
+
 	public static function shouldOpenReviewPopupForDays()
 	{
 		$shouldOpen = true;
-		$dontShowAgain = get_option('SGPBCloseReviewPopup');
+		$dontShowAgain = get_option('SGPBCloseReviewPopup-1');
 		$periodNextTime = get_option('SGPBOpenNextTime');
 
-		if ($dontShowAgain) {
+		if (!$dontShowAgain) {
+			return true;
+		}
+		else {
 			return false;
 		}
-
 		// When period next time does not exits it means the user is old
 		if (!$periodNextTime) {
 			$usageDays = self::getPopupMainTableCreationDate();
@@ -1168,6 +1250,7 @@ class AdminHelper
 
 	public static function addContentToBanner($popupContent)
 	{
+		$popupContent = self::getReviewBannerContent();
 		echo '<div class="sgpb-wrapper sgpb-review-popup-banner-wrapper">'.$popupContent.'</div>';
 	}
 
@@ -1201,7 +1284,7 @@ class AdminHelper
 		if (empty($counterMaxPopup)) {
 			return false;
 		}
-		$dontShowAgain = get_option('SGPBCloseReviewPopup');
+		$dontShowAgain = get_option('SGPBCloseReviewPopup-1');
 		$maxCountDefine = get_option('SGPBMaxOpenCount');
 
 		if (!$maxCountDefine) {
@@ -1371,8 +1454,17 @@ class AdminHelper
 				$popupContent = Elementor\Plugin::instance()->frontend->get_builder_content_for_display($popupId);
 			}
 		}
+		else if (class_exists('Vc_Manager')) {
+			$stylesAndScripts = self::renderWPBakeryScriptsAndStyles($popupId);
+			$popupContent .= '<style>'.$stylesAndScripts.'</style>';
+		}
 
 		return $popupContent;
+	}
+
+	public static function renderWPBakeryScriptsAndStyles($popupId = 0)
+	{
+		return get_post_meta($popupId, '_wpb_shortcodes_custom_css', true);
 	}
 
 	// countdown popup
@@ -1666,5 +1758,20 @@ class AdminHelper
 		}
 
 		return array();
+	}
+
+	public static function removeAllNonPrintableCharacters($title, $defaultValue)
+	{
+		$titleRes = $title;
+		$pattern  ='/[\\\^£$%&*()}{@#~?><>,|=_+¬-]/';
+		$title = preg_replace($pattern, '', $title);
+		$title = mb_ereg_replace($pattern, '', $title);
+		$title = htmlspecialchars($title, ENT_IGNORE, 'UTF-8');
+		$result = str_replace(' ', '', $title);
+		if (empty($result)) {
+			$titleRes = $defaultValue;
+		}
+
+		return $titleRes;
 	}
 }

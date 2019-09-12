@@ -38,6 +38,7 @@ class ImagePopup extends SGPopup
 
 	public function getRemoveOptions()
 	{
+
 		// Where 1 mean this options must not show for this popup type
 		$removeOptions = array(
 			'sgpb-reopen-after-form-submission' => 1,
@@ -47,6 +48,9 @@ class ImagePopup extends SGPopup
 			'sgpb-content-padding' => 1
 		);
 		$parentOptions = parent::getRemoveOptions();
+		if ($this->getType() != 'image') {
+			return $parentOptions;
+		}
 
 		return $removeOptions + $parentOptions;
 	}

@@ -106,8 +106,8 @@ class SGPBTable extends SGPBListTable
 
 		$totalPages = ceil($totalItems/$perPage);
 
-		$orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : 'ASC';
-		$order = isset($_GET['order']) ? sanitize_text_field($_GET['order']) : '';
+		$orderby = isset($_GET['orderby']) ? sanitize_sql_orderby($_GET['orderby']) : 'ASC';
+		$order = isset($_GET['order']) ? sanitize_sql_orderby($_GET['order']) : '';
 
 		if (isset($this->initialOrder) && empty($order)) {
 			foreach ($this->initialOrder as $key => $value) {
@@ -211,11 +211,11 @@ class SGPBTable extends SGPBListTable
 		if (!$isVisibleExtraNav) {
 			return '';
 		}
-		
 
-		
 
-		
+
+
+
 		?>
 		<div class="alignleft actions daterangeactions">
 			<label class="screen-reader-text" for="sgpb-subscription-popup"><?php _e('Filter by popup', SG_POPUP_TEXT_DOMAIN)?></label>
@@ -223,7 +223,7 @@ class SGPBTable extends SGPBListTable
 
 			<label class="screen-reader-text" for="sgpb-subscribers-dates"><?php _e('Filter by date', SG_POPUP_TEXT_DOMAIN)?></label>
 			<?php  echo $this->getNavDateConditions(); ?>
-			
+
 			<input name="filter_action" id="post-query-submit" class="button" value="<?php _e('Filter', SG_POPUP_TEXT_DOMAIN)?>" type="submit">
 		</div>
 		<?php

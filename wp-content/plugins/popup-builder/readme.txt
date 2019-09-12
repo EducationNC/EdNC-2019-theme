@@ -7,9 +7,9 @@ Plugin URI: https://popup-builder.com
 Donate link: https://popup-builder.com
 Tags: popup, pop up, wordpress popup, popup maker, exit popup, popup builder, wordpress popup plugin
 Requires at least: 3.8
-Tested up to: 5.2
+Tested up to: 5.3
 Requires PHP: 5.3.3
-Stable tag: 3.42
+Stable tag: 3.47
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,38 @@ Go to the Popup Builder settings and set your desired options.
 13. Facebook popup
 
 == Changelog ==
+
+= Version 3.47 =
+* Bug fixed related to onclick event.
+
+= Version 3.46 =
+* Bug fixed related to Import of subscribers.
+* In popup builder menu, support section fixed, there was an incorrect redirection.
+* WP bakery (composer) compatibilty issue fixed.
+* PHP notice removed connected to Media buttons.
+* Popup speed improvements.
+* Bug fixed related to menu item click.
+* Facebook popup bug fixed related to error related to app development mode.
+
+= Version 3.45 =
+* Improvements of subscription form live preview.
+* Changed Support location URL to (Live Chat).
+* Bug fixed related to Subscribers Table ordering (credit: Tin Duong of Fortinetâ€™s FortiGuard Labs).
+* Banner closing issue fixed.
+* Code/speed improvements, php notices have been removed.
+
+= Version 3.44 =
+* Code optimization and typo fixes.
+* Bug fixed, related to Unsubscribe link in the newsletter.
+* Bug fixed related to unavailability to close the banner.
+
+= Version 3.43 =
+* Iframes (dimensions) in html works correctly, with correct sizes and without scroll issue.
+* Don't show again button added in license notice banner.
+* License keys issue fixed, now if you have already activated/deactivated the keys on another site, you will see the actual error.
+* Added new option which allows to show Subscription popup to already subscribed users.
+* Added new option to change the unsubscribe link title in the newsletter.
+* Code/speed improvements, php notices have been removed.
 
 = Version 3.41- 3.42 =
 * Added new shortcodes which can be used inside the Newsletter
@@ -1014,7 +1046,7 @@ Leave us a good review :)
 
 == Upgrade Notice ==
 
-Current Version of Popup Builder is 3.41
+Current Version of Popup Builder is 3.46
 
 == Other Notes ==
 

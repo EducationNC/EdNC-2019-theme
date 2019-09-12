@@ -87,7 +87,7 @@ class Updates
 				'version' 	=> $version,		// current version number
 				'license' 	=> $licenseKey,	// license key (used get_option above to retrieve from DB)
 				'item_id'   => $license['itemId'],	// id of this plugin
-				'item_name' => $license['itemName'],	// id of this plugin
+				'item_name' => $license['itemName'], // name of this plugin
 				'author' 	=> $license['autor'],	// author of this plugin
 				'url'       => home_url(),
 				'beta'      => false // set to true if you wish customers to receive update notifications of beta releases

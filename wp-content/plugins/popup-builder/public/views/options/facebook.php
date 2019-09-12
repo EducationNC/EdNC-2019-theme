@@ -7,7 +7,7 @@
 		<div class="col-md-8">
 			<div class="row form-group">
 				<label for="sgpb-fblike-like-url" class="col-md-5 control-label sgpb-static-padding-top">
-					<?php _e('Url', SG_POPUP_TEXT_DOMAIN)  ?>:
+					<?php _e('URL', SG_POPUP_TEXT_DOMAIN)  ?>:
 				</label>
 				<div class="col-md-6">
 					<input name="sgpb-fblike-like-url" id="sgpb-fblike-like-url" type="url" placeholder="http://" class="form-control sgpb-full-width-events" value="<?php echo esc_html($popupTypeObj->getOptionValue('sgpb-fblike-like-url'))?>" required>

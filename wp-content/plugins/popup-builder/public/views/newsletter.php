@@ -89,7 +89,7 @@
 											<p>Super excited to have you on board, we know you’ll just love us.</p>
 											<p>Sincerely,</p>
 											<p>[Blog name]</p>
-											<p>[Unsubscribe]</p>';
+											<p>[Unsubscribe title="Unsubscribe"]</p>';
 											$settings = array(
 												'wpautop' => false,
 												'tinymce' => array(
@@ -165,7 +165,7 @@
 								</div>
 								<div class="row form-group">
 									<div class="col-md-6">
-										<code><?php _e('[Unsubscribe]', SG_POPUP_TEXT_DOMAIN); ?></code>
+										<code><?php _e('[Unsubscribe title="Unsubscribe"]', SG_POPUP_TEXT_DOMAIN); ?></code>
 									</div>
 									<div class="col-md-6">
 										<?php _e('Unsubscribe', SG_POPUP_TEXT_DOMAIN); ?>
@@ -202,7 +202,6 @@
 												<?php echo @$field['fieldName']; ?>
 											</div>
 										</div>
-
 										<?php
 									}
 									?>

@@ -81,6 +81,10 @@ class Ajax
 
 	public function sgpbAutosave()
 	{
+		if (!isset($_POST['allPopupData'])) {
+			echo true;
+			wp_die();
+		}
 		$popupData = SGPopup::parsePopupDataFromData($_POST['allPopupData']);
 		do_action('save_post_popupbuilder');
 		$popupType = $popupData['sgpb-type'];
@@ -98,7 +102,7 @@ class Ajax
 	public function dontShowReviewPopup()
 	{
 		check_ajax_referer(SG_AJAX_NONCE, 'nonce');
-		update_option('SGPBCloseReviewPopup', true);
+		update_option('SGPBCloseReviewPopup-1', true);
 		wp_die();
 	}
 
@@ -310,8 +314,14 @@ class Ajax
 			foreach ($csvFileArray as $csvData) {
 				global $wpdb;
 				$subscribersTableName = $wpdb->prefix.SGPB_SUBSCRIBERS_TABLE_NAME;
+				$sql = $wpdb->prepare('SELECT submittedData FROM '.$subscribersTableName);
+				if ($sql) {
+					$sql = $wpdb->prepare('INSERT INTO '.$subscribersTableName.' (firstName, lastName, email, cDate, subscriptionType, status, unsubscribed) VALUES (%s, %s, %s, %s, %d, %d, %d) ', $csvData[$mapping['firstName']], $csvData[$mapping['lastName']], $csvData[$mapping['email']], $csvData[$mapping['date']], $formId, 0, 0);
+				}
+				else {
+					$sql = $wpdb->prepare('INSERT INTO '.$subscribersTableName.' (firstName, lastName, email, cDate, subscriptionType, status, unsubscribed, submittedData) VALUES (%s, %s, %s, %s, %d, %d, %d, %s) ', $csvData[$mapping['firstName']], $csvData[$mapping['lastName']], $csvData[$mapping['email']], $csvData[$mapping['date']], $formId, 0, 0, '');
+				}
 
-				$sql = $wpdb->prepare('INSERT INTO '.$subscribersTableName.' (firstName, lastName, email, cDate, subscriptionType, status, unsubscribed, submittedData) VALUES (%s, %s, %s, %s, %d, %d, %d, %s) ', $csvData[$mapping['firstName']], $csvData[$mapping['lastName']], $csvData[$mapping['email']], $csvData[$mapping['date']], $formId, 0, 0, '');
 				$wpdb->query($sql);
 			}
 		}
@@ -523,15 +533,12 @@ class Ajax
 
 		$postTypeName = sanitize_text_field($_POST['searchKey']);
 		$search = sanitize_text_field($_POST['searchTerm']);
+		$searchResults = $this->selectFromPost($postTypeName, $search);
 
-		$args      = array(
-			's'              => $search,
-			'post__in'       => ! empty( $_REQUEST['include'] ) ? array_map( 'intval', $_REQUEST['include'] ) : null,
-			'page'           => ! empty( $_REQUEST['page'] ) ? absint( $_REQUEST['page'] ) : null,
-			'posts_per_page' => 100,
-			'post_type'      => $postTypeName
-		);
-		$searchResults = ConfigDataHelper::getPostTypeData($args);
+		if (isset($_POST['searchCallback'])) {
+			$searchCallback = sanitize_text_field($_POST['searchCallback']);
+			$searchResults = apply_filters('sgpbSearchAdditionalData', $search, array());
+		}
 
 		if (empty($searchResults)) {
 			$results['items'] = array();
@@ -547,6 +554,20 @@ class Ajax
 
 		echo json_encode($results);
 		wp_die();
+	}
+
+	private function selectFromPost($postTypeName, $search)
+	{
+		$args      = array(
+			's'              => $search,
+			'post__in'       => ! empty( $_REQUEST['include'] ) ? array_map( 'intval', $_REQUEST['include'] ) : null,
+			'page'           => ! empty( $_REQUEST['page'] ) ? absint( $_REQUEST['page'] ) : null,
+			'posts_per_page' => 100,
+			'post_type'      => $postTypeName
+		);
+		$searchResults = ConfigDataHelper::getPostTypeData($args);
+
+		return $searchResults;
 	}
 
 	public function addConditionGroupRow()

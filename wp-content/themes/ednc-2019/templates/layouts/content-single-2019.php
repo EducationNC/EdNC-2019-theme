@@ -68,6 +68,23 @@ while (have_posts()) : the_post();
     </div>
     <?php } ?>
 
+    <!-- <?php //if (has_post_thumbnail() && $featured_image_align == 'hero-new') { ?>
+      <div class="full-width-image-block">
+        <img class="full-width-image" src="
+        <?php
+          //if(!empty($featured_image_hero)){
+            //echo 'featured-image-hero';
+            //echo $featured_image_hero[0];
+          }// else {
+            //echo 'force-crop';
+          //  echo $image_hero;
+        //  }
+        ?>
+        " />
+        <p class="lato"><?php //echo $thumb_post->post_excerpt; ?></p>
+      </div> -->
+    <?php //} ?>
+
 
 
     <div class="title">

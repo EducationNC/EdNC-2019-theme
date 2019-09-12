@@ -4,7 +4,7 @@ Donate link: https://theluckywp.com/product/table-of-contents/
 Tags: table of contents, toc, navigation, links, seo
 Requires at least: 4.7
 Tested up to: 5.2.2
-Stable tag: 1.9.1
+Stable tag: 1.9.4
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -58,6 +58,18 @@ You can also select post types to which the table of contents will be automatica
 By default, hash generated as heading text (for example, `#How_Do_This`). You can change hash format in global settings, tab "Misc.".
 
 For non-English websites it is recommended to enable the `Intl` PHP extension.
+
+### Compatibility
+
+LuckyWP Table of Contents was successfully tested with the following plugins:
+
+* Elementor Page Builder
+* Beaver Builder and Beaver Builder Themer Add-On
+* WPBakery Page Builder
+* WordPress Multilingual Plugin (WPML)
+* Rank Math, [officially confirmed](https://rankmath.com/compatibility/luckywp-table-of-contents/)
+* WP Rocket
+* Toolset Views and Toolset Access
 
 ### Hooks
 
@@ -138,6 +150,15 @@ For non-English websites it is recommended to enable the `Intl` PHP extension.
 11. Miscellaneous Settings
 
 == Changelog ==
+
+= 1.9.4 — 2019-09-04 =
+* Enhancements for more compatible with themes and plugins.
+
+= 1.9.3 — 2019-08-25 =
++ Added WPML compatibility.
+
+= 1.9.2 — 2019-08-11 =
++ Added support Elementor plugin.
 
 = 1.9.1 — 2019-08-04 =
 + Added support Toolset Views plugin.

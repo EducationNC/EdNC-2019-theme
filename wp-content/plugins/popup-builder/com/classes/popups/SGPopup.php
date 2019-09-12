@@ -166,7 +166,12 @@ abstract class SGPopup
 		$popupContent = wpautop($this->content);
 		$editorContent = AdminHelper::checkEditorByPopupId($postId);
 		if (!empty($editorContent)) {
-			$popupContent = $editorContent;
+			if (class_exists('Vc_Manager')) {
+				$popupContent .= $editorContent;
+			}
+			else {
+				$popupContent = $editorContent;
+			}
 		}
 
 		return $popupContent;
@@ -272,7 +277,10 @@ abstract class SGPopup
 			return false;
 		}
 
-		$type = @$savedData['sgpb-type'];
+		$type = 'html';
+		if (isset($savedData['sgpb-type'])) {
+			$type = $savedData['sgpb-type'];
+		}
 
 		$popupClassName = self::getPopupClassNameFormType($type);
 		$typePath = self::getPopupTypeClassPath($type);
@@ -550,15 +558,14 @@ abstract class SGPopup
 		if (empty($targetData)) {
 			return array();
 		}
+
 		foreach ($targetData as $groupId => $groupData) {
 			foreach ($groupData as $ruleId => $ruleData) {
 
 				if (empty($ruleData['value']) && !is_null($paramsData[$ruleData['param']])) {
 					$targetData[$groupId][$ruleId]['value'] = '';
 				}
-
 				if (isset($ruleData['value']) && is_array($ruleData['value'])) {
-
 					$valueAttrs = $attrs[$ruleData['param']]['htmlAttrs'];
 					$postType = $valueAttrs['data-value-param'];
 					$isNotPostType = '';
@@ -590,7 +597,7 @@ abstract class SGPopup
 		}
 
 		$popupTarget['sgpb-target'] = $targetData;
-		$popupTarget['sgpb-conditions'] = $conditionsData;
+		$popupTarget['sgpb-conditions'] = apply_filters('sgpbSaveConditions', $conditionsData);
 
 		$alreadySavedTargets = get_post_meta($popupId, 'sg_popup_target'.$saveMode, true);
 		if ($alreadySavedTargets === $popupTarget) {
@@ -781,7 +788,8 @@ abstract class SGPopup
 	public static function getPopupOptionsById($popupId, $saveMode = '')
 	{
 		$currentPost = get_post($popupId);
-		if ($currentPost->post_status == 'draft') {
+
+		if (!empty($currentPost) && $currentPost->post_status == 'draft') {
 			$saveMode = '_preview';
 		}
 		$optionsData = array();
