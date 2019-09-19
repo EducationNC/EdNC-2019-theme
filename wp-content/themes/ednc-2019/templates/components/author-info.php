@@ -1,10 +1,12 @@
-<?php use Roots\Sage\Titles;
+<?php
+use Roots\Sage\Titles;
+use Roots\Sage\ShareCount;
 
 $twitter = get_field('twitter');
 $email = get_field('email');
 
 
- ?>
+?>
 <!-- // Check if coauthors plugin is enabled -->
 
 <?php if ( function_exists( 'get_coauthors' ) ) {
@@ -66,10 +68,7 @@ $email = get_field('email');
         <?php } ?>
 
         <div class="share-buttons">
-            <div class="icon icon-facebook"></div>
-            <div class="icon icon-twitter"></div>
-            <div class="icon icon-email"></div>
-            <div class="icon icon-rss"></div>
+          <?php get_template_part('templates/components/social-share-btns'); ?>
         </div>
 
 

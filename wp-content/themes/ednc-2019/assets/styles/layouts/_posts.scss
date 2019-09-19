@@ -374,7 +374,7 @@
   }
   [class*=" icon-"]:before, [class^=icon-]:before {
     font-size: 20px;
-    line-height: 20px;
+    // line-height: 20px;
   }
   .icon-facebook {
     color: #3B5998;
@@ -382,7 +382,6 @@
   .icon-twitter {
     color: #00ACED;
   }
-
   .flex-box {
     display: flex;
     align-items: center;

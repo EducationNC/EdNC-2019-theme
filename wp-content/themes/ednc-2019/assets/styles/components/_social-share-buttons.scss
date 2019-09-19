@@ -109,8 +109,7 @@
   display: none;
 
   @media (min-width: $screen-md-min) {
-    display: block;
-    position: fixed;
+    display: inline-block;
     left: 0;
     top: 30%;
     z-index: 100;
@@ -144,7 +143,7 @@
   margin: 16px auto;
 
   &:before {
-    color: $white;
+    color: $text;
     text-indent: 0;
     position: absolute;
     font-size: 48px;
@@ -160,8 +159,9 @@
 
   @media (min-width: $screen-md-min) {
     margin: 0;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
 
     &:before {
       font-size: 32px;
@@ -179,7 +179,15 @@
   }
 
   &.icon-facebook {
-    background: #3b5998;
+    // background: #3b5998;
+    // color: #3b5998;
+    border: 1px solid $grey;
+    border-radius: 50%;
+    margin-left: 10px;
+
+    &:before {
+      color: $text;
+    }
 
     &:hover {
       background: darken(#3b5998, 10%);
@@ -187,7 +195,14 @@
   }
 
   &.icon-twitter {
-    background: #00aced;
+    // background: #00aced;
+    border: 1px solid $grey;
+    border-radius: 50%;
+    margin-left: 10px;
+
+    &:before {
+      color: red !important;
+    }
 
     &:hover {
       background: darken(#00aced, 10%);
@@ -195,7 +210,14 @@
   }
 
   &.icon-linkedin {
-    background: #007bb6;
+    // background: #007bb6;
+    border: 1px solid $grey;
+    border-radius: 50%;
+    margin-left: 10px;
+
+    &:before {
+      color: red !important;
+    }
 
     &:hover {
       background: darken(#007bb6, 10%);
@@ -203,7 +225,15 @@
   }
 
   &.icon-email {
-    background: $scarlet;
+    // background: $scarlet;
+    border: 1px solid $grey;
+    // padding:  8px 10px;
+    border-radius: 50%;
+    margin-left: 10px;
+
+    &:before {
+      color: red !important;
+    }
 
     &:hover {
       background: darken($scarlet, 10%);
@@ -222,7 +252,14 @@
   }
 
   &.icon-fax {
-    background: $pear;
+    // background: $pear;
+    border: 1px solid $grey;
+    border-radius: 50%;
+    margin-left: 10px;
+
+    &:before {
+      color: $green;
+    }
 
     &:hover {
       background: darken($pear, 10%);
