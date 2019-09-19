@@ -125,10 +125,10 @@ add_filter('body_class', __NAMESPACE__ . '\\body_class');
  * @link https://gist.github.com/965956
  * @link http://www.readability.com/publishers/guidelines#publisher
  */
-// function embed_wrap($cache) {
-//   return '<div class="entry-content-asset">' . $cache . '</div>';
-// }
-// add_filter('embed_oembed_html', __NAMESPACE__ . '\\embed_wrap');
+function embed_wrap($cache) {
+  return '<div class="entry-content-asset">' . $cache . '</div>';
+}
+add_filter('embed_oembed_html', __NAMESPACE__ . '\\embed_wrap');
 
 /**
  * Remove unnecessary self-closing tags
