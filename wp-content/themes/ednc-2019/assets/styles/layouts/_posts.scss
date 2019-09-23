@@ -664,3 +664,16 @@ h3.no-span {
 .author {
   // margin-bottom: 20px;
 }
+
+//2019 Template Adjustments
+
+.article-section .entry-content-asset:not(.instagram):not(.twitter):not(.wp-embed) {
+  // position: relative;
+  // padding-bottom: 0px;
+  // padding-top: 0px;
+  // height: 0;
+  margin-bottom: 70px;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: auto !important;
+}

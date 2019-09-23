@@ -412,6 +412,9 @@
     .block-recommended {
       @include block-1 (0px, 0px);
     }
+    .block-recommended_block {
+      @include block-1 (0px, 0px);
+    } 
 
     .content-block-3 {
       @include block-1(0px, 0px);
