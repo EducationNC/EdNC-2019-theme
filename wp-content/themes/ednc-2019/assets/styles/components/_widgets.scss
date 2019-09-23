@@ -819,26 +819,6 @@ section.widget_social_media {
 
 /****** EMAIL *********/
 
-.ninja_forms_widget-2  {
-  width: 100%;
-  height: 200px;
-  background-color: #3399CC;
-}
-
-.ninja-forms-field {
-  border-radius: 0px;
-  border: 1px solid red;
-  height: 45px;
-  background-color: #3399CC;
-  color: white;
-}
-
-body .ninja-forms-form-wrap input {
-    height: 45px;
-    color: white;
-    font-family: $font-family-sans-serif;
-    padding: 20px;
-}
 
 *::-webkit-input-placeholder {
 color: white;
@@ -860,9 +840,34 @@ color: white;
   /* Your CSS styles */
 }
 
-.field-wrap {
-  margin: 0 auto;
-  width: 30%;
+
+
+section.widget {
+  .field-wrap {
+    margin: 0 auto;
+    width: 30%;
+  }
+  .ninja_forms_widget-2  {
+    width: 100%;
+    height: 200px;
+    background-color: #3399CC;
+  }
+
+  .ninja-forms-field {
+    border-radius: 0px;
+    border: 1px solid red;
+    height: 45px;
+    background-color: #3399CC;
+    color: white;
+  }
+  .ninja-forms-form-wrap input {
+      height: 45px;
+      color: white;
+      font-family: $font-family-sans-serif;
+      padding: 20px;
+  }
+
+
 }
 
 

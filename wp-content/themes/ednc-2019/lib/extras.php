@@ -242,7 +242,7 @@ JS;
 	$output .= "\n</script>";
 
 	$output .= sprintf(
-		'<iframe sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" security="restricted" src="%1$s" width="%2$d" height="%3$d" title="%4$s" frameborder="1" marginwidth="0" marginheight="0" scrolling="no" class="wp-embedded-content"></iframe>',
+		'<iframe sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" security="restricted" src="%1$s" width="%2$d" height="%3$d" title="%4$s" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" class="wp-embedded-content"></iframe>',
 		esc_url( $embed_url ),
 		absint( $width ),
 		absint( $height ),

@@ -129,6 +129,8 @@
 
 .field-hide {
   visibility: hidden;
+  margin-bottom: 0;
+  height: 0;
 }
 
 // Gravity Forms
@@ -172,3 +174,9 @@
 //     }
 //   }
 // }
+
+
+.wrapper {
+  border-top: 1px solid #C3C6CC;
+  border-bottom: 1px solid #C3C6CC;
+}

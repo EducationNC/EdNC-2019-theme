@@ -70,9 +70,6 @@ $count_num = num_format($counts->total);
   <a rel="nofollow" target="_blank" class="icon-twitter social-share-link " href="<?php echo $twitterURL; ?>">
     Tweet on Twitter
   </a>
-  <a rel="nofollow" target="_blank" class="icon-linkedin social-share-link" href="<?php echo $linkedinURL; ?>">
-    Share on LinkedIn
-  </a>
   <a rel="nofollow" target="_blank" class="icon-email social-share-link" href="<?php echo $emailURL; ?>">
     Email this page
   </a>

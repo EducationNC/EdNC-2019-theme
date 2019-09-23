@@ -39,6 +39,8 @@ $email = get_field('email');
               )
             );
 
+
+
             $bio = new WP_Query($args);
 
             if ($bio->have_posts()) : while ($bio->have_posts()) : $bio->the_post(); ?>
@@ -57,8 +59,28 @@ $email = get_field('email');
                   </div>
                   <?php endwhile; endif; wp_reset_query();?>
                   <div>
+                      <?php
+                      $u_time = get_the_time('U');
+                      $u_modified_time = get_the_modified_time('U');
+                      //$modified = the_modified_date('g:i a');
+                      //echo $u_time;
+                      //echo $u_modified_time;
+                      //echo $modified;
+                      ?>
                     <time class="published pf-date" datetime="<?php echo get_the_time('c'); ?>">
-                      <?php the_time(get_option('date_format')); ?>
+                      <?php the_time(get_option('date_format'));
+                      if ($u_modified_time >= $u_time + 8400) {
+                      echo " - Updated ";
+                      the_modified_time('M jS, Y');
+                      echo ", ";
+                      the_modified_time();
+                      echo " "; }
+
+
+
+
+
+                      ?>
                     </time>
                   </div>
                 </div>

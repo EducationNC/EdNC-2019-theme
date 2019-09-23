@@ -290,7 +290,6 @@
 .field-wrap input[type=button] {
   height: auto;
   padding: 10px 9px;
-
 }
 
 .label-right .nf-field-label {
@@ -307,4 +306,74 @@
 .nf-after-field .nf-error-msg {
     margin-right: 10px;
     font-family: Lato;
+}
+
+
+
+
+
+
+.wp-block-ninja-forms-form {
+
+  .nf-form-cont .email-box-inline {
+      width: 93%;
+      clear: none;
+      float: left;
+      position: absolute;
+      border-radius: 5px;
+  }
+  .hide {
+    display: none;
+  }
+  .nf-error-field-errors {
+    display: none;
+  }
+  .inline-block {
+    display: inline-block;
+  }
+  .heading {
+    text-align: center;
+  }
+
+  .nf-form-cont .email-submit-inline {
+      width: 25%;
+      clear: none;
+      float: right;
+  }
+  .field-wrap input[type=button] {
+    height: 45px;
+    padding: 0px 9px;
+    width: 100%;
+    border-radius: 5px;
+    color: #FFF;
+    background-color: #98A942;
+    border-color: transparent;
+    z-index: 10;
+  }
+  .field-wrap input:focus {
+  outline: none !important;
+  }
+  .field-wrap .pikaday__container, .field-wrap .pikaday__display, .field-wrap>div input, .field-wrap select, .field-wrap textarea {
+    background-color: $white;
+    border: 1px solid black;
+    border-radius: 5px;
+    color: $text;
+    height: 45px;
+    border-right: none;
+    font-family: $font-family-sans-serif;
+    padding-left: 10px;
+  }
+  .field-wrap select:focus, .field-wrap textarea:focus {
+    outline: none !important;
+  }
+  .nf-form-fields-required {
+    display: none;
+  }
+  .svg-border-top {
+    padding-bottom: 10px;
+  }
+  .svg-border-bottom {
+    padding-top: 10px;
+  }
+
 }
