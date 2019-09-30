@@ -70,16 +70,11 @@ $email = get_field('email');
                     <time class="published pf-date" datetime="<?php echo get_the_time('c'); ?>">
                       <?php the_time(get_option('date_format'));
                       if ($u_modified_time >= $u_time + 86400) {
-                      echo "<i> - Updated ";
-                      the_modified_time('M jS, Y');
+                      echo "<i> | Updated ";
+                      the_modified_time('F j, Y');
                       echo ", ";
                       the_modified_time();
                       echo "</i>"; }
-
-
-
-
-
                       ?>
                     </time>
                   </div>
