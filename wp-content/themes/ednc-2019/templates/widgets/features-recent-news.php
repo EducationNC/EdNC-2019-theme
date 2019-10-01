@@ -44,7 +44,7 @@ global $featured_recent;
       </section>
 
 
-      <section id="carousel-latest" class="block listing listing-two small coral">
+      <section id="carousel-latest" class="block listing listing-two small green">
         <header>
           <h2 class="header section-title">Most Recent</h2>
         </header>

@@ -9,7 +9,7 @@
       <?php
          $args = array(
            'post_type' => 'bio',
-           'post__in' => array(1647, 1663, 13081, 26641, 32468, 26684, 41796, 52642, 49249, 65207, 84979),   // Mebane, Alex, Nation, Liz, Nancy, Molly, Analisa, Yasmin, Robert, Rupen, Ryan, Alli
+           'post__in' => array(1647, 1663, 13081, 26641, 32468, 26684, 41796, 49249, 65207, 84979),   // Mebane, Alex, Nation, Liz, Nancy, Molly, Analisa, Yasmin, Robert, Rupen, Ryan, Alli
            'posts_per_page' => -1,
            'orderby' => 'post__in',
            'order' => 'ASC'
@@ -110,7 +110,7 @@
                                      array(
                                        'taxonomy' => 'author-year',
                                        'field' => 'slug',
-                                       'terms' => '2018'
+                                       'terms' => '2019'
                                      )
                                    )
                                  );
@@ -164,7 +164,7 @@
                                   array(
                                     'taxonomy' => 'author-year',
                                     'field' => 'slug',
-                                    'terms' => '2018'
+                                    'terms' => '2019'
                                   )
                                 )
                               );
