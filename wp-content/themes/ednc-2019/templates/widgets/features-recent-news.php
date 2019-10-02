@@ -100,7 +100,7 @@ global $featured_recent;
         </header>
         <article class="post">
             <div class="lead-image">
-              <img src="<?php echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" />
+              <img src="<?php echo Assets\asset_path('images/Mebane_Rash-220x220bw.png'); ?>" alt="" title="" />
             </div>
         </article><!-- .post -->
         <hr class="break">
