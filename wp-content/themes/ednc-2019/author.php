@@ -86,7 +86,7 @@ use Roots\Sage\Media;
                        <div class="block-recommended-bio">
                          <a href="<?php the_permalink(); ?>">
                             <?php if (!empty($featured_image)) {
-                             echo '<img class="" src="' . $featured_image . '" />';
+                             echo '<img class="no-lazy" src="' . $featured_image . '" />';
                            } ?>
                            <p class="small"><?php echo $post_type ?></p>
                            <h3 class="post-title"><?php the_title(); ?></h3>
