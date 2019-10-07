@@ -1,3 +1,15 @@
+body {
+  font-family: $font-family-serif;
+  font-size: 18px;
+  line-height: 1.88em;
+  font-weight: 300;
+  word-wrap: break-word;
+  color: $text;
+  margin-bottom: 1.88em;
+
+}
+
+
 
 h1, .h1, .article-title, .entry-title {
   font-family: $font-family-serif;
@@ -156,6 +168,7 @@ p.small {
   font-family: $font-family-sans-serif;
   font-weight: 200;
   letter-spacing: -0.1px;
+  margin-bottom: 0.48em;
 }
 
 p.lato {

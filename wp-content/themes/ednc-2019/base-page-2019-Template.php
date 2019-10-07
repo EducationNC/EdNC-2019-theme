@@ -38,6 +38,7 @@ get_template_part('templates/components/alert'); */
     </div><!-- /.content -->
 </div><!-- /.wrap -->
 
+
 <?php
 do_action('get_footer');
 get_template_part('templates/layouts/footer');

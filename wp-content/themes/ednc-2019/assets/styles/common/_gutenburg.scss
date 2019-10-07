@@ -101,9 +101,34 @@ h4.is-style-default {
   margin-bottom: 0;
 }
 
-.acf-block-component.acf-block-body {
-  background-color: red;
+.trust-project {
+  background-color: #DCDFE5;
+  padding: 20px;
+  margin-bottom: 1.88em;
 }
+.trust-project--content p,
+.trust-project--content li {
+  // margin-bottom: 0px;
+  font-family: $font-family-sans-serif;
+}
+
+.trust-project--content p:last-of-type {
+  margin-bottom: 0px;
+}
+
+.trust-project--content h3 {
+  font-size: 18px !important;
+}
+
+
+.h2-trust {
+  font-size: 23px !important;
+  border-bottom: 1px solid black;
+  margin-bottom: 40px;
+  font-family: $font-family-serif !important;
+  font-weight: 400px;
+}
+
 
 
 

@@ -23,6 +23,16 @@ function be_register_blocks() {
 		'icon'			=> 'format-quote',
     'keywords'		=> array( 'blockquote', 'quote', 'block-quote' )
   ));
+	acf_register_block( array(
+		'name'			=> 'trust-project-block',
+		'title'			=> __( 'Trust Project Block', 'clientname' ),
+		'render_template'	=> 'templates/gutenberg/trust-project.php',
+		'category'		=> 'formatting',
+		'icon'			=> 'admin-users',
+		'mode'			=> 'preview',
+		'icon'			=> 'format-quote',
+		'keywords'		=> array( 'trustproject', 'trust', 'trust-project' )
+	));
   acf_register_block( array(
     'name'			=> 'longform-intro',
     'title'			=> __( 'LongForm Intro', 'clientname' ),

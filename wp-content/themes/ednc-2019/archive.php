@@ -27,6 +27,8 @@ $post_id = $object->taxonomy.'_'.$object->term_id;
 
                   <?php
                   if( get_row_layout() == 'text' ) ?>
+                    <?php $txt = "Hello world!";
+                    echo $txt ?>
                     <?php get_template_part('templates/components/flex', 'header');
                   ?>
 

@@ -1,5 +1,5 @@
 <p class="small">
-  By:
+  by 
   <?php
   if ( function_exists( 'coauthors_posts_links' ) ) {
     coauthors_posts_links();
