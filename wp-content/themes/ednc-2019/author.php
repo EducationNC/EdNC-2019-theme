@@ -63,8 +63,9 @@ use Roots\Sage\Media;
                <?php the_content(); ?>
              </div>
 
-             <div class="row">
-               <div class="recommended-blocks-bio border">
+             <div class="row grey-background">
+               <h3 class="bio-header">Featured Articles</h3>
+               <div class="recommended-blocks-bio">
 
 
                  <?php
@@ -86,7 +87,7 @@ use Roots\Sage\Media;
                          $post_type = "News";
                        }
                        ?>
-                       <div class="block-recommended-bio border">
+                       <div class="block-recommended-bio">
                          <a href="<?php the_permalink(); ?>">
                             <?php if (!empty($featured_image)) {
                              echo '<img class="no-lazy" src="' . $featured_image . '" />';
