@@ -40,13 +40,13 @@ use Roots\Sage\Media;
               <h1 class="rd entry-title"><?= Titles\title(); ?></h1>
                <?php
                if ($twitter) {
-                 echo '<div class="nowrap overflow-ellipsis inline-block"><span class="big icon-twitter"></span> <a href="http://twitter.com/' . $twitter . '" target="_blank">@' . $twitter . '</a></div>';
+                 echo '<div class="nowrap overflow-ellipsis inline-block"><span class="icon-twitter"></span> <a href="http://twitter.com/' . $twitter . '" target="_blank">@' . $twitter . '</a></div>';
                }
                if ($email) {
-                 echo '<div class="nowrap overflow-ellipsis inline-block"><span class="big icon-email"></span><a href="mailto:' . antispambot($email) . '" target="_blank">' . antispambot($email) . '</a></div>';
+                 echo '<div class="nowrap overflow-ellipsis inline-block"><span class="icon-email"></span><a href="mailto:' . antispambot($email) . '" target="_blank">' . antispambot($email) . '</a></div>';
                }
                if ($website) {
-                 echo '<div class="nowrap overflow-ellipsis inline-block"><span class="big icon-website"></span> <a href="' . $website . '" target="_blank">Website</a></div>';
+                 echo '<div class="nowrap overflow-ellipsis inline-block"><span class="icon-website"></span> <a href="' . $website . '" target="_blank">Website</a></div>';
                }
 
               ?>
@@ -97,21 +97,6 @@ use Roots\Sage\Media;
                    <?php endforeach; ?>
                    <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
                  <?php endif; ?>
-
-
-
-                 <?php
-                 /*
-                 if( $bio_posts ): ?>
-                 	<ul>
-                 	<?php foreach( $bio_posts as $p ): // variable must NOT be called $post (IMPORTANT) ?>
-                 	    <li>
-                 	    	<a href="<?php echo get_permalink( $p->ID ); ?>"><?php echo get_the_title( $p->ID ); ?></a>
-                 	    	<span>Custom field from $post:</span>
-                 	    </li>
-                 	<?php endforeach; ?>
-                 	</ul>
-                 <?php endif; */?>
                </div>
              </div>
 

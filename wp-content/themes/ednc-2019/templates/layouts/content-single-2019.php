@@ -198,7 +198,7 @@ while (have_posts()) : the_post();
 
 
             <?php
-              /*
+
             if ( function_exists( 'get_coauthors' ) ) {
               $coauthors = get_coauthors();
               $coauthors_count = count($coauthors);
@@ -213,9 +213,9 @@ while (have_posts()) : the_post();
               echo '<h2>About the author</h2>';
             }
 
-            get_template_part('templates/components/author', 'excerpt');
+            //get_template_part('templates/components/author', 'excerpt');
 
-            */
+
             ?>
           </div>
         </div>
