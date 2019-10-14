@@ -12,6 +12,7 @@ use Roots\Sage\Media;
        <div class="row">
           <div class="col-md-12 header-big">
             <?php
+            $bio_header = get_field('bio-page-featured', 'option');
             $author = get_user_by( 'slug', get_query_var( 'author_name' ) );
             $author_id = $author->ID;
             $args = array(
@@ -25,6 +26,8 @@ use Roots\Sage\Media;
               )
             );
 
+
+
             $bio = new WP_Query($args);
             //print_r ($bio); ?>
            <?php if ($bio->have_posts()) : while ($bio->have_posts()) : $bio->the_post(); ?>
@@ -33,7 +36,6 @@ use Roots\Sage\Media;
              $email = get_field('email');
              $website = get_field('website');
              $bio_posts = get_field('recommended_articles_bio_pages');
-             $ids = get_field('recommended_articles_bio_pages', false, false);
              ?>
             <div class="circle-image">
               <?php the_post_thumbnail('bio-headshot'); ?>
@@ -62,7 +64,8 @@ use Roots\Sage\Media;
              </div>
 
              <div class="row">
-               <div class="recommended-blocks-bio">
+               <div class="recommended-blocks-bio border">
+
 
                  <?php
                  if( $bio_posts ): ?>
@@ -83,7 +86,7 @@ use Roots\Sage\Media;
                          $post_type = "News";
                        }
                        ?>
-                       <div class="block-recommended-bio">
+                       <div class="block-recommended-bio border">
                          <a href="<?php the_permalink(); ?>">
                             <?php if (!empty($featured_image)) {
                              echo '<img class="no-lazy" src="' . $featured_image . '" />';
