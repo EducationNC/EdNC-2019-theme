@@ -6,7 +6,8 @@ use Roots\Sage\Nav;
 ?>
 
 <div class="mobile-bar hidden-md hidden-lg print-no">
-  <img class="mobile-logo" src="<?php echo Assets\asset_path('images/logo-square.svg'); ?>" alt="EducationNC" />
+  <!-- <img class="mobile-logo" src="<?php// echo Assets\asset_path('images/logo-square.svg'); ?>" alt="EducationNC" /> -->
+  <a class="" href="<?php echo esc_url( home_url( '/' ) ); ?>"><img class="mobile-logo" src="<?php echo Assets\asset_path('images/logo-square.svg'); ?>" alt="EdNC" /></a>
 
   <div class="mobile-menu">
     <a id="nav-toggle" class="nav-toggle" href="#"><span>Menu</span></a>
