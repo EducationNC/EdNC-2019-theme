@@ -58,25 +58,24 @@ $email = get_field('email');
                     <?php// get_template_part('templates/components/author', 'excerpt-2019'); ?>
                   </div>
                   <?php endwhile; endif; wp_reset_query();?>
+                  <time class="published pf-date" datetime="<?php echo get_the_time('c'); ?>">
+                    <?php the_time(get_option('date_format')); ?>
+                  </time>
                   <div>
                       <?php
                       $u_time = get_the_time('U');
                       $u_modified_time = get_the_modified_time('U');
+                      $updated_date = get_post_meta(get_the_id(), 'updated_date', true);
                       //$modified = the_modified_date('g:i a');
                       //echo $u_time;
                       //echo $u_modified_time;
                       //echo $modified;
-                      ?>
-                    <time class="published pf-date" datetime="<?php echo get_the_time('c'); ?>">
-                      <?php the_time(get_option('date_format'));
-                      if ($u_modified_time >= $u_time + 86400) {
-                      echo "<i> | Updated ";
-                      the_modified_time('F j, Y');
-                      echo ", ";
-                      the_modified_time();
-                      echo "</i>"; }
-                      ?>
-                    </time>
+                      if ($updated_date > $u_time + 86400) { ?>
+                        &mdash; updated
+                        <time class="revised" datetime="<?php echo get_the_modified_date('c'); ?>">
+                          <?php echo date(get_option('date_format'), $updated_date); ?>
+                        </time>
+                      <?php } ?>
                   </div>
                 </div>
               </div>
