@@ -1,25 +1,25 @@
 .block-recommended-bio {
-    /* -webkit-box-flex: 1; */
-    // -ms-flex: 1 0 calc(20% - 40px);
-    // flex: 1 0 calc(30% - 40px);
-    width: 100%;
-    margin: 20px;
+  /* -webkit-box-flex: 1; */
+  // -ms-flex: 1 0 calc(20% - 40px);
+  // flex: 1 0 calc(30% - 40px);
+  width: 100%;
+  margin: 20px;
 }
 
 
 .recommended-blocks-bio {
-    margin: 0 auto;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: -webkit-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-    padding: 0px 20px;
-    // background-color: #DCDFE5;
+  margin: 0 auto;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: -webkit-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  padding: 0px 20px;
+  // background-color: #DCDFE5;
 }
 
 h3.bio-header {
@@ -28,5 +28,14 @@ h3.bio-header {
 }
 
 .grey-background {
-      background-color: #DCDFE5;
+  background-color: #DCDFE5;
+  padding: 20px;
+}
+
+.row.other-content {
+  margin-top: 40px;
+}
+
+.row.other-content .category-content-justify-left {
+  padding: 10px 0 50px;
 }

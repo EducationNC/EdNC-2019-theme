@@ -19,16 +19,14 @@ $post_id = $object->taxonomy.'_'.$object->term_id;
         //echo $value;?>
 
         <?php
-        if( have_rows('flex_content_category', $post_id) ):
+        if( have_rows('flex_content', $post_id) ):
 
           // loop through the rows of data
-            while ( have_rows('flex_content_category', $post_id) ) : the_row();  ?>
+            while ( have_rows('flex_content', $post_id) ) : the_row();  ?>
 
 
                   <?php
                   if( get_row_layout() == 'text' ) ?>
-                    <?php $txt = "Hello world!";
-                    echo $txt ?>
                     <?php get_template_part('templates/components/flex', 'header');
                   ?>
 
@@ -47,7 +45,7 @@ $post_id = $object->taxonomy.'_'.$object->term_id;
 
                   <?php
                   if( get_row_layout() == 'full_hero_flex' )
-                  get_template_part('templates/components/flex', 'image');
+                  get_template_part('templates/components/flex', 'full-width-image');
                   ?>
 
                   <?php

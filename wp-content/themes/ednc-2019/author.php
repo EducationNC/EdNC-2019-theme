@@ -36,6 +36,7 @@ use Roots\Sage\Media;
              $email = get_field('email');
              $website = get_field('website');
              $bio_posts = get_field('recommended_articles_bio_pages');
+
              ?>
             <div class="circle-image">
               <?php the_post_thumbnail('bio-headshot'); ?>
@@ -66,8 +67,6 @@ use Roots\Sage\Media;
              <div class="row grey-background">
                <h3 class="bio-header">Featured Articles</h3>
                <div class="recommended-blocks-bio">
-
-
                  <?php
                  if( $bio_posts ): ?>
                      <?php foreach( $bio_posts as $post): // variable must be called $post (IMPORTANT) ?>
@@ -108,14 +107,14 @@ use Roots\Sage\Media;
              wp_reset_query();
              ?>
 
-
-
           </div>
        </div>
 
 
-       <div class="row">
+       <div class="row other-content">
           <div class="col-md-12">
+            <?php $bio_header = get_field('bio-page-other-content', 'options'); ?>
+            <h3 class=""><?php echo $bio_header ?></h3>
             <div class="category-content-justify-left">
               <?php get_template_part('templates/layouts/archive', 'loop-2019'); ?>
             </div>
