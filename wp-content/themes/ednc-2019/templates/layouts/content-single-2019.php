@@ -173,6 +173,8 @@ while (have_posts()) : the_post();
             );
             ?>
 
+            <?php get_template_part('templates/components/author', 'excerpt-bottom'); ?>
+
             <?php
             if (in_category('109')) {  // 1868 Constitutional Convention
               ?>
@@ -213,7 +215,7 @@ while (have_posts()) : the_post();
               echo '<h2>About the author</h2>';
             }
 
-            //get_template_part('templates/components/author', 'excerpt');
+            get_template_part('templates/components/author', 'excerpt-bottom');
 
 
             ?>

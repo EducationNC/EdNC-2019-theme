@@ -677,3 +677,21 @@ h3.no-span {
   margin-right: 0 !important;
   max-width: auto !important;
 }
+
+.author-excerpt-headshot {
+  display: inline-block;
+  img {
+    width: 10%;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+}
+.author-excerpt-bottom {
+  .author-excerpt-bottom-content {
+    p {
+      font-family: $font-family-sans-serif;
+      font-size: 16px;
+      line-height: 1.5em;
+    }
+  }
+}
