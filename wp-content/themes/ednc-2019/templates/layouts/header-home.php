@@ -15,17 +15,17 @@ use Roots\Sage\Nav;
      </a>
     </div>
     <div class="second">
-      <div class="secondary-logos full-screen">
+      <!-- <div class="secondary-logos full-screen">
         <a class="secondary-logo" target="_blank" href="https://nccppr.org/">
-          <img class="secondary-logo-img" src="<?php echo Assets\asset_path('images/NCCPPR-logo-long.svg'); ?>"></img>
+          <img class="secondary-logo-img" src="<?php //echo Assets\asset_path('images/NCCPPR-logo-long.svg'); ?>"></img>
         </a>
         <a class="secondary-logo" target="_blank" href="https://www.firstvotenc.org/">
-          <img class="secondary-logo-img" src="<?php echo Assets\asset_path('images/FirstVoteNC-stamp-purple.png'); ?>"></img>
+          <img class="secondary-logo-img" src="<?php //echo Assets\asset_path('images/FirstVoteNC-stamp-purple.png'); ?>"></img>
         </a>
         <a class="secondary-logo" target="_blank" href="https://www.reachncvoices.org/">
-          <img class="secondary-logo-img" src="<?php echo Assets\asset_path('images/ReachNCVoices-stamp-purple.png'); ?>"></img>
+          <img class="secondary-logo-img" src="<?php //echo Assets\asset_path('images/ReachNCVoices-stamp-purple.png'); ?>"></img>
         </a>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="flex-3">

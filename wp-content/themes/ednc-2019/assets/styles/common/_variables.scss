@@ -269,8 +269,8 @@ $link-hover-color:      $navy;
   margin-right: 15px;
 }
 
-@mixin link {
-  background-image: linear-gradient($coral, $coral);
+@mixin hover-link {
+  background-image: linear-gradient($text, $text);
   background-position: 0 1.14em;
   background-repeat: repeat-x;
   background-size: 8px 2px;

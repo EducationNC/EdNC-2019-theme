@@ -30,7 +30,7 @@ else {
      <img class="" src="<?php echo $featured_image; ?>" />
      <!-- <p class=""><?php// print_r ($author_bio)?></p>
      <p class=""><?php //echo get_author_posts_url($user['ID']); ?></p> -->
-     <p class="small"><?php echo $post_type ?></p>
+     <!-- <p class="small"><?php //echo $post_type ?></p> -->
      <?php get_template_part('templates/components/article-info'); ?>
    </div>
  </div>

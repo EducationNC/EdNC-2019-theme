@@ -237,8 +237,8 @@ a.text, a.rd {
   }
 
   &:hover, &:active, &:focus {
-    text-decoration: none;
-    @include underline;
+    // text-decoration: none;
+    // @include underline;
   }
 }
 

@@ -70,7 +70,7 @@ $post = Extras\get_adjacent_author_post(true); ?>
             <?php if (!empty($featured_image)) {
              echo '<img class="" src="' . $featured_image . '" />';
              } ?>
-            <p class="small"><?php// echo $post_type ?></p>
+            <!-- <p class="small"><?php// echo $post_type ?></p> -->
             <h3 class="post-title"><?php the_title(); ?></h3>
             <?php get_template_part('templates/components/entry-meta'); ?>
             <!-- <a class="mega-link" href="<?php the_permalink(); ?>"></a> -->

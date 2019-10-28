@@ -346,14 +346,20 @@
 
   }
 
-  [cmtooltip] {
-    color: red;
-  }
+  // [cmtooltip] {
+  //   color: red;
+  // }
+  //
+  // .glossaryLink {
+  //   color: red;
+  // }
 
-  .glossaryLink {
-    color: red;
-  }
-
+ a {
+   // color: inherit;
+   // text-decoration: underline;
+   // text-underline-offset: 0.1em;
+   // text-decoration-thickness: 1em;
+ }
 
   .banner {
     margin-bottom: 50px;
@@ -446,7 +452,7 @@
   }
 
   a.read-more:hover {
-    @include link;
+    // @include hover-link;
   }
 
   .inline {
@@ -458,6 +464,16 @@
     font-size: 1.65em;
     vertical-align: bottom;
     display: inline-block;
+  }
+
+  .article-section {
+    p {
+      a {
+        font-weight: bold;
+      }
+
+    }
+
   }
 
 }
