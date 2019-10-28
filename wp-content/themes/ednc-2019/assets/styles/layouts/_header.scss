@@ -673,7 +673,26 @@
   // justify-content: flex-start;
   align-items: center;
   justify-content: center;
+  // border: 1px solid red;
 }
+
+.flex-3 {
+
+  #mc_embed_signup input.email {
+    border-radius: 0px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  #mc_embed_signup .button {
+    background-color: $bright-blue;
+    border-radius: 0px;
+  }
+
+}
+
+
 
 .main-logo {
   max-width: 250px;

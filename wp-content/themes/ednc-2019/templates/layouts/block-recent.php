@@ -9,18 +9,14 @@ $featured_image = Media\get_featured_image('featured-four-block');
 
 $column = wp_get_post_terms(get_the_id(), 'column');
 if ($column) {
-  // $link = get_term_link($column[0]);
-  $post_type = $column[0]->name;
-  // echo '<span class="label"><a href="' . $link . '">' . $column[0]->name. '</a></span> ';
+  //$post_type = $column[0]->name;
+  $post_type = "";
 }
-// elseif ($post->post_type == 'post') {
-//    $post_type = "News";
-// }
 elseif ($post->post_type == 'edtalk') {
-  $post_type = "EdTalk";
+  $post_type = "";
 }
 elseif ($post->post_type == 'map') {
-  $post_type = "Maps";
+  $post_type = "";
 }
 else  {
   $post_type = "News";
