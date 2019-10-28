@@ -45,9 +45,14 @@ global $featured_recent;
 
 
       <section id="carousel-latest" class="block listing listing-two small green">
-        <header>
-          <h2 class="header section-title">Most Recent</h2>
-        </header>
+        <?php if( have_rows('recent', 'option') ): ?>
+          <?php while( have_rows('recent', 'option') ): the_row(); ?>
+            <?php $header = get_sub_field('header'); ?>
+              <header>
+                <h2 class="header section-title"><?php echo $header ?></h2>
+              </header>
+            <?php endwhile; ?>
+          <?php endif; ?>
         <?php
         // Show 8 most news
         $recent = new WP_Query([
@@ -96,7 +101,12 @@ global $featured_recent;
     <div class="carousel-left">
       <section id="carousel-popular" class="block listing small orange">
         <header>
-          <h2 class="header section-title">Editor's Picks</h2>
+          <?php if( have_rows('editors_picks', 'option') ): ?>
+            <?php while( have_rows('editors_picks', 'option') ): the_row(); ?>
+              <?php $header = get_sub_field('header'); ?>
+              <h2 class="header section-title"><?php echo $header ?></h2>
+            <?php endwhile; ?>
+          <?php endif; ?>
         </header>
         <article class="post">
             <div class="lead-image">
