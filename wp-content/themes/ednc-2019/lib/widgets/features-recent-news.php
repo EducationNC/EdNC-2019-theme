@@ -37,12 +37,12 @@ class Features_Recent_News extends \WP_Widget {
 	 * @param array $instance The widget options
 	 */
 	 public function form( $instance ) {
-		 $number = ! empty( $instance['number'] ) ? $instance['number'] : 1;
+		 //$number = ! empty( $instance['number'] ) ? $instance['number'] : 1;
 		 ?>
-		 <p>
-			 <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Label:' ); ?></label>
-			 <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-		 </p>
+		 <!-- <p>
+			 <label for="<?php //echo $this->get_field_id( 'title' ); ?>"><?php //_e( 'Label:' ); ?></label>
+			 <input class="widefat" id="<?php //echo $this->get_field_id( 'title' ); ?>" name="<?php //echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php //echo esc_attr( $title ); ?>">
+		 </p> -->
 		 <?php
 	 }
 
@@ -53,10 +53,10 @@ class Features_Recent_News extends \WP_Widget {
 	 * @param array $old_instance The previous options
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		//$instance = array();
+		// $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 
-		return $instance;
+		//return $instance;
 
 	}
 }

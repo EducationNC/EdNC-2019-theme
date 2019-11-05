@@ -13,18 +13,6 @@ use Roots\Sage\ShareCount;
   <div class="row bio">
     <div class="col-xs-12 col-md-12">
       <?php
-        if ($coauthors_count > 1) { ?>
-          <div class="author-article">
-            <div class="margin-none">
-              <p><?php echo $author = coauthors_posts_links( null, null, null, null, false ); ?></p>
-            </div>
-            <time class="published pf-date" datetime="<?php echo get_the_time('c'); ?>">
-              <?php the_time(get_option('date_format')); ?>
-            </time>
-          </div>
-        <?php
-        } else {
-
         foreach ($coauthors as $author) {
             $args = array(
               'post_type' => 'bio',
@@ -43,27 +31,47 @@ use Roots\Sage\ShareCount;
             if ($bio->have_posts()) : while ($bio->have_posts()) : $bio->the_post(); ?>
               <?php
               $user = get_field('user');
+              $twitter = get_field('twitter');
+              $email = get_field('email');
+              $website = get_field('website');
               //print_r ($user);
               ?>
-              <div class="author-excerpt">
-                <div class="author-excerpt-headshot">
-                  <?php the_post_thumbnail('bio-headshot'); ?>
-                  <a href="<?php echo get_author_posts_url($user['ID']); ?>" class="read-more"><?php the_title(); ?></a>
+              <div class="author">
+                <div class="author-excerpt-intro">
+                  <div class="author-excerpt-headshot">
+                    <?php the_post_thumbnail('bio-headshot'); ?>
+                    <a href="<?php echo get_author_posts_url($user['ID']); ?>" class="read-more"><?php the_title(); ?></a>
+                  </div>
+                  <div class="author-excerpt-social">
+                    <?php
+                    if ($twitter) {
+                      echo '<div class="author-excerpt-social-icon"> <a href="http://twitter.com/' . $twitter . '" target="_blank"><span class="icon-twitter"></span></a></div>';
+                    }
+                    if ($email) {
+                      echo '<div class="author-excerpt-social-icon"><a href="mailto:' . antispambot($email) . '" target="_blank"><span class="icon-email"></span></a></div>';
+                    }
+                    ?>
+                  </div>
                 </div>
                 <div class="author-excerpt-bottom">
                   <div class="author-excerpt-bottom-content">
-                    <?php the_content(); ?>
+                    <?php
+                      if (has_excerpt()) {
+                        the_excerpt();
+                      } else {
+                        the_content();
+                      }
+                    ?>
+
                   </div>
                   <?php endwhile; endif; wp_reset_query();?>
                 </div>
               </div>
 
-          <?php } ?>
-        <?php } ?>
+      <?php } ?>
 
-
-      </div>
     </div>
+  </div>
 <?php
 } else {
   // Fallback for no coauthors plugin

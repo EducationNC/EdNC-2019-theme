@@ -11,7 +11,6 @@
 body::before {
   background: #ECEDE8;
   content: '';
-  // height: 310px;
   left: 0;
   position: absolute;
   right: 0;
@@ -23,65 +22,17 @@ body::before {
   margin: 0 auto;
   max-width: 1200px;
   width: 100%;
-  // padding: 0 36px;
   position: relative;
 }
 
 .site-wrapper {
   margin: 0 auto;
-  // max-width: 1200px;
-  // width: 100%;
-  // padding: 0 36px;
   position: relative;
 }
 
 input, textarea, select {
   -webkit-appearance: none;
   border-radius: 0;
-}
-
-.post .lead-image img, .page .lead-image img {
-  height: auto;
-  // margin-bottom: 20px;
-  width: 100%;
-}
-
-.listing.listing-two .post {
-  // margin-bottom: 4%;
-  margin-right: 4%;
-  width: calc( 96% / 2 );
-}
-.listing.listing-two .post:nth-of-type(2n) {
-  margin-right: 0;
-}
-.listing.listing-two .post:nth-of-type(2n+1) {
-  clear: both;
-}
-.listing.listing-two .post .entry-title {
-  font-size: 26px;
-  font-size: 2.6rem;
-}
-.listing.listing-two .post .entry-intro {
-  font-size: 18px;
-  font-size: 1.8rem;
-}
-.listing.small .post {
-  position: relative;
-  z-index: 10;
-}
-.listing.listing-headline .post {
-  margin-right: 0;
-  margin-top: -10px;
-}
-.listing.categories .post {
-  margin-bottom: 15px;
-}
-.listing.categories .post a {
-  text-decoration: none;
-  transition: all 0.2s;
-}
-.listing hr {
-  margin-bottom: 2.5%;
 }
 
 .listing .post {
@@ -102,6 +53,47 @@ input, textarea, select {
 
 .listing .post .lead-image img {
   margin-bottom: 0;
+}
+
+.listing.listing-two .post {
+  margin-right: 4%;
+  width: calc( 96% / 2 );
+}
+.listing.listing-two .post:nth-of-type(2n) {
+  margin-right: 0;
+}
+.listing.listing-two .post:nth-of-type(2n+1) {
+  clear: both;
+}
+.listing.listing-two .post .entry-title {
+  font-size: 26px;
+  font-size: 2.6rem;
+}
+.listing.listing-two .post .entry-intro {
+  font-size: 18px;
+  font-size: 1.8rem;
+}
+
+.listing.small .post {
+  position: relative;
+  z-index: 10;
+}
+
+.listing.listing-headline .post {
+  margin-right: 0;
+  margin-top: -10px;
+}
+
+.listing.categories .post {
+  margin-bottom: 15px;
+}
+
+.listing.categories .post a {
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.listing hr {
+  margin-bottom: 2.5%;
 }
 
 .featured.listing.listing-two .post {
@@ -125,6 +117,7 @@ input, textarea, select {
   margin-bottom: 40px;
   position: relative;
 }
+
 .block .site-wrapper,
 .block .home-page-wrapper {
   z-index: 3;
@@ -134,6 +127,15 @@ input, textarea, select {
   color: #FFFFFF;
   position: relative;
   z-index: 10;
+}
+.block::before {
+  content: '';
+  height: 244px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
 }
 
 .block.small {
@@ -173,7 +175,6 @@ input, textarea, select {
 }
 .carousel .carousel-right .listing-headline {
   float: left;
-  // margin: -10px;
   padding: 10px 0 0;
 
 }
@@ -191,10 +192,14 @@ input, textarea, select {
   margin-right: 0;
 }
 
+
+
 @media screen and (max-width: 1024px) {
+
   .listing .post {
     float: left;
   }
+
   .carousel .carousel-right {
     width: 70%;
   }
@@ -228,13 +233,16 @@ input, textarea, select {
   .carousel .carousel-left .listing .post:nth-of-type(2n) {
     margin-right: 0;
   }
+
   .featured.listing.listing-two .post {
     margin-bottom: 5%;
     margin-right: 5%;
     width: calc( 95% / 2 );
   }
 }
+
 @media screen and (max-width: 768px) {
+
   .listing .post {
     margin-bottom: 5%;
     margin-right: 5%;
@@ -248,7 +256,6 @@ input, textarea, select {
   }
   .listing.listing-headline .post {
     margin-right: 0;
-    // margin-top: -10px;
     width: 100%;
   }
   .listing.listing-two .post {
@@ -262,6 +269,7 @@ input, textarea, select {
   .listing.listing-two .post:nth-of-type(2n+1) {
     clear: both;
   }
+
   .carousel .carousel-right,
   .city-carousel .carousel-right,
   .feature-carousel .carousel-right {
@@ -284,17 +292,14 @@ input, textarea, select {
     padding-top: 37%;
   }
 }
+
 @media screen and (max-width: 600px) {
   .site-wrapper,
   .home-page-wrapper {
     padding: 0 18px;
   }
-  .featured.listing.listing-two .post {
-    margin-bottom: 15%;
-    margin-right: 0;
-    width: 100%;
-  }
 }
+
 @media screen and (max-width: 420px) {
   .listing .post {
     float: none;
@@ -306,6 +311,4 @@ input, textarea, select {
     margin-right: 0;
     width: 100%;
   }
-
-
 }

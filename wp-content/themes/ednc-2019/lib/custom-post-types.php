@@ -33,6 +33,7 @@ function register_post_types() {
 			'query_var' => true
 	 	)
 	);
+	
 	register_post_type( 'gallery',
 		array('labels' => array(
 				'name' => 'Galleries',
@@ -94,6 +95,7 @@ function register_post_types() {
 			'query_var' => true
 		)
 	);
+	
 	register_post_type( 'boardnotes',
 		array('labels' => array(
 				'name' => 'Board Notes',
@@ -124,6 +126,7 @@ function register_post_types() {
 			'query_var' => true
 		)
 	);
+	
 	register_post_type( 'wrapnotes',
 		array('labels' => array(
 				'name' => 'Weekly Wrapup Notes',
@@ -155,7 +158,6 @@ function register_post_types() {
 		)
 	);
 
-
 	register_post_type( 'district',
 		array('labels' => array(
 				'name' => 'Districts',
@@ -177,7 +179,7 @@ function register_post_types() {
 			'show_ui' => true,
 			'show_in_nav_menus' => false,
 			'menu_position' => 8,
-			//'menu_icon' => get_stylesheet_directory_uri() . '/library/images/custom-post-icon.png',
+			'menu_icon' => 'dashicons-admin-site-alt3',
 			'capability_type' => array('district','districts'),
 			'map_meta_cap' => true,
 			'hierarchical' => false,
@@ -188,36 +190,36 @@ function register_post_types() {
 		)
 	);
 
-		register_post_type( 'legislator',
-			array('labels' => array(
-					'name' => 'Legislators',
-					'singular_name' => 'Legislator',
-					'add_new' => 'Add New',
-					'add_new_item' => 'Add New Legislator',
-					'edit' => 'Edit',
-					'edit_item' => 'Edit Legislator',
-					'new_item' => 'New Legislator',
-					'view_item' => 'View Legislator',
-					'search_items' => 'Search Legislator',
-					'not_found' =>  'Nothing found in the Database.',
-					'not_found_in_trash' => 'Nothing found in Trash',
-					'parent_item_colon' => ''
-				), /* end of arrays */
-				'public' => true,
-				'exclude_from_search' => true,
-				'publicly_queryable' => true,
-				'show_ui' => true,
-				'show_in_nav_menus' => false,
-				'menu_position' => 8,
-				//'menu_icon' => get_stylesheet_directory_uri() . '/library/images/custom-post-icon.png',
-				'capability_type' => 'post',
-				'hierarchical' => false,
-				'supports' => array( 'title', 'revisions', 'thumbnail', 'page-attributes'),
-				'has_archive' => false,
-				'rewrite' => true,
-				'query_var' => true
-			)
-		);
+	register_post_type( 'legislator',
+		array('labels' => array(
+				'name' => 'Legislators',
+				'singular_name' => 'Legislator',
+				'add_new' => 'Add New',
+				'add_new_item' => 'Add New Legislator',
+				'edit' => 'Edit',
+				'edit_item' => 'Edit Legislator',
+				'new_item' => 'New Legislator',
+				'view_item' => 'View Legislator',
+				'search_items' => 'Search Legislator',
+				'not_found' =>  'Nothing found in the Database.',
+				'not_found_in_trash' => 'Nothing found in Trash',
+				'parent_item_colon' => ''
+			), /* end of arrays */
+			'public' => true,
+			'exclude_from_search' => true,
+			'publicly_queryable' => true,
+			'show_ui' => true,
+			'show_in_nav_menus' => false,
+			'menu_position' => 8,
+			//'menu_icon' => get_stylesheet_directory_uri() . '/library/images/custom-post-icon.png',
+			'capability_type' => 'post',
+			'hierarchical' => false,
+			'supports' => array( 'title', 'revisions', 'thumbnail', 'page-attributes'),
+			'has_archive' => false,
+			'rewrite' => true,
+			'query_var' => true
+		)
+	);
 
 	register_post_type( 'bio',
 		array('labels' => array(
@@ -407,7 +409,6 @@ function register_post_types() {
 		)
 	);
 
-
 	register_post_type( 'reach-question',
 
 		array(
@@ -429,7 +430,8 @@ function register_post_types() {
 			'query_var' => true
 		)
 	);
-register_post_type( 'reach-nc-poll',
+
+	register_post_type( 'reach-nc-poll',
 
 		array(
 			'labels' => array(
@@ -447,6 +449,38 @@ register_post_type( 'reach-nc-poll',
 			'has_archive' => true,
 			'rewrite' => true,
 			'supports' => array( 'title', 'author', 'revisions', 'editor', 'thumbnail' ),
+			'query_var' => true
+		)
+	);
+	
+	register_post_type( 'community-college',
+		array('labels' => array(
+				'name' => 'Community Colleges',
+				'singular_name' => 'Community College',
+				'add_new' => 'Add New',
+				'add_new_item' => 'Add New Community College',
+				'edit' => 'Edit',
+				'edit_item' => 'Edit Community College',
+				'new_item' => 'New Community College',
+				'view_item' => 'View Community College',
+				'search_items' => 'Search Community Colleges',
+				'not_found' =>  'Nothing found in the Database.',
+				'not_found_in_trash' => 'Nothing found in Trash',
+				'parent_item_colon' => ''
+			),
+			'public' => true,
+			'exclude_from_search' => true,
+			'publicly_queryable' => true,
+			'show_ui' => true,
+			'show_in_nav_menus' => false,
+			'menu_position' => 9,
+			'menu_icon' => 'dashicons-welcome-learn-more',
+			// 'capability_type' => array('page'),
+			'map_meta_cap' => true,
+			'hierarchical' => false,
+			'supports' => array( 'title', 'revisions', 'thumbnail'),
+			'has_archive' => false,
+			'rewrite' => true,
 			'query_var' => true
 		)
 	);

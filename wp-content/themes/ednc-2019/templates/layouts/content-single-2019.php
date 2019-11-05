@@ -195,32 +195,6 @@ while (have_posts()) : the_post();
 
         </div>
 
-        <div class="row">
-          <div class="col-xs-12 meta visible-xs-block visible-sm-block extra-top-margin authors">
-
-
-            <?php
-
-            if ( function_exists( 'get_coauthors' ) ) {
-              $coauthors = get_coauthors();
-              $coauthors_count = count($coauthors);
-            } else {
-              $coauthors_count = 1;
-            }
-
-
-            if ($coauthors_count > 1) {
-              echo '<h2>About the authors</h2>';
-            } else {
-              echo '<h2>About the author</h2>';
-            }
-
-            get_template_part('templates/components/author', 'excerpt-bottom');
-
-
-            ?>
-          </div>
-        </div>
       </div>
     </div>
 
