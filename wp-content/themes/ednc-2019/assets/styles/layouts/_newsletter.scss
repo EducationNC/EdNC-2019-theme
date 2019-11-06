@@ -1,0 +1,80 @@
+.newsletter-grid {
+  // display: -ms-flexbox;
+  // display: -webkit-box;
+  // display: -webkit-flexbox;
+  // display: -webkit-flex;
+  // display: flex;
+  // flex-wrap: wrap;
+  // justify-content: space-between;
+  display: grid;
+  grid-gap: 20px;
+  /* Space between items */
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  .block {
+    border: 1px solid $stone-70;
+    padding: 20px;
+    background-color: white;
+    .images {
+      display: -ms-flexbox;
+      display: -webkit-box;
+      display: -webkit-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      justify-content: space-between;
+      // border: 1px solid red;
+      align-items: flex-start;
+    }
+    p.lato.small {
+      margin-bottom: 0;
+      font-weight: bold;
+    }
+  }
+}
+
+.newsletters-bg {
+  background-color: $light-grey;
+  padding-top: 50px;
+}
+
+h1.bold {
+  font-weight: 500;
+}
+
+.newsletter-img {
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+}
+
+.sign-up {
+  // position: absolute;
+  // top: 0;
+  // right: 0;
+}
+
+.page-template-template-page-newsletters .col-md-8 {
+  max-width: 1000px;
+}
+
+a.newsletter-link {
+  position: absolute;
+  bottom: 15px;
+}
+
+.button-pop {
+  font-size: 1em;
+  z-index: 10;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.button-pop:hover {
+  color: #06D85F;
+}
+
+// .dashicons-plus-alt {
+//   color: red;
+//   height: 30px;
+//   width: 30px;
+// }
