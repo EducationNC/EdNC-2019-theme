@@ -26,9 +26,8 @@ use Roots\Sage\Assets;
 					<div class="block">
 						<div class="images">
 							<img class="newletter-img" src="https://static01.nyt.com/email-images/Newsletter%20Icons/ThePrivacyProject.jpg" alt="Smiley face" height="80" width="80">
-						  <a class="button-pop" href="javascript:window.open('some.html', 'yourWindowName', 'width=200,height=150');">
-								<!-- <img class="sign-up"src="<?php //echo Assets\asset_path('images/plus.svg'); ?>" alt="Smiley face" height="40" width="40"> -->
-								<span class="dashicons dashicons-plus-alt"></span>
+							<a class="button-pop" href="https://edncdev.wpengine.com/newsletters/#awake58">
+								<img class="sign-up"src="<?php echo Assets\asset_path('images/plus.svg'); ?>" alt="Smiley face" height="40" width="40">
 							</a>
 						</div>
 						<h6>WEEKLY</h6>
