@@ -39,7 +39,7 @@ use Roots\Sage\Assets;
 					<div class="block">
 						<div class="images">
 							<img class="newletter-img" src="https://static01.nyt.com/email-images/Newsletter%20Icons/ThePrivacyProject.jpg" alt="Smiley face" height="80" width="80">
-							<a class="button-pop" href="https://app.monstercampaigns.com/c/nquktuctrtstlulksvh3">
+							<a class="button-pop" href="https://app.monstercampaigns.com/c/sh6jnhv3tt5l4wvjgxru/">
 								<img class="sign-up"src="<?php echo Assets\asset_path('images/plus.svg'); ?>" alt="Smiley face" height="40" width="40">
 							</a>
 						</div>
