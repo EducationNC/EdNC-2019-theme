@@ -775,105 +775,20 @@ acf_add_local_field_group(array(
 	'description' => '',
 ));
 
-acf_add_local_field_group(array(
-	'key' => 'group_5d014ad2c7c86',
-	'title' => 'Block - Center Quote',
-	'fields' => array(
-		array(
-			'key' => 'field_5d014ad8caefd',
-			'label' => 'Center Quote',
-			'name' => 'center-quote',
-			'type' => 'wysiwyg',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'default_value' => '',
-			'tabs' => 'all',
-			'toolbar' => 'full',
-			'media_upload' => 1,
-			'delay' => 0,
-		),
-	),
-	'location' => array(
-		array(
-			array(
-				'param' => 'block',
-				'operator' => '==',
-				'value' => 'acf/center-quote',
-			),
-		),
-	),
-	'menu_order' => 0,
-	'position' => 'normal',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
-	'active' => true,
-	'description' => '',
-));
-
-acf_add_local_field_group(array(
-	'key' => 'group_5c86c98258fba',
-	'title' => 'Blockquote',
-	'fields' => array(
-		array(
-			'key' => 'field_5c86c98699352',
-			'label' => 'Block-quote',
-			'name' => 'block-quote',
-			'type' => 'textarea',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'default_value' => '',
-			'placeholder' => '',
-			'maxlength' => '',
-			'rows' => 4,
-			'new_lines' => 'wpautop',
-		),
-	),
-	'location' => array(
-		array(
-			array(
-				'param' => 'block',
-				'operator' => '==',
-				'value' => 'acf/block-quote',
-			),
-		),
-	),
-	'menu_order' => 0,
-	'position' => 'normal',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
-	'active' => true,
-	'description' => '',
-));
-
-acf_add_local_field_group(array(
-	'key' => 'group_5457e4fffgfff',
-	'title' => 'Board Notes Fields',
-	'fields' => array(
-		array(
-			'key' => 'field_54b2d7a89ef35',
+register_field_group(array (
+	'key' => 'group_5457e4bdb8742',
+	'title' => 'Editor\'s Picks Fields',
+	'fields' => array (
+		array (
+			'key' => 'field_54b2d7a67ef35',
 			'label' => 'Notes',
 			'name' => 'notes',
+			'prefix' => '',
 			'type' => 'wysiwyg',
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
-			'wrapper' => array(
+			'wrapper' => array (
 				'width' => '',
 				'class' => '',
 				'id' => '',
@@ -882,17 +797,16 @@ acf_add_local_field_group(array(
 			'tabs' => 'all',
 			'toolbar' => 'basic',
 			'media_upload' => 0,
-			'delay' => 0,
 		),
-		array(
-			'key' => 'field_567gjlk59b2f5',
-			'label' => 'Featured',
+		array (
+			'key' => 'field_567ecb959b2f5',
+			'label' => 'Featured Read',
 			'name' => 'featured_read',
 			'type' => 'repeater',
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
-			'wrapper' => array(
+			'wrapper' => array (
 				'width' => '',
 				'class' => '',
 				'id' => '',
