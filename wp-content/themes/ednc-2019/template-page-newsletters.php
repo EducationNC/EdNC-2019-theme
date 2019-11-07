@@ -26,7 +26,20 @@ use Roots\Sage\Assets;
 					<div class="block">
 						<div class="images">
 							<img class="newletter-img" src="https://static01.nyt.com/email-images/Newsletter%20Icons/ThePrivacyProject.jpg" alt="Smiley face" height="80" width="80">
-							<a class="button-pop" href="https://edncdev.wpengine.com/newsletters/#awake58">
+							<a class="button-pop" href="https://app.monstercampaigns.com/c/s8dxiyojjdhdfdvsnfa2/">
+								<img class="sign-up"src="<?php echo Assets\asset_path('images/plus.svg'); ?>" alt="Smiley face" height="40" width="40">
+							</a>
+						</div>
+						<h6>WEEKLY</h6>
+						<h5>The Privacy Project</h5>
+						<p class="small">A weekly roundup of what the editors of T Magazine are noticing and coveting right now.</p>
+
+						<a class="newsletter-link" href="https://www.w3schools.com" target="_blank"><p class="lato small">See an example.</p></a>
+					</div>
+					<div class="block">
+						<div class="images">
+							<img class="newletter-img" src="https://static01.nyt.com/email-images/Newsletter%20Icons/ThePrivacyProject.jpg" alt="Smiley face" height="80" width="80">
+							<a class="button-pop" href="https://app.monstercampaigns.com/c/nquktuctrtstlulksvh3">
 								<img class="sign-up"src="<?php echo Assets\asset_path('images/plus.svg'); ?>" alt="Smiley face" height="40" width="40">
 							</a>
 						</div>
@@ -52,25 +65,13 @@ use Roots\Sage\Assets;
 					<div class="block">
 						<div class="images">
 							<img class="newletter-img" src="https://static01.nyt.com/email-images/Newsletter%20Icons/ThePrivacyProject.jpg" alt="Smiley face" height="80" width="80">
-						  <a class="button-pop" href="javascript:window.open('some.html', 'yourWindowName', 'width=200,height=150');">
-								<!-- <img class="sign-up"src="<?php //echo Assets\asset_path('images/plus.svg'); ?>" alt="Smiley face" height="40" width="40"> -->
-								<span class="dashicons dashicons-plus-alt"></span>
+							<a class="button-pop" href="https://app.monstercampaigns.com/c/s8dxiyojjdhdfdvsnfa2/">
+								<img class="sign-up"src="<?php echo Assets\asset_path('images/plus.svg'); ?>" alt="Smiley face" height="40" width="40">
 							</a>
 						</div>
 						<h6>WEEKLY</h6>
 						<h5>The Privacy Project</h5>
 						<p class="small">A weekly roundup of what the editors of T Magazine are noticing and coveting right now.</p>
-
-						<a class="newsletter-link" href="https://www.w3schools.com" target="_blank"><p class="lato small">See an example.</p></a>
-					</div>
-					<div class="block">
-						<div class="images">
-							<img class="newletter-img" src="https://static01.nyt.com/email-images/Newsletter%20Icons/ThePrivacyProject.jpg" alt="Smiley face" height="80" width="80">
-							<img class="sign-up"src="<?php echo Assets\asset_path('images/plus.svg'); ?>" alt="Smiley face" height="40" width="40">
-						</div>
-						<h6>WEEKLY</h6>
-						<h5>Awake58</h5>
-						<p class="small">A weekly roundup of what the editors of T Magazine are noticing and coveting right now, and this is what they think, ok, got it???.</p>
 
 						<a class="newsletter-link" href="https://www.w3schools.com" target="_blank"><p class="lato small">See an example.</p></a>
 					</div>
