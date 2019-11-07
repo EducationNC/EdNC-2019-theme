@@ -60,12 +60,13 @@ $bio = new WP_Query($args);
    <?php the_content(); ?>
  </div>
 
+ <?php if( $bio_posts ): ?>
+
  <div class="row grey-background">
    <h3 class="bio-header">Featured Articles</h3>
    <div class="recommended-blocks-bio">
      <?php
-     if( $bio_posts ): ?>
-         <?php foreach( $bio_posts as $post): // variable must be called $post (IMPORTANT) ?>
+        foreach( $bio_posts as $post): // variable must be called $post (IMPORTANT) ?>
            <?php setup_postdata($post); ?>
            <?php $featured_image = Media\get_featured_image('featured-four-block');
            $column = wp_get_post_terms(get_the_id(), 'column');
@@ -95,9 +96,10 @@ $bio = new WP_Query($args);
            </div>
        <?php endforeach; ?>
        <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
-     <?php endif; ?>
    </div>
  </div>
+
+ <?php endif; ?>
 
  <?php endwhile; endif;
  wp_reset_query();
