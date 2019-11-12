@@ -86,17 +86,26 @@ function be_register_blocks() {
 		'icon'			=> 'list-view',
 	));
 	acf_register_block( array(
-		'name'			=> 'recommended-articles',
-		'title'			=> __( 'Recommended Articles', 'client-name' ),
+		'name'			=> 'recommended-articles-right',
+		'title'			=> __( 'Recommended Articles Right Side', 'client-name' ),
 		'description'		=> '',
-		'render_template'	=> 'templates/gutenberg/recommended-articles',
+		'render_template'	=> 'templates/gutenberg/recommended-articles-right.php',
 		'category'		=> 'widgets',
 		'mode'			=> 'preview',
 		'icon'			=> 'list-view',
-		'supports' => array(
-			'align' => array( 'left', 'right', 'center', 'wide', 'full' ),
-		 ),
 	));
+	// acf_register_block( array(
+	// 	'name'			=> 'recommended-articles',
+	// 	'title'			=> __( 'Recommended Articles', 'client-name' ),
+	// 	'description'		=> '',
+	// 	'render_template'	=> 'templates/gutenberg/recommended-articles',
+	// 	'category'		=> 'widgets',
+	// 	'mode'			=> 'preview',
+	// 	'icon'			=> 'list-view',
+	// 	'supports' => array(
+	// 		'align' => array( 'left', 'right', 'center', 'wide', 'full' ),
+	// 	 ),
+	// ));
 }
 
 add_action('acf/init', 'be_register_blocks' );

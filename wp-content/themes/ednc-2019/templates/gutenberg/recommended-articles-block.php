@@ -1,6 +1,6 @@
 <?php
  /**
-  * Team Member block
+  * Recommended Articles Block
   *
   * @package      ClientName
   * @author       Bill Erickson
@@ -11,7 +11,7 @@
  use Roots\Sage\Extras;
  use Roots\Sage\Media;
 
-$centerquote = get_field( 'recommended_articles-test' );
+$rec_reader_header = get_field( 'header-rec-reading' );
 $ids = get_field('recommended_articles_block', false, false);
 
 $query = new WP_Query(array(

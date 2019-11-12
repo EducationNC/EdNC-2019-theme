@@ -33,7 +33,7 @@ function register_post_types() {
 			'query_var' => true
 	 	)
 	);
-	
+
 	register_post_type( 'gallery',
 		array('labels' => array(
 				'name' => 'Galleries',
@@ -95,7 +95,7 @@ function register_post_types() {
 			'query_var' => true
 		)
 	);
-	
+
 	register_post_type( 'boardnotes',
 		array('labels' => array(
 				'name' => 'Board Notes',
@@ -126,7 +126,7 @@ function register_post_types() {
 			'query_var' => true
 		)
 	);
-	
+
 	register_post_type( 'wrapnotes',
 		array('labels' => array(
 				'name' => 'Weekly Wrapup Notes',
@@ -917,3 +917,28 @@ function replace_permalink_tokens($permalink, $post_id, $leavename) {
   return $permalink;
 }
 add_filter('post_type_link', __NAMESPACE__ . '\\replace_permalink_tokens', 10, 3);
+
+/*
+function addTitleFieldToCat(){
+    $cat_title = get_term_meta($_GET['tag_ID'], '_pagetitle', true);
+    ?>
+    <tr class="form-field">
+        <th scope="row" valign="top"><label for="cat_page_title"><?php _e('Category Page Title'); ?></label></th>
+        <td>
+				<input name="option_name" id="cat_title" type="checkbox" value="1" <?php checked( '1', get_option( 'option_name' ) ); ?> />
+        <!-- <input type="checkbox" name="Issue" id="cat_title" value="<?php //echo $cat_title ?>"><br />
+            <span class="description"><?php //_e('Title for the Category '); ?></span> -->
+        </td>
+    </tr>
+    <?php
+
+}
+add_action ( 'edit_category_form_fields', 'addTitleFieldToCat');
+
+function saveCategoryFields() {
+    if ( isset( $_POST['cat_title'] ) ) {
+        update_term_meta($_POST['tag_ID'], '_pagetitle', $_POST['cat_title']);
+    }
+}
+add_action ( 'edited_category', 'saveCategoryFields');
+*/
