@@ -467,7 +467,7 @@ acf_add_local_field_group(array(
 			'min' => 0,
 			'max' => 0,
 			'layout' => 'table',
-			'button_label' => '',
+			'button_label' => 'Add Link',
 			'sub_fields' => array(
 				array(
 					'key' => 'field_549998818f3e8',
@@ -523,7 +523,7 @@ acf_add_local_field_group(array(
 			'min' => 0,
 			'max' => 0,
 			'layout' => 'table',
-			'button_label' => '',
+			'button_label' => 'Add Link',
 			'sub_fields' => array(
 				array(
 					'key' => 'field_549998818f3f1',

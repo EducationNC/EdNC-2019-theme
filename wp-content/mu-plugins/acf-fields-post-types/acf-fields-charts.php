@@ -22,7 +22,7 @@ acf_add_local_field_group(array(
 			'min' => 0,
 			'max' => 0,
 			'layout' => 'block',
-			'button_label' => '',
+			'button_label' => 'Add Section',
 			'sub_fields' => array(
 				array(
 					'key' => 'field_5dc07d12c052f',
@@ -60,7 +60,7 @@ acf_add_local_field_group(array(
 					'min' => 0,
 					'max' => 0,
 					'layout' => 'block',
-					'button_label' => '',
+					'button_label' => 'Add Chart',
 					'sub_fields' => array(
 						array(
 							'key' => 'field_5dc07d2ac0531',
@@ -230,6 +230,25 @@ acf_add_local_field_group(array(
 							'prepend' => '',
 							'append' => '',
 							'maxlength' => '',
+						),
+						array(
+							'key' => 'field_5dc07db3c0538',
+							'label' => 'Hide',
+							'name' => 'hide',
+							'type' => 'true_false',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'message' => '',
+							'default_value' => 0,
+							'ui' => 0,
+							'ui_on_text' => '',
+							'ui_off_text' => '',
 						),
 					),
 				),
