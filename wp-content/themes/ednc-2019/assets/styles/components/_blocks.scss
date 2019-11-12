@@ -250,6 +250,43 @@
   }
 }
 
+.body-text--content {
+  width: 60%;
+  display: inline-block;
+}
+.editor-picks {
+  width: 36%;
+  display: inline-block;
+  margin-left: 4%;
+}
+
+.recommended-blocks-right {
+  // display: flex;
+  // flex-direction: column;
+  // border: 1px solid blue;
+  hr {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 0;
+    border-top: 1px solid #eee;
+  }
+}
+
+.rec-read-right-block h4 {
+  font-size: 16px;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h4.header {
+
+}
+
+.recommended-blocks-right h4.header {
+    font-weight: 600;
+}
+
+
 // .fullwidth {
 // 	margin: 32px calc(50% - 50vw);
 // 	max-width: 100vw;

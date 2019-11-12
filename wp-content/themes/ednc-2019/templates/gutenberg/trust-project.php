@@ -1,6 +1,6 @@
 <?php
  /**
-  * Team Member block
+  * Trust Project Block
   *
   * @package      ClientName
   * @author       Bill Erickson

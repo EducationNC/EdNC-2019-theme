@@ -544,3 +544,36 @@ h3.rd.column {
 .flash-cards .entry-header {
   min-height: 85px;
 }
+
+//TEAM MEMBER PAGE
+
+.team-grid {
+
+  // display: grid;
+  // grid-template-columns: 33.3% 33.3% 33.3%;
+  // gap: 10px;
+
+    // Flexbox Default/Fallback - does not produce 100% matching result
+  display: flex;
+  flex-wrap: wrap;
+
+  // Check support for CSS Grid, if supported, do this block instead
+  @supports ( display: grid ) {
+    display: grid;
+    grid-gap: 30px;
+    //grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, auto));
+    // grid-auto-rows: minmax(26vh, 190px);
+    margin-bottom: 20px;
+  }
+
+}
+
+.team-member {
+  h3 {
+    margin-top: 10px;
+  }
+  h4 {
+    font-size: 16px;
+  }
+}

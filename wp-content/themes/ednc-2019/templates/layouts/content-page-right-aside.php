@@ -7,7 +7,6 @@ if (is_page('about')) {
 ?>
 
 <div class="row">
-
   <div class="col-md-3 col-md-push-9">
     <div class="callout">
       <?php wp_nav_menu(array(
