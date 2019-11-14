@@ -9,14 +9,14 @@ $featured_image = Media\get_featured_image('featured-four-block');
 
 $column = wp_get_post_terms(get_the_id(), 'column');
 if ($column) {
-  //$post_type = $column[0]->name;
-  $post_type = "";
+  $post_type = $column[0]->name;
+  // $post_type = "";
 }
 elseif ($post->post_type == 'edtalk') {
-  $post_type = "";
+  $post_type = "Edtalk";
 }
 elseif ($post->post_type == 'map') {
-  $post_type = "";
+  $post_type = "Maps";
 }
 else  {
   $post_type = "News";

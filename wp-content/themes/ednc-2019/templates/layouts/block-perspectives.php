@@ -14,7 +14,7 @@ $featured_image = Media\get_featured_image('featured-four-block');
     <a class="" href="<?php the_permalink(); ?>"></a>
     <div class="block-content">
       <img class="" src="<?php echo $featured_image; ?>" />
-      <!-- <p class="small">Perspectives</p> -->
+      <p class="small">Perspectives</p>
       <?php get_template_part('templates/components/article-info'); ?>
     </div>
   <?php } ?>
