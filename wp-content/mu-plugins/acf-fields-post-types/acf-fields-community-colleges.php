@@ -89,8 +89,8 @@ acf_add_local_field_group(array(
 		),
 		array(
 			'key' => 'field_5dc07c62f1f44',
-			'label' => 'County bachelor\'s degree percentag',
-			'name' => 'county_bachelors_degree_percentag',
+			'label' => 'County bachelor\'s degree percentage',
+			'name' => 'county_bachelors_degree_percentage',
 			'type' => 'text',
 			'instructions' => '',
 			'required' => 0,
