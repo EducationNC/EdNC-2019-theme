@@ -13,59 +13,10 @@ $post_id = $object->taxonomy.'_'.$object->term_id;
     <div class="site-wrapper">
       <div class="container">
 
-        <?php get_template_part('templates/components/category', 'header'); ?>
-        <?php// $value = get_field('text_field', $post_id);
-
-        //echo $value;?>
-
-        <?php
-        if( have_rows('flex_content', $post_id) ):
-
-          // loop through the rows of data
-            while ( have_rows('flex_content', $post_id) ) : the_row();  ?>
-
-
-                  <?php
-                  if( get_row_layout() == 'text' ) ?>
-                    <?php get_template_part('templates/components/flex', 'header');
-                  ?>
-
-
-                  <?php
-                  if( get_row_layout() == 'body_text_content' ) ?>
-                  <?php get_template_part('templates/components/flex', 'body');
-                  ?>
-
-
-                  <?php
-                  if( get_row_layout() == 'image_gallery_flex' )
-                  get_template_part('templates/components/flex', 'gallery');
-                  ?>
-
-
-                  <?php
-                  if( get_row_layout() == 'full_hero_flex' )
-                  get_template_part('templates/components/flex', 'full-width-image');
-                  ?>
-
-                  <?php
-                  if( get_row_layout() == 'articles' )
-                  get_template_part('templates/components/flex', 'articles');
-                  ?>
-
-
-
-                <?php
-                // endif;
-
-            endwhile;
-
-        endif;
-        ?>
-
+        <?php get_template_part('templates/components/category', 'header-2019'); ?>
 
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-8 col-centered">
             <div class="extra-margin">
             <?php if ($desc && !isset($_GET['date'])) { ?>
                 <?php echo $desc; ?>
