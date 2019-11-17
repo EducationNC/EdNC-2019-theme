@@ -1,7 +1,4 @@
 <?php
-
-if( function_exists('acf_add_local_field_group') ):
-
 acf_add_local_field_group(array(
 	'key' => 'group_5c545a0f6cbe6',
 	'title' => 'Ad Block 1',
@@ -5904,5 +5901,3 @@ acf_add_local_field_group(array(
 	'active' => true,
 	'description' => '',
 ));
-
-endif;
