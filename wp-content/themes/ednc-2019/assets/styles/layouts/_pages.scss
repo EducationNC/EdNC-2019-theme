@@ -303,6 +303,10 @@ color: white;
 .block.dark-blue::before {
   background: $dark-blue;
 }
+
+.block.green::before {
+  background: $green;
+}
 .block.golden::before {
   background: $golden;
 }
@@ -579,7 +583,11 @@ h3.rd.column {
 }
 
 .category-header-image {
-  margin-top: -77px;
+  margin-top: -56px;
+}
+
+.issues-header-image {
+  margin-top: -56px;
 }
 
 //ISSUES PAGE

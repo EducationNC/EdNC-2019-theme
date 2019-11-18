@@ -1,4 +1,7 @@
 <?php
+
+if( function_exists('acf_add_local_field_group') ):
+
 acf_add_local_field_group(array(
 	'key' => 'group_5c545a0f6cbe6',
 	'title' => 'Ad Block',
@@ -1122,73 +1125,6 @@ acf_add_local_field_group(array(
 				'param' => 'post_type',
 				'operator' => '==',
 				'value' => 'boardnotes',
-			),
-		),
-	),
-	'menu_order' => 0,
-	'position' => 'normal',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
-	'active' => true,
-	'description' => '',
-));
-
-acf_add_local_field_group(array(
-	'key' => 'group_5dcdaacd6c4f0',
-	'title' => 'Category Pages',
-	'fields' => array(
-		array(
-			'key' => 'field_5dcdafb9d5b10',
-			'label' => 'Full Width Banner',
-			'name' => 'category_full_width_banner',
-			'type' => 'image',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'return_format' => 'array',
-			'preview_size' => 'thumbnail',
-			'library' => 'all',
-			'min_width' => '',
-			'min_height' => '',
-			'min_size' => '',
-			'max_width' => '',
-			'max_height' => '',
-			'max_size' => '',
-			'mime_types' => '',
-		),
-		array(
-			'key' => 'field_5dcdaff2b80d4',
-			'label' => 'Body Text',
-			'name' => 'body_text',
-			'type' => 'wysiwyg',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'tabs' => 'all',
-			'toolbar' => 'full',
-			'media_upload' => 1,
-			'default_value' => '',
-			'delay' => 0,
-		),
-	),
-	'location' => array(
-		array(
-			array(
-				'param' => 'taxonomy',
-				'operator' => '==',
-				'value' => 'all',
 			),
 		),
 	),
@@ -4928,7 +4864,7 @@ acf_add_local_field_group(array(
 			'label' => 'EdTalk Banner',
 			'name' => 'edtalk_banner',
 			'type' => 'image',
-			'instructions' => 'Suggested size: 1440 by 260',
+			'instructions' => 'Suggested size: 1440 by 300',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -4946,6 +4882,25 @@ acf_add_local_field_group(array(
 			'max_height' => '',
 			'max_size' => '',
 			'mime_types' => '',
+		),
+		array(
+			'key' => 'field_5dd2ea4b7bcda',
+			'label' => 'Intro Text',
+			'name' => 'edtalk_intro',
+			'type' => 'wysiwyg',
+			'instructions' => 'Suggested size: 1440 by 300',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'tabs' => 'all',
+			'toolbar' => 'full',
+			'media_upload' => 0,
+			'delay' => 0,
 		),
 		array(
 			'key' => 'field_5cd9b02e6e929',
@@ -5961,3 +5916,5 @@ acf_add_local_field_group(array(
 	'active' => true,
 	'description' => '',
 ));
+
+endif;
