@@ -22,14 +22,15 @@ Template Name: Columns Template
                   while ( have_rows('new_column') ) : the_row();
 
                   $image = get_sub_field('image');
-                  $link = get_sub_field('link_to_column');?>
+                  $link = get_sub_field('link_to_column');
+                  $text = get_sub_field('intro_text');?>
 
-                      <div class="block-news content-block-4 clearfix">
+                      <div class="block-columns content-block-4 clearfix">
                         <div class="flex">
                           <div class="block-content">
                             <a class="" href="<?php echo $link ?>">
-                            <img src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
-                            <h4><?php// echo $link ?></h4>
+                              <img src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
+                              <p class="lato"><?php echo $text ?></p>
                             </a>
                           </div>
                         </div>

@@ -619,3 +619,12 @@ h3.rd.column {
   column-count: 3;
   column-gap: 20px;
 }
+
+.block-content a p.lato {
+  font-family: $font-family-sans-serif;
+  font-size: 13px;
+  line-height: 1.88em;
+  word-wrap: break-word;
+  color: $text;
+  letter-spacing: 0.7;
+}
