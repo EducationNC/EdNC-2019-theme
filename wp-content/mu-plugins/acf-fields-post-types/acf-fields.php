@@ -4,7 +4,7 @@ if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array(
 	'key' => 'group_5c545a0f6cbe6',
-	'title' => 'Ad Block 1',
+	'title' => 'Ad Block',
 	'fields' => array(
 		array(
 			'key' => 'field_5c545a1341362',
@@ -1139,13 +1139,37 @@ acf_add_local_field_group(array(
 ));
 
 acf_add_local_field_group(array(
-	'key' => 'group_5dcd94324b8b6',
-	'title' => 'Columns Landing Page',
+	'key' => 'group_5dcdaacd6c4f0',
+	'title' => 'Category Pages',
 	'fields' => array(
 		array(
-			'key' => 'field_5dcd947ed3ecf',
-			'label' => 'Intro Text',
-			'name' => 'intro_text',
+			'key' => 'field_5dcdafb9d5b10',
+			'label' => 'Full Width Banner',
+			'name' => 'category_full_width_banner',
+			'type' => 'image',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'return_format' => 'array',
+			'preview_size' => 'thumbnail',
+			'library' => 'all',
+			'min_width' => '',
+			'min_height' => '',
+			'min_size' => '',
+			'max_width' => '',
+			'max_height' => '',
+			'max_size' => '',
+			'mime_types' => '',
+		),
+		array(
+			'key' => 'field_5dcdaff2b80d4',
+			'label' => 'Body Text',
+			'name' => 'body_text',
 			'type' => 'wysiwyg',
 			'instructions' => '',
 			'required' => 0,
@@ -1161,8 +1185,51 @@ acf_add_local_field_group(array(
 			'default_value' => '',
 			'delay' => 0,
 		),
+	),
+	'location' => array(
 		array(
-			'key' => 'field_5dcd943be0196',
+			array(
+				'param' => 'taxonomy',
+				'operator' => '==',
+				'value' => 'all',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+acf_add_local_field_group(array(
+	'key' => 'group_5dd2b4883959c',
+	'title' => 'Columns Landing Page',
+	'fields' => array(
+		array(
+			'key' => 'field_5dd2b49d4993c',
+			'label' => 'Intro Text',
+			'name' => 'intro_text',
+			'type' => 'wysiwyg',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'tabs' => 'all',
+			'toolbar' => 'full',
+			'media_upload' => 1,
+			'delay' => 0,
+		),
+		array(
+			'key' => 'field_5dd2b4b54993d',
 			'label' => 'New Column',
 			'name' => 'new_column',
 			'type' => 'repeater',
@@ -1181,7 +1248,7 @@ acf_add_local_field_group(array(
 			'button_label' => '',
 			'sub_fields' => array(
 				array(
-					'key' => 'field_5dcd944de0197',
+					'key' => 'field_5dd2b4c14993e',
 					'label' => 'Image',
 					'name' => 'image',
 					'type' => 'image',
@@ -1205,7 +1272,7 @@ acf_add_local_field_group(array(
 					'mime_types' => '',
 				),
 				array(
-					'key' => 'field_5dcd9456e0198',
+					'key' => 'field_5dd2b4cf4993f',
 					'label' => 'Link to column',
 					'name' => 'link_to_column',
 					'type' => 'url',
@@ -1226,14 +1293,14 @@ acf_add_local_field_group(array(
 	'location' => array(
 		array(
 			array(
-				'param' => 'page',
+				'param' => 'page_template',
 				'operator' => '==',
-				'value' => '87437',
+				'value' => 'template-page-columns.php',
 			),
 		),
 	),
 	'menu_order' => 0,
-	'position' => 'acf_after_title',
+	'position' => 'normal',
 	'style' => 'default',
 	'label_placement' => 'top',
 	'instruction_placement' => 'label',
@@ -2392,13 +2459,6 @@ acf_add_local_field_group(array(
 				'param' => 'options_page',
 				'operator' => '==',
 				'value' => 'acf-options-pages',
-			),
-		),
-		array(
-			array(
-				'param' => 'taxonomy',
-				'operator' => '==',
-				'value' => 'category',
 			),
 		),
 	),
