@@ -154,6 +154,10 @@ h2.header-big {
   background: $bright-blue;
 }
 
+.issues::before {
+  background: $dark-blue;
+}
+
 .perspectives::before {
   background: $golden;
 }

@@ -581,3 +581,33 @@ h3.rd.column {
 .category-header-image {
   margin-top: -77px;
 }
+
+//ISSUES PAGE
+
+.block-issues {
+  h2 {
+    color: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    text-align: center;
+    overflow-wrap: normal;
+  }
+}
+
+.issues-section h4 {
+  font-weight: 600;
+  color: #5681B3;
+  font-size: 17px;
+}
+
+.issues-section {
+  -moz-column-count: 3;
+  -moz-column-gap: 20px;
+  -webkit-column-count: 3;
+  -webkit-column-gap: 20px;
+  column-count: 3;
+  column-gap: 20px;
+}
