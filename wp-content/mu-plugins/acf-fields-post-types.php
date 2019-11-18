@@ -11,10 +11,12 @@ add_action( 'plugins_loaded', 'load_custom_fields' );
 
 function load_custom_fields() {
 
-  require('acf-fields-post-types/acf-fields-community-colleges.php');
-  require('acf-fields-post-types/acf-fields-charts.php');
-  require('acf-fields-post-types/acf-fields-districts.php');
-  require('acf-fields-post-types/acf-fields.php');
+  if( function_exists('acf_add_local_field_group') ) {
+    require('acf-fields-post-types/acf-fields-community-colleges.php');
+    require('acf-fields-post-types/acf-fields-charts.php');
+    require('acf-fields-post-types/acf-fields-districts.php');
+    require('acf-fields-post-types/acf-fields.php');
+  }
 
 }
 
