@@ -30,7 +30,7 @@ Template Name: Columns Template
                           <div class="block-content">
                             <a class="" href="<?php echo $link ?>">
                               <img src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
-                              <p class="lato"><?php echo $text ?></p>
+                              <p class="medium"><?php echo $text ?></p>
                             </a>
                           </div>
                         </div>
