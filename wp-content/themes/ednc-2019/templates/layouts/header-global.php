@@ -3,6 +3,16 @@ use Roots\Sage\Assets;
 use Roots\Sage\Nav;
 ?>
 
+<div class="global-nav">
+
+  <a class="global-nav__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+    <img class="global-nav__logo__image" src="<?php echo Assets\asset_path('images/logo-square.svg'); ?>" alt="<?php bloginfo('name') ?>"></img>
+  </a>
+
+</div>
+
+<?php /*
+
 <div class="top-nav" id="top-nav">
   <div class="flex-1">
   </div>
@@ -18,8 +28,6 @@ use Roots\Sage\Nav;
     <link href="//cdn-images.mailchimp.com/embedcode/horizontal-slim-10_7.css" rel="stylesheet" type="text/css">
     <style type="text/css">
     	#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; width:100%;}
-    	/* Add your own Mailchimp form style overrides in your site stylesheet or in this style block.
-    	   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
     </style>
     <div id="mc_embed_signup">
     <form action="https://ednc.us9.list-manage.com/subscribe/post?u=8ba11e9b3c5e00a64382db633&amp;id=2696365d99" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
@@ -40,6 +48,8 @@ use Roots\Sage\Nav;
     </div>
   </div>
 </div>
+
+*/ ?>
 
 <div class="spacer height-175">
     &nbsp;
