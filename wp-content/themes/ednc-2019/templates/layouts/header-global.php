@@ -9,7 +9,7 @@ use Roots\Sage\Nav;
   <div class="flex-2">
     <div class="header-logos">
       <a class="" target="" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-        <img class="main-logo" src="<?php echo Assets\asset_path('images/EdNC-logo-svg.svg'); ?>" alt="EdNC" /></img>
+        <img class="main-logo" src="<?php echo Assets\asset_path('images/logo-square.svg'); ?>" alt="EdNC" /></img>
      </a>
     </div>
   </div>
