@@ -1,7 +1,5 @@
 <?php
 if( function_exists('register_field_group') ):
-	
-
 
 	acf_add_local_field_group(array(
 	'key' => 'group_5d484791710bf',
@@ -197,8 +195,6 @@ acf_add_local_field_group(array(
 	'active' => true,
 	'description' => '',
 ));
-
-
 
 	acf_add_local_field_group(array(
 	'key' => 'group_5d263b7601228',
