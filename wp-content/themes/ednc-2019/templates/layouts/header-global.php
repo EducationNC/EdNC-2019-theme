@@ -6,8 +6,28 @@ use Roots\Sage\Nav;
 <div class="global-nav">
 
   <a class="global-nav__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-    <img class="global-nav__logo__image" src="<?php echo Assets\asset_path('images/logo-square.svg'); ?>" alt="<?php bloginfo('name') ?>"></img>
+    <img src="<?php echo Assets\asset_path('images/logo-square.svg'); ?>" alt="<?php bloginfo('name') ?>"></img>
   </a>
+
+  <div class="container">
+    
+    <div class="global-nav__row">
+  
+      <div class="global-nav__row__left">
+        <a href="#" class="global-nav__menu">
+          <img src="<?php echo Assets\asset_path('images/header/menu-button.svg'); ?>" alt="Menu">
+        </a>
+      </div>
+    
+      <div class="global-nav__row__right">
+        <a href="#" class="global-nav__search">
+          <img src="<?php echo Assets\asset_path('images/header/search-button.svg'); ?>" alt="Menu">
+        </a>
+      </div>
+      
+    </div>
+  
+  </div>
 
 </div>
 
