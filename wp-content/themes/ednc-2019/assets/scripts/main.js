@@ -224,6 +224,19 @@
     e.preventDefault();
     $('.global-nav').toggleClass('search-active');
   });
+  
+  $('.global-nav__menu').click(function(e) {
+    e.preventDefault();
+    $('.global-nav').toggleClass('menu-active');
+  });
+  
+  // Temporarily remove menus without children from the hamburger
+  $('.global-nav__hamburger__nav > li').each(function(index) {
+    if (!$(this).children('.sub-menu').length > 0) {
+      $(this).remove(); 
+    }
+  });
+  
 
 
 
