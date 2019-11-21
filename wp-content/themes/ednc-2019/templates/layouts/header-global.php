@@ -9,7 +9,7 @@ use Roots\Sage\Nav;
     <img src="<?php echo Assets\asset_path('images/logo-square.svg'); ?>" alt="<?php bloginfo('name') ?>"></img>
   </a>
 
-  <div class="container">
+  <div class="global-nav__container">
     
     <div class="global-nav__row">
   
@@ -17,11 +17,20 @@ use Roots\Sage\Nav;
         <a href="#" class="global-nav__menu">
           <img src="<?php echo Assets\asset_path('images/header/menu-button.svg'); ?>" alt="Menu">
         </a>
+        
+        <a href="#" class="global-nav__link">Give a Damn</a>
+        <a href="#" class="global-nav__link">EdNews</a>
+        <a href="#" class="global-nav__link">EdPerspectives</a>
+        
       </div>
     
       <div class="global-nav__row__right">
+        
+        <a href="#" class="global-nav__link">Donate</a>
+        <a href="#" class="global-nav__link global-nav__link--connect">Connect</a>
+      
         <a href="#" class="global-nav__search">
-          <img src="<?php echo Assets\asset_path('images/header/search-button.svg'); ?>" alt="Menu">
+          <img src="<?php echo Assets\asset_path('images/header/search-button.svg'); ?>" alt="Search">
         </a>
       </div>
       
@@ -71,6 +80,4 @@ use Roots\Sage\Nav;
 
 */ ?>
 
-<div class="spacer height-175">
-    &nbsp;
-</div>
+<div class="spacer height-175">&nbsp;</div>

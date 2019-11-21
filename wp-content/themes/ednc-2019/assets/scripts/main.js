@@ -119,6 +119,7 @@
         $(".spacer-article").addClass("height-0");
         $(".spacer-article").removeClass("height-63-article");
         $(".main-logo").addClass("active");
+        $("body").addClass("is-scrolled");
         $(".top-nav").addClass("active");
         $(".responsive-menu-pro-button").removeClass("top-15");
         $(".responsive-menu-pro-button").addClass("top-0");
@@ -131,6 +132,7 @@
         $(".spacer-article").addClass("height-63-article");
         $(".top-nav").removeClass("active");
         $(".main-logo").removeClass("active");
+        $("body").removeClass("is-scrolled");
         $(".responsive-menu-pro-button").addClass("top-15");
         $(".responsive-menu-pro-button").removeClass("top-0");
     }

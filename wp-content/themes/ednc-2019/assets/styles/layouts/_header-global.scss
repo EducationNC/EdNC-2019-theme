@@ -1,0 +1,80 @@
+$nav-bg: #EDEFF2;
+
+.global-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: $nav-bg; 
+    z-index: 5000;
+}
+
+.global-nav__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.global-nav__logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);   
+    
+    img {
+        transition: all .1s ease-in;
+    }
+    
+    .is-scrolled & img {
+        height: 80px;   
+    }
+}
+
+.global-nav__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 115px;
+    transition: all .1s ease-in;
+    
+    .is-scrolled & {
+        height: 70px;   
+    }
+}
+
+.global-nav__row__left,
+.global-nav__row__right {
+    display: flex;
+    align-items: center;
+}
+
+.global-nav__link {
+    font-size: 14px;
+    color: #000000;
+    display: none;
+    
+    @media (min-width: $screen-md-min) {
+         display: inline-flex;   
+    }
+     
+    .global-nav__row__left & {
+        margin-left: 1.5rem;
+    }
+    
+    .global-nav__row__right & {
+        margin-right: 1.5rem;
+    }
+}
+
+.global-nav__link--connect {
+    align-items: center;
+    
+    &:before {
+        content: "";
+        display: block;
+        width: 19px;
+        height: 13px;
+        background: url(../images/header/connect-icon.svg) center no-repeat;
+        background-size: contain;
+        margin-right: 3px;
+    }
+}
