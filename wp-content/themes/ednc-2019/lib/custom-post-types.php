@@ -96,6 +96,37 @@ function register_post_types() {
 		)
 	);
 
+	register_post_type( 'giveadamn',
+		array('labels' => array(
+				'name' => 'Give a Damn',
+				'singular_name' => 'Give a Damn',
+				'add_new' => 'Add New',
+				'add_new_item' => 'Add New Give a Damn Page',
+				'edit' => 'Edit',
+				'edit_item' => 'Edit Give a Damn',
+				'new_item' => 'New Give a Damn',
+				'view_item' => 'View Give a Damn',
+				'search_items' => 'Search Give a Damn',
+				'not_found' =>  'Nothing found in the Database.',
+				'not_found_in_trash' => 'Nothing found in Trash',
+				'parent_item_colon' => ''
+			), /* end of arrays */
+			'public' => true,
+			'exclude_from_search' => true,
+			'publicly_queryable' => true,
+			'show_ui' => true,
+			'show_in_nav_menus' => false,
+			'menu_position' => 8,
+			//'menu_icon' => get_stylesheet_directory_uri() . '/library/images/custom-post-icon.png',
+			'capability_type' => 'post',
+			'hierarchical' => false,
+			'supports' => array( 'title', 'revisions'),
+			'has_archive' => false,
+			'rewrite' => true,
+			'query_var' => true
+		)
+	);
+
 	register_post_type( 'boardnotes',
 		array('labels' => array(
 				'name' => 'Board Notes',

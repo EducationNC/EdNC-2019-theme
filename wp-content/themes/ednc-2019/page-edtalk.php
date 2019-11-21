@@ -1,4 +1,4 @@
-<section id="archive" class="block search-results blue">
+<section id="archive" class="block search-results green">
   <div class="site-wrapper">
     <div class="container">
       <?php// get_template_part('templates/components/category', 'header'); ?>

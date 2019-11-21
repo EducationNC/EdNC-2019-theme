@@ -23,7 +23,7 @@ if ( !empty($term_image) ) { ?>
   <div class="col-md-12">
     <header class="">
        <div class="search-intro">
-         <h1 class="rd entry-title white"><?= Titles\title() . $title; ?> <small class="white"><a class="white" href="feed"><span class="icon-rss white"></span> RSS Feed</a></small></h1>
+         <h1 class="rd entry-title white"><?= Titles\title() . $title; ?></h1>
        </div>
     </header>
   </div>

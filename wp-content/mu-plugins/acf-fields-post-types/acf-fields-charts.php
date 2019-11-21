@@ -1,6 +1,4 @@
 <?php
-if( function_exists('acf_add_local_field_group') ):
-
 acf_add_local_field_group(array(
 	'key' => 'group_5dc07cad11712',
 	'title' => 'Chart Fields',
@@ -280,5 +278,3 @@ acf_add_local_field_group(array(
 	'active' => true,
 	'description' => '',
 ));
-
-endif;

@@ -8,6 +8,9 @@
   $vimeo = get_field('vimeo');
   $vine = get_field('vine');
   $instagram = get_field('instagram');
+
+  $links = get_field('links');
+  $social_media_links = get_field('social_media_links');
   ?>
 
   <div <?php post_class('container'); ?>>
@@ -30,23 +33,50 @@
         <div class="callout">
           <h6>District links</h6>
 
-          <p class="normal-style nowrap overflow-ellipsis">
-            <?php if ($website) { ?><span class="icon-website"></span> <a href="<?php echo $website; ?>" target="_blank"><?php echo $website; ?></a><?php } ?>
-          </p>
+          <?php if ($links): ?>
 
-          <p class="normal-style">
-            <?php if ($academic_cal) { ?><span class="icon-academic"></span> <a href="<?php echo $academic_cal; ?>" target="_blank">Academic calendar</a><br /><?php } ?>
-            <?php if ($district_cal) { ?><span class="icon-calendar"></span> <a href="<?php echo $district_cal; ?>" target="_blank">District events calendar</a><?php } ?>
-          </p>
+            <p class="normal-style nowrap overflow-ellipsis">
+              <?php foreach ($links as $link): ?>
+                <a href="<?php echo $link['url'] ?>" target="_blank"><?php echo $link['name'] ?></a><br>
+              <?php endforeach; ?>
+            </p>
 
-          <p class="normal-style nowrap overflow-ellipsis">
-            <?php if ($twitter) { ?><span class="icon-twitter"></span> <a href="http://twitter.com/<?php echo $twitter; ?>" target="_blank">Twitter</a><br /><?php } ?>
-            <?php if ($facebook) { ?><span class="icon-facebook"></span> <a href="<?php echo $facebook; ?>" target="_blank">Facebook</a><br /><?php } ?>
-            <?php if ($youtube) { ?><span class="icon-youtube"></span> <a href="<?php echo $youtube; ?>" target="_blank">YouTube</a><br /><?php } ?>
-            <?php if ($vimeo) { ?><span class="icon-vimeo"></span> <a href="https://vimeo.com/<?php echo $vimeo; ?>" target="_blank">Vimeo</a><br /><?php } ?>
-            <?php if ($vine) { ?><span class="icon-vine"></span> <a href="<?php echo $vine; ?>" target="_blank">Vine</a><br /><?php } ?>
-            <?php if ($instagram) { ?><span class="icon-instagram"></span> <a href="<?php echo $instagram; ?>" target="_blank">Instagram</a><?php } ?>
-          </p>
+          <?php else: ?>
+
+            <p class="normal-style nowrap overflow-ellipsis">
+              <?php if ($website) { ?><span class="icon-website"></span> <a href="<?php echo $website; ?>" target="_blank"><?php echo $website; ?></a><?php } ?>
+            </p>
+
+            <p class="normal-style">
+              <?php if ($academic_cal) { ?><span class="icon-academic"></span> <a href="<?php echo $academic_cal; ?>" target="_blank">Academic calendar</a><br /><?php } ?>
+              <?php if ($district_cal) { ?><span class="icon-calendar"></span> <a href="<?php echo $district_cal; ?>" target="_blank">District events calendar</a><?php } ?>
+            </p>
+
+          <?php endif; ?>
+
+          <?php if ($social_media_links): ?>
+
+            <h6>Social Media</h6>
+
+            <p class="normal-style nowrap overflow-ellipsis">
+              <?php foreach ($social_media_links as $link): ?>
+                <a href="<?php echo $link['url'] ?>" target="_blank"><?php echo $link['name'] ?></a><br>
+              <?php endforeach; ?>
+            </p>
+
+          <?php else: ?>
+
+            <p class="normal-style nowrap overflow-ellipsis">
+              <?php if ($twitter) { ?><span class="icon-twitter"></span> <a href="http://twitter.com/<?php echo $twitter; ?>" target="_blank">Twitter</a><br /><?php } ?>
+              <?php if ($facebook) { ?><span class="icon-facebook"></span> <a href="<?php echo $facebook; ?>" target="_blank">Facebook</a><br /><?php } ?>
+              <?php if ($youtube) { ?><span class="icon-youtube"></span> <a href="<?php echo $youtube; ?>" target="_blank">YouTube</a><br /><?php } ?>
+              <?php if ($vimeo) { ?><span class="icon-vimeo"></span> <a href="https://vimeo.com/<?php echo $vimeo; ?>" target="_blank">Vimeo</a><br /><?php } ?>
+              <?php if ($vine) { ?><span class="icon-vine"></span> <a href="<?php echo $vine; ?>" target="_blank">Vine</a><br /><?php } ?>
+              <?php if ($instagram) { ?><span class="icon-instagram"></span> <a href="<?php echo $instagram; ?>" target="_blank">Instagram</a><?php } ?>
+            </p>
+
+          <?php endif; ?>
+
         </div>
       </div>
 
@@ -249,5 +279,53 @@
         </div>
       <?php } ?>
     </div>
+
+    <?php if (have_rows('chart_section')): ?>
+
+      <?php while (have_rows('chart_section')) : the_row(); ?>
+
+        <div class="chart-section extra-bottom-margin clearfix">
+
+          <div class="col-md-12 callout">
+
+            <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
+
+            <h4><?php the_sub_field('source') ?></h4>
+
+          </div>
+
+          <?php while (have_rows('chart')) : the_row(); ?>
+            <?php if (!get_sub_field('hide')): ?>
+              <div class="col-md-4">
+
+                <h6 style="color: #731454"><?php the_sub_field('chart_name'); ?></h6>
+                <p><?php the_sub_field('subtitle'); ?></p>
+
+                <?php if (get_sub_field('chart_type') == 'number'): ?>
+
+                  <p class="h1" style="margin-bottom: 1em;">
+                    <span class="big"><?php the_sub_field('number') ?></span>
+                  </p>
+
+                  <p><small><?php the_sub_field('number_description') ?></small></p>
+
+                <?php elseif (get_sub_field('chart_type') == 'image'): ?>
+
+                  <?php $image = get_sub_field('image'); ?>
+
+                  <img src="<?php echo $image['url'] ?>">
+
+                <?php endif; ?>
+
+              </div>
+            <?php endif; ?>
+          <?php endwhile; ?>
+
+        </div>
+
+      <?php endwhile; ?>
+
+    <?php endif; ?>
+
   </div>
 <?php endwhile; ?>
