@@ -32,8 +32,9 @@
               $author->user_nicename != 'alindenberg' &&
               $author->user_nicename != 'annelisa-sorrells' &&
               $author->user_nicename != 'robert-kinlaw' &&
-              $author->user_nicename != 'ybendaas' &&
               $author->user_nicename != 'rupen-fofaria' &&
+              $author->user_nicename != 'taylor.shain' &&
+              $author->user_nicename != 'carol.bono' &&
               $author->user_nicename != 'staff'
             ) { ?>
               <div class="circle-image">

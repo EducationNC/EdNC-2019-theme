@@ -15,6 +15,8 @@ if (
   $author == 'robert-kinlaw' ||
   $author == 'ybendaas' ||
   $author == 'rupen-fofaria' ||
+  $author == 'carol.bono' ||
+  $author == 'taylor.shain' ||
   $author == 'staff'
 ) {
   $bg_color = '#64184B'; // $plum-darker;
