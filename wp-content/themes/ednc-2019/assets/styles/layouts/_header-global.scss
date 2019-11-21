@@ -129,6 +129,7 @@ $nav-bg: #EDEFF2;
     }
     
     .sub-menu {
+        display: block !important;
         font-size: 12px;
         
         li + li {
