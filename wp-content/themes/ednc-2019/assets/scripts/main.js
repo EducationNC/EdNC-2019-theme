@@ -219,6 +219,11 @@
           }
   });
 
+  // Global Nav
+  $('.global-nav__search').click(function(e) {
+    e.preventDefault();
+    $('.global-nav').toggleClass('search-active');
+  });
 
 
 

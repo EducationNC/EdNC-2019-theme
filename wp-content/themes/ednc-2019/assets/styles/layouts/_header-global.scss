@@ -78,3 +78,55 @@ $nav-bg: #EDEFF2;
         margin-right: 3px;
     }
 }
+
+.global-nav__search {
+    position: relative;
+    overflow: hidden;
+}
+
+.global-nav__search__icon--close {
+    position: absolute;
+    opacity: 0;
+}
+
+.global-nav__row__right__search {
+    display: none;
+    align-items: center;
+    background: white;
+    border-radius: 5px;
+    margin-right: 1.5rem;
+    font-family: $font-family-serif;
+    
+    [type="text"] {
+        border: none;
+        background: transparent;
+        padding: .1rem 1rem;
+        font-size: 12px;
+    }
+    
+    [type="image"] {
+        flex-shrink: 0;
+        padding: .1rem .5rem;
+    }
+}
+
+.search-active {
+
+    .global-nav__search__icon {
+        opacity: 0;
+    }
+
+    .global-nav__search__icon--close {
+        right: 5px;
+        top: 0;
+    }
+    
+    .global-nav__row__right .global-nav__link {
+        display: none;   
+    }
+    
+    .global-nav__row__right__search {
+         display: inline-flex;   
+    }
+    
+}
