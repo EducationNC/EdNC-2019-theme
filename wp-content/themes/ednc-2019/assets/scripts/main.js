@@ -232,7 +232,7 @@
   
   // Temporarily remove menus without children from the hamburger
   $('.global-nav__hamburger__nav > li').each(function(index) {
-    if (!$(this).children('.sub-menu').length > 0) {
+    if ($(this).children('.sub-menu').length < 1) {
       $(this).remove(); 
     }
   });
