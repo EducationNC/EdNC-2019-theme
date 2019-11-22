@@ -107,7 +107,13 @@ use Roots\Sage\Nav;
 <div class="global-nav-mobile">
   
   <div class="global-nav-mobile__main">
-    Lorem ipsum
+    <?php
+    wp_nav_menu(array(
+     'theme_location' => 'primary_navigation',
+      'menu_class' => 'global-nav-mobile__main__nav',
+      'depth' => 2
+    ));
+    ?>
   </div>
   
   <div class="global-nav-mobile__footer">

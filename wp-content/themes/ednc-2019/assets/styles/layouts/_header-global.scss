@@ -361,10 +361,49 @@ $nav-bg: #EDEFF2;
 }
 
 .global-nav-mobile__main {
-    flex-grow: 1; 
+    flex-grow: 1;
+    padding: 0 15px 15px;
+    overflow-y: auto;
+}
+
+.global-nav-mobile__main__nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    
+    > li {
+        margin: 0 1rem;
+        
+        > a {
+            font-weight: bold;
+            font-size: 14px;
+            color: $plum-darker;
+        }
+    }
+    
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 2rem;
+    }
+    
+    a {
+        color: black;   
+    }
+    
+    .sub-menu {
+        display: block !important;
+        font-size: 12px;
+        
+        li + li {
+            
+        }
+    }
 }
 
 .global-nav-mobile__footer {
+    padding: 15px;
     background: white;   
 }
 

@@ -231,7 +231,7 @@
   });
   
   // Temporarily remove menus without children from the hamburger
-  $('.global-nav__hamburger__nav > li').each(function(index) {
+  $('.global-nav__hamburger__nav > li, .global-nav-mobile__main__nav > li').each(function(index) {
     if ($(this).children('.sub-menu').length < 1) {
       $(this).remove(); 
     }
