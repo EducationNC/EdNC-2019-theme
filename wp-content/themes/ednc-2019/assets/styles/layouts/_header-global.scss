@@ -22,10 +22,17 @@ $nav-bg: #EDEFF2;
     
     img {
         transition: all .1s ease-in;
+        height: 72px;
+        
+        @media (min-width: $screen-md-min) {
+            height: 134px;   
+        }
     }
     
-    .is-scrolled & img {
-        height: 80px;   
+    @media (min-width: $screen-md-min) {
+        .is-scrolled & img {
+            height: 80px;   
+        }
     }
 }
 
@@ -33,11 +40,15 @@ $nav-bg: #EDEFF2;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 115px;
+    height: 64px;
     transition: all .1s ease-in;
     
-    .is-scrolled & {
-        height: 70px;   
+    @media (min-width: $screen-md-min) {
+        height: 115px;
+        
+        .is-scrolled & {
+            height: 70px;   
+        }
     }
 }
 
@@ -129,6 +140,7 @@ $nav-bg: #EDEFF2;
     }
     
     .sub-menu {
+        display: block !important;
         font-size: 12px;
         
         li + li {
@@ -173,6 +185,85 @@ $nav-bg: #EDEFF2;
     }
 }
 
+.global-nav__connect-menu {
+    display: none;
+    position: absolute;
+    top: 54px;
+    right: 50px;
+    background: white;
+    padding: 1.5rem 1rem 2rem;
+    border-radius: 5px;
+    width: 200px;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.1);
+    
+    &:after {
+    	bottom: 100%;
+    	right: 8px;
+    	border: solid transparent;
+    	content: " ";
+    	height: 0;
+    	width: 0;
+    	position: absolute;
+    	pointer-events: none;
+    	border-bottom-color: white;
+    	border-width: 8px;
+    }
+    
+    @media (min-width: $screen-md-min) {
+        .connect-active & {
+            display: block;   
+        }
+    }
+}
+
+.global-nav__connect-menu__social,
+.global-nav-mobile__footer__social {
+    text-align: center;
+    
+    a {
+        color: #333;
+        margin: .5rem;   
+    }
+}
+
+.global-nav__connect-menu__signup {
+    border: 1px solid $nav-bg;
+    border-left: 0;
+    border-right: 0;
+    padding: 1.5rem 0;
+    margin: .5rem 0 1.5rem;
+    
+    [type="email"] {
+        width: 100%;
+        border-radius: 5px;
+        border: 1px solid transparentize($sky, .5);
+        font-size: 12px;
+        text-align: center;
+        line-height: 1;
+        padding: .5rem;
+    }
+    
+    [type="submit"] {
+        width: 100%;
+        border: none;
+        border-radius: 5px;
+        background: $sky;
+        font-size: 12px;
+        text-align: center;
+        color: white;
+        line-height: 1;
+        padding: .75rem .5rem;
+    }
+    
+}
+
+.global-nav__connect-menu__signup__title,
+.global-nav__connect-menu__txt-msg {
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
 // SEARCH
 
 .global-nav__search {
@@ -185,7 +276,8 @@ $nav-bg: #EDEFF2;
     opacity: 0;
 }
 
-.global-nav__row__right__search {
+.global-nav__row__right__search,
+.global-nav__search-dropdown__form {
     display: none;
     align-items: center;
     background: white;
@@ -198,12 +290,25 @@ $nav-bg: #EDEFF2;
         background: transparent;
         padding: .1rem 1rem;
         font-size: 12px;
+        flex-grow: 1;
     }
     
     [type="image"] {
         flex-shrink: 0;
         padding: .1rem .5rem;
     }
+}
+
+.global-nav__search-dropdown__form {
+    display: inline-flex !important;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.global-nav__search-dropdown { 
+    display: none;    
+    padding: 17px 15px 10px;
 }
 
 .search-active {
@@ -217,12 +322,144 @@ $nav-bg: #EDEFF2;
         top: 0;
     }
     
-    .global-nav__row__right .global-nav__link {
-        display: none;   
+    .global-nav__search-dropdown {
+        display: block;
     }
     
-    .global-nav__row__right__search {
-         display: inline-flex;   
+    @media (min-width: $screen-md-min) {
+        .global-nav__search-dropdown {
+            display: none;   
+        }
+        
+        .global-nav__row__right .global-nav__link {
+            display: none;   
+        }
+        
+        .global-nav__row__right__search {
+             display: inline-flex;   
+        }
     }
     
+}
+
+// MOBILE HAMBURGER
+
+.global-nav-mobile {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    z-index: 4999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $nav-bg;
+    padding-top: 100px;
+    
+    .menu-active & {
+        display: flex;
+        
+        @media (min-width: $screen-md-min) {
+            display: none;
+        }
+    }
+    
+    .search-active & {
+        padding-top: 130px;   
+    }
+}
+
+.global-nav-mobile__main {
+    flex-grow: 1;
+    padding: 0 15px 15px;
+    overflow-y: auto;
+}
+
+.global-nav-mobile__main__nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    
+    > li {
+        margin: 0 1rem;
+        
+        > a {
+            font-weight: bold;
+            font-size: 14px;
+            color: $plum-darker;
+        }
+    }
+    
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 2rem;
+    }
+    
+    a {
+        color: black;   
+    }
+    
+    .sub-menu {
+        display: block !important;
+        font-size: 12px;
+        
+        li + li {
+            
+        }
+    }
+}
+
+.global-nav-mobile__footer {
+    padding: 5px 15px 5px;
+    background: white;   
+}
+
+.global-nav-mobile__footer__txt-msg {
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+}
+
+.global-nav-mobile__footer__signup {
+    margin: .5rem 0 .5rem;   
+}
+
+.global-nav-mobile__footer__signup form {
+    display: flex;
+    
+    [type="email"] {
+        width: 100%;
+        border-radius: 5px 0 0 5px;
+        border: 1px solid transparentize($sky, .5);
+        border-right: 0;
+        font-size: 12px;
+        line-height: 1;
+        padding: .5rem;
+    }
+    
+    [type="submit"] {
+        flex-shrink: 2;
+        width: 100%;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        background: $sky;
+        font-size: 12px;
+        text-align: center;
+        color: white;
+        line-height: 1;
+        padding: .75rem .5rem;
+    }
+    
+}
+
+// SPACER
+
+.global-nav-spacer {
+    height: 100px;
+    
+    @media (min-width: $screen-md-min) {
+        height: 145px;
+    }
 }

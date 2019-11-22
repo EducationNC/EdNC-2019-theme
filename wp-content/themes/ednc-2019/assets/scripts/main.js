@@ -222,19 +222,24 @@
   // Global Nav
   $('.global-nav__search').click(function(e) {
     e.preventDefault();
-    $('.global-nav').toggleClass('search-active');
+    $('body').toggleClass('search-active');
   });
   
   $('.global-nav__menu').click(function(e) {
     e.preventDefault();
-    $('.global-nav').toggleClass('menu-active');
+    $('body').toggleClass('menu-active');
   });
   
   // Temporarily remove menus without children from the hamburger
-  $('.global-nav__hamburger__nav > li').each(function(index) {
+  $('.global-nav__hamburger__nav > li, .global-nav-mobile__main__nav > li').each(function(index) {
     if ($(this).children('.sub-menu').length < 1) {
       $(this).remove(); 
     }
+  });
+  
+  $('.global-nav__link--connect').click(function(e) {
+    e.preventDefault();
+    $('body').toggleClass('connect-active');
   });
   
 
