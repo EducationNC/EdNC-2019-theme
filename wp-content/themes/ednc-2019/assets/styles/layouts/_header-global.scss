@@ -216,10 +216,12 @@ $nav-bg: #EDEFF2;
     }
 }
 
-.global-nav__connect-menu__social {
+.global-nav__connect-menu__social,
+.global-nav-mobile__footer__social {
     text-align: center;
     
     a {
+        color: #333;
         margin: .5rem;   
     }
 }
@@ -343,8 +345,7 @@ $nav-bg: #EDEFF2;
 // MOBILE HAMBURGER
 
 .global-nav-mobile {
-    // display: none;
-    display: flex;
+    display: none;
     flex-direction: column;
     position: fixed;
     z-index: 4999;
@@ -357,6 +358,10 @@ $nav-bg: #EDEFF2;
     
     .menu-active & {
         display: flex;
+    }
+    
+    .search-active & {
+        padding-top: 130px;   
     }
 }
 
@@ -403,10 +408,47 @@ $nav-bg: #EDEFF2;
 }
 
 .global-nav-mobile__footer {
-    padding: 15px;
+    padding: 5px 15px 5px;
     background: white;   
 }
 
+.global-nav-mobile__footer__txt-msg {
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+}
+
+.global-nav-mobile__footer__signup {
+    margin: .5rem 0 .5rem;   
+}
+
+.global-nav-mobile__footer__signup form {
+    display: flex;
+    
+    [type="email"] {
+        width: 100%;
+        border-radius: 5px 0 0 5px;
+        border: 1px solid transparentize($sky, .5);
+        border-right: 0;
+        font-size: 12px;
+        line-height: 1;
+        padding: .5rem;
+    }
+    
+    [type="submit"] {
+        flex-shrink: 2;
+        width: 100%;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        background: $sky;
+        font-size: 12px;
+        text-align: center;
+        color: white;
+        line-height: 1;
+        padding: .75rem .5rem;
+    }
+    
+}
 
 // SPACER
 
