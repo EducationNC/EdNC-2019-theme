@@ -16,11 +16,8 @@ use Roots\Sage\Wrapper;
     <?php
       // do_action('get_header');
 
-      if ( is_front_page() && is_home() ) {
-      get_template_part('templates/layouts/header', 'home');
-      } else {
-      get_template_part('templates/layouts/header', 'article');
-      }
+      get_template_part('templates/layouts/header', 'global');
+
       get_template_part('templates/components/alert');
 
 

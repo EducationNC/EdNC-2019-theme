@@ -119,6 +119,7 @@
         $(".spacer-article").addClass("height-0");
         $(".spacer-article").removeClass("height-63-article");
         $(".main-logo").addClass("active");
+        $("body").addClass("is-scrolled");
         $(".top-nav").addClass("active");
         $(".responsive-menu-pro-button").removeClass("top-15");
         $(".responsive-menu-pro-button").addClass("top-0");
@@ -131,6 +132,7 @@
         $(".spacer-article").addClass("height-63-article");
         $(".top-nav").removeClass("active");
         $(".main-logo").removeClass("active");
+        $("body").removeClass("is-scrolled");
         $(".responsive-menu-pro-button").addClass("top-15");
         $(".responsive-menu-pro-button").removeClass("top-0");
     }
@@ -217,6 +219,24 @@
           }
   });
 
+  // Global Nav
+  $('.global-nav__search').click(function(e) {
+    e.preventDefault();
+    $('.global-nav').toggleClass('search-active');
+  });
+  
+  $('.global-nav__menu').click(function(e) {
+    e.preventDefault();
+    $('.global-nav').toggleClass('menu-active');
+  });
+  
+  // Temporarily remove menus without children from the hamburger
+  $('.global-nav__hamburger__nav > li').each(function(index) {
+    if ($(this).children('.sub-menu').length < 1) {
+      $(this).remove(); 
+    }
+  });
+  
 
 
 

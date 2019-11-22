@@ -16,7 +16,7 @@ use Roots\Sage\Wrapper;
 <?php
 //do_action('get_header');
 
-get_template_part('templates/layouts/header', 'article');
+get_template_part('templates/layouts/header', 'global');
 /*
 if ( is_front_page() && is_home() ) {
 get_template_part('templates/layouts/header', 'home');
