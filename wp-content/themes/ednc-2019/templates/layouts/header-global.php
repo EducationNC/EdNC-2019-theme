@@ -92,7 +92,16 @@ use Roots\Sage\Nav;
     </div>
   
   </div>
+  
+  <div class="global-nav__search-dropdown">
+  
+    <form action="/" method="get" class="global-nav__search-dropdown__form">
+      <input type="text" name="s" id="search" value="<?php the_search_query(); ?>" placeholder="Search EdNC.org">
+      <input type="image" alt="Search" src="<?php echo Assets\asset_path('images/header/search-icon.svg'); ?>">
+    </form>
+        
+  </div>
 
 </div>
 
-<div class="spacer height-175">&nbsp;</div>
+<div class="global-nav-spacer"></div>

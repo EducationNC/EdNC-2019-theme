@@ -22,10 +22,17 @@ $nav-bg: #EDEFF2;
     
     img {
         transition: all .1s ease-in;
+        height: 72px;
+        
+        @media (min-width: $screen-md-min) {
+            height: 134px;   
+        }
     }
     
-    .is-scrolled & img {
-        height: 80px;   
+    @media (min-width: $screen-md-min) {
+        .is-scrolled & img {
+            height: 80px;   
+        }
     }
 }
 
@@ -33,11 +40,15 @@ $nav-bg: #EDEFF2;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 115px;
+    height: 64px;
     transition: all .1s ease-in;
     
-    .is-scrolled & {
-        height: 70px;   
+    @media (min-width: $screen-md-min) {
+        height: 115px;
+        
+        .is-scrolled & {
+            height: 70px;   
+        }
     }
 }
 
@@ -263,7 +274,8 @@ $nav-bg: #EDEFF2;
     opacity: 0;
 }
 
-.global-nav__row__right__search {
+.global-nav__row__right__search,
+.global-nav__search-dropdown__form {
     display: none;
     align-items: center;
     background: white;
@@ -276,12 +288,25 @@ $nav-bg: #EDEFF2;
         background: transparent;
         padding: .1rem 1rem;
         font-size: 12px;
+        flex-grow: 1;
     }
     
     [type="image"] {
         flex-shrink: 0;
         padding: .1rem .5rem;
     }
+}
+
+.global-nav__search-dropdown__form {
+    display: inline-flex !important;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.global-nav__search-dropdown { 
+    display: none;    
+    padding: 17px 15px 10px;
 }
 
 .search-active {
@@ -295,12 +320,33 @@ $nav-bg: #EDEFF2;
         top: 0;
     }
     
-    .global-nav__row__right .global-nav__link {
-        display: none;   
+    .global-nav__search-dropdown {
+        display: block;
     }
     
-    .global-nav__row__right__search {
-         display: inline-flex;   
+    @media (min-width: $screen-md-min) {
+        .global-nav__search-dropdown {
+            display: none;   
+        }
+        
+        .global-nav__row__right .global-nav__link {
+            display: none;   
+        }
+        
+        .global-nav__row__right__search {
+             display: inline-flex;   
+        }
     }
     
+}
+
+
+// SPACER
+
+.global-nav-spacer {
+    height: 100px;
+    
+    @media (min-width: $screen-md-min) {
+        height: 145px;
+    }
 }
