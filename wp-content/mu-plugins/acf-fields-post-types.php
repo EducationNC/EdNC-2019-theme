@@ -15,7 +15,6 @@ function load_custom_fields() {
     require('acf-fields-post-types/acf-fields-community-colleges.php');
     require('acf-fields-post-types/acf-fields-charts.php');
     require('acf-fields-post-types/acf-fields-districts.php');
-    require('acf-fields-post-types/acf-fields-2016.php');
     require('acf-fields-post-types/acf-fields.php');
   }
 

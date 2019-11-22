@@ -11,17 +11,17 @@ use Roots\Sage\Assets;
 
 
 	  <div class="row">
-			<div class="col-md-8 col-centered">
-			  <h1 class="bold">Thank you for signing up.</h1>
-				<h1 class="light">We have other newsletters you may enjoy. Get more of what you want to read in your inbox.</h1>
+			<div class="col-md-8 col-centered mobile-padding-nl">
+			  <!-- <h1 class="bold"></h1> -->
+				<h1 class="light"><?php the_field('newsletter_intro_text'); ?></h1>
 				</br>
 				</br>
 			</div>
 	  </div>
 
 		<div class="row newsletters-bg">
-			<div class="col-md-8 col-centered">
-				<h3>EMAIL NEWSLETTERS</h3>
+			<div class="col-md-8 col-centered mobile-padding-nl">
+				<h3><?php the_field('newsletter_heading'); ?></h3>
 				<div class="newsletter-grid">
 					<div class="block">
 						<div class="images">

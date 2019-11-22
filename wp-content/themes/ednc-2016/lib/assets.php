@@ -71,4 +71,3 @@ function defer_javascripts ( $url ) {
   return "$url' async='async";
 }
 add_filter('clean_url', __NAMESPACE__ . '\\defer_javascripts', 11, 1);
-

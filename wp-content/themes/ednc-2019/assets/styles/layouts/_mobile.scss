@@ -92,6 +92,9 @@
   .block::before {
     height: 178px !important;
   }
+  .mobile-padding-nl {
+    @include mobile-margins;
+  }
 }
 
 

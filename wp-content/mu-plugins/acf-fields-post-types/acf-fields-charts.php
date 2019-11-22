@@ -1,7 +1,111 @@
 <?php
+
+if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+	'key' => 'group_5dd5a52f91dba',
+	'title' => 'District Charts',
+	'fields' => array(
+		array(
+			'key' => 'field_5dd5a54541879',
+			'label' => 'Chart Section',
+			'name' => 'chart_section',
+			'type' => 'flexible_content',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'layouts' => array(
+				'layout_5dd5a5bc8c338' => array(
+					'key' => 'layout_5dd5a5bc8c338',
+					'name' => 'general_statistics',
+					'label' => 'General Statistics',
+					'display' => 'block',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_5dd5a5c34187a',
+							'label' => 'Text',
+							'name' => 'text',
+							'type' => 'text',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+					),
+					'min' => '',
+					'max' => '',
+				),
+				'layout_5dd5a5d64187b' => array(
+					'key' => 'layout_5dd5a5d64187b',
+					'name' => 'racial_breakdown',
+					'label' => 'Racial Breakdown',
+					'display' => 'block',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_5dd5a5df4187c',
+							'label' => 'Text',
+							'name' => 'text',
+							'type' => 'text',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+					),
+					'min' => '',
+					'max' => '',
+				),
+			),
+			'button_label' => 'Add Row',
+			'min' => '',
+			'max' => '',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'district',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
 acf_add_local_field_group(array(
 	'key' => 'group_5dc07cad11712',
-	'title' => 'Chart Fields',
+	'title' => 'Community College Charts',
 	'fields' => array(
 		array(
 			'key' => 'field_5dc07cb7c052d',
@@ -253,7 +357,7 @@ acf_add_local_field_group(array(
 			),
 		),
 	),
-  'location' => array(
+	'location' => array(
 		array(
 			array(
 				'param' => 'post_type',
@@ -271,3 +375,5 @@ acf_add_local_field_group(array(
 	'active' => true,
 	'description' => '',
 ));
+
+endif;
