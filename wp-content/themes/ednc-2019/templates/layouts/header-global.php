@@ -104,4 +104,15 @@ use Roots\Sage\Nav;
 
 </div>
 
+<div class="global-nav-mobile">
+  
+  <div class="global-nav-mobile__main">
+    Lorem ipsum
+  </div>
+  
+  <div class="global-nav-mobile__footer">
+    Dolor sit
+  </div>
+</div>
+
 <div class="global-nav-spacer"></div>

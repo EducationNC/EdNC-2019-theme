@@ -340,6 +340,34 @@ $nav-bg: #EDEFF2;
     
 }
 
+// MOBILE HAMBURGER
+
+.global-nav-mobile {
+    // display: none;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 4999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $nav-bg;
+    padding-top: 100px;
+    
+    .menu-active & {
+        display: flex;
+    }
+}
+
+.global-nav-mobile__main {
+    flex-grow: 1; 
+}
+
+.global-nav-mobile__footer {
+    background: white;   
+}
+
 
 // SPACER
 
