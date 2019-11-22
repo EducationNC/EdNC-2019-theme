@@ -237,6 +237,11 @@
     }
   });
   
+  $('.global-nav__link--connect').click(function(e) {
+    e.preventDefault();
+    $('.global-nav').toggleClass('connect-active');
+  });
+  
 
 
 
