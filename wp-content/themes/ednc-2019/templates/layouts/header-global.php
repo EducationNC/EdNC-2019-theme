@@ -21,9 +21,10 @@ use Roots\Sage\Nav;
             class="global-nav__menu__icon--close">
         </a>
         
-        <a href="#" class="global-nav__link">Give a Damn</a>
-        <a href="#" class="global-nav__link">EdNews</a>
-        <a href="#" class="global-nav__link">EdPerspectives</a>
+        <?php $menus = get_nav_menu_locations(); ?>
+        <?php if ($menu = wp_get_nav_menu_items($menus['left_navigation'])): foreach ($menu as $item): ?>
+          <a href="<?php echo $item->url ?>" class="global-nav__link <?php echo implode(" ", $item->classes) ?>"><?php echo $item->title ?></a>  
+        <?php endforeach; endif; ?>
         
         <div class="global-nav__hamburger">
           
@@ -46,9 +47,11 @@ use Roots\Sage\Nav;
           <input type="image" alt="Search" src="<?php echo Assets\asset_path('images/header/search-icon.svg'); ?>">
         </form>
         
-        <a href="#" class="global-nav__link">Donate</a>
-        <a href="#" class="global-nav__link global-nav__link--connect">Connect</a>
-      
+        <?php $menus = get_nav_menu_locations(); ?>
+        <?php if ($menu = wp_get_nav_menu_items($menus['right_navigation'])): foreach ($menu as $item): ?>
+          <a href="<?php echo $item->url ?>" class="global-nav__link <?php echo implode(" ", $item->classes) ?>"><?php echo $item->title ?></a>  
+        <?php endforeach; endif; ?>
+        
         <a href="#" class="global-nav__search">
           <img src="<?php echo Assets\asset_path('images/header/search-button.svg'); ?>" alt="Search" 
             class="global-nav__search__icon">
@@ -70,7 +73,7 @@ use Roots\Sage\Nav;
           
           <div class="global-nav__connect-menu__signup">
           
-            <div class="global-nav__connect-menu__signup__title">Subscribe</div>
+            <div class="global-nav__connect-menu__signup__title">Get Daily Headlines</div>
           
             <form action="https://ednc.us9.list-manage.com/subscribe/post?u=8ba11e9b3c5e00a64382db633&amp;id=2696365d99" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
               <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="your@email.com" required>
@@ -131,7 +134,7 @@ use Roots\Sage\Nav;
     <div class="global-nav-mobile__footer__signup">
     
       <form action="https://ednc.us9.list-manage.com/subscribe/post?u=8ba11e9b3c5e00a64382db633&amp;id=2696365d99" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-        <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="your@email.com" required>
+        <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Get Daily Headlines" required>
         <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
         <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_8ba11e9b3c5e00a64382db633_2696365d99" tabindex="-1" value=""></div>
         <input type="submit" value="SUBMIT" name="subscribe" id="mc-embedded-subscribe" class="button">
