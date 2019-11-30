@@ -14,7 +14,7 @@ $sage_includes = [
   'lib/anchor-header.php',      // Scripts and stylesheets
   'lib/assets.php',             // Scripts and stylesheets
   'lib/admin.php',              // WP-Admin customizations
-  //'lib/custom-post-types.php',  // Custom post types and custom taxonomies
+  'lib/custom-post-types.php',  // Custom post types and custom taxonomies
   'lib/acf-fields.php',         // ACF custom fields
   'lib/custom-pub-date.php',    // Add custom field for updated date
   'lib/extras.php',             // Custom functions
