@@ -111,7 +111,7 @@ class acf_field_relationship extends acf_field {
 	function get_ajax_query( $options = array() ) {
 		
    		// defaults
-   		$options = acf_parse_args($options, array(
+   		$options = wp_parse_args($options, array(
 			'post_id'		=> 0,
 			's'				=> '',
 			'field_key'		=> '',
@@ -135,7 +135,7 @@ class acf_field_relationship extends acf_field {
 		
    		// paged
    		$args['posts_per_page'] = 20;
-   		$args['paged'] = $options['paged'];
+   		$args['paged'] = intval($options['paged']);
    		
    		
    		// search

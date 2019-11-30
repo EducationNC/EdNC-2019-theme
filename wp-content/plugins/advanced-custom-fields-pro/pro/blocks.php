@@ -9,7 +9,7 @@ acf_register_store( 'block-types' );
 /**
  * acf_register_block_type
  *
- * Registeres a block type.
+ * Registers a block type.
  *
  * @date	18/2/19
  * @since	5.7.12
@@ -39,7 +39,7 @@ function acf_register_block_type( $block ) {
 	}
 	
 	// Register action.
-	add_action( 'enqueue_block_editor_assets', 'acf_enqueue_block_scripts' );
+	add_action( 'enqueue_block_editor_assets', 'acf_enqueue_block_assets' );
 	
 	// Return block.
 	return $block;
@@ -133,18 +133,6 @@ function acf_remove_block_type( $name ) {
  */
 function acf_get_block_type_default_attributes() {
 	return array(
-		'className'	=> array(
-			'type'		=> 'string',
-			'default'	=> '',
-		),
-		'align'		=> array(
-			'type'		=> 'string',
-			'default'	=> '',
-		),
-		'data'		=> array(
-			'type'		=> 'object',
-			'default'	=> array(),
-		),
 		'id'		=> array(
 			'type'		=> 'string',
 			'default'	=> '',
@@ -153,10 +141,18 @@ function acf_get_block_type_default_attributes() {
 			'type'		=> 'string',
 			'default'	=> '',
 		),
-		'mode'		=> array(
-			'type'		=> 'mode',
+		'data'		=> array(
+			'type'		=> 'object',
+			'default'	=> array(),
+		),
+		'align'		=> array(
+			'type'		=> 'string',
 			'default'	=> '',
 		),
+		'mode'		=> array(
+			'type'		=> 'string',
+			'default'	=> '',
+		)
 	);
 }
 
@@ -185,15 +181,20 @@ function acf_validate_block_type( $block ) {
 		'keywords'			=> array(),
 		'supports'			=> array(),
 		'post_types'		=> array(),
-		'render_template'	=> '',
-		'render_callback'	=> false
+		'render_template'	=> false,
+		'render_callback'	=> false,
+		'enqueue_style'		=> false,
+		'enqueue_script'	=> false,
+		'enqueue_assets'	=> false,
 	));
 	
-	// Restrict keywords to 3 max to avoid JS error.
-	$block['keywords'] = array_slice($block['keywords'], 0, 3);
+	// Restrict keywords to 3 max to avoid JS error in older versions.
+	if( acf_version_compare('wp', '<', '5.2') ) {
+		$block['keywords'] = array_slice($block['keywords'], 0, 3);
+	}
 	
 	// Generate name with prefix.
-	$block['name'] = acf_slugify( 'acf/' . $block['name'] );
+	$block['name'] = 'acf/' . acf_slugify($block['name']);
 	
 	// Add default 'supports' settings.
 	$block['supports'] = wp_parse_args($block['supports'], array(
@@ -293,6 +294,9 @@ function acf_render_block( $block, $content = '', $is_preview = false, $post_id 
 		$post_id = get_the_ID();
 	}
 	
+	// Enqueue block type assets.
+	acf_enqueue_block_type_assets( $block );
+	
 	// Setup postdata allowing get_field() to work.
 	acf_setup_meta( $block['data'], $block['id'], true );
 	
@@ -352,7 +356,7 @@ function acf_get_block_fields( $block ) {
 }
 
 /**
- * acf_enqueue_block_scripts
+ * acf_enqueue_block_assets
  *
  * Enqueues and localizes block scripts and styles.
  *
@@ -362,7 +366,7 @@ function acf_get_block_fields( $block ) {
  * @param	void
  * @return	void
  */
-function acf_enqueue_block_scripts() {
+function acf_enqueue_block_assets() {
 	
 	// Localize text.
 	acf_localize_text(array(
@@ -370,16 +374,51 @@ function acf_enqueue_block_scripts() {
 		'Switch to Preview'		=> __('Switch to Preview', 'acf'),
 	));
 	
+	// Get block types.
+	$block_types = acf_get_block_types();
+	
 	// Localize data.
 	acf_localize_data(array(
-		'blockTypes'	=> array_values( acf_get_block_types() )
+		'blockTypes'	=> array_values( $block_types )
 	));
 	
-	// Vars.
-	$min = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+	// Enqueue script.
+	wp_enqueue_script('acf-blocks', acf_get_url("pro/assets/js/acf-pro-blocks.min.js"), array('acf-input', 'wp-blocks'), ACF_VERSION, true );
 	
-	// Enqueue
-	wp_enqueue_script('acf-blocks', acf_get_url("pro/assets/js/acf-pro-blocks{$min}.js"), array('acf-input', 'wp-blocks'), ACF_VERSION, true );
+	// Enqueue block assets.
+	array_map( 'acf_enqueue_block_type_assets', $block_types );
+}
+
+/**
+ * acf_enqueue_block_type_assets
+ *
+ * Enqueues scripts and styles for a specific block type.
+ *
+ * @date	28/2/19
+ * @since	5.7.13
+ *
+ * @param	array $block_type The block type settings.
+ * @return	void
+ */
+function acf_enqueue_block_type_assets( $block_type ) {
+	
+	// Generate handle from name.
+	$handle = 'block-' . acf_slugify($block_type['name']);
+	
+	// Enqueue style.
+	if( $block_type['enqueue_style'] ) {
+		wp_enqueue_style( $handle, $block_type['enqueue_style'], array(), false, 'all' );
+	}
+	
+	// Enqueue script.
+	if( $block_type['enqueue_script'] ) {
+		wp_enqueue_script( $handle, $block_type['enqueue_script'], array(), false, true );
+	}
+	
+	// Enqueue assets callback.
+	if( $block_type['enqueue_assets'] && is_callable($block_type['enqueue_assets']) ) {
+		call_user_func( $block_type['enqueue_assets'], $block_type );
+	}
 }
 
 /**
@@ -497,7 +536,7 @@ function acf_parse_save_blocks( $text = '' ) {
 	// Search text for dynamic blocks and modify attrs.
 	return addslashes(
 		preg_replace_callback(
-			'/<!--\s+wp:(?P<name>[\S]+)\s+(?P<attrs>{[\S\s]+?})\s+\/-->/',
+			'/<!--\s+wp:(?P<name>[\S]+)\s+(?P<attrs>{[\S\s]+?})\s+(?P<void>\/)?-->/',
 			'acf_parse_save_blocks_callback',
 			stripslashes( $text )
 		)
@@ -523,6 +562,7 @@ function acf_parse_save_blocks_callback( $matches ) {
 	// Defaults
 	$name = isset($matches['name']) ? $matches['name'] : '';
 	$attrs = isset($matches['attrs']) ? json_decode( $matches['attrs'], true) : '';
+	$void = isset($matches['void']) ? $matches['void'] : '';
 	
 	// Bail early if missing data or not an ACF Block.
 	if( !$name || !$attrs || !acf_has_block_type($name) ) {
@@ -538,6 +578,7 @@ function acf_parse_save_blocks_callback( $matches ) {
 	// Prevent wp_targeted_link_rel from corrupting JSON.
 	remove_filter( 'content_save_pre', 'wp_filter_post_kses' );
 	remove_filter( 'content_save_pre', 'wp_targeted_link_rel' );
+	remove_filter( 'content_save_pre', 'balanceTags', 50 );
 	
 	/**
 	 * Filteres the block attributes before saving.
@@ -550,5 +591,5 @@ function acf_parse_save_blocks_callback( $matches ) {
 	$attrs = apply_filters( 'acf/pre_save_block', $attrs );
 	
 	// Return new comment
-	return '<!-- wp:' . $name . ' ' . json_encode( $attrs, JSON_PRETTY_PRINT ) . ' /-->';
+	return '<!-- wp:' . $name . ' ' . acf_json_encode($attrs) . ' ' . $void . '-->';
 }

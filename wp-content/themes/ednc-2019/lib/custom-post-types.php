@@ -787,6 +787,8 @@ register_taxonomy( 'map-column',
  * Modify queries on specific templates
  */
 function pre_get_posts($query) {
+	if (is_admin()) { return; }
+	
 	// all archives should hide anything tagged with 'hide from archives'
 	if ($query->is_author() || $query->is_category() || $query->is_date()) {
 		$tax_query = array(

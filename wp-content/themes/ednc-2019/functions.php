@@ -11,10 +11,10 @@
  */
 $sage_includes = [
   'lib/setup.php',              // Theme setup
-  'lib/anchor-header.php',             // Scripts and stylesheets
+  'lib/anchor-header.php',      // Scripts and stylesheets
   'lib/assets.php',             // Scripts and stylesheets
   'lib/admin.php',              // WP-Admin customizations
-  'lib/custom-post-types.php',  // Custom post types and custom taxonomies
+  //'lib/custom-post-types.php',  // Custom post types and custom taxonomies
   'lib/acf-fields.php',         // ACF custom fields
   'lib/custom-pub-date.php',    // Add custom field for updated date
   'lib/extras.php',             // Custom functions
@@ -26,13 +26,14 @@ $sage_includes = [
   'lib/shortcodes.php',         // Shortcodes and UI
   'lib/titles.php',             // Page titles
   'lib/nav.php',                // Clean up nav menus
-  'lib/aquaresizer.php',       // Force resize images
+  'lib/aquaresizer.php',        // Force resize images
   'lib/nav-data-dashboard.php', // Data dashboard nav walker
   'lib/nav-widgets.php',        // Widgetize nav menus
   'lib/wrapper.php',            // Theme wrapper class
   'lib/customizer.php',         // Theme customizer
   'lib/widgets/register.php',   // Register widgets
-  'lib/social-share-count.php'  // Social share counts
+  'lib/social-share-count.php', // Social share counts
+  'lib/migrations.php',         // Post migrations
 ];
 
 foreach ($sage_includes as $file) {
@@ -149,7 +150,7 @@ function new_excerpt_more( $more ) {
 
 
 //exclude private
-add_filter( 'pre_get_posts', 'exclude_private_post' );
+// add_filter( 'pre_get_posts', 'exclude_private_post' );
 function exclude_private_post( $query ) {
 		$excluded_ids  = array();
 		$id;
@@ -272,3 +273,12 @@ function wpb_change_search_url() {
     }
 }
 add_action( 'template_redirect', 'wpb_change_search_url' );
+
+// keep drafts out of relationship fields 
+// https://www.advancedcustomfields.com/resources/acf-fields-relationship-query/
+
+add_filter('acf/fields/relationship/query', 'relationship_options_filter', 10, 3);
+function relationship_options_filter($options, $field, $the_post) {
+	$options['post_status'] = array('publish');
+	return $options;
+}
