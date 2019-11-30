@@ -2,28 +2,22 @@
 
 // migrate old posts to new default template
 function migrate_post_default_template(){
-  $products_query = new WP_Query(array('post_type'=>'product', 'posts_per_page' => '-1'));
+  $posts_query = new WP_Query(array(
+    'post_type'=>'post', 
+    'posts_per_page' => '-1',
+    'date_query'     => array('before' => '2019-10-01'),
+  ));
 
   echo '<h1>Migrating Posts Default Template...</h1>';
 
-//   while ($products_query->have_posts()) {
-//     $products_query->the_post();
-//     $_id = get_the_ID();
+  while ($posts_query->have_posts()) {
+    $posts_query->the_post();
+    $_id = get_the_ID();
 
-//     // get old meta
-//     $price = get_post_meta($_id, 'product_price', true);
-
-//     // update new meta
-//     if (is_numeric($price)) {
-//       update_post_meta($_id, '_price', $price);
-//       echo '<h6>Updated: '. $_id .'</h6>';
-//     } else {
-//       echo '<h5 style="color:red">Non-numeric price found for post: '. $_id .'</h5>';
-//     }
-//     update_post_meta($_id, '_visibility', 'visible');
-//     update_post_meta($_id, '_stock_status', 'instock');
-
-//   }
+    // get old meta
+    update_post_meta($_id, '_wp_page_template', array('page-2016-Template.php'));
+    echo "Updated: " . get_the_title() . "<br>";
+  }
 
   echo '<h1>Migration finished.</h1>';
 }
