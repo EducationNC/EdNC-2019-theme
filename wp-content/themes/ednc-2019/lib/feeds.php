@@ -67,4 +67,4 @@ function feed_filter($query) {
   }
   return $query;
 }
-add_filter('pre_get_posts', __NAMESPACE__ . '\\feed_filter');
+// add_filter('pre_get_posts', __NAMESPACE__ . '\\feed_filter');

@@ -296,19 +296,3 @@ add_filter('instant_articles_content', function($content) {
 
   return $content;
 });
-
-
-function exclude_these_categories($thelist, $separator=' ') {
-        //Exclude the following categories
-        $exclude = array('Uncategorized');
-        $cats = explode($separator, $thelist);
-        $newlist = array();
-        foreach($cats as $cat) {
-            $catname = trim(strip_tags($cat));
-            if(!in_array($catname, $exclude))
-                $newlist[] = $cat;
-        }
-        return implode($separator, $newlist);
-
-}
-add_filter('the_category','exclude_these_categories', 10, 2);
