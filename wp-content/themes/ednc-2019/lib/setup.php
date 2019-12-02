@@ -161,23 +161,3 @@ function printfriendly_script() {
     }
 }
 // add_action('wp_head', __NAMESPACE__ . '\\printfriendly_script');
-
-
-
-/*
-function wpse196289_default_page_template() {
-    global $post;
-    if ( 'page' == $post->post_type
-        && 0 != count( get_page_templates( $post ) )
-        && get_option( 'page_for_posts' ) != $post->ID // Not the page for listing posts
-        && '' == $post->page_template // Only when page_template is not set
-    ) {
-        $post->page_template = "page-2019-Template.php";
-    }
-}
-add_action('add_meta_boxes', 'wpse196289_default_page_template', 1);
-
-*/
-
-
-//add_filter('wp_enqueue_scripts', __NAMESPACE__ . '\\wpse196289_rest_set_default_page_template', 10);
