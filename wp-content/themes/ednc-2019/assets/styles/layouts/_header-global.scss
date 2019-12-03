@@ -198,7 +198,7 @@ $nav-bg: #EDEFF2;
     
     &:after {
     	bottom: 100%;
-    	right: 8px;
+    	right: calc(50% - 4px);
     	border: solid transparent;
     	content: " ";
     	height: 0;
