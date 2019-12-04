@@ -3067,7 +3067,7 @@ acf_add_local_field_group(array(
 			'label' => 'Enable Category Filters',
 			'name' => 'enable_category_filters',
 			'type' => 'true_false',
-			'instructions' => '',
+			'instructions' => 'If enabled, only categories that are set to "Include in Post Editor" will be shown in the post editor',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -3077,9 +3077,9 @@ acf_add_local_field_group(array(
 			),
 			'message' => '',
 			'default_value' => 0,
-			'ui' => 0,
-			'ui_on_text' => '',
-			'ui_off_text' => '',
+			'ui' => 1,
+			'ui_on_text' => 'Yes',
+			'ui_off_text' => 'No',
 		),
 	),
 	'location' => array(
