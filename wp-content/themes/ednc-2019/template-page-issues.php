@@ -19,15 +19,21 @@ Template Name: Issues Template
               <?php foreach( $top_terms as $term ): ?>
               
                 <?php
-                $image = $term->term_image;
-                $image_src = wp_get_attachment_image_src($image, 'large');
+                $image_src = '';
+                $image = get_field('taxonomy_thumbnail', $term);
+                if ($image) {
+                  $image_src = $image['sizes']['large']; 
+                } elseif ($term->term_image) {
+                  $image = $term->term_image;
+                  $image_src = wp_get_attachment_image_src($image, 'large');
+                  $image_src = $image_src[0]; 
+                }
                 ?>
                 
                 <div class="block-issues content-block-4 clearfix">
                   <div class="flex">
-                    <div class="block-content" style="background-color: #ccc;">
+                    <div class="block-content" style="background-image: url(<?php echo $image_src ?>);">
                       <a class="" href="<?php echo esc_url( get_term_link( $term ) ); ?>">
-                      <img src="<?php echo $image_src[0] ?>" alt="<?php echo esc_html( $term->name ); ?> image" />
                       <h2 class="rd issues"><?php echo esc_html( $term->name ); ?></h2>
                       </a>
                     </div>
