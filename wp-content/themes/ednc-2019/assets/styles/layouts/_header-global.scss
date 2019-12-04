@@ -217,6 +217,23 @@ $nav-bg: #EDEFF2;
             display: block;   
         }
     }
+    
+    > * {
+        padding: 1.5rem 0;
+        
+        &:first-child {
+            padding-top: 0;
+        }
+        
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+    
+    > * + * {
+        border-top: 1px solid $nav-bg;
+    }
+    
 }
 
 .global-nav__connect-menu__social,
@@ -230,11 +247,7 @@ $nav-bg: #EDEFF2;
 }
 
 .global-nav__connect-menu__signup {
-    border: 1px solid $nav-bg;
-    border-left: 0;
-    border-right: 0;
-    padding: 1.5rem 0;
-    margin: .5rem 0 1.5rem;
+    padding: 2rem 0;
     
     [type="email"] {
         width: 100%;
@@ -261,7 +274,9 @@ $nav-bg: #EDEFF2;
 }
 
 .global-nav__connect-menu__signup__title,
-.global-nav__connect-menu__txt-msg {
+.global-nav__connect-menu__newsletters-link,
+.global-nav__connect-menu__txt-msg
+{
     font-weight: bold;
     font-size: 14px;
     line-height: 1.2;
