@@ -285,20 +285,20 @@ function relationship_options_filter($options, $field, $the_post) {
 
 // Give a higher search weight to newer posts
 // https://wordpress.org/support/topic/time-weight/
-add_filter('relevanssi_match', 'rlv_dynamic_time_weights');
-function rlv_dynamic_time_weights( $match ) {
-	$now       = date_create( 'now' );
-	$post_date = date_create( get_the_time( 'Y-m-d', $match->doc ) );
-	$diff_days = $now->diff( $post_date, true )->format( '%a' );
+// add_filter('relevanssi_match', 'rlv_dynamic_time_weights');
+// function rlv_dynamic_time_weights( $match ) {
+// 	$now       = date_create( 'now' );
+// 	$post_date = date_create( get_the_time( 'Y-m-d', $match->doc ) );
+// 	$diff_days = $now->diff( $post_date, true )->format( '%a' );
 
-	if ( $diff_days < 1 ) {
-		$diff_days = 1;
-	}
-	$date_weight_multiplier = 500 / $diff_days;
-	$match->weight = $match->weight * $date_weight_multiplier;
+// 	if ( $diff_days < 1 ) {
+// 		$diff_days = 1;
+// 	}
+// 	$date_weight_multiplier = 500 / $diff_days;
+// 	$match->weight = $match->weight * $date_weight_multiplier;
 
-	return $match;
-}
+// 	return $match;
+// }
 
 // Increase search results per page
 function pd_search_posts_per_page($query) {
