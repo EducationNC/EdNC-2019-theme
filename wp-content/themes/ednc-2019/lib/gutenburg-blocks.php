@@ -106,6 +106,15 @@ function be_register_blocks() {
 	// 		'align' => array( 'left', 'right', 'center', 'wide', 'full' ),
 	// 	 ),
 	// ));
+	acf_register_block( array(
+		'name'			=> 'slider',
+		'title'			=> 'Slider',
+		'description'		=> '',
+		'render_template'	=> 'templates/gutenberg/slider.php',
+		'category'		=> 'widgets',
+		'mode'			=> 'preview',
+		'icon'			=> 'image-flip-horizontal',
+	));
 }
 
 add_action('acf/init', 'be_register_blocks' );

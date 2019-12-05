@@ -17,6 +17,7 @@ function load_custom_fields() {
     require('acf-fields-post-types/acf-fields-districts.php');
     require('acf-fields-post-types/acf-fields-issues.php');
     require('acf-fields-post-types/acf-fields-categories.php');
+    require('acf-fields-post-types/acf-fields-gutenberg.php');
     require('acf-fields-post-types/acf-fields.php');
   }
 
