@@ -13,29 +13,29 @@ $featured_ids = array();
 global $featured;
 $recent_ids = array();
 global $featured_recent;
+//$posts = get_field('featured_article');
+$ids2 = get_field('featured_article_widget', false, false);
+$widget_test = get_field('text-12345')
 ?>
 <section id="carousel" class="block carousel">
   <div class="home-page-wrapper">
     <div class="carousel-right">
       <section id="carousel-latest" class="block listing listing-headline small">
+        <p><?php the_field('text-12345', 'widget_' . $widget_id); ?></p>
         <?php
-        $featured = new WP_Query([
-          'posts_per_page' => 1,
-          'post_type' => array('post', 'map', 'edtalk'),
-          'tax_query' => array(
-            array(
-              'taxonomy' => 'appearance',
-              'field' => 'slug',
-              'terms' => 'featured'
-            )
-          )
-        ]);
+        $ids1 = new WP_Query(array(
+        	'posts_per_page'	=> 1,
+        	'post__in'			=> $ids2,
+        	'post_status'		=> 'any',
+        	'orderby'        	=> 'post__in',
+        ));
 
-        if ($featured->have_posts()) : while ($featured->have_posts()) : $featured->the_post(); ?>
-          <?php// $featured_image_trending = wp_get_attachment_image_src($image_id, 'Trending'); ?>
-          <?php global $featured;
-          global $title;
-          $featured_ids[] = get_the_id();
+        if ($ids1->have_posts()) : while ($ids1->have_posts()) : $ids1->the_post(); ?>
+          <?php
+          //global $featured;
+          //global $title;
+          //$featured_ids[] = get_the_id();
+          echo $widget_test;
           get_template_part('templates/layouts/block', 'featured'); ?>
 
         <?php endwhile; endif; wp_reset_query(); ?>

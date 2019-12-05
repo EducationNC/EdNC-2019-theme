@@ -2,6 +2,8 @@
 
 if( function_exists('acf_add_local_field_group') ):
 
+
+
 acf_add_local_field_group(array(
 	'key' => 'group_5c545a0f6cbe6',
 	'title' => 'Ad Block',
@@ -5495,7 +5497,7 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'default_value' => '',
+			'default_value' => 'Top Reads',
 			'placeholder' => '',
 			'prepend' => '',
 			'append' => '',

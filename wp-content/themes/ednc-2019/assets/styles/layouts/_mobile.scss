@@ -38,6 +38,9 @@
   .footer .footer-flex a, .footer .footer-flex p.lato {
     font-size: 13px;
   }
+  .category-header-image {
+    margin-top: -32px;
+  }
 
   .logos {
     max-width: 1200px;
@@ -215,6 +218,18 @@
     // margin: 10px;
   }
 
+  .mobile-only {
+    display: block;
+  }
+
+  .category-header-image-mobile {
+    width: 100%;
+    margin-top: -70px;
+  }
+
+  .full-screen {
+    display: none;
+  }
   .second {
     display: none;
   }
