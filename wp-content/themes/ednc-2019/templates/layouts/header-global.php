@@ -81,7 +81,11 @@ use Roots\Sage\Nav;
               <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_8ba11e9b3c5e00a64382db633_2696365d99" tabindex="-1" value=""></div>
               <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
             </form>
-          
+            
+          </div>
+
+          <div class="global-nav__connect-menu__newsletters-link">
+            <a href="/newsletters/">Get all newsletters</a>
           </div>
           
           <div class="global-nav__connect-menu__txt-msg">

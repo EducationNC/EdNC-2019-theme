@@ -34,6 +34,7 @@ $sage_includes = [
   'lib/widgets/register.php',   // Register widgets
   'lib/social-share-count.php', // Social share counts
   'lib/migrations.php',         // Post migrations
+  'lib/categories-filter.php'   // Filter available categories in post editor
 ];
 
 foreach ($sage_includes as $file) {

@@ -219,16 +219,38 @@
           }
   });
 
-  // Global Nav
+  // Global Search
   $('.global-nav__search').click(function(e) {
     e.preventDefault();
     $('body').toggleClass('search-active');
   });
   
+  // Global nav hamburger
+  var menuActiveClass = 'menu-active'; 
+  var menuCloseHandler = function(event){
+    // if the target is a descendent of container do nothing
+    if ($(event.target).is(".global-nav__hamburger, .global-nav__hamburger *, .global-nav-mobile, .global-nav-mobile *")) {
+        return;
+    }
+  
+    // remove event handler from document and hide menu
+    $(document).off("click", menuCloseHandler);
+    $('body').removeClass(menuActiveClass);
+  };
+  
   $('.global-nav__menu').click(function(e) {
     e.preventDefault();
-    $('body').toggleClass('menu-active');
+    e.stopPropagation();
+    
+    if (!$('body').hasClass(menuActiveClass)) {
+      $('body').addClass(menuActiveClass);   
+      $(document).on("click", menuCloseHandler);
+    } else {
+      $('body').removeClass(menuActiveClass);
+      $(document).off("click", menuCloseHandler);
+    }
   });
+
   
   // Temporarily remove menus without children from the hamburger
   $('.global-nav__hamburger__nav > li, .global-nav-mobile__main__nav > li').each(function(index) {
@@ -236,10 +258,32 @@
       $(this).remove(); 
     }
   });
+ 
+  // Connect Menu
+ 
+  var connectMenuActiveClass = 'connect-active'; 
+  var connectCloseHandler = function(event){
+    // if the target is a descendent of container do nothing
+    if ($(event.target).is(".global-nav__connect-menu, .global-nav__connect-menu *")) {
+        return;
+    }
+  
+    // remove event handler from document and hide menu
+    $(document).off("click", connectCloseHandler);
+    $('body').removeClass(connectMenuActiveClass);
+  };
   
   $('.global-nav__link--connect').click(function(e) {
     e.preventDefault();
-    $('body').toggleClass('connect-active');
+    e.stopPropagation();
+    
+    if (!$('body').hasClass(connectMenuActiveClass)) {
+      $('body').addClass(connectMenuActiveClass);   
+      $(document).on("click", connectCloseHandler);
+    } else {
+      $('body').removeClass(connectMenuActiveClass);
+      $(document).off("click", connectCloseHandler);
+    }
   });
   
 

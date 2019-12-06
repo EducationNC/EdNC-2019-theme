@@ -100,7 +100,34 @@ $widget_test = get_field('text-12345')
         </header>
         <article class="post">
             <div class="lead-image">
-              <img src="<?php echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" />
+
+              <?php
+
+              // check if the repeater field has rows of data
+              if( have_rows('featured_read') ):
+
+               	// loop through the rows of data
+                  while ( have_rows('featured_read') ) : the_row();
+
+                      if (get_sub_field('intro_text')) {  ?>
+                          <?php echo "yes"; ?>
+                      <?php } else { ?>
+                        <?php echo "no"; ?>
+                        <img src="<?php echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" />
+                      <?php }
+
+                  endwhile;
+
+              else :
+
+                  // no rows found
+
+              endif;
+
+              ?>
+
+<!--
+              <img src="<?php //echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" /> -->
             </div>
         </article><!-- .post -->
         <hr class="break">

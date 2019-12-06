@@ -593,15 +593,26 @@ h3.rd.column {
 //ISSUES PAGE
 
 .block-issues {
+  .block-content {
+      background: #ccc center no-repeat;
+      background-size: cover;
+      min-height: 150px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+  }
+
+  a {
+     display: block;
+     width: 100%;
+     padding: 5px;
+  }
+
   h2 {
     color: white;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
     text-align: center;
-    overflow-wrap: normal;
+    margin: 0;
+    text-shadow: 1px 1px 1px rgba(0,0,0,.2);
   }
 }
 
@@ -627,4 +638,8 @@ h3.rd.column {
   word-wrap: break-word;
   color: $text;
   letter-spacing: 0.7;
+}
+
+.category-padding {
+  padding: 50px 60px;
 }

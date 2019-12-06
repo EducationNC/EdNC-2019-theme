@@ -26,47 +26,32 @@ $post_object = get_field('featured_article_category_pages', $term);
         <?php if( !empty($category_featured) ): ?>
 
           <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-7 category-padding">
               <?php if ($desc && !isset($_GET['date'])) { ?>
                   <?php echo $desc; ?>
               <?php } ?>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 category-padding">
+              <?php
+              $post_objects = get_field('featured_article_category_pages', $term);
 
-              <?php $post_object = get_field('featured_article_category_pages', $term);
-              
-                if( $post_object ):
 
-                 $post = $post_object;
-
-                 setup_postdata( $post ); ?>
-
-                     <h3><a href=”<?php the_permalink(); ?>”><?php the_title(); ?></a></h3>
-
-                 <?php wp_reset_postdata(); ?>
-
-             <?php endif; ?>
-
-              <?php //if( $posts ): ?>
-                  <?php //foreach( $posts as $p ): ?>
-
-                     <?php //$featured_image = Media\get_featured_image('medium'); ?>
-
-                      <!-- <div class="category-featured-article">
-                        <a href="<?php //the_permalink(); ?>">
-                          <?php //if (!empty($featured_image)) {
-                           //echo '<img class="" src="' . $featured_image . '" />';
-                         //} ?>
-                          <p class="small"><?php //echo $post_type ?></p>
-                          <h3 class="post-title"><?php //the_title(); ?></h3>
-                          <?php //get_template_part('templates/components/entry-meta'); ?>
-                          <a class="mega-link" href="<?php the_permalink(); ?>"></a>
-                        </a>
-                      </div> -->
-                  <?php //endforeach; ?>
-
-              <?php //endif; ?>
-
+              if( $post_objects ): ?>
+                  <?php foreach( $post_objects as $post): ?>
+                     <?php $featured_image = Media\get_featured_image('medium'); ?>
+                    <?php setup_postdata($post); ?>
+                      <div class="category-featured-article">
+                          <a href="<?php the_permalink(); ?>">
+                            <?php if (!empty($featured_image)) {
+                             echo '<img class="" src="' . $featured_image . '" />';
+                            } ?>
+                            <h3 class="post-title"><?php echo the_title(); ?></h3>
+                            <?php get_template_part('templates/components/entry-meta'); ?>
+                          </a>
+                      </div>
+                    <?php endforeach; ?>
+                    <?php wp_reset_postdata(); ?>
+              <?php endif; ?>
             </div>
           </div>
 
