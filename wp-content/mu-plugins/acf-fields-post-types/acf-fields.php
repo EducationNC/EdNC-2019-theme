@@ -750,92 +750,6 @@ acf_add_local_field_group(array(
 ));
 
 acf_add_local_field_group(array(
-	'key' => 'group_5d014ad2c7c86',
-	'title' => 'Block - Center Quote',
-	'fields' => array(
-		array(
-			'key' => 'field_5d014ad8caefd',
-			'label' => 'Center Quote',
-			'name' => 'center-quote',
-			'type' => 'wysiwyg',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'default_value' => '',
-			'tabs' => 'all',
-			'toolbar' => 'full',
-			'media_upload' => 1,
-			'delay' => 0,
-		),
-	),
-	'location' => array(
-		array(
-			array(
-				'param' => 'block',
-				'operator' => '==',
-				'value' => 'acf/center-quote',
-			),
-		),
-	),
-	'menu_order' => 0,
-	'position' => 'normal',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
-	'active' => true,
-	'description' => '',
-));
-
-acf_add_local_field_group(array(
-	'key' => 'group_5c86c98258fba',
-	'title' => 'Blockquote',
-	'fields' => array(
-		array(
-			'key' => 'field_5c86c98699352',
-			'label' => 'Block-quote',
-			'name' => 'block-quote',
-			'type' => 'textarea',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'default_value' => '',
-			'placeholder' => '',
-			'maxlength' => '',
-			'rows' => 4,
-			'new_lines' => 'wpautop',
-		),
-	),
-	'location' => array(
-		array(
-			array(
-				'param' => 'block',
-				'operator' => '==',
-				'value' => 'acf/block-quote',
-			),
-		),
-	),
-	'menu_order' => 0,
-	'position' => 'normal',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
-	'active' => true,
-	'description' => '',
-));
-
-acf_add_local_field_group(array(
 	'key' => 'group_5457e4fffgfff',
 	'title' => 'Board Notes Fields',
 	'fields' => array(
@@ -2132,76 +2046,6 @@ acf_add_local_field_group(array(
 		9 => 'page_attributes',
 		10 => 'send-trackbacks',
 	),
-	'active' => true,
-	'description' => '',
-));
-
-acf_add_local_field_group(array(
-	'key' => 'group_5cdc41389138f',
-	'title' => 'Gallery Block',
-	'fields' => array(
-		array(
-			'key' => 'field_5cdd7d46b66a0',
-			'label' => 'Image Gallery',
-			'name' => 'image_gallery_repeater',
-			'type' => 'repeater',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'collapsed' => '',
-			'min' => 0,
-			'max' => 0,
-			'layout' => 'table',
-			'button_label' => '',
-			'sub_fields' => array(
-				array(
-					'key' => 'field_5cdd7d7a8ed67',
-					'label' => 'Image Rows',
-					'name' => 'image_gallery_row',
-					'type' => 'gallery',
-					'instructions' => '',
-					'required' => 0,
-					'conditional_logic' => 0,
-					'wrapper' => array(
-						'width' => '',
-						'class' => '',
-						'id' => '',
-					),
-					'min' => '',
-					'max' => '',
-					'insert' => 'append',
-					'library' => 'all',
-					'min_width' => '',
-					'min_height' => '',
-					'min_size' => '',
-					'max_width' => '',
-					'max_height' => '',
-					'max_size' => '',
-					'mime_types' => '',
-				),
-			),
-		),
-	),
-	'location' => array(
-		array(
-			array(
-				'param' => 'block',
-				'operator' => '==',
-				'value' => 'acf/gallery-block-acf',
-			),
-		),
-	),
-	'menu_order' => 0,
-	'position' => 'normal',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
 	'active' => true,
 	'description' => '',
 ));
@@ -4226,48 +4070,6 @@ acf_add_local_field_group(array(
 	'description' => '',
 ));
 
-acf_add_local_field_group(array(
-	'key' => 'group_5c86d15e810a8',
-	'title' => 'LongForm Intro',
-	'fields' => array(
-		array(
-			'key' => 'field_5c86d164d6875',
-			'label' => 'Longform Intro',
-			'name' => 'longform-intro',
-			'type' => 'wysiwyg',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'tabs' => 'all',
-			'toolbar' => 'full',
-			'media_upload' => 1,
-			'default_value' => '',
-			'delay' => 0,
-		),
-	),
-	'location' => array(
-		array(
-			array(
-				'param' => 'block',
-				'operator' => '==',
-				'value' => 'acf/longform-intro',
-			),
-		),
-	),
-	'menu_order' => 0,
-	'position' => 'normal',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
-	'active' => true,
-	'description' => '',
-));
 
 acf_add_local_field_group(array(
 	'key' => 'group_54a18af1d90a8',
@@ -5692,47 +5494,6 @@ acf_add_local_field_group(array(
 ));
 
 acf_add_local_field_group(array(
-	'key' => 'group_5cc09a59aa553',
-	'title' => 'Table of Contents',
-	'fields' => array(
-		array(
-			'key' => 'field_5cc09a6a18c26',
-			'label' => 'Table of Contents',
-			'name' => '',
-			'type' => 'message',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'message' => 'This displays a dynamic list of H2\'s.',
-			'new_lines' => 'wpautop',
-			'esc_html' => 0,
-		),
-	),
-	'location' => array(
-		array(
-			array(
-				'param' => 'block',
-				'operator' => '==',
-				'value' => 'acf/table-of-contents',
-			),
-		),
-	),
-	'menu_order' => 0,
-	'position' => 'normal',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
-	'active' => true,
-	'description' => '',
-));
-
-acf_add_local_field_group(array(
 	'key' => 'group_5dcae74eba6aa',
 	'title' => 'Team Page Template',
 	'fields' => array(
@@ -5842,49 +5603,6 @@ acf_add_local_field_group(array(
 				'param' => 'post_template',
 				'operator' => '==',
 				'value' => 'template-page-team.php',
-			),
-		),
-	),
-	'menu_order' => 0,
-	'position' => 'normal',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
-	'active' => true,
-	'description' => '',
-));
-
-acf_add_local_field_group(array(
-	'key' => 'group_5d97bb5d9ecef',
-	'title' => 'Trust Project Block',
-	'fields' => array(
-		array(
-			'key' => 'field_5d97bb67c693f',
-			'label' => 'Trust Project',
-			'name' => 'trust_project',
-			'type' => 'wysiwyg',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'default_value' => '',
-			'tabs' => 'all',
-			'toolbar' => 'basic',
-			'media_upload' => 0,
-			'delay' => 0,
-		),
-	),
-	'location' => array(
-		array(
-			array(
-				'param' => 'block',
-				'operator' => '==',
-				'value' => 'acf/trust-project-block',
 			),
 		),
 	),
