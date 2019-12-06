@@ -284,35 +284,44 @@
 
       <?php while (have_rows('chart_section')) : the_row(); ?>
 
-        <?php if( get_row_layout() == 'general_statistics' ): ?>
+        <div class="chart-section extra-bottom-margin clearfix">
 
-            <div class="chart-section extra-bottom-margin clearfix">
+          <div class="col-md-12 callout">
 
-              <div class="col-md-12 callout">
+            <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
-                <h3 style="margin-top: .5em;"><?php the_sub_field('text') ?></h3>
+            <h4><?php the_sub_field('source') ?></h4>
 
-                <h4><?php //the_sub_field('source') ?></h4>
+          </div>
+
+          <?php while (have_rows('chart')) : the_row(); ?>
+            <?php if (!get_sub_field('hide')): ?>
+              <div class="col-md-4">
+
+                <h6 style="color: #731454"><?php the_sub_field('chart_name'); ?></h6>
+                <p><?php the_sub_field('subtitle'); ?></p>
+
+                <?php if (get_sub_field('chart_type') == 'number'): ?>
+
+                  <p class="h1" style="margin-bottom: 1em;">
+                    <span class="big"><?php the_sub_field('number') ?></span>
+                  </p>
+
+                  <p><small><?php the_sub_field('number_description') ?></small></p>
+
+                <?php elseif (get_sub_field('chart_type') == 'image'): ?>
+
+                  <?php $image = get_sub_field('image'); ?>
+
+                  <img src="<?php echo $image['url'] ?>">
+
+                <?php endif; ?>
 
               </div>
+            <?php endif; ?>
+          <?php endwhile; ?>
 
-            </div>
-
-        <?php elseif( get_row_layout() == 'racial_breakdown' ): ?>
-
-            <div class="chart-section extra-bottom-margin clearfix">
-
-              <div class="col-md-12 callout">
-
-                <h3 style="margin-top: .5em;"><?php the_sub_field('text') ?></h3>
-
-                <h4><?php //the_sub_field('source') ?></h4>
-
-              </div>
-
-            </div>
-
-        <?php endif; ?>
+        </div>
 
       <?php endwhile; ?>
 

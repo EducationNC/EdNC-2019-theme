@@ -62,21 +62,41 @@ while (have_posts()) : the_post();
   <article <?php post_class('article 2019-template'); ?>>
 
     <!-- <?php //if (isset($banner)) { ?> -->
-    <?php if (! empty($banner)) { ?>
-    <div class="full-width-image-block banner" style="">
-        <img src="<?php echo $banner[0];  ?>" alt="<?php the_author(); ?>" class="full-width-image">
-    </div>
+    <?php if (!empty($banner)) { ?>
+    <!-- <div class="full-width-image-block banner" style="">
+        <img src="<?php// echo $banner[0];  ?>" alt="<?php //the_author(); ?>" class="full-width-image">
+    </div> -->
     <?php } ?>
 
-    <?php if (has_post_thumbnail() && $featured_image_align == 'hero-new') { ?>
+    <!-- <?php //if (has_post_thumbnail() && $featured_image_align == 'hero') { ?>
+      <?php //echo "featured-image-hero"; ?>
+      <div class="full-width-image-block">
+        <img class="full-width-image" src="
+        <?php
+          //if(!empty($featured_image_hero)){
+            //echo "featured-image-hero";
+            //echo $featured_image_hero[0];
+          //} else {
+            //echo 'force-crop';
+            //echo "none";
+            //echo $image_hero;
+          //}
+        ?>
+        " />
+        <p class="lato"><?php //echo $thumb_post->post_excerpt; ?></p>
+      </div>
+    <?php //} ?> -->
+
+    <?php if (has_post_thumbnail() && $featured_image_align == 'hero') { ?>
+      <?php echo "featured-image-hero"; ?>
       <div class="full-width-image-block">
         <img class="full-width-image" src="
         <?php
           if(!empty($featured_image_hero)){
-            //echo 'featured-image-hero';
+            echo "featured-image-hero";
             echo $featured_image_hero[0];
-          } else {
-            //echo 'force-crop';
+         } else {
+            echo "force-crop";
             echo $image_hero;
           }
         ?>
@@ -85,22 +105,6 @@ while (have_posts()) : the_post();
       </div>
     <?php } ?>
 
-    <!-- <?php //if (has_post_thumbnail() && $featured_image_align == 'hero-new') { ?>
-      <div class="full-width-image-block">
-        <img class="full-width-image" src="
-        <?php
-          //if(!empty($featured_image_hero)){
-            //echo 'featured-image-hero';
-            //echo $featured_image_hero[0];
-        //  } else {
-            //echo 'force-crop';
-          //  echo $image_hero;
-        //  }
-        ?>
-        " />
-        <p class="lato"><?php //echo $thumb_post->post_excerpt; ?></p>
-      </div> -->
-    <?php //} ?>
 
 
 
@@ -119,17 +123,6 @@ while (have_posts()) : the_post();
         echo "exec is enabled";
     }
     ?>
-    <?php
-    if (isset($featured_image_align) && $featured_image_align == 'hero'){
-
-
-
-    }
-
-    if (isset($featured_image_align) && $featured_image_align == 'contained'){
-
-    }
-    ?>
 
     <div class="entry-content">
       <div class="container">
@@ -138,7 +131,7 @@ while (have_posts()) : the_post();
           <div class="col-md-8 col-centered print-only article-section">
             <h1 class="entry-title"><?php// the_title(); ?></h1>
             <?php// get_template_part('templates/components/author', 'meta'); ?>
-            <?php if (has_post_thumbnail() && $featured_image_align == 'contained-new') {
+            <?php if (has_post_thumbnail() && $featured_image_align == 'contained') {
               echo '<div class="alignnone no-top-margin">';
               the_post_thumbnail('Contained');
               $thumb_id = get_post_thumbnail_id();

@@ -601,13 +601,13 @@ h3.rd.column {
       display: flex;
       align-items: center;
   }
-  
+
   a {
      display: block;
      width: 100%;
      padding: 5px;
   }
-  
+
   h2 {
     color: white;
     text-align: center;
@@ -638,4 +638,8 @@ h3.rd.column {
   word-wrap: break-word;
   color: $text;
   letter-spacing: 0.7;
+}
+
+.category-padding {
+  padding: 50px 60px;
 }

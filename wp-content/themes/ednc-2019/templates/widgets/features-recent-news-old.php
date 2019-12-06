@@ -103,35 +103,31 @@ $widget_test = get_field('text-12345')
 
               <?php
 
-              $ednews = new WP_Query([
-                'post_type' => 'ednews',
-                'posts_per_page' => 1
-              ]);
+              // check if the repeater field has rows of data
+              if( have_rows('featured_read') ):
 
-              if ($ednews->have_posts()) : while ($ednews->have_posts()) : $ednews->the_post();
+               	// loop through the rows of data
+                  while ( have_rows('featured_read') ) : the_row();
 
+                      if (get_sub_field('intro_text')) {  ?>
+                          <?php echo "yes"; ?>
+                      <?php } else { ?>
+                        <?php echo "no"; ?>
+                        <img src="<?php echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" />
+                      <?php }
 
-              $feature = get_field('featured_read');
+                  endwhile;
+
+              else :
+
+                  // no rows found
+
+              endif;
+
               ?>
 
-              <?php if (!empty($feature[0]['featured_image'])) { ?>
-                <div class="row">
-                  <div class="col-sm-6 col-md-12">
-                    <div class="photo-overlay">
-                      <?php echo wp_get_attachment_image($feature[0]['featured_image']['ID'], 'featured-small'); ?>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-6 col-md-12">
-              <?php } else { ?>
-                <img src="<?php echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" />
-              <?php } ?>
-
-              <?php endwhile; endif; wp_reset_query(); ?>
-
-
-              <!-- <img src="<?php //echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" /> -->
-
+<!--
+              <img src="<?php //echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" /> -->
             </div>
         </article><!-- .post -->
         <hr class="break">

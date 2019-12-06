@@ -2,6 +2,8 @@
 
 if( function_exists('acf_add_local_field_group') ):
 
+
+
 acf_add_local_field_group(array(
 	'key' => 'group_5c545a0f6cbe6',
 	'title' => 'Ad Block',
@@ -5255,6 +5257,141 @@ acf_add_local_field_group(array(
 	'description' => '',
 ));
 
+acf_add_local_field_group(array(
+	'key' => 'group_5d54586c0ac62',
+	'title' => 'Recommended Articles Block',
+	'fields' => array(
+		array(
+			'key' => 'field_5d547ff8506ad',
+			'label' => 'Recommended Articles Block',
+			'name' => 'recommended_articles_block',
+			'type' => 'relationship',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'post_type' => '',
+			'taxonomy' => '',
+			'filters' => array(
+				0 => 'search',
+				1 => 'post_type',
+				2 => 'taxonomy',
+			),
+			'elements' => '',
+			'min' => '',
+			'max' => 3,
+			'return_format' => 'object',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'block',
+				'operator' => '==',
+				'value' => 'acf/recommended-articles-block',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+acf_add_local_field_group(array(
+	'key' => 'group_5dc58f3cd8646',
+	'title' => 'Recommended Articles Right Side Block',
+	'fields' => array(
+		array(
+			'key' => 'field_5dc8c5dd7dccf',
+			'label' => 'Body Text',
+			'name' => 'body_text-rec-read-block',
+			'type' => 'wysiwyg',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'tabs' => 'all',
+			'toolbar' => 'full',
+			'media_upload' => 0,
+			'delay' => 0,
+		),
+		array(
+			'key' => 'field_5dc58f3ce7359',
+			'label' => 'Recommended Articles Text',
+			'name' => 'recommended_articles_right-header',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => 'Top Reads',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
+		array(
+			'key' => 'field_5dc58f3ce7371',
+			'label' => 'Recommended Articles Block',
+			'name' => 'recommended_articles_right-block',
+			'type' => 'relationship',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'post_type' => '',
+			'taxonomy' => '',
+			'filters' => array(
+				0 => 'search',
+				1 => 'post_type',
+				2 => 'taxonomy',
+			),
+			'elements' => '',
+			'min' => '',
+			'max' => 4,
+			'return_format' => 'object',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'block',
+				'operator' => '==',
+				'value' => 'acf/recommended-articles-right',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
 
 acf_add_local_field_group(array(
 	'key' => 'group_54b15bd1234d8',

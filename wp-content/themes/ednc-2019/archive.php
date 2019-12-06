@@ -1,13 +1,20 @@
 <?php
+
+use Roots\Sage\Media;
+
 $term = get_queried_object();
+// $taxonomy = $term->taxonomy;
+// $term_id = $term->term_id;
+
 $desc = category_description();
 $cat_id = $term->term_id;
 $object = get_queried_object();
 $post_id = $object->taxonomy.'_'.$object->term_id;
-
+$category_featured = get_field('featured_article_category_pages', $term);
+$post_object = get_field('featured_article_category_pages', $term);
 ?>
 
-<?php if (! empty($cat_id)) { ?>
+<?php if (!empty($cat_id)) { ?>
 
   <section id="archive" class="block-small search-results bright-blue">
     <div class="site-wrapper">
@@ -15,15 +22,55 @@ $post_id = $object->taxonomy.'_'.$object->term_id;
 
         <?php get_template_part('templates/components/category', 'header-2019'); ?>
 
-        <div class="row">
-          <div class="col-md-8 col-centered">
-            <div class="extra-margin">
-            <?php if ($desc && !isset($_GET['date'])) { ?>
-                <?php echo $desc; ?>
-            <?php } ?>
+
+        <?php if( !empty($category_featured) ): ?>
+
+          <div class="row">
+            <div class="col-md-7 category-padding">
+              <?php if ($desc && !isset($_GET['date'])) { ?>
+                  <?php echo $desc; ?>
+              <?php } ?>
+            </div>
+            <div class="col-md-5 category-padding">
+              <?php
+              $post_objects = get_field('featured_article_category_pages', $term);
+
+
+              if( $post_objects ): ?>
+                  <?php foreach( $post_objects as $post): ?>
+                     <?php $featured_image = Media\get_featured_image('medium'); ?>
+                    <?php setup_postdata($post); ?>
+                      <div class="category-featured-article">
+                          <a href="<?php the_permalink(); ?>">
+                            <?php if (!empty($featured_image)) {
+                             echo '<img class="" src="' . $featured_image . '" />';
+                            } ?>
+                            <h3 class="post-title"><?php echo the_title(); ?></h3>
+                            <?php get_template_part('templates/components/entry-meta'); ?>
+                          </a>
+                      </div>
+                    <?php endforeach; ?>
+                    <?php wp_reset_postdata(); ?>
+              <?php endif; ?>
             </div>
           </div>
-        </div>
+
+        <?php else: ?>
+
+          <div class="row">
+            <div class="col-md-8 col-centered">
+              <div class="extra-margin">
+              <?php if ($desc && !isset($_GET['date'])) { ?>
+                  <?php echo $desc; ?>
+              <?php } ?>
+              </div>
+            </div>
+          </div>
+
+
+         <?php endif; ?>
+
+
 
         <div class="row hentry">
           <?php
