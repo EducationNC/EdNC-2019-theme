@@ -264,6 +264,13 @@ acf_add_local_field_group(array(
 				'value' => 'community-college',
 			),
 		),
+		array(
+			array(
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'district',
+			),
+		),
 	),
 	'menu_order' => 2,
 	'position' => 'normal',

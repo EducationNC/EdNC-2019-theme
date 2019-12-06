@@ -280,26 +280,52 @@
       <?php } ?>
     </div>
 
+    <?php if (have_rows('chart_section')): ?>
 
-    <?php if (have_rows('chart-repeater')): ?>
+      <?php while (have_rows('chart_section')) : the_row(); ?>
 
-      <?php while (have_rows('chart-repeater')) : the_row(); ?>
+        <div class="chart-section extra-bottom-margin clearfix">
 
-        <?php if( get_row_layout() == 'section' ): ?>
+          <div class="col-md-12 callout">
 
-            <h3>section</h3>
+            <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
-        <?php elseif( get_row_layout() == 'section_1' ):  ?>
+            <h4><?php the_sub_field('source') ?></h4>
 
-            <h3>section 1</h3>
+          </div>
 
-        <?php endif; ?>
+          <?php while (have_rows('chart')) : the_row(); ?>
+            <?php if (!get_sub_field('hide')): ?>
+              <div class="col-md-4">
+
+                <h6 style="color: #731454"><?php the_sub_field('chart_name'); ?></h6>
+                <p><?php the_sub_field('subtitle'); ?></p>
+
+                <?php if (get_sub_field('chart_type') == 'number'): ?>
+
+                  <p class="h1" style="margin-bottom: 1em;">
+                    <span class="big"><?php the_sub_field('number') ?></span>
+                  </p>
+
+                  <p><small><?php the_sub_field('number_description') ?></small></p>
+
+                <?php elseif (get_sub_field('chart_type') == 'image'): ?>
+
+                  <?php $image = get_sub_field('image'); ?>
+
+                  <img src="<?php echo $image['url'] ?>">
+
+                <?php endif; ?>
+
+              </div>
+            <?php endif; ?>
+          <?php endwhile; ?>
+
+        </div>
 
       <?php endwhile; ?>
 
     <?php endif; ?>
-
-
 
   </div>
 <?php endwhile; ?>
