@@ -2,23 +2,22 @@
 
 <?php if( have_rows('slides') ): ?>
 
-    <div class="slick-slider" id="slick-slider-<?php echo $_id ?>">
+    <div class="slick-slider slick-slider--gutenberg" id="slick-slider-<?php echo $_id ?>">
 
         <?php while ( have_rows('slides') ) : the_row(); ?>
         
-            <div class="slick-slide">
-    
-                <?php $image = get_sub_field('image'); ?>
-                
-                <?php if ($image): ?>
-                
-                    <img src="<?php echo $image['sizes']['large'] ?>"><br>
-                
-                <?php endif; ?>
+            <?php $image = get_sub_field('image'); ?>
         
-                <b><?php the_sub_field('title'); ?></b>
-                <br>
-                <?php the_sub_field('caption'); ?>
+            <div class="slick-slide" 
+                <?php if ($image): ?>style="background-image: url(<?php echo $image['url'] ?>);"<?php endif; ?>>
+    
+                <div class="slick-slide__text">
+    
+                    <div class="slick-slide__text__title"><?php the_sub_field('title'); ?></div>
+                    
+                    <div class="slick-slide__text__caption"><?php the_sub_field('caption'); ?></div>
+                
+                </div>
             
             </div>
     
@@ -33,7 +32,9 @@ window.addEventListener('load', function () {
     var $ = jQuery;
     
     $(document).ready(function(){
-        $('#slick-slider-<?php echo $_id ?>').slick({});
+        $('#slick-slider-<?php echo $_id ?>').slick({
+            slidesToShow: 1,
+        });
     });
 
 });
