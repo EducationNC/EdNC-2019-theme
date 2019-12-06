@@ -34,6 +34,18 @@ window.addEventListener('load', function () {
     $(document).ready(function(){
         $('#slick-slider-<?php echo $_id ?>').slick({
             slidesToShow: 1,
+            mobileFirst: true,
+            dots: true,
+            arrows: false,
+            responsive: [
+                {
+                  breakpoint: 992,
+                  settings: {
+                    dots: false,
+                    arrows: true,
+                  }
+                }
+              ]
         });
     });
 
