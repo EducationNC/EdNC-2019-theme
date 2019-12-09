@@ -1784,25 +1784,6 @@ acf_add_local_field_group(array(
 			'max' => 1,
 			'return_format' => 'object',
 		),
-		array(
-			'key' => 'field_5de6c6fd37fe4',
-			'label' => 'Text',
-			'name' => 'text-12345',
-			'type' => 'text',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'default_value' => '',
-			'placeholder' => '',
-			'prepend' => '',
-			'append' => '',
-			'maxlength' => '',
-		),
 	),
 	'location' => array(
 		array(
