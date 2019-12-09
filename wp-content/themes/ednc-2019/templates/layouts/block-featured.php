@@ -10,8 +10,7 @@ $featured_image = Media\get_featured_image('featured-trending');
 // $thumb = get_post_thumbnail_id();
 // $img_url = wp_get_attachment_url( $thumb,'full' ); //get full URL to image (use "large" or "medium" if the images too big)
 // $image_feature = aq_resize( $img_url, 600, 600, true ); //resize & crop the image
-//
-//
+
 // $image_id = get_post_thumbnail_id();
 // $featured_image_src = wp_get_attachment_image_src($image_id, 'trending');
 ?>

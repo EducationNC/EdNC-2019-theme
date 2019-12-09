@@ -27,7 +27,7 @@ class Features_Recent_News extends \WP_Widget {
 		$title = $instance['title'];
 
 		echo $before_widget;
-    include(locate_template('templates/widgets/features-recent-news.php'));
+    	include(locate_template('templates/widgets/features-recent-news.php'));
 		echo $after_widget;
 	}
 

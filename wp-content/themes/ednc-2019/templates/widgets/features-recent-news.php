@@ -14,27 +14,24 @@ global $featured;
 $recent_ids = array();
 global $featured_recent;
 //$posts = get_field('featured_article');
-$ids2 = get_field('featured_article_widget', false, false);
+$featured_article = get_field('featured_article_widget', 'widget_' . $this->id);
+$featured_ids[] = $featured_article[0]->ID;
 ?>
 <section id="carousel" class="block carousel">
   <div class="home-page-wrapper">
     <div class="carousel-right">
       <section id="carousel-latest" class="block listing listing-headline small">
         <?php
-        $ids1 = new WP_Query(array(
+        $featured_post_query = new WP_Query(array(
         	'posts_per_page'	=> 1,
-        	'post__in'			=> $ids2,
-        	'post_status'		=> 'any',
+        	'post__in'			=> $featured_ids,
         	'orderby'        	=> 'post__in',
         ));
 
-        if ($ids1->have_posts()) : while ($ids1->have_posts()) : $ids1->the_post(); ?>
+        if ($featured_post_query->have_posts()) : while ($featured_post_query->have_posts()) : $featured_post_query->the_post(); ?>
           <?php
-          //global $featured;
-          //global $title;
-          //$featured_ids[] = get_the_id();
-          echo $widget_test;
-          get_template_part('templates/layouts/block', 'featured'); ?>
+          include(locate_template('templates/layouts/block-featured.php'));
+          ?>
 
         <?php endwhile; endif; wp_reset_query(); ?>
 
