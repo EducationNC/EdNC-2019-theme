@@ -15,8 +15,8 @@
   <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Merriweather:300,300italic,400,400italic,700,700italic|Open+Sans+Condensed:300" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css?family=Patrick+Hand" rel="stylesheet">
   <link href="https://unpkg.com/ionicons@4.5.0/dist/css/ionicons.min.css" rel="stylesheet">
-  <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css" />
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" /> -->
+  <link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri() ?>/bower_components/slick-carousel/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri() ?>/bower_components/slick-carousel/slick/slick-theme.css" />
   <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 
   <?php wp_head(); ?>
