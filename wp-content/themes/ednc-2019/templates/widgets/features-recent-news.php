@@ -15,13 +15,11 @@ $recent_ids = array();
 global $featured_recent;
 //$posts = get_field('featured_article');
 $ids2 = get_field('featured_article_widget', false, false);
-$widget_test = get_field('text-12345')
 ?>
 <section id="carousel" class="block carousel">
   <div class="home-page-wrapper">
     <div class="carousel-right">
       <section id="carousel-latest" class="block listing listing-headline small">
-        <p><?php the_field('text-12345', 'widget_' . $widget_id); ?></p>
         <?php
         $ids1 = new WP_Query(array(
         	'posts_per_page'	=> 1,
@@ -55,17 +53,11 @@ $widget_test = get_field('text-12345')
           'post__not_in' => $featured_ids,
           'post_type' => array('post', 'map', 'edtalk'),
           'tax_query' => array(
-            'relation' => 'OR',
-            array(
-              'taxonomy' => 'column',
-              'operator' => 'EXISTS',
-            ),
             array(
               'taxonomy' => 'appearance',
-              'field'    => 'slug',
-              'terms'    => 'news',
-              //'terms'    => array('news'),
-            ),
+              'field' => 'slug',
+              'terms' => array('news', 'featured'),
+            )
           ),
           // 'meta_key' => 'updated_date',
           // 'orderby' => 'meta_value_num',

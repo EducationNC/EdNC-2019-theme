@@ -44,21 +44,11 @@ global $featured_recent;
          'post_type' => array('post', 'map', 'edtalk'),
          'post__not_in' => $featured_recent,
          'tax_query' => array(
-           	 'relation' => 'OR',
-              array(
-                'taxonomy' => 'column',
-                'operator' => 'EXISTS'
-              ),
-              array(
-                'taxonomy' => 'appearance',
-                'field' => 'slug',
-                'terms' => 'issues'
-              ),
-              // array(
-              //   'taxonomy' => 'appearance',
-              //   'field' => 'slug',
-              //   'terms' => 'press-release'
-              // ),
+           array(
+             'taxonomy' => 'appearance',
+             'field' => 'slug',
+             'terms' => 'featured'
+           )
          ),
          'meta_key' => 'updated_date',
          'orderby' => 'meta_value_num',

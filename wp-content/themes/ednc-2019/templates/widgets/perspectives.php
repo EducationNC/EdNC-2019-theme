@@ -38,9 +38,9 @@ use Roots\Sage\Media;
              'terms' => 'perspectives'
            )
          ),
-         'meta_key' => 'updated_date',
-         'orderby' => 'meta_value_num',
-         'order' => 'DESC'
+         // 'meta_key' => 'updated_date',
+         // 'orderby' => 'meta_value_num',
+         // 'order' => 'DESC'
        );
 
        $perspectives = new WP_Query($args);
