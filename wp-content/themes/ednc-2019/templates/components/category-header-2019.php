@@ -20,13 +20,18 @@ if (isset($_GET['date'])) {
 
 if ( !empty($term_image) ) { ?>
 
-<div class="full-screen">
+<div class="">
   <img class="category-header-image" src="<?php echo $term_image_src[0]; ?>">
 </div>
 
-<!-- <div class="mobile-only">
+
+<!-- <div class="full-screen">
+  <img class="category-header-image" src="<?php //echo $term_image_src[0]; ?>">
+</div>
+
+<div class="mobile-only">
   <img class="category-header-image-mobile" src="<?php //echo esc_url($image_for_mobile['url']); ?>" alt="<?php //echo esc_attr($image_for_mobile['alt']); ?>" />
-</div> -->
+</div>  -->
 
 <?php } else { ?>
 
