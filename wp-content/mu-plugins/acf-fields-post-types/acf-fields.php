@@ -4724,9 +4724,9 @@ acf_add_local_field_group(array(
 	'location' => array(
 		array(
 			array(
-				'param' => 'page',
+				'param' => 'post_template',
 				'operator' => '==',
-				'value' => '72114',
+				'value' => 'template-news.php',
 			),
 		),
 	),

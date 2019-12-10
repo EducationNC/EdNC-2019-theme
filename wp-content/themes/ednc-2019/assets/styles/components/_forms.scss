@@ -18,13 +18,13 @@
 
 
 .email-signup-form-2019 {
-  background-color: $email;
+  background-color: $green;
   background-size: cover;
   background-position: center;
   padding: 30px;
 
   #mc_embed_signup {
-      background-color: $email;
+      background-color: $green;
       clear: left;
       font: 14px Lato, Arial,sans-serif;
 
@@ -37,7 +37,7 @@
       }
 
       .mc-field-group-email {
-        background-color: $email;
+        background-color: $green;
           color: white;
           // border: 1px solid green;
           width: 50%;
@@ -50,7 +50,7 @@
             }
           }
           input:nth-of-type(1) {
-            background-color: $email;
+            background-color: $green;
             border-radius: 0px;
             border: 1px solid white;
             width: 70%;
@@ -60,7 +60,7 @@
             text-indent: 3%;
           }
           input:nth-of-type(2) {
-            background-color: $email;
+            background-color: $green;
             border-radius: 0px;
             border: 1px solid white;
             border-left: none;
@@ -78,7 +78,7 @@
           ul {
             li {
               input {
-                background-color: $email;
+                background-color: $green;
                 border-radius: 0px;
                 border: 1px solid white;
               }
@@ -86,7 +86,7 @@
           }
         }
         .input-group {
-            background-color: $email;
+            background-color: $green;
             color: white;
             width: 50%;
             margin: 0 auto;
@@ -102,7 +102,7 @@
 
 
                 input[type="checkbox"]{
-                  background-color: $email;
+                  background-color: $green;
                   border-radius: 0px;
                   border: 1px solid white;
                   height: 15px;
