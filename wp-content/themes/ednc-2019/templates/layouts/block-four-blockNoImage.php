@@ -45,7 +45,6 @@ $title_overlay = get_field('title_overlay');
 <article <?php post_class('block-news content-block-4 clearfix'); ?>>
   <div class="flex">
     <div class="block-content">
-      <p class="small"><?php echo $post_type; ?></p>
       <h3 class="post-title"><?php the_title(); ?></h3>
       <?php get_template_part('templates/components/entry-meta'); ?>
       <a class="mega-link" href="<?php the_permalink(); ?>"></a>
