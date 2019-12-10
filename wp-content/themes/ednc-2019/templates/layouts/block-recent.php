@@ -9,7 +9,7 @@ $featured_image = Media\get_featured_image('featured-four-block');
 
 $appearance = wp_get_post_terms(get_the_id(), 'appearance');
 if ($appearance) {
-  $post_type = $column[0]->name;
+  $post_type = $appearance[0]->name;
   // $post_type = "";
 }
 elseif ($post->post_type == 'edtalk') {
