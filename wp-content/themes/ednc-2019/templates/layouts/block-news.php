@@ -7,6 +7,32 @@ $author_bio = get_posts(array('post_type' => 'bio', 'meta_key' => 'user', 'meta_
 // $author_pic = get_the_post_thumbnail($author_bio[0]->ID, 'thumbnail');
 
 $featured_image = Media\get_featured_image('featured-four-block');
+$cat_name = ''; // I have this set in some shortcodes
+
+if (!isset($cat_name) || $cat_name == '') {
+
+  if ( class_exists('WPSEO_Primary_Term') ) {
+
+    // Show the post's 'Primary' category, if this Yoast feature is available, & one is set. category can be replaced with custom terms
+
+    $wpseo_primary_term = new WPSEO_Primary_Term( 'category', get_the_id() );
+
+    $wpseo_primary_term = $wpseo_primary_term->get_primary_term();
+    $term               = get_term( $wpseo_primary_term );
+
+    if (is_wp_error($term)) {
+        $categories = get_the_terms(get_the_ID(), 'category');
+        $cat_name = $categories[0]->name;
+    } else {
+        $cat_name = $term->name;
+    }
+
+  } else {
+    $categories = get_the_terms(get_the_ID(), 'category');
+    $cat_name = $categories[0]->name;
+  }
+}
+
 
 ?>
 
@@ -22,7 +48,7 @@ $featured_image = Media\get_featured_image('featured-four-block');
           <?php echo $author_pic; ?>
         </div>
       <?php } ?>
-      <p class="small">News</p>
+      <p class="small"><?php echo $cat_name ?></p>
       <?php get_template_part('templates/components/article-info'); ?>
     </div>
   <?php } ?>

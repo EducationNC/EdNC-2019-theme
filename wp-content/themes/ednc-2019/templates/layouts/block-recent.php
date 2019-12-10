@@ -7,9 +7,9 @@ $author_bio = get_posts(array('post_type' => 'bio', 'meta_key' => 'user', 'meta_
 $featured_image = Media\get_featured_image('featured-four-block');
 
 
-$column = wp_get_post_terms(get_the_id(), 'column');
-if ($column) {
-  $post_type = $column[0]->name;
+$appearance = wp_get_post_terms(get_the_id(), 'appearance');
+if ($appearance) {
+  $post_type = $appearance[0]->name;
   // $post_type = "";
 }
 elseif ($post->post_type == 'edtalk') {
@@ -19,8 +19,10 @@ elseif ($post->post_type == 'map') {
   $post_type = "Maps";
 }
 else  {
-  $post_type = "News";
+  $post_type = "";
 }
+
+
 
 ?>
 
