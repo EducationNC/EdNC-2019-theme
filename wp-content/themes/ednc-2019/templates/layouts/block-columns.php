@@ -7,18 +7,30 @@ $author_bio = get_posts(array('post_type' => 'bio', 'meta_key' => 'user', 'meta_
 $featured_image = Media\get_featured_image('featured-four-block');
 $user = get_field('user');
 
-$column = wp_get_post_terms(get_the_id(), 'column');
-if ($column) {
-  $post_type = $column[0]->name;
-}
-// elseif ( has_term( 'press-release', 'appearance' ) ) {
-//   $post_type = "Press Release";
-// }
-elseif ( has_term ( 'issues', 'appearance' ) ) {
-  $post_type = "Issues";
-}
-else {
-  $post_type = "News";
+$cat_name = ''; // I have this set in some shortcodes
+
+if (!isset($cat_name) || $cat_name == '') {
+
+  if ( class_exists('WPSEO_Primary_Term') ) {
+
+    // Show the post's 'Primary' category, if this Yoast feature is available, & one is set. category can be replaced with custom terms
+
+    $wpseo_primary_term = new WPSEO_Primary_Term( 'category', get_the_id() );
+
+    $wpseo_primary_term = $wpseo_primary_term->get_primary_term();
+    $term               = get_term( $wpseo_primary_term );
+
+    if (is_wp_error($term)) {
+        $categories = get_the_terms(get_the_ID(), 'category');
+        $cat_name = $categories[0]->name;
+    } else {
+        $cat_name = $term->name;
+    }
+
+  } else {
+    $categories = get_the_terms(get_the_ID(), 'category');
+    $cat_name = $categories[0]->name;
+  }
 }
 ?>
 
@@ -30,7 +42,7 @@ else {
      <img class="" src="<?php echo $featured_image; ?>" />
      <!-- <p class=""><?php// print_r ($author_bio)?></p>
      <p class=""><?php //echo get_author_posts_url($user['ID']); ?></p> -->
-     <p class="small"><?php echo $post_type ?></p>
+     <p class="small"><?php echo $cat_name ?></p>
      <?php get_template_part('templates/components/article-info'); ?>
    </div>
  </div>
