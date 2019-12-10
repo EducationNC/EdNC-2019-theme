@@ -3795,8 +3795,28 @@ acf_add_local_field_group(array(
 					'max_size' => '',
 					'mime_types' => '',
 				),
+				array(
+					'key' => 'field_5c75c91d8c5dz',
+					'label' => 'Width',
+					'name' => 'width',
+					'type' => 'text',
+					'instructions' => '100%, 1200px, etc.',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
 			),
 		),
+		/*
 		array(
 			'key' => 'field_5cee8af0848c2',
 			'label' => 'Small Logos (Row 1)',
@@ -4037,12 +4057,13 @@ acf_add_local_field_group(array(
 				),
 			),
 		),
+		*/
 		array(
 			'key' => 'field_5cb4df1d6ff42',
 			'label' => 'Footer Copyright',
 			'name' => 'footer_copyright',
 			'type' => 'text',
-			'instructions' => '',
+			'instructions' => 'Text after "Copyright <year>"',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
