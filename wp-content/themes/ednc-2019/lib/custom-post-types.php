@@ -505,7 +505,8 @@ register_taxonomy( 'ad-type',
 	),
 	'show_ui' => true,
 	'query_var' => true,
-	'public' => false
+	'public' => false,
+	'show_in_rest' => true,
 	)
 );
 
@@ -526,7 +527,8 @@ register_taxonomy( 'district-type',
 	),
 	'show_ui' => true,
 	'query_var' => true,
-	'public' => false
+	'public' => false,
+	'show_in_rest' => true,	
 	)
 );
 
@@ -547,7 +549,8 @@ register_taxonomy( 'author-type',
 		),
 		'show_ui' => true,
 		'query_var' => true,
-		'public' => false
+		'public' => false,
+		'show_in_rest' => true,	
 	)
 );
 
@@ -568,7 +571,8 @@ register_taxonomy( 'author-year',
 		),
 		'show_ui' => true,
 		'query_var' => true,
-		'public' => false
+		'public' => false,
+		'show_in_rest' => true,	
 	)
 );
 
@@ -588,7 +592,8 @@ register_taxonomy( 'resource-type',
 			'new_item_name' => __( 'New Resource Type Name' )
 		),
 		'show_ui' => true,
-		'query_var' => true
+		'query_var' => true,
+		'show_in_rest' => true,	
 	)
 );
 
@@ -608,7 +613,8 @@ register_taxonomy( 'session',
 			'new_item_name' => __( 'New Session Name' )
 		),
 		'show_ui' => true,
-		'query_var' => true
+		'query_var' => true,
+		'show_in_rest' => true,	
 	)
 );
 
@@ -628,7 +634,8 @@ register_taxonomy( 'bill-type',
 			'new_item_name' => __( 'New Bill Type Name' )
 		),
 		'show_ui' => true,
-		'query_var' => true
+		'query_var' => true,
+		'show_in_rest' => true,	
 	)
 );
 
@@ -673,6 +680,7 @@ register_taxonomy( 'appearance',
 		'public' => true,
 		'rewrite' => true,
 		'hierarchical' => true,
+		'show_in_rest' => true,
 	)
 );
 
@@ -697,6 +705,7 @@ register_taxonomy( 'podcast',
 		'public' => true,
 		'rewrite' => true,
 		'hierarchical' => true,
+		'show_in_rest' => true,
 	)
 );
 
@@ -719,6 +728,7 @@ register_taxonomy( 'column',
 		'query_var' => true,
 		'show_in_rest' => true,
 		'hierarchical' => true,
+		'show_in_rest' => true,
 	)
 );
 
@@ -738,7 +748,8 @@ register_taxonomy( 'district-posts',
 			'new_item_name' => __( 'New District Name' )
 		),
 		'show_ui' => true,
-		'rewrite' => 'district-posts'
+		'rewrite' => 'district-posts',
+		'show_in_rest' => true,
 	)
 );
 
@@ -758,7 +769,8 @@ register_taxonomy( 'map-category',
 			'new_item_name' => __( 'New Map Category Name' )
 		),
 		'show_ui' => true,
-		'query_var' => true
+		'query_var' => true,
+		'show_in_rest' => true,
 	)
 );
 
@@ -778,7 +790,8 @@ register_taxonomy( 'map-column',
 			'new_item_name' => __( 'New Map Column Name' )
 		),
 		'show_ui' => true,
-		'query_var' => true
+		'query_var' => true,
+		'show_in_rest' => true,	
 	)
 );
 
