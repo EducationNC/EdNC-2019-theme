@@ -13,18 +13,30 @@ if ($post->post_type == 'post') {
   //$author_avatar_sized = Resize\mr_image_resize($author_avatar, 140, null, false, '', false);
 }
 
-$column = wp_get_post_terms(get_the_id(), 'column');
-if ($column) {
-  $post_type = $column[0]->name;
-}
-elseif ( has_term( 'perspectives', 'appearance' ) ) {
-  $post_type = "Perspective";
-}
-elseif ( has_term ( 'issues', 'appearance' ) ) {
-  $post_type = "Issues";
-}
-else {
-  $post_type = "News";
+$cat_name = ''; // I have this set in some shortcodes
+
+if (!isset($cat_name) || $cat_name == '') {
+
+  if ( class_exists('WPSEO_Primary_Term') ) {
+
+    // Show the post's 'Primary' category, if this Yoast feature is available, & one is set. category can be replaced with custom terms
+
+    $wpseo_primary_term = new WPSEO_Primary_Term( 'category', get_the_id() );
+
+    $wpseo_primary_term = $wpseo_primary_term->get_primary_term();
+    $term               = get_term( $wpseo_primary_term );
+
+    if (is_wp_error($term)) {
+        $categories = get_the_terms(get_the_ID(), 'category');
+        $cat_name = $categories[0]->name;
+    } else {
+        $cat_name = $term->name;
+    }
+
+  } else {
+    $categories = get_the_terms(get_the_ID(), 'category');
+    $cat_name = $categories[0]->name;
+  }
 }
 
 if ( function_exists( 'coauthors_posts_links' ) ) {
@@ -52,7 +64,7 @@ $title_overlay = get_field('title_overlay');
           <?php// echo $author_pic; ?>
         </div>
       <?php } ?>
-      <p class="small"><?php echo $post_type; ?></p>
+      <p class="small"><?php echo $cat_name; ?></p>
       <h3 class="post-title"><?php the_title(); ?></h3>
       <?php get_template_part('templates/components/entry-meta'); ?>
       <a class="mega-link" href="<?php the_permalink(); ?>"></a>
