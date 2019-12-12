@@ -110,6 +110,12 @@
   .content-block-4, .spotlight-block-4 {
     @include block-2 (20px);
   }
+  .flex-section-4,
+  .flex-section-5,
+  .flex-section-6 {
+   @include block-2(20px);
+  }
+
 
   // main.main {
   //   width: 95%;
