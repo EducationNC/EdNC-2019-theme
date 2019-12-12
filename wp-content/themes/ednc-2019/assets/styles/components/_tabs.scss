@@ -1,6 +1,6 @@
 .nav-tabs {
   border-bottom: 0;
-  margin-bottom: 2em;
+  // margin-bottom: 2em;
 
   & > li {
     &.active {
@@ -28,8 +28,3 @@
     }
   }
 }
-
-// .nav-tabs>li a.active {
-//   background: $stone;
-//   color: $white;
-// }

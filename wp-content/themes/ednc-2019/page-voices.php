@@ -213,15 +213,6 @@
        <div class="row">
          <div class="col-md-12 header-big tabs-section">
             <h2 class="">Contributers</h2>
-            <!-- <div id="tabs">
-              <ul class="nav nav-tabs" role="tablist">
-                 <li role="presentation" class="active"><a href="#tabs-1" aria-controls="y2019" role="tab" data-toggle="tab">2019</a></li>
-                 <li role="presentation"><a href="#tabs-2" aria-controls="y2018" role="tab" data-toggle="tab">2018</a></li>
-                 <li role="presentation"><a href="#y2017" aria-controls="y2017" role="tab" data-toggle="tab">2017</a></li>
-                 <li role="presentation"><a href="#y2016" aria-controls="y2016" role="tab" data-toggle="tab">2016</a></li>
-                 <li role="presentation"><a href="#y2015" aria-controls="y2015" role="tab" data-toggle="tab">2015</a></li>
-              </ul>
-            </div> -->
             <ul class="nav nav-tabs" role="tablist">
                <li role="presentation" class="active"><a href="#y2019" aria-controls="y2019" role="tab" data-toggle="tab">2019</a></li>
                <li role="presentation"><a href="#y2018" aria-controls="y2018" role="tab" data-toggle="tab">2018</a></li>
