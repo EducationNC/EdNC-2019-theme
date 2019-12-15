@@ -22,7 +22,6 @@ $post_object = get_field('featured_article_category_pages', $term);
 
         <?php get_template_part('templates/components/category', 'header-2019'); ?>
 
-
         <?php if( !empty($category_featured) ): ?>
 
           <div class="row">

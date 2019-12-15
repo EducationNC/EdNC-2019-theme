@@ -1,0 +1,7 @@
+.archive-row {
+    
+    @media (min-width: $screen-md-min) {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+}

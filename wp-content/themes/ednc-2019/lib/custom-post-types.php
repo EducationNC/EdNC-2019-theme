@@ -753,6 +753,49 @@ register_taxonomy( 'district-posts',
 	)
 );
 
+register_taxonomy( 'community-college-posts',
+	array('post'), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
+	array('hierarchical' => true,     /* if this is true it acts like categories */
+		'labels' => array(
+			'name' => __( 'Community Colleges' ),
+			'singular_name' => __( 'Community College' ),
+			'search_items' =>  __( 'Search Community Colleges' ),
+			'all_items' => __( 'All Community Colleges' ),
+			'parent_item' => __( 'Parent Community College' ),
+			'parent_item_colon' => __( 'Parent Community College:' ),
+			'edit_item' => __( 'Edit Community College' ),
+			'update_item' => __( 'Update Community College' ),
+			'add_new_item' => __( 'Add New Community College' ),
+			'new_item_name' => __( 'New Community College Name' )
+		),
+		'show_ui' => true,
+		'rewrite' => 'community-college-posts',
+		'show_in_rest' => true,
+	)
+);
+
+
+register_taxonomy( 'grants',
+	array('post'), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
+	array('hierarchical' => true,     /* if this is true it acts like categories */
+		'labels' => array(
+			'name' => __( 'Grants' ),
+			'singular_name' => __( 'Grant' ),
+			'search_items' =>  __( 'Search Grants' ),
+			'all_items' => __( 'All Grants' ),
+			'parent_item' => __( 'Parent Grant' ),
+			'parent_item_colon' => __( 'Parent Grant:' ),
+			'edit_item' => __( 'Edit Grant' ),
+			'update_item' => __( 'Update Grant' ),
+			'add_new_item' => __( 'Add New Grant' ),
+			'new_item_name' => __( 'New Grant Name' )
+		),
+		'show_ui' => true,
+		'rewrite' => 'grants-posts',
+		'show_in_rest' => true,
+	)
+);
+
 register_taxonomy( 'map-category',
 	array('map'), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
 	array('hierarchical' => true,     /* if this is true it acts like categories */
@@ -844,7 +887,7 @@ function pre_get_posts($query) {
 	}
 
 	// date archives should show extra post types
-	if ($query->is_day()) {
+	if ($query->is_date()) {
 		$query->set('post_type', ['post', 'map', 'ednews', 'edtalk', 'flash-cards', 'wrapup','reach-nc-poll', 'reach-question']);
 		$tax_query = array(
 			array(
@@ -877,8 +920,6 @@ function pre_get_posts($query) {
 	}
 }
 add_action('pre_get_posts', __NAMESPACE__ . '\\pre_get_posts');
-
-
 
 /**
  * Add rewrite rules for map and edtalk permalinks

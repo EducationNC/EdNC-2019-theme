@@ -1,4 +1,5 @@
 <div class="container">
+
   <?php get_template_part('templates/components/page', 'header-wide'); ?>
 
   <?php
@@ -21,8 +22,21 @@
 
   query_posts($args);
   ?>
-  <div class="row">
-    <div class="col-md-12">
+  <div class="row archive-row">
+    <div class="col-md-4 archive-sidebar">
+    
+      <div class="archive-sidebar__widget">
+      
+        <h5 class="archive-sidebar__widget__title">By Month</h5>
+        
+        <div class="archive-sidebar__widget__months">
+          <?php wp_get_archives('type=monthly&format=custom&after=<br>'); ?>
+        </div>
+      
+      </div>
+    
+    </div>
+    <div class="col-md-8">
       <div class="category-content-justify-left">
         <?php get_template_part('templates/layouts/archive', 'loop-2019'); ?>
       </div>
