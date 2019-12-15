@@ -643,3 +643,24 @@ h3.rd.column {
 .category-padding {
   padding: 50px 60px;
 }
+
+.image {
+  width: 60%;
+  padding: 0px 10px;
+  // border: 1px solid red;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+}
+
+.reach-header-text h1 {
+   text-align: center;
+}
+
+.reach-body-text {
+  width: 80%;
+  margin: 0 auto;
+  // border: 1px solid red;
+}
