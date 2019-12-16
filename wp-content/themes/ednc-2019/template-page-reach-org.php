@@ -37,7 +37,7 @@ $size = 'full'; // (thumbnail, medium, large, full or custom size)
 
 
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6 col-centered">
         <div class = "reach-body-text">
           <p><?php the_field('paragraph_reach_org_signup'); ?></p>
         </div>
