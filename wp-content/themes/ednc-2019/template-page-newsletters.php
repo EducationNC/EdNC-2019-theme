@@ -22,6 +22,21 @@ use Roots\Sage\Assets;
 		<div class="row newsletters-bg">
 			<div class="col-md-8 col-centered mobile-padding-nl">
 				<h3><?php the_field('newsletter_heading'); ?></h3>
+				<hr>
+				<div class="one-sign-up">
+					<img class="" src="http://edncdev.wpengine.com/wp-content/uploads/2019/11/EarlyBird-Social-Icon2.png" alt="EdNC" height="70" width="70">
+					<div class="section">
+						<div class="text">
+							<h5>EdNC</h5>
+							<p class="small">Sign up for all of EdNC's newsletters</p>
+						</div>
+					</div>
+					<a class="" href="">
+						<img class="sign-up"src="<?php echo Assets\asset_path('images/plus.svg'); ?>" alt="Smiley face" height="30" width="30">
+					</a>
+				</div>
+				<hr>
+				<!-- <h3><?php //the_field('other-news-intro'); ?></h3> -->
 				<div class="newsletter-grid">
 					<?php if( have_rows('newsletter_signup') ): ?>
 						<?php while( have_rows('newsletter_signup') ): the_row();

@@ -4813,9 +4813,9 @@ acf_add_local_field_group(array(
 	'title' => 'Newsletter Template',
 	'fields' => array(
 		array(
-			'key' => 'field_5dc1c5c344b94',
-			'label' => 'Heading',
-			'name' => 'newsletter_heading',
+			'key' => 'field_5dc1c5c844b95',
+			'label' => 'Intro Text',
+			'name' => 'newsletter_intro_text',
 			'type' => 'text',
 			'instructions' => '',
 			'required' => 0,
@@ -4832,9 +4832,9 @@ acf_add_local_field_group(array(
 			'maxlength' => '',
 		),
 		array(
-			'key' => 'field_5dc1c5c844b95',
-			'label' => 'Intro Text',
-			'name' => 'newsletter_intro_text',
+			'key' => 'field_5dc1c5c344b94',
+			'label' => 'Heading',
+			'name' => 'newsletter_heading',
 			'type' => 'text',
 			'instructions' => '',
 			'required' => 0,
@@ -5023,6 +5023,19 @@ acf_add_local_field_group(array(
 	'active' => true,
 	'description' => '',
 ));
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 acf_add_local_field_group(array(
 	'key' => 'group_5cb0e93475e08',
