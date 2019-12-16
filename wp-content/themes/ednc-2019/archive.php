@@ -31,6 +31,7 @@ $post_object = get_field('featured_article_category_pages', $term);
               <?php } ?>
             </div>
             <div class="col-md-5 category-padding">
+              <h3>Featured Article</h3>
               <?php
               $post_objects = get_field('featured_article_category_pages', $term);
 
