@@ -305,37 +305,36 @@
   hr.break:nth-of-type(2) {
     display: none;
   }
-  hr.break {
-    margin-top: 20px;
-    width: 2px;
-    height: 100px !important;
-    // border-left: 1px solid white;
-    border: none;
-    background: white;
-    // border-right: 1px solid white;
-  }
-  hr.break:last-of-type {
-    display: none;
-  }
-  .ednews:nth-of-type(1) {
-    width: 60%;
-  }
-  .block-content.featured-ednews {
-    border: 2px solid white;
-    padding: 10px;
-  }
-  .ednews:nth-of-type(2) {
-    padding: 20px 0px;
-    width: 30%;
-  }
-  .ednews:nth-of-type(3) {
-    padding: 20px 0px;
-    width: 30%;
-  }
-  .ednews:nth-of-type(4) {
-    padding: 20px 0px;
-    width: 30%;
-  }
+  // hr.break {
+  //   margin-top: 20px;
+  //   width: 2px;
+  //   height: 100px !important;
+  //   border: none;
+  //   background: white;
+  // }
+  // hr.break:last-of-type {
+  //   display: none;
+  // }
+  // .ednews:nth-of-type(1) {
+  //   width: 60%;
+  // }
+  // .block-content.featured-ednews {
+  //   border: 2px solid white;
+  //   padding: 10px;
+  // }
+  // .ednews:nth-of-type(2) {
+  //   padding: 0px;
+  //   width: 30%;
+  //   display: inline-block;
+  // }
+  // .ednews:nth-of-type(3) {
+  //   padding: 20px 0px;
+  //   width: 30%;
+  // }
+  // .ednews:nth-of-type(4) {
+  //   padding: 20px 0px;
+  //   width: 30%;
+  // }
 
   .editors {
     width: 29%;
