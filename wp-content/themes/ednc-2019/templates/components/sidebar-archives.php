@@ -57,7 +57,7 @@
     <?php if ($month_current != $month_prev) { ?>
       <div class="panel archive-month">
         <h4 class="archive-heading" role="tab" id="heading-<?php echo $day->month; ?>-<?php echo $day->year; ?>">
-          <a class="collapsed" data-toggle="collapse" data-parent="#accordion-months-<?php echo $day->year; ?>" href="#collapse-<?php echo $day->month; ?>-<?php echo $day->year; ?>" aria-expanded="false" aria-controls="collapse-<?php echo $day->month; ?>-<?php echo $day->year; ?>">
+          <a class="collapsed" data-parent="#accordion-months-<?php echo $day->year; ?>" href="<?php bloginfo('url'); ?>/<?php echo $day->year; ?>/<?php echo date("m", mktime(0, 0, 0, $day->month, 1, $day->year)); ?>/" aria-expanded="false" aria-controls="collapse-<?php echo $day->month; ?>-<?php echo $day->year; ?>">
             <?php echo date_i18n("F", mktime(0, 0, 0, $day->month, 1, $day->year)); ?>
           </a>
         </h4>
@@ -65,11 +65,13 @@
           <ul>
     <?php } ?>
 
+    <?php /*
     <li class="archive-day">
       <a href="<?php bloginfo('url'); ?>/<?php echo $day->year; ?>/<?php echo date("m", mktime(0, 0, 0, $day->month, 1, $day->year)); ?>/<?php echo date("d", mktime(0, 0, 0, $day->month, $day->day, $day->year)); ?>">
         <?php echo date_i18n("F j", mktime(0, 0, 0, $day->month, $day->day, $day->year)); ?>
       </a>
     </li>
+    */ ?>
 
     <?php if ($i == $size) { ?>
       </ul>
@@ -87,3 +89,16 @@
   </div><!-- .wrapper-year -->
   </div><!-- .archive-year -->
 </div><!-- #accordion-years -->
+
+    
+<?php /*
+<div class="archive-sidebar__widget">
+
+  <h5 class="archive-sidebar__widget__title">By Month</h5>
+  
+  <div class="archive-sidebar__widget__months">
+    <?php wp_get_archives('type=monthly&format=custom&after=<br>'); ?>
+  </div>
+
+</div>
+*/ ?>

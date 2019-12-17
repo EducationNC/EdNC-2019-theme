@@ -308,3 +308,12 @@ function pd_search_posts_per_page($query) {
     return $query;
 }
 add_filter('pre_get_posts','pd_search_posts_per_page');
+
+// show template
+function show_template() {
+    if( is_super_admin() ){
+        global $template;
+        print_r($template);
+    } 
+}
+// add_action('wp_footer', 'show_template');
