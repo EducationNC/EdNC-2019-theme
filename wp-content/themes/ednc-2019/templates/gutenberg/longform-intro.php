@@ -10,5 +10,5 @@
  $longformintro = get_field( 'longform-intro' );
 
 echo '<div class="longformintro">';
-  echo '<div class="longformintro--content">' . apply_filters( 'ea_the_content',   $longformintro ) . '</div>';
+  echo '<div class="longformintro--content white">' . apply_filters( 'ea_the_content',   $longformintro ) . '</div>';
 echo '</div>';

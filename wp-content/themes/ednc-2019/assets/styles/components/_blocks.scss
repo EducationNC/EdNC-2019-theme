@@ -286,6 +286,11 @@
     border-bottom: 2px solid rgba(0, 0, 0, 0.84);
 }
 
+.longformintro--content p, h1, h2, h3, h4, h5, h6 {
+  color: white;
+  text-align: center;
+}
+
 
 // .fullwidth {
 // 	margin: 32px calc(50% - 50vw);

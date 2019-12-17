@@ -211,6 +211,106 @@ acf_add_local_field_group(array(
 ));
 
 acf_add_local_field_group(array(
+	'key' => 'group_5df78a59148fc',
+	'title' => 'Reach page for Organizations',
+	'fields' => array(
+		array(
+			'key' => 'field_5df78afcff386',
+			'label' => 'Title',
+			'name' => 'title_reach_org',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
+		array(
+			'key' => 'field_5df78a614e5bb',
+			'label' => 'Paragraph',
+			'name' => 'paragraph_reach_org',
+			'type' => 'wysiwyg',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'tabs' => 'all',
+			'toolbar' => 'full',
+			'media_upload' => 1,
+			'delay' => 0,
+		),
+		array(
+			'key' => 'field_5df78ac7195ec',
+			'label' => 'Sign up box',
+			'name' => 'paragraph_reach_org_signup',
+			'type' => 'wysiwyg',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'tabs' => 'all',
+			'toolbar' => 'full',
+			'media_upload' => 1,
+			'delay' => 0,
+		),
+		array(
+			'key' => 'field_5df78a754e5bc',
+			'label' => 'Paragraph',
+			'name' => 'paragraph_reach_org_2',
+			'type' => 'wysiwyg',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'tabs' => 'all',
+			'toolbar' => 'full',
+			'media_upload' => 1,
+			'delay' => 0,
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_template',
+				'operator' => '==',
+				'value' => 'template-page-reach-org.php',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+acf_add_local_field_group(array(
 	'key' => 'group_5457c96164bff',
 	'title' => 'Ad Info',
 	'fields' => array(
@@ -327,9 +427,9 @@ acf_add_local_field_group(array(
 	'location' => array(
 		array(
 			array(
-				'param' => 'post_type',
+				'param' => 'post_template',
 				'operator' => '==',
-				'value' => 'post',
+				'value' => 'page-2016-Template.php',
 			),
 		),
 	),
@@ -3157,49 +3257,6 @@ acf_add_local_field_group(array(
 ));
 
 acf_add_local_field_group(array(
-	'key' => 'group_5de8145da2740',
-	'title' => 'Admin Settings',
-	'fields' => array(
-		array(
-			'key' => 'field_5de81471c476a',
-			'label' => 'Enable Category Filters',
-			'name' => 'enable_category_filters',
-			'type' => 'true_false',
-			'instructions' => 'If enabled, only categories that are set to "Include in Post Editor" will be shown in the post editor',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'message' => '',
-			'default_value' => 0,
-			'ui' => 1,
-			'ui_on_text' => 'Yes',
-			'ui_off_text' => 'No',
-		),
-	),
-	'location' => array(
-		array(
-			array(
-				'param' => 'options_page',
-				'operator' => '==',
-				'value' => 'theme-general-settings',
-			),
-		),
-	),
-	'menu_order' => 0,
-	'position' => 'normal',
-	'style' => 'default',
-	'label_placement' => 'top',
-	'instruction_placement' => 'label',
-	'hide_on_screen' => '',
-	'active' => true,
-	'description' => '',
-));
-
-acf_add_local_field_group(array(
 	'key' => 'group_5cd34f6167575',
 	'title' => 'Innovation',
 	'fields' => array(
@@ -3904,7 +3961,7 @@ acf_add_local_field_group(array(
 			'label' => 'Footer Copyright',
 			'name' => 'footer_copyright',
 			'type' => 'text',
-			'instructions' => 'Text after "Copyright <year>"',
+			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -4068,7 +4125,7 @@ acf_add_local_field_group(array(
 	'fields' => array(
 		array(
 			'key' => 'field_5c86d164d6875',
-			'label' => 'Longform Intro',
+			'label' => 'Full-Bleed Text',
 			'name' => 'longform-intro',
 			'type' => 'wysiwyg',
 			'instructions' => '',
@@ -4079,10 +4136,10 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
+			'default_value' => '',
 			'tabs' => 'all',
 			'toolbar' => 'full',
 			'media_upload' => 1,
-			'default_value' => '',
 			'delay' => 0,
 		),
 	),
@@ -4494,9 +4551,9 @@ acf_add_local_field_group(array(
 	'title' => 'Newsletter Template',
 	'fields' => array(
 		array(
-			'key' => 'field_5dc1c5c344b94',
-			'label' => 'Heading',
-			'name' => 'newsletter_heading',
+			'key' => 'field_5dc1c5c844b95',
+			'label' => 'Intro Text',
+			'name' => 'newsletter_intro_text',
 			'type' => 'text',
 			'instructions' => '',
 			'required' => 0,
@@ -4513,9 +4570,9 @@ acf_add_local_field_group(array(
 			'maxlength' => '',
 		),
 		array(
-			'key' => 'field_5dc1c5c844b95',
-			'label' => 'Intro Text',
-			'name' => 'newsletter_intro_text',
+			'key' => 'field_5dc1c5c344b94',
+			'label' => 'Heading',
+			'name' => 'newsletter_heading',
 			'type' => 'text',
 			'instructions' => '',
 			'required' => 0,
@@ -4704,6 +4761,19 @@ acf_add_local_field_group(array(
 	'active' => true,
 	'description' => '',
 ));
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 acf_add_local_field_group(array(
 	'key' => 'group_5cb0e93475e08',
@@ -5069,6 +5139,149 @@ acf_add_local_field_group(array(
 				'param' => 'options_page',
 				'operator' => '==',
 				'value' => 'acf-options-pages',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+acf_add_local_field_group(array(
+	'key' => 'group_5df13707cc8c4',
+	'title' => 'Reach Page',
+	'fields' => array(
+		array(
+			'key' => 'field_5df67e4ae5f1d',
+			'label' => 'Title',
+			'name' => 'reach_title',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
+		array(
+			'key' => 'field_5df1370e9b78c',
+			'label' => 'Paragraph',
+			'name' => 'reach_paragraph_block',
+			'type' => 'textarea',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'maxlength' => '',
+			'rows' => '',
+			'new_lines' => '',
+		),
+		array(
+			'key' => 'field_5df299bea2ec3',
+			'label' => 'Paragraph',
+			'name' => 'reach_paragraph_block_2',
+			'type' => 'textarea',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'maxlength' => '',
+			'rows' => '',
+			'new_lines' => '',
+		),
+		array(
+			'key' => 'field_5df3d3f8ebac9',
+			'label' => 'Banner Image',
+			'name' => 'banner_image',
+			'type' => 'image',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'return_format' => 'array',
+			'preview_size' => 'medium',
+			'library' => 'all',
+			'min_width' => '',
+			'min_height' => '',
+			'min_size' => '',
+			'max_width' => '',
+			'max_height' => '',
+			'max_size' => '',
+			'mime_types' => '',
+		),
+		array(
+			'key' => 'field_5df3d419ebaca',
+			'label' => 'Reach Signup Box',
+			'name' => 'reach_signup_box',
+			'type' => 'wysiwyg',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'tabs' => 'all',
+			'toolbar' => 'full',
+			'media_upload' => 1,
+			'delay' => 0,
+		),
+		array(
+			'key' => 'field_5df3d437e6e26',
+			'label' => 'Paragraph',
+			'name' => 'reach_paragraph_block_3',
+			'type' => 'textarea',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'maxlength' => '',
+			'rows' => '',
+			'new_lines' => '',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_template',
+				'operator' => '==',
+				'value' => 'template-page-reach.php',
 			),
 		),
 	),

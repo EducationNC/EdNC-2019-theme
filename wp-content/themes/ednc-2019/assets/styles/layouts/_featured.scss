@@ -244,9 +244,9 @@ input, textarea, select {
 @media screen and (max-width: 768px) {
 
   .listing .post {
-    margin-bottom: 5%;
-    margin-right: 5%;
-    width: calc( 95% / 2 );
+    // margin-bottom: 5%;
+    // margin-right: 5%;
+    // width: calc( 95% / 2 );
   }
   .listing .post:nth-of-type(2n) {
     margin-right: 0;

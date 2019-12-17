@@ -73,6 +73,34 @@ a.newsletter-link {
   color: #06D85F;
 }
 
+.one-sign-up {
+  width: 35%;
+  padding: 15px;
+  background-color: white;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  // align-items: stretch;
+  img {
+    margin-right: 10px;
+  }
+  .section{
+    img {
+    }
+    .text {
+      width: 75%;
+      height: 100%;
+      h5,p {
+        margin: 0;
+      }
+      h5 {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+
 // .dashicons-plus-alt {
 //   color: red;
 //   height: 30px;
