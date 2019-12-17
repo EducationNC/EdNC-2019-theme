@@ -1,4 +1,7 @@
-<div class="callout accordion" id="accordion-years" role="tablist" aria-multiselectable="true">
+<div class="accordion accordion-archive" id="accordion-years" role="tablist" aria-multiselectable="true">
+
+  <h2 class="accordion-archive__title">By Month</h2>
+
   <?php
   /*
    * Collapsing daily archives widget, grouped by year and month
