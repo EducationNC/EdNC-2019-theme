@@ -427,9 +427,9 @@ acf_add_local_field_group(array(
 	'location' => array(
 		array(
 			array(
-				'param' => 'post_type',
+				'param' => 'post_template',
 				'operator' => '==',
-				'value' => 'post',
+				'value' => 'page-2016-Template.php',
 			),
 		),
 	),
@@ -4387,7 +4387,7 @@ acf_add_local_field_group(array(
 	'fields' => array(
 		array(
 			'key' => 'field_5c86d164d6875',
-			'label' => 'Longform Intro',
+			'label' => 'Full-Bleed Text',
 			'name' => 'longform-intro',
 			'type' => 'wysiwyg',
 			'instructions' => '',
@@ -4398,10 +4398,10 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
+			'default_value' => '',
 			'tabs' => 'all',
 			'toolbar' => 'full',
 			'media_upload' => 1,
-			'default_value' => '',
 			'delay' => 0,
 		),
 	),

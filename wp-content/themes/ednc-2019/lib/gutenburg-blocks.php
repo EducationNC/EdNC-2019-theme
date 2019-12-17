@@ -35,7 +35,7 @@ function be_register_blocks() {
 	));
   acf_register_block( array(
     'name'			=> 'longform-intro',
-    'title'			=> __( 'LongForm Intro', 'clientname' ),
+    'title'			=> __( 'Full-Bleed Text', 'clientname' ),
     'render_template'	=> 'templates/gutenberg/longform-intro.php',
     'category'		=> 'formatting',
     'icon'			=> 'admin-users',
@@ -65,7 +65,7 @@ function be_register_blocks() {
 	));
 	acf_register_block( array(
 		'name'			=> 'gallery-block-acf',
-		'title'			=> __( 'Gallery ACF', 'clientname' ),
+		'title'			=> __( 'Gallery', 'clientname' ),
 		'render_template'	=> 'templates/gutenberg/gallery.php',
 		//'render_callback' => 'my_acf_block_render_callback',
 		'category'	=> 'formatting',
