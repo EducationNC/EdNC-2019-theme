@@ -5,16 +5,35 @@ use Roots\Sage\Assets;
 ?>
 
 <div class="logo-section">
-  <div class="logos-large">
-    <?php if( have_rows('large_logo', 'option') ): ?>
-      <?php while( have_rows('large_logo', 'option') ): the_row(); ?>
+  <div class="logo-section__row">
+    <?php if( have_rows('logos_section_1', 'option') ): ?>
+      <?php while( have_rows('logos_section_1', 'option') ): the_row(); ?>
         <?php 
-        $large_logo = get_sub_field('large_logos');
+        $logo = get_sub_field('logo');
         $width = get_sub_field('width');
+        $org = get_sub_field('organization');
         ?>
-          <div class="logo">
-            <?php if ($large_logo): ?>
-              <img class="" src="<?php echo $large_logo['url']; ?>" alt="<?php echo $large_logo['alt'] ?>"
+          <div class="logo-section__row__logo">
+            <?php if ($logo): ?>
+              <img class="" src="<?php echo $logo['url']; ?>" alt="<?php echo $org ?>"
+                <?php if ($width): ?>style="width: <?php echo $width ?>;"<?php endif; ?>>
+            <?php endif; ?>
+          </div>
+      <?php endwhile; ?>
+    <?php endif; ?>
+  </div>
+
+  <div class="logo-section__row">
+    <?php if( have_rows('logos_section_2', 'option') ): ?>
+      <?php while( have_rows('logos_section_2', 'option') ): the_row(); ?>
+        <?php 
+        $logo = get_sub_field('logo');
+        $width = get_sub_field('width');
+        $org = get_sub_field('organization');
+        ?>
+          <div class="logo-section__row__logo">
+            <?php if ($logo): ?>
+              <img class="" src="<?php echo $logo['url']; ?>" alt="<?php echo $org ?>"
                 <?php if ($width): ?>style="width: <?php echo $width ?>;"<?php endif; ?>>
             <?php endif; ?>
           </div>
