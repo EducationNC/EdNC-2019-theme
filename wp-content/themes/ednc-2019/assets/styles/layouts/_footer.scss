@@ -1,19 +1,19 @@
 .logo-section {
   background-color: #5C1043;
   width: 100%;
+  padding: 50px 0px 0;
 }
 
-.logos-large {
+.logo-section__row {
   max-width: 1200px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   margin: 0 auto;
-  padding: 50px 0px 0;
 }
 
-.logos-large .logo {
+.logo-section__row__logo {
   padding: 0px 10px 45px;
   width: 33.3333%;
   align-self: center;
