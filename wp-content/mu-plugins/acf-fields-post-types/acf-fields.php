@@ -1942,7 +1942,7 @@ acf_add_local_field_group(array(
 			'label' => 'Full-Width Hero Image',
 			'name' => 'full_width_hero_image',
 			'type' => 'image',
-			'instructions' => 'Shows up above the title, and spans across the entire post',
+			'instructions' => 'Shows up as a banner above the title, and spans across the entire post.',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(
