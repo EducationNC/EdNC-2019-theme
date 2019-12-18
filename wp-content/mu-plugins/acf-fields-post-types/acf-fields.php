@@ -1942,7 +1942,7 @@ acf_add_local_field_group(array(
 			'label' => 'Full-Width Hero Image',
 			'name' => 'full_width_hero_image',
 			'type' => 'image',
-			'instructions' => '',
+			'instructions' => 'Shows up above the title, and spans across the entire post',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(
@@ -1950,6 +1950,13 @@ acf_add_local_field_group(array(
 						'field' => 'field_546a3af5470a0',
 						'operator' => '==',
 						'value' => 'hero',
+					),
+				),
+				array(	
+					array(
+						'field' => 'field_546a3af5470a0',
+						'operator' => '==',
+						'value' => 'hero_and_contained',
 					),
 				),
 			),
@@ -1982,6 +1989,13 @@ acf_add_local_field_group(array(
 						'field' => 'field_546a3af5470a0',
 						'operator' => '==',
 						'value' => 'hero',
+					),
+				),
+				array(	
+					array(
+						'field' => 'field_546a3af5470a0',
+						'operator' => '==',
+						'value' => 'hero_and_contained',
 					),
 				),
 			),
