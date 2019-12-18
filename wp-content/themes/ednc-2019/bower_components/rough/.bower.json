@@ -1,0 +1,15 @@
+{
+  "name": "rough",
+  "homepage": "https://github.com/pshihn/rough",
+  "version": "3.1.0",
+  "_release": "3.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v3.1.0",
+    "commit": "3b212e9d681f3c42d1fbde6fdab4357a662471fe"
+  },
+  "_source": "https://github.com/pshihn/rough.git",
+  "_target": "^3.1.0",
+  "_originalSource": "pshihn/rough",
+  "_direct": true
+}

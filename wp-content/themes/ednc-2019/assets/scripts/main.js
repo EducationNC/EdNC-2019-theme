@@ -746,6 +746,30 @@
     }
   };
 
+  // RoughJS test
+  var canvasEl = document.createElement("CANVAS");
+  canvasEl.setAttribute('id', 'canvas');
+  canvasEl.setAttribute('width', '800');
+  canvasEl.setAttribute('height', '600');
+  document.body.appendChild(canvasEl);
+  const rc = rough.canvas(document.getElementById('canvas'));
+
+  //line and rectangle
+  rc.rectangle(10, 10, 100, 100);
+  rc.rectangle(140, 10, 100, 100, {
+    fill: 'rgba(255,0,0,0.2)',
+    fillStyle: 'solid',
+    roughness: 2
+  });
+  rc.rectangle(10, 130, 100, 100, {
+    fill: 'red',
+    stroke: 'blue',
+    hachureAngle: 60,
+    hachureGap: 10,
+    fillWeight: 5,
+    strokeWidth: 5
+  });
+
   // Load Events
   $(document).ready(UTIL.loadEvents);
 
