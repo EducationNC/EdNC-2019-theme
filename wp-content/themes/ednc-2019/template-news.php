@@ -1,19 +1,20 @@
 <?php
 /*
- * Template Name: News!
+ * Template Name: News
  * Template Post Type: page, product
  */
 
 
 use Roots\Sage\Extras;
 use Roots\Sage\Media;
+use Roots\Sage\Assets;
+use Roots\Sage\Resize;
 
 global $trending;
 $main = get_field('main-news-article');
 $posts = get_field('news-articles');
 $news_image = get_field('news-image');
-$featured_image = Media\get_featured_image('featured-four-block');
-$size = 'full'; // (thumbnail, medium, large, full or custom size)
+
 ?>
 <section id="news" class="news search-results">
   <div class="site-wrapper">
@@ -67,16 +68,18 @@ $size = 'full'; // (thumbnail, medium, large, full or custom size)
 
               while ($trending->have_posts()) : $trending->the_post();
 
-              $firstPosts[] = $post->ID; ?>
+              $firstPosts[] = $post->ID;
+              $featured_image = Media\get_featured_image('featured-four-block');
+              $size = 'full'; // (thumbnail, medium, large, full or custom size)?>
 
               <article <?php post_class('block-news content-block-3 clearfix'); ?>>
                 <div class="flex">
                   <div class="block-content">
                     <?php if (!empty($featured_image)) { ?>
-                      <img src="<?php echo $featured_image; ?>" />
+                      <img class="" src="<?php echo $featured_image; ?>" />
                     <?php } else { ?>
                       <div class="circle-image">
-                        <?php// echo $author_pic; ?>
+                        <?php echo $author_pic; ?>
                       </div>
                     <?php } ?>
                     <h3 class="post-title"><?php the_title(); ?></h3>
