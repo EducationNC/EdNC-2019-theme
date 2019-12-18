@@ -23,6 +23,8 @@ while (have_posts()) : the_post();
   $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
   $featured_image_src = wp_get_attachment_image_src($image_id, 'Contained');
   $featured_image_hero = wp_get_attachment_image_src($image_id, 'Hero');
+  
+  $full_width_hero_img = get_field('full_width_hero_image');
 
   $thumb = get_post_thumbnail_id();
   $img_url = wp_get_attachment_url( $thumb,'full' ); //get full URL to image (use "large" or "medium" if the images too big)
@@ -61,52 +63,13 @@ while (have_posts()) : the_post();
   ?>
   <article <?php post_class('article 2019-template'); ?>>
 
-    <!-- <?php //if (isset($banner)) { ?> -->
-    <?php if (!empty($banner)) { ?>
-    <!-- <div class="full-width-image-block banner" style="">
-        <img src="<?php// echo $banner[0];  ?>" alt="<?php //the_author(); ?>" class="full-width-image">
-    </div> -->
-    <?php } ?>
-
-    <!-- <?php //if (has_post_thumbnail() && $featured_image_align == 'hero') { ?>
-      <?php //echo "featured-image-hero"; ?>
+    <?php if ($full_width_hero_img && $featured_image_align == 'hero'): ?>
       <div class="full-width-image-block">
-        <img class="full-width-image" src="
-        <?php
-          //if(!empty($featured_image_hero)){
-            //echo "featured-image-hero";
-            //echo $featured_image_hero[0];
-          //} else {
-            //echo 'force-crop';
-            //echo "none";
-            //echo $image_hero;
-          //}
-        ?>
-        " />
-        <p class="lato"><?php //echo $thumb_post->post_excerpt; ?></p>
-      </div>
-    <?php //} ?> -->
-
-    <?php if (has_post_thumbnail() && $featured_image_align == 'hero') { ?>
-      <?php echo "featured-image-hero"; ?>
-      <div class="full-width-image-block">
-        <img class="full-width-image" src="
-        <?php
-          if(!empty($featured_image_hero)){
-            echo "featured-image-hero";
-            echo $featured_image_hero[0];
-         } else {
-            echo "force-crop";
-            echo $image_hero;
-          }
-        ?>
-        " />
+        <img class="full-width-image" src="<?php echo $full_width_hero_img['url'] ?>"
+          alt="<?php echo $full_width_hero_img['alt'] ?>">
         <p class="lato"><?php echo $thumb_post->post_excerpt; ?></p>
       </div>
-    <?php } ?>
-
-
-
+    <?php endif; ?>
 
     <div class="title">
       <div class="container">

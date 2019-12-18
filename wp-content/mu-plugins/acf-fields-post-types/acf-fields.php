@@ -1910,7 +1910,7 @@ acf_add_local_field_group(array(
 	'fields' => array(
 		array(
 			'key' => 'field_546a3af5470a0',
-			'label' => 'Featured Image Alignment',
+			'label' => 'Hero Image Display',
 			'name' => 'featured_image_alignment',
 			'type' => 'select',
 			'instructions' => '',
@@ -1922,13 +1922,11 @@ acf_add_local_field_group(array(
 				'id' => '',
 			),
 			'choices' => array(
-				'contained' => 'Regular Contained Image',
+				'contained' => 'Contained Featured Image',
 				'hero' => 'Full-Width Hero',
-				'none' => 'Hide Featured Image',
+				'none' => 'Hidden',
 			),
-			'default_value' => array(
-				'' => '',
-			),
+			'default_value' => 'hero',
 			'allow_null' => 0,
 			'multiple' => 0,
 			'ui' => 0,
@@ -1937,6 +1935,38 @@ acf_add_local_field_group(array(
 			'disabled' => 0,
 			'readonly' => 0,
 			'return_format' => 'value',
+		),
+		array(
+			'key' => 'field_568c37db93bag',
+			'label' => 'Full-Width Hero Image',
+			'name' => 'full_width_hero_image',
+			'type' => 'image',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_546a3af5470a0',
+						'operator' => '==',
+						'value' => 'hero',
+					),
+				),
+			),
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'return_format' => 'array',
+			'preview_size' => 'thumbnail',
+			'library' => 'all',
+			'min_width' => '',
+			'min_height' => '',
+			'min_size' => '',
+			'max_width' => '',
+			'max_height' => '',
+			'max_size' => '',
+			'mime_types' => '',
 		),
 		array(
 			'key' => 'field_568c37db93baf',
