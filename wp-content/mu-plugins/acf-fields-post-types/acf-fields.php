@@ -1924,9 +1924,10 @@ acf_add_local_field_group(array(
 			'choices' => array(
 				'contained' => 'Contained Featured Image',
 				'hero' => 'Full-Width Hero',
+				'hero_and_contained' => 'Full-Width Hero and Contained Featured Image',
 				'none' => 'Hidden',
 			),
-			'default_value' => 'hero',
+			'default_value' => 'contained',
 			'allow_null' => 0,
 			'multiple' => 0,
 			'ui' => 0,
@@ -1970,10 +1971,10 @@ acf_add_local_field_group(array(
 		),
 		array(
 			'key' => 'field_568c37db93baf',
-			'label' => 'Title image overlay',
+			'label' => 'Title image overlay (deprecated)',
 			'name' => 'title_overlay',
 			'type' => 'image',
-			'instructions' => 'Title image will replace text title overlay on full-width hero featured images. Will also overlay featured image thumbnails across site and in emails.',
+			// 'instructions' => 'Title image will replace text title overlay on full-width hero featured images. Will also overlay featured image thumbnails across site and in emails.',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(

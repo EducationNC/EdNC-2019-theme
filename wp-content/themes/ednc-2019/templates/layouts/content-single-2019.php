@@ -61,13 +61,12 @@ while (have_posts()) : the_post();
     }
   }
   ?>
-  <article <?php post_class('article 2019-template'); ?>>
+  <article <?php post_class('article template-2019'); ?>>
 
-    <?php if ($full_width_hero_img && $featured_image_align == 'hero'): ?>
+    <?php if ($full_width_hero_img && ($featured_image_align == 'hero' || $featured_image_align == 'hero_and_contained')): ?>
       <div class="full-width-image-block">
         <img class="full-width-image" src="<?php echo $full_width_hero_img['url'] ?>"
           alt="<?php echo $full_width_hero_img['alt'] ?>">
-        <p class="lato"><?php echo $thumb_post->post_excerpt; ?></p>
       </div>
     <?php endif; ?>
 
@@ -94,7 +93,7 @@ while (have_posts()) : the_post();
           <div class="col-md-8 col-centered print-only article-section">
             <h1 class="entry-title"><?php// the_title(); ?></h1>
             <?php// get_template_part('templates/components/author', 'meta'); ?>
-            <?php if (has_post_thumbnail() && $featured_image_align == 'contained') {
+            <?php if (has_post_thumbnail() && $featured_image_align != 'hero' && $featured_image_align != 'none') {
               echo '<div class="alignnone no-top-margin">';
               the_post_thumbnail('Contained');
               $thumb_id = get_post_thumbnail_id();

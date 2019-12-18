@@ -331,12 +331,18 @@
 // NEW POST CONTENT
 
 
-
-.post-template-page-2019-Template  {
+.post-template-page-2019-Template, .template-2019  {
 
   .full-width-image-block {
     height: auto;
-    @include image-margin;
+    margin-top: -37px;
+    // @include image-margin;
+    max-height: 650px;
+    overflow: hidden;
+    
+    @media (min-width: $screen-lg-min) {
+      margin-top: -30px;  
+    }
 
     .full-width-image {
       height: 100%;
