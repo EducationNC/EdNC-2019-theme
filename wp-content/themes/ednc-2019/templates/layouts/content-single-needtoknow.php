@@ -29,13 +29,15 @@ while (have_posts()) : the_post(); ?>
 		              $featured_image = Media\get_featured_image('featured-four-block');
 		            	?>
 		                <div>
-		                  <div class="lead-image">
-		                    <img src="<?php echo $featured_image; ?>" alt="" title="" />
-		                  </div>
-		                  <p class="caption"><?php echo $title; ?></p>
-		                  <h3 class="post-title-trending"><?php the_title(); ?></h3>
-		                  <?php get_template_part('templates/components/entry-meta-small'); ?>
-		                  <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
+											<a class="" href="<?php the_permalink(); ?>">
+			                  <div class="lead-image">
+			                    <img src="<?php echo $featured_image; ?>" alt="" title="" />
+			                  </div>
+			                  <p class="caption"><?php echo $title; ?></p>
+			                  <h3 class="post-title-trending"><?php the_title(); ?></h3>
+			                  <?php get_template_part('templates/components/entry-meta-small'); ?>
+			                  <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
+											 </a>
 		                </div>
 		                <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
 		            <?php endif; ?>
