@@ -18,7 +18,7 @@ while (have_posts()) : the_post(); ?>
 					<div class="col-md-12">
 						<div class="ntk-grid">
 							<div class="item notes">
-								<?php the_title(); ?>
+								<h3><?php the_title(); ?><h3>
 								<?php the_field('notes'); ?>
 							</div>
 							<div class="item news">
@@ -87,7 +87,7 @@ while (have_posts()) : the_post(); ?>
 								<img class="reach-btn"src="<?php //echo Assets\asset_path('images/Need-reach-button.png'); ?>" alt="Reach Button" height="50" width="">
 							</div> -->
 							<div class="item reach">
-								<img class="reach-btn" src="<?php echo Assets\asset_path('images/ReachButton300by400.png'); ?>" alt="Reach Button" height="" width="">
+								<img class="reach-btn" src="<?php echo Assets\asset_path('images/ReachButton400by50.png'); ?>" alt="Reach Button" height="" width="">
 							</div>
 						</div>
 					</div>
