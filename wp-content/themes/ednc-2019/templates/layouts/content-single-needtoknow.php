@@ -17,7 +17,10 @@ while (have_posts()) : the_post(); ?>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="ntk-grid">
-							<div class="item notes"><?php the_field('notes'); ?></div>
+							<div class="item notes">
+								<?php the_title(); ?>
+								<?php the_field('notes'); ?>
+							</div>
 							<div class="item news">
 		            <h3>Top News Article</h3>
 		            <?php
@@ -77,14 +80,14 @@ while (have_posts()) : the_post(); ?>
 		            <?php
 		            $top_tweet_link = get_field('top_tweet_link');
 		            if( $top_tweet_link ): ?>
-		                <a class="" href="<?php echo esc_url( $top_tweet_link ); ?>"><h3><?php the_field('top_tweet_text'); ?></h3></a>
+		                <a class="" href="<?php echo esc_url( $top_tweet_link ); ?>"><p><?php the_field('top_tweet_text'); ?></p></a>
 		            <?php endif; ?>
 		          </div>
 							<!-- <div class="item reach">
 								<img class="reach-btn"src="<?php //echo Assets\asset_path('images/Need-reach-button.png'); ?>" alt="Reach Button" height="50" width="">
 							</div> -->
 							<div class="item reach">
-								<img class="reach-btn" src="" alt="Reach Button" height="50" width="">
+								<img class="reach-btn" src="<?php echo Assets\asset_path('images/ReachButton300by400.png'); ?>" alt="Reach Button" height="" width="">
 							</div>
 						</div>
 					</div>

@@ -691,7 +691,6 @@ h3.rd.column {
 
 .news {
   grid-area: news;
-  border: 1px solid red;
 }
 
 .notes {
@@ -701,7 +700,6 @@ h3.rd.column {
 
 .perspective {
   grid-area: perspective;
-  border: 1px solid green;
 }
 
 .fb-share {
@@ -717,34 +715,20 @@ h3.rd.column {
 
 .tw-share {
   grid-area: tw-share;
-  border: 1px solid orange;
+  border: 30px solid orange;
+  border-image: url("../images/TwittershareBox382by226.png")  115 120 110 120 stretch stretch;
+  // border-image: url("https://mdn.mozillademos.org/files/6017/border-image-6.svg");
+  // border-image-slice: 40 30 30 30;
+  // border-image-width: 30px 30px 30px 30px;
+  // border-image-outset: 0px 0px 0px 0px;
+  border-image-repeat: round round;
 }
 
 .reach {
   grid-area: reach;
-  border: 1px solid pink;
+  margin: 0 auto;
 }
 
 .reach-btn {
-  height: 40px;
-  background-color: red;
+
 }
-
-// .reach-btn {
-//   height: 50px;
-// }
-
-
-
-// .text-ntk {
-//   position: absolute;
-//   top: 1;
-//   left: 1;
-//   padding: 10px;
-// }
-
-// #canvas {
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-// }
