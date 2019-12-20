@@ -665,3 +665,71 @@ h3.rd.column {
   margin: 0 auto;
   // border: 1px solid red;
 }
+
+
+.ntk-grid {
+  display: grid;
+  width: 100%;
+  height: 600px;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 40px;
+  grid-template-areas:
+      "notes notes fb-share"
+      "notes notes fb-share"
+      "notes notes fb-share"
+      "notes notes fb-share"
+      "news perspective fb-share"
+      "news perspective tw-share"
+      "news perspective tw-share"
+      "news perspective tw-share"
+      "news perspective tw-share"
+      "news perspective tw-share"
+      "news perspective reach"
+      "news perspective reach"
+}
+
+.news {
+  grid-area:  news;
+  border: 1px solid red;
+}
+
+.notes {
+  grid-area: notes;
+  border: 1px solid blue;
+}
+
+.perspective {
+  grid-area: perspective;
+  border: 1px solid green;
+}
+
+.fb-share {
+  grid-area: fb-share;
+  border: 1px solid black;
+}
+
+.tw-share {
+  grid-area: tw-share;
+  border: 1px solid orange;
+}
+
+.reach {
+  grid-area: reach;
+  border: 1px solid pink;
+}
+
+
+
+// .text-ntk {
+//   position: absolute;
+//   top: 1;
+//   left: 1;
+//   padding: 10px;
+// }
+
+// #canvas {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+// }

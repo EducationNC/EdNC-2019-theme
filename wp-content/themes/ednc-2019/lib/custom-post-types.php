@@ -96,17 +96,17 @@ function register_post_types() {
 		)
 	);
 
-	register_post_type( 'giveadamn',
+	register_post_type( 'needtoknow',
 		array('labels' => array(
-				'name' => 'Give a Damn',
-				'singular_name' => 'Give a Damn',
+				'name' => 'Need to Know',
+				'singular_name' => 'Need to Know',
 				'add_new' => 'Add New',
-				'add_new_item' => 'Add New Give a Damn Page',
+				'add_new_item' => 'Add New Need to Know Page',
 				'edit' => 'Edit',
-				'edit_item' => 'Edit Give a Damn',
-				'new_item' => 'New Give a Damn',
-				'view_item' => 'View Give a Damn',
-				'search_items' => 'Search Give a Damn',
+				'edit_item' => 'Edit Need to Know',
+				'new_item' => 'New Need to Know',
+				'view_item' => 'View Need to Know',
+				'search_items' => 'Search Need to Know',
 				'not_found' =>  'Nothing found in the Database.',
 				'not_found_in_trash' => 'Nothing found in Trash',
 				'parent_item_colon' => ''
@@ -528,7 +528,7 @@ register_taxonomy( 'district-type',
 	'show_ui' => true,
 	'query_var' => true,
 	'public' => false,
-	'show_in_rest' => true,	
+	'show_in_rest' => true,
 	)
 );
 
@@ -550,7 +550,7 @@ register_taxonomy( 'author-type',
 		'show_ui' => true,
 		'query_var' => true,
 		'public' => false,
-		'show_in_rest' => true,	
+		'show_in_rest' => true,
 	)
 );
 
@@ -572,7 +572,7 @@ register_taxonomy( 'author-year',
 		'show_ui' => true,
 		'query_var' => true,
 		'public' => false,
-		'show_in_rest' => true,	
+		'show_in_rest' => true,
 	)
 );
 
@@ -593,7 +593,7 @@ register_taxonomy( 'resource-type',
 		),
 		'show_ui' => true,
 		'query_var' => true,
-		'show_in_rest' => true,	
+		'show_in_rest' => true,
 	)
 );
 
@@ -614,7 +614,7 @@ register_taxonomy( 'session',
 		),
 		'show_ui' => true,
 		'query_var' => true,
-		'show_in_rest' => true,	
+		'show_in_rest' => true,
 	)
 );
 
@@ -635,7 +635,7 @@ register_taxonomy( 'bill-type',
 		),
 		'show_ui' => true,
 		'query_var' => true,
-		'show_in_rest' => true,	
+		'show_in_rest' => true,
 	)
 );
 
@@ -834,7 +834,7 @@ register_taxonomy( 'map-column',
 		),
 		'show_ui' => true,
 		'query_var' => true,
-		'show_in_rest' => true,	
+		'show_in_rest' => true,
 	)
 );
 
@@ -844,7 +844,7 @@ register_taxonomy( 'map-column',
  */
 function pre_get_posts($query) {
 	if (is_admin()) { return; }
-	
+
 	// all archives should hide anything tagged with 'hide from archives'
 	if ($query->is_author() || $query->is_category() || $query->is_date()) {
 		$tax_query = array(

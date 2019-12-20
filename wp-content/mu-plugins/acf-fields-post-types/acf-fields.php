@@ -1952,7 +1952,7 @@ acf_add_local_field_group(array(
 						'value' => 'hero',
 					),
 				),
-				array(	
+				array(
 					array(
 						'field' => 'field_546a3af5470a0',
 						'operator' => '==',
@@ -1991,7 +1991,7 @@ acf_add_local_field_group(array(
 						'value' => 'hero',
 					),
 				),
-				array(	
+				array(
 					array(
 						'field' => 'field_546a3af5470a0',
 						'operator' => '==',
@@ -2499,7 +2499,7 @@ acf_add_local_field_group(array(
 
 acf_add_local_field_group(array(
 	'key' => 'group_5dcd8ba4974b2',
-	'title' => 'Give a Damn Page',
+	'title' => 'Need to Know Page',
 	'fields' => array(
 		array(
 			'key' => 'field_5dcd8baa2dc70',
@@ -2524,7 +2524,7 @@ acf_add_local_field_group(array(
 			'key' => 'field_5dcd8bd02dc71',
 			'label' => 'Top News Article',
 			'name' => 'top_news_article',
-			'type' => 'relationship',
+			'type' => 'post_object',
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
@@ -2533,23 +2533,20 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'post_type' => '',
-			'taxonomy' => '',
-			'filters' => array(
-				0 => 'search',
-				1 => 'post_type',
-				2 => 'taxonomy',
+			'post_type' => array(
 			),
-			'elements' => '',
-			'min' => 1,
-			'max' => 1,
+			'taxonomy' => array(
+			),
+			'allow_null' => 0,
+			'multiple' => 0,
 			'return_format' => 'object',
+			'ui' => 1,
 		),
 		array(
 			'key' => 'field_5dcd8c015a204',
 			'label' => 'Top Perspective',
 			'name' => 'top_perspective_article',
-			'type' => 'relationship',
+			'type' => 'post_object',
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
@@ -2558,17 +2555,14 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'post_type' => '',
-			'taxonomy' => '',
-			'filters' => array(
-				0 => 'search',
-				1 => 'post_type',
-				2 => 'taxonomy',
+			'post_type' => array(
 			),
-			'elements' => '',
-			'min' => 1,
-			'max' => 1,
+			'taxonomy' => array(
+			),
+			'allow_null' => 0,
+			'multiple' => 0,
 			'return_format' => 'object',
+			'ui' => 1,
 		),
 		array(
 			'key' => 'field_5dcd8c209333b',
@@ -2627,7 +2621,7 @@ acf_add_local_field_group(array(
 			array(
 				'param' => 'post_type',
 				'operator' => '==',
-				'value' => 'giveadamn',
+				'value' => 'needtoknow',
 			),
 		),
 	),
