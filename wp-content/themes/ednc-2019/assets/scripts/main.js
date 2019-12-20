@@ -751,4 +751,11 @@
 
   $('#gform_wrapper_6').css("display","block");
 
+  // var rc = rough.canvas(document.getElementById('canvas'));
+  // rc.line(1, 1, 300, 1);
+  // var ctx = rc.getContext("2d");
+  // ctx.font = "30px Arial";
+  // ctx.fillStyle = 'red';
+  // ctx.fillText("Hello World", 1, 1);
+
 })(jQuery); // Fully reference jQuery after this point.
