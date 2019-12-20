@@ -746,35 +746,6 @@
     }
   };
 
-  // RoughJS test
-
-  // var canvasEl = document.createElement("CANVAS");
-  // canvasEl.setAttribute('id', 'canvas');
-  // canvasEl.setAttribute('width', '800');
-  // canvasEl.setAttribute('height', '600');
-  // document.body.appendChild(canvasEl);
-  // const rc = rough.canvas(document.getElementById('canvas'));
-
-  const rc = rough.canvas(document.getElementById('canvas'));
-  rc.rectangle(10, 10, 200, 200);
-  var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-ctx.font = "30px Arial";
-ctx.fillText("Hello World", 10, 50);
-
-  //
-  // var canvasEl = document.createElement("CANVAS");
-  // canvasEl.setAttribute('id', 'canvas');
-  // canvasEl.setAttribute('width', '800');
-  // canvasEl.setAttribute('height', '600');
-  // document.body.appendChild(canvasEl);
-  // const rc = rough.canvas(document.getElementById('canvas'));
-  //
-  // //line and rectangle
-  // rc.rectangle(15, 15, 80, 80, { roughness: 0.5, fill: 'red' });
-  // rc.rectangle(120, 15, 80, 80, { roughness: 2.8, fill: 'blue' });
-  // rc.rectangle(220, 15, 80, 80, { bowing: 6, stroke: 'green', strokeWidth: 3 });
-
   // Load Events
   $(document).ready(UTIL.loadEvents);
 
