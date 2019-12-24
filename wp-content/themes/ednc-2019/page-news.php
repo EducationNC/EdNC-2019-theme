@@ -2,19 +2,17 @@
 
 use Roots\Sage\Extras;
 use Roots\Sage\Media;
+use Roots\Sage\Assets;
+use Roots\Sage\Resize;
 
 global $trending;
 $main = get_field('main-news-article');
 $posts = get_field('news-articles');
 $news_image = get_field('news-image');
-$size = 'full'; // (thumbnail, medium, large, full or custom size)
 
 ?>
-
 <section id="news" class="news search-results">
   <div class="site-wrapper">
-
-    <?php //get_template_part('templates/components/category', 'header-image'); ?>
 
     <div class="container">
       <div class="row">
@@ -30,58 +28,69 @@ $size = 'full'; // (thumbnail, medium, large, full or custom size)
       </div>
     </div>
 
-      <?php
-      $args = array(
-        'posts_per_page' => 3,
-        'post_type' => array('post', 'map', 'ednews', 'edtalk', 'flash-cards'),
-        'tax_query' => array(
-          'relation' => 'AND',
-          array(
-            'taxonomy' => 'appearance',
-            'field'    => 'slug',
-            'terms'    => 'news',
-          ),
-          array(
-            'taxonomy' => 'appearance',
-            'field' => 'slug',
-            'terms' => 'hide-from-archives',
-            'operator' => 'NOT IN'
-          )
+    <?php
+    $args = array(
+      'posts_per_page' => 3,
+      'post_type' => array('post', 'map', 'ednews', 'edtalk', 'flash-cards'),
+      'tax_query' => array(
+        'relation' => 'AND',
+        array(
+          'taxonomy' => 'appearance',
+          'field'    => 'slug',
+          'terms'    => 'news',
         ),
-        'meta_key' => 'updated_date',
-        'orderby' => 'meta_value_num',
-        'order' => 'DESC'
-      );
+        array(
+          'taxonomy' => 'appearance',
+          'field' => 'slug',
+          'terms' => 'hide-from-archives',
+          'operator' => 'NOT IN'
+        )
+      ),
+      'meta_key' => 'updated_date',
+      'orderby' => 'meta_value_num',
+      'order' => 'DESC'
+    );
 
-      $trending = new WP_Query($args);
-      ?>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="category-content">
-              <?php if ($trending->have_posts()) : while ($trending->have_posts()) : $trending->the_post(); ?>
+    $trending = new WP_Query($args);
+    ?>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="category-content">
+            <?php if ($trending->have_posts()) :
 
-                <article <?php post_class('block-news content-block-3 clearfix'); ?>>
-                  <div class="flex">
-                    <div class="block-content">
-                      <h3 class="post-title"><?php the_title(); ?></h3>
-                      <?php get_template_part('templates/components/entry-meta'); ?>
-                      <a class="mega-link" href="<?php the_permalink(); ?>"></a>
-                      <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
-                    </div>
+              $firstPosts = array();
+
+              while ($trending->have_posts()) : $trending->the_post();
+
+              $firstPosts[] = $post->ID;
+              $featured_image = Media\get_featured_image('featured-four-block');
+              $size = 'full'; // (thumbnail, medium, large, full or custom size)?>
+
+              <article <?php post_class('block-news content-block-3 clearfix'); ?>>
+                <div class="flex">
+                  <div class="block-content">
+                    <?php if (!empty($featured_image)) { ?>
+                      <img class="" src="<?php echo $featured_image; ?>" />
+                    <?php } else { ?>
+                      <div class="circle-image">
+                        <?php echo $author_pic; ?>
+                      </div>
+                    <?php } ?>
+                    <h3 class="post-title"><?php the_title(); ?></h3>
+                    <?php get_template_part('templates/components/entry-meta'); ?>
+                    <a class="mega-link" href="<?php the_permalink(); ?>"></a>
+                    <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
                   </div>
-                </article>
+                </div>
+              </article>
 
+            <?php endwhile; endif; wp_reset_query(); ?>
 
-
-              <?php endwhile; endif; wp_reset_query(); ?>
-
-            </div>
           </div>
         </div>
       </div>
-
-    <?php// get_template_part('templates/components/category', 'header-text'); ?>
+    </div>
 
     <?php
     $paged = get_query_var('paged') ? get_query_var('paged') : 1;
@@ -101,9 +110,8 @@ $size = 'full'; // (thumbnail, medium, large, full or custom size)
           'operator' => 'NOT IN'
         )
       ),
-      // 'post__not_in' => $featured_ids,
       'paged' => $paged,
-      'post__not_in' => $trending,
+      'post__not_in' => $firstPosts,
       'meta_key' => 'updated_date',
       'orderby' => 'meta_value_num',
       'order' => 'DESC'
@@ -115,7 +123,7 @@ $size = 'full'; // (thumbnail, medium, large, full or custom size)
       <div class="row">
         <div class="col-md-12">
           <div class="category-content">
-          <?php get_template_part('templates/layouts/archive', 'loop-2019'); ?>
+          <?php get_template_part('templates/layouts/archive', 'loop-2019noimage'); ?>
           </div>
           <div class="category-content">
             <?php if ($wp_query->max_num_pages > 1) : ?>
