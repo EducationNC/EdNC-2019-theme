@@ -5,7 +5,7 @@ while (have_posts()) : the_post();
 $comments_open = comments_open();
 ?>
   <article <?php post_class('article'); ?>>
-    <?php get_template_part('templates/components/edtalk', 'header-2019'); ?>
+    <?php// get_template_part('templates/components/edtalk', 'header-2019'); ?>
 
     <div class="container">
       <div class="row">

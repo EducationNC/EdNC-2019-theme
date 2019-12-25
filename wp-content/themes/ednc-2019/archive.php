@@ -16,7 +16,7 @@ $post_object = get_field('featured_article_category_pages', $term);
 
 <?php if (!empty($cat_id)) { ?>
 
-  <section id="archive" class="block-small search-results bright-blue">
+  <section id="archive" class="block-small search-results dark-blue">
     <div class="site-wrapper">
       <div class="container">
 

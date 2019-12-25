@@ -4,7 +4,7 @@ use Roots\Sage\Assets;
 
 ?>
 
-<div class="callout-purple">
+<div class="callout">
   <img class="alignleft" src="<?php echo Assets\asset_path('images/edtalk-100x100.jpg'); ?>" alt="EdTalk Podcast" />
   <p class="meta">A weekly look at North Carolina education issues and policy.</p>
   <div class="clearfix">
@@ -12,7 +12,7 @@ use Roots\Sage\Assets;
   </div>
 </div>
 
-<div class="callout-purple accordion" id="accordion-years" role="tablist" aria-multiselectable="true">
+<div class="callout accordion" id="accordion-years" role="tablist" aria-multiselectable="true">
   <?php
   /*
    * Collapsing daily archives widget, grouped by year and month
