@@ -7,7 +7,7 @@ use Roots\Sage\Titles;
 use Roots\Sage\Assets;
 use Roots\Sage\Media;
 use Roots\Sage\Resize;
-?>
+
 
 while (have_posts()) : the_post(); ?>
 <article <?php post_class(); ?>>
