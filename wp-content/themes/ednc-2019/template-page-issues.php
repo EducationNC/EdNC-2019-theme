@@ -14,11 +14,12 @@ Template Name: Issues Template
           <div class="category-content-justify-left issues">
             
             <?php 
-            $top_terms = get_field('top_section_terms');
+            $top_terms = get_field('top_section_repeater');
             if( $top_terms ): ?>
-              <?php foreach( $top_terms as $term ): ?>
+              <?php foreach( $top_terms as $item ): ?>
               
                 <?php
+                $term = $item['category'];
                 $image_src = '';
                 $image = get_field('taxonomy_thumbnail', $term);
                 if ($image) {
