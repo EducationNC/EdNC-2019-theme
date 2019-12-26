@@ -6067,10 +6067,10 @@ acf_add_local_field_group(array(
 				'id' => '',
 			),
 			'default_value' => '',
-			'maxlength' => '',
 			'placeholder' => '',
 			'prepend' => '',
 			'append' => '',
+			'maxlength' => 240,
 		),
 		array(
 			'key' => 'field_5dfd041b282ae',
@@ -6118,10 +6118,10 @@ acf_add_local_field_group(array(
 				'id' => '',
 			),
 			'default_value' => '',
-			'maxlength' => '',
 			'placeholder' => '',
 			'prepend' => '',
 			'append' => '',
+			'maxlength' => 240,
 		),
 	),
 	'location' => array(
@@ -6130,6 +6130,13 @@ acf_add_local_field_group(array(
 				'param' => 'post_type',
 				'operator' => '==',
 				'value' => 'needtoknow',
+			),
+		),
+		array(
+			array(
+				'param' => 'page_template',
+				'operator' => '==',
+				'value' => 'template-page-NeedtoKnow.php',
 			),
 		),
 	),
