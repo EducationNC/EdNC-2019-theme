@@ -38,6 +38,19 @@ $size = 'full'; // (thumbnail, medium, large, full or custom size)
 
     <div class="row">
       <div class="col-md-12">
+        <?php
+        $image = get_field('banner_image');
+        $image_link_reach = get_field('image_link_reach');
+        if( !empty($image) ): ?>
+          <a href="<?php echo $image_link_reach ?>">
+          	<img src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt']; ?>" />
+          </a>
+        <?php endif; ?>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
         <div class = "reach-body-text">
           <p><?php the_field('reach_paragraph_block_2'); ?></p>
         </div>
