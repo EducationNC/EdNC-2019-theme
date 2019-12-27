@@ -24,7 +24,7 @@ function migrate_post_default_template() {
 
     // get old meta
     update_post_meta($_id, '_wp_page_template', array('page-2016-Template.php'));
-    echo "Updated: " . get_the_title() . "<br>";
+    echo 'Updated: <a href="'.  get_the_permalink() .'">' . get_the_title() . "</a><br>";
   }
 
   echo '<h1>Migration set '. $paged .' finished.</h1><a href="' . esc_url(home_url( '/?migrate_post_default_template=true&set=' . ($paged + 1) )) . '">Migrate next set</a>';
