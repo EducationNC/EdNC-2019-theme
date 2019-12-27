@@ -3,10 +3,10 @@
 // migrate old posts to new default template
 function migrate_post_default_template() {
   
-  $paged = 0;
+  $paged = 1;
   
-  if (isset($_GET['paged'])) {
-     $paged = $_GET['paged'];
+  if (isset($_GET['set'])) {
+     $paged = $_GET['set'];
   }
   
   $posts_query = new WP_Query(array(
@@ -27,7 +27,7 @@ function migrate_post_default_template() {
     echo "Updated: " . get_the_title() . "<br>";
   }
 
-  echo '<h1>Migration set '. $paged .' finished.</h1><a href="' . esc_url(home_url( '/?migrate_post_default_template=true&paged=' . ($paged + 1) )) . '">Migrate next set</a>';
+  echo '<h1>Migration set '. $paged .' finished.</h1><a href="' . esc_url(home_url( '/?migrate_post_default_template=true&set=' . ($paged + 1) )) . '">Migrate next set</a>';
 }
 
 if(isset($_GET['migrate_post_default_template']) && is_super_admin()) {
