@@ -109,3 +109,11 @@
     }
     
 }
+
+// In iframe
+
+.in-iframe {
+    .logo-section, .footer-bottom {
+        display: none;   
+    }
+}
