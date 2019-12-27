@@ -23,8 +23,12 @@ function migrate_post_default_template() {
     $_id = get_the_ID();
 
     // get old meta
-    update_post_meta($_id, '_wp_page_template', array('page-2016-Template.php'));
-    echo 'Updated: <a href="'.  get_the_permalink() .'" title="'. $_id .'">' . get_the_title() . "</a><br>";
+    $update = update_post_meta($_id, '_wp_page_template', array('page-2016-Template.php'));
+    if (!$update) {
+      echo 'Update to: <a href="'.  get_the_permalink() .'" title="'. $_id .'" style="color: red;">' . get_the_title() . "</a> failed<br>";
+    } else {
+      echo 'Updated: <a href="'.  get_the_permalink() .'" title="'. $_id .'">' . get_the_title() . "</a><br>";
+    }
   }
 
   echo '<h1>Migration set '. $paged .' finished.</h1><a href="' . esc_url(home_url( '/?migrate_post_default_template=true&set=' . ($paged + 1) )) . '">Migrate next set</a>';

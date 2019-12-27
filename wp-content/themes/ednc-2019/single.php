@@ -1,4 +1,9 @@
-<?php if (get_post_type() == 'post'): ?>
+<?php
+$pdate  = strtotime(get_the_date('F j, Y'));
+$mydate = strtotime('December 20, 2019');
+?>
+
+<?php if (get_post_type() == 'post' && $pdate>$mydate): ?>
     <?php get_template_part('templates/layouts/content-single-2019', get_post_type()); ?>
 <?php else: ?>
     <?php get_template_part('templates/layouts/content-single', get_post_type()); ?>
