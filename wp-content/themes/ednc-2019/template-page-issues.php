@@ -24,10 +24,6 @@ Template Name: Issues Template
                 $image = get_field('taxonomy_thumbnail', $term);
                 if ($image) {
                   $image_src = $image['sizes']['large']; 
-                } elseif ($term->term_image) {
-                  $image = $term->term_image;
-                  $image_src = wp_get_attachment_image_src($image, 'large');
-                  $image_src = $image_src[0]; 
                 }
                 ?>
                 
