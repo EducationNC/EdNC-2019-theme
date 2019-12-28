@@ -6,6 +6,7 @@ use Roots\Sage\Media;
 // global $featured_ids;
 // global $recent_ids;
 global $featured_recent;
+global $recent_ids;
 
 
 // elseif ($post->post_type == 'post') {
@@ -43,6 +44,7 @@ global $featured_recent;
          'posts_per_page' => $number,
          'post_type' => array('post', 'map', 'edtalk'),
          'post__not_in' => $featured_recent,
+         'post__not_in' => $recent_ids,
          'tax_query' => array(
            array(
              'taxonomy' => 'appearance',

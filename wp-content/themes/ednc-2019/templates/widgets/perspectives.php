@@ -3,6 +3,9 @@
 use Roots\Sage\Assets;
 use Roots\Sage\Media;
 
+global $featured_recent;
+global $recent_ids;
+
 ?>
 
 <section class="block perspectives">
@@ -30,7 +33,8 @@ use Roots\Sage\Media;
         // Show 3 most recent featured perspective
        $args = array(
          'posts_per_page' => $number,
-         // 'post__not_in' => $featured_ids,
+         'post__not_in' => $featured_recent,
+         'post__not_in' => $recent_ids,
          'tax_query' => array(
            array(
              'taxonomy' => 'appearance',
