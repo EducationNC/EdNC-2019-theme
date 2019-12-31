@@ -49,7 +49,7 @@ Template Name: Team
         				<a href="<?php echo $link; ?>">
         			<?php endif; ?>
 
-        				<img src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
+        				<img class="team-image" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
                 <h3 class="rd"><?php echo $name; ?></h3>
                 <h4 class="rd"><?php echo $content; ?></h4>
         			<?php if( $link ): ?>
