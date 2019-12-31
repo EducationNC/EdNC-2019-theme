@@ -214,7 +214,8 @@
          <div class="col-md-12 header-big tabs-section">
             <h2 class="">Contributers</h2>
             <ul class="nav nav-tabs" role="tablist">
-               <li role="presentation" class="active"><a href="#y2019" aria-controls="y2019" role="tab" data-toggle="tab">2019</a></li>
+               <li role="presentation" class="active"><a href="#y2020" aria-controls="y2020" role="tab" data-toggle="tab">2020</a></li>
+               <li role="presentation"><a href="#y2019" aria-controls="y2019" role="tab" data-toggle="tab">2019</a></li>
                <li role="presentation"><a href="#y2018" aria-controls="y2018" role="tab" data-toggle="tab">2018</a></li>
                <li role="presentation"><a href="#y2017" aria-controls="y2017" role="tab" data-toggle="tab">2017</a></li>
                <li role="presentation"><a href="#y2016" aria-controls="y2016" role="tab" data-toggle="tab">2016</a></li>
@@ -225,6 +226,47 @@
 
        <!-- <div class="row"> -->
        <div class="tab-content">
+         <div role="tabpanel" class="tab-pane active" id="y2020">
+            <div class="col-md-12">
+              <div class="contributors">
+                 <?php
+                    $args = array(
+                      'post_type' => 'bio',
+                      'posts_per_page' => -1,
+                      'order' => 'ASC',
+                      'orderby' => 'meta_value title',
+                      'meta_key' => 'last_name_to_sort_by',
+                      'tax_query' => array(
+                        array(
+                          'taxonomy' => 'author-type',
+                          'field' => 'slug',
+                          'terms' => 'contributor'
+                        ),
+                        array(
+                          'taxonomy' => 'author-year',
+                          'field' => 'slug',
+                          'terms' => '2020'
+                        )
+                      )
+                    );
+                    $contributors = new WP_Query($args);
+
+                    if ($contributors->have_posts()) : while ($contributors->have_posts()) : $contributors->the_post();
+                      $user = get_field('user');
+                      ?>
+                      <div class="flex-section-6">
+                         <div class="position-relative">
+                            <a class="mega-link" href="<?php echo get_author_posts_url($user['ID']); ?>"></a>
+                            <div class="circle-image">
+                               <?php the_post_thumbnail('bio-headshot'); ?>
+                            </div>
+                            <h4 class=""><?php the_title(); ?></h4>
+                         </div>
+                      </div>
+                    <?php endwhile; endif; wp_reset_query(); ?>
+                  </div>
+               </div>
+            </div>
          <div role="tabpanel" class="tab-pane active" id="y2019">
             <div class="col-md-12">
               <div class="contributors">
@@ -329,7 +371,91 @@
                            array(
                              'taxonomy' => 'author-year',
                              'field' => 'slug',
-                             'terms' => '2018'
+                             'terms' => '2017'
+                           )
+                         )
+                       );
+                       $contributors = new WP_Query($args);
+
+                       if ($contributors->have_posts()) : while ($contributors->have_posts()) : $contributors->the_post();
+                         $user = get_field('user');
+                         ?>
+                         <div class="flex-section-6">
+                            <div class="position-relative">
+                               <a class="mega-link" href="<?php echo get_author_posts_url($user['ID']); ?>"></a>
+                               <div class="circle-image">
+                                  <?php the_post_thumbnail('bio-headshot'); ?>
+                               </div>
+                               <h4 class=""><?php the_title(); ?></h4>
+                            </div>
+                         </div>
+                       <?php endwhile; endif; wp_reset_query(); ?>
+                   </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="y2016">
+               <div class="col-md-12">
+                 <div class="contributors">
+                    <?php
+                       $args = array(
+                         'post_type' => 'bio',
+                         'posts_per_page' => -1,
+                         'order' => 'ASC',
+                         'orderby' => 'meta_value title',
+                         'meta_key' => 'last_name_to_sort_by',
+                         'tax_query' => array(
+                           array(
+                             'taxonomy' => 'author-type',
+                             'field' => 'slug',
+                             'terms' => 'contributor'
+                           ),
+                           array(
+                             'taxonomy' => 'author-year',
+                             'field' => 'slug',
+                             'terms' => '2016'
+                           )
+                         )
+                       );
+                       $contributors = new WP_Query($args);
+
+                       if ($contributors->have_posts()) : while ($contributors->have_posts()) : $contributors->the_post();
+                         $user = get_field('user');
+                         ?>
+                         <div class="flex-section-6">
+                            <div class="position-relative">
+                               <a class="mega-link" href="<?php echo get_author_posts_url($user['ID']); ?>"></a>
+                               <div class="circle-image">
+                                  <?php the_post_thumbnail('bio-headshot'); ?>
+                               </div>
+                               <h4 class=""><?php the_title(); ?></h4>
+                            </div>
+                         </div>
+                       <?php endwhile; endif; wp_reset_query(); ?>
+                   </div>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="y2015">
+               <div class="col-md-12">
+                 <div class="contributors">
+                    <?php
+                       $args = array(
+                         'post_type' => 'bio',
+                         'posts_per_page' => -1,
+                         'order' => 'ASC',
+                         'orderby' => 'meta_value title',
+                         'meta_key' => 'last_name_to_sort_by',
+                         'tax_query' => array(
+                           array(
+                             'taxonomy' => 'author-type',
+                             'field' => 'slug',
+                             'terms' => 'contributor'
+                           ),
+                           array(
+                             'taxonomy' => 'author-year',
+                             'field' => 'slug',
+                             'terms' => '2015'
                            )
                          )
                        );
