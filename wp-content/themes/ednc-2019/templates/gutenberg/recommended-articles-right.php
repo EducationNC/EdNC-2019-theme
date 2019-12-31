@@ -1,6 +1,6 @@
 <?php
  /**
-  * Recommended Articles Block
+  * Recommended Articles Right Side Block
   *
   * @package      ClientName
   * @author       Bill Erickson
@@ -13,7 +13,6 @@
 
 $rec_reader_body = get_field( 'body_text-rec-read-block' );
 $rec_reader_header = get_field( 'recommended_articles_right-header' );
-$ids = get_field('recommended_articles_right-block', false, false);
 
 ?>
 

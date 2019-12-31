@@ -5403,11 +5403,11 @@ acf_add_local_field_group(array(
 ));
 
 acf_add_local_field_group(array(
-	'key' => 'group_5dc58f3cd8646',
+	'key' => 'group_5e0ae3916b0c9',
 	'title' => 'Recommended Articles Right Side Block',
 	'fields' => array(
 		array(
-			'key' => 'field_5dc8c5dd7dccf',
+			'key' => 'field_5e0ae3918851b',
 			'label' => 'Body Text',
 			'name' => 'body_text-rec-read-block',
 			'type' => 'wysiwyg',
@@ -5426,7 +5426,7 @@ acf_add_local_field_group(array(
 			'delay' => 0,
 		),
 		array(
-			'key' => 'field_5dc58f3ce7359',
+			'key' => 'field_5e0ae39188526',
 			'label' => 'Recommended Articles Text',
 			'name' => 'recommended_articles_right-header',
 			'type' => 'text',
@@ -5463,6 +5463,70 @@ acf_add_local_field_group(array(
 	'active' => true,
 	'description' => '',
 ));
+
+// acf_add_local_field_group(array(
+// 	'key' => 'group_5dc58f3cd8646',
+// 	'title' => 'Recommended Articles Right Side Block - OLD and inactive',
+// 	'fields' => array(
+// 		array(
+// 			'key' => 'field_5dc8c5dd7dccf',
+// 			'label' => 'Body Text',
+// 			'name' => 'body_text-rec-read-block',
+// 			'type' => 'wysiwyg',
+// 			'instructions' => '',
+// 			'required' => 0,
+// 			'conditional_logic' => 0,
+// 			'wrapper' => array(
+// 				'width' => '',
+// 				'class' => '',
+// 				'id' => '',
+// 			),
+// 			'default_value' => '',
+// 			'tabs' => 'all',
+// 			'toolbar' => 'full',
+// 			'media_upload' => 0,
+// 			'delay' => 0,
+// 		),
+// 		array(
+// 			'key' => 'field_5dc58f3ce7359',
+// 			'label' => 'Recommended Articles Text 1',
+// 			'name' => 'recommended_articles_right-header',
+// 			'type' => 'text',
+// 			'instructions' => '',
+// 			'required' => 0,
+// 			'conditional_logic' => 0,
+// 			'wrapper' => array(
+// 				'width' => '',
+// 				'class' => '',
+// 				'id' => '',
+// 			),
+// 			'default_value' => 'Top Reads',
+// 			'placeholder' => 'Top Reads',
+// 			'prepend' => '',
+// 			'append' => '',
+// 			'maxlength' => '',
+// 		),
+// 	),
+// 	'location' => array(
+// 		array(
+// 			array(
+// 				'param' => 'block',
+// 				'operator' => '==',
+// 				'value' => 'acf/recommended-articles-right',
+// 			),
+// 		),
+// 	),
+// 	'menu_order' => 0,
+// 	'position' => 'normal',
+// 	'style' => 'default',
+// 	'label_placement' => 'top',
+// 	'instruction_placement' => 'label',
+// 	'hide_on_screen' => '',
+// 	'active' => false,
+// 	'description' => '',
+// ));
+
+
 
 acf_add_local_field_group(array(
 	'key' => 'group_54b15bd1234d8',
