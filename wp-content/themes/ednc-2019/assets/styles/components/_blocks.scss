@@ -250,17 +250,29 @@
   }
 }
 
-.body-text--content {
-  width: 60%;
-  display: inline-block;
-}
-.editor-picks {
-  width: 36%;
-  display: inline-block;
-  margin-left: 4%;
+.recommended-reading-right-block {
+  border: 1px solid blue;
 }
 
-.recommended-blocks-right {
+
+.pulloutcontent{
+  float:right;
+  clear:both;
+  /* This can be a set width or percent, if you want a pullout that floats left or right or full full width */
+  width: 30%;
+  /* Add padding as you see fit */
+  padding: 20px 20px;
+}
+
+.pulloutContainer:before {
+  content: '' ;
+  display:block;
+  float: right;
+  /* The height is essentially a "margin-top" to push the pullout Container down page. */
+  height: 80px;
+}
+
+#recommended-article-right {
   // display: flex;
   // flex-direction: column;
   // border: 1px solid blue;
@@ -272,14 +284,14 @@
   }
 }
 
-.rec-read-right-block h4 {
+.pulloutcontent h4 {
   font-size: 16px;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
 
 
-.recommended-blocks-right h4.header {
+.pulloutcontent h4.header {
     font-weight: 600;
     padding: 10px 0px;
     border-top: 2px solid rgba(0, 0, 0, 0.84);

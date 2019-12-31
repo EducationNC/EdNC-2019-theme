@@ -213,6 +213,21 @@
     margin-left: 15px;
     margin-right: 15px;
   }
+  .pulloutContainer:before {
+    content: '' ;
+    display:block;
+    float: none;
+    /* The height is essentially a "margin-top" to push the pullout Container down page. */
+    height: auto;
+  }
+  .pulloutcontent {
+    float:none;
+    clear:both;
+    /* This can be a set width or percent, if you want a pullout that floats left or right or full full width */
+    width: 100%;
+    /* Add padding as you see fit */
+    padding: 20px 0px;
+  }
   .editors-content-box .header {
     width: 100%;
     // display: inline-block;
@@ -374,6 +389,28 @@
   }
   .content-box-container-social #ctf .ctf-item {
     width: 100%;
+  }
+  #ctf #ctf-more {
+    width: 100%;
+  }
+  #ctf #ctf-more:hover {
+      display: block;
+      border: 1px solid black;
+      background: #fff;
+      color: $text;
+      width: 100%;
+      margin: 0 auto;
+      padding: 12px 40px;
+      font-family: Lato;
+      position: relative;
+      text-align: center;
+      box-sizing: border-box;
+      outline: none;
+      -moz-border-radius: 0px;
+      -webkit-border-radius: 0px;
+      border-radius: 0px;
+      text-decoration: none;
+      transition: all 0.2s;
   }
 
   // .article-3, .spotlight-block-4, .spotlight-block-7:nth-child(n+4),
