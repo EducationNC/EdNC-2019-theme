@@ -23,7 +23,7 @@ $rec_reader_header = get_field( 'recommended_articles_right-header' );
       <h4 class="header"> <?php echo $rec_reader_header ?> </h4>
       <?php
       $args = array(
-           'post_html' => '<div style="font-family:Lato; font-weight:500;">{thumb} <a href="{url}">{text_title}</a></div><hr>',
+           'post_html' => '<div style="font-family:Lato; font-weight:500; line-height: 1.5px;">{thumb} <a href="{url}">{text_title}</a></div><hr>',
            'limit' => 4,
            'wpp_start' => '<div>',
            'wpp_end' => '</div>'
