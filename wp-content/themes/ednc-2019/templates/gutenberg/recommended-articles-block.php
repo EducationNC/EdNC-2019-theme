@@ -28,7 +28,7 @@ $query = new WP_Query(array(
     <div class="recommended-blocks">
       <?php if ($query->have_posts()) : while ($query->have_posts()) : $query->the_post();
 
-      $featured_image = Media\get_featured_image('medium');
+      $featured_image = Media\get_featured_image('featured-four-block');
       $column = wp_get_post_terms(get_the_id(), 'column');
       if ($column) {
         $post_type = $column[0]->name;
