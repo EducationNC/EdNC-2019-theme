@@ -11,7 +11,7 @@
  use Roots\Sage\Extras;
  use Roots\Sage\Media;
 
-$rec_reader_header = get_field( 'header-rec-reading' );
+$rec_reader_header = get_field( 'header-rec-block' );
 $ids = get_field('recommended_articles_block', false, false);
 
 $query = new WP_Query(array(
@@ -24,7 +24,7 @@ $query = new WP_Query(array(
 
 <?php echo '<div class="container-full">'; ?>
   <div class="row">
-    <h3 class="rd no-span"><?php the_field('recommended_articles_header', 'option'); ?></h3>
+    <h3 class="rd no-span"><?php echo $rec_reader_header; ?></h3>
     <div class="recommended-blocks">
       <?php if ($query->have_posts()) : while ($query->have_posts()) : $query->the_post();
 

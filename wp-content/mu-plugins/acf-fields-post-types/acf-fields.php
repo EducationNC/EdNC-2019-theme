@@ -5382,6 +5382,25 @@ acf_add_local_field_group(array(
 			'max' => 3,
 			'return_format' => 'object',
 		),
+		array(
+			'key' => 'field_5e0d18035dc19',
+			'label' => 'Header',
+			'name' => 'header-rec-block',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => 'Related reading',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
 	),
 	'location' => array(
 		array(
