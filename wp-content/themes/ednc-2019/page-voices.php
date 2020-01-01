@@ -16,7 +16,7 @@
             <?php
              $args = array(
                'post_type' => 'bio',
-               'post__in' => array(1647, 1663, 13081, 26641, 32468, 26684, 46947, 41796, 52642, 49249, 65207),   // Mebane, Alex, Nation, Liz, Nancy, Laura37074, , Molly, Caroline, Analisa, Yasmin, Robert, Rupen
+               'post__in' => array(1647, 1663, 13081, 26641, 32468, 26684, 41796, 49249, 65207, 91561, 91283),   // Mebane, Alex, Nation, Liz, Nancy, Molly, Analisa, Robert, Rupen, Carol, Taylor
                'posts_per_page' => -1,
                'orderby' => 'post__in',
                'order' => 'ASC'
@@ -267,7 +267,7 @@
                   </div>
                </div>
             </div>
-         <div role="tabpanel" class="tab-pane active" id="y2019">
+         <div role="tabpanel" class="tab-pane" id="y2019">
             <div class="col-md-12">
               <div class="contributors">
                  <?php
