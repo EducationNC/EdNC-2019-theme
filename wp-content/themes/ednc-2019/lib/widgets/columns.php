@@ -10,8 +10,8 @@ class EdNC_Columns extends \WP_Widget {
 	public function __construct() {
     parent::__construct(
 			'ednc_columns', // Base ID
-			__( 'EdNC Columns', 'sage' ), // Name
-			array( 'description' => __( 'Displays grid of most recent post from each column', 'sage' ), ) // Args
+			__( 'Explore', 'sage' ), // Name
+			array( 'description' => __( 'Displays grid of most featured articles', 'sage' ), ) // Args
 		);
 	}
 
