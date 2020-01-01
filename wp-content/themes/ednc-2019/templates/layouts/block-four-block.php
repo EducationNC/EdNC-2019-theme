@@ -14,17 +14,18 @@ if ($post->post_type == 'post') {
 }
 
 $column = wp_get_post_terms(get_the_id(), 'column');
-if ($column) {
-  $post_type = $column[0]->name;
-}
-elseif ( has_term( 'perspectives', 'appearance' ) ) {
+
+if ( has_term( 'perspectives', 'appearance' ) ) {
   $post_type = "Perspective";
 }
-elseif ( has_term ( 'issues', 'appearance' ) ) {
-  $post_type = "Issues";
+elseif ( has_term ( 'news', 'appearance' ) ) {
+  $post_type = "News";
+}
+elseif ( has_term ( 'featured', 'appearance' ) ) {
+  $post_type = "Featured";
 }
 else {
-  $post_type = "News";
+  $post_type = "";
 }
 
 if ( function_exists( 'coauthors_posts_links' ) ) {
