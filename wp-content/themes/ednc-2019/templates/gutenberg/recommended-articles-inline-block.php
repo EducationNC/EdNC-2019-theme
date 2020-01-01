@@ -1,6 +1,6 @@
 <?php
  /**
-  * Recommended Articles Block
+  * Recommended Articles Block New
   *
   * @package      ClientName
   * @author       Bill Erickson
@@ -11,8 +11,8 @@
  use Roots\Sage\Extras;
  use Roots\Sage\Media;
 
-$rec_reader_header = get_field( 'header-rec-block' );
-$ids = get_field('recommended_articles_block', false, false);
+$rec_reader_header = get_field( 'related_articles_header' );
+$ids = get_field('recommended_articles_block_new', false, false);
 
 $query = new WP_Query(array(
 	'posts_per_page'	=> 3,

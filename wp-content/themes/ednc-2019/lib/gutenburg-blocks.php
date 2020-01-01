@@ -54,9 +54,9 @@ function be_register_blocks() {
 		'keywords'		=> array( 'center', 'quote', 'middle' )
 	));
 	acf_register_block( array(
-		'name'			=> 'recommended-articles-block',
+		'name'			=> 'recommended-articles-inline-block',
 		'title'			=> __( 'Recommended Articles Block', 'clientname' ),
-		'render_template'	=> 'templates/gutenberg/recommended-articles-block.php',
+		'render_template'	=> 'templates/gutenberg/recommended-articles-inline-block.php',
 		'category'		=> 'formatting',
 		'icon'			=> 'admin-users',
 		'mode'			=> 'preview',
@@ -79,33 +79,21 @@ function be_register_blocks() {
 	));
 	acf_register_block( array(
 		'name'			=> 'table-of-contents',
-		'title'			=> __( 'Table of Contents', 'client-name' ),
+		'title'			=> 'Table of Contents',
 		'description'		=> '',
 		'render_template'	=> 'templates/gutenberg/block-table-of-contents.php',
 		'category'		=> 'widgets',
 		'icon'			=> 'list-view',
 	));
 	acf_register_block( array(
-		'name'			=> 'recommended-articles-right',
-		'title'			=> __( 'Recommended Articles Right Side', 'client-name' ),
+		'name'			=> 'recommended-articles-float-right',
+		'title'			=> 'Recommended Articles Float Right',
 		'description'		=> '',
-		'render_template'	=> 'templates/gutenberg/recommended-articles-right.php',
+		'render_template'	=> 'templates/gutenberg/recommended-articles-float-right.php',
 		'category'		=> 'widgets',
 		'mode'			=> 'preview',
 		'icon'			=> 'list-view',
 	));
-	// acf_register_block( array(
-	// 	'name'			=> 'recommended-articles',
-	// 	'title'			=> __( 'Recommended Articles', 'client-name' ),
-	// 	'description'		=> '',
-	// 	'render_template'	=> 'templates/gutenberg/recommended-articles',
-	// 	'category'		=> 'widgets',
-	// 	'mode'			=> 'preview',
-	// 	'icon'			=> 'list-view',
-	// 	'supports' => array(
-	// 		'align' => array( 'left', 'right', 'center', 'wide', 'full' ),
-	// 	 ),
-	// ));
 	acf_register_block( array(
 		'name'			=> 'slider',
 		'title'			=> 'Slider',

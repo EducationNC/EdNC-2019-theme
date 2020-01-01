@@ -5354,13 +5354,32 @@ acf_add_local_field_group(array(
 ));
 
 acf_add_local_field_group(array(
-	'key' => 'group_5d54586c0ac62',
+	'key' => 'group_5e0d1d5cbae4d',
 	'title' => 'Recommended Articles Block',
 	'fields' => array(
 		array(
-			'key' => 'field_5d547ff8506ad',
-			'label' => 'Recommended Articles Block',
-			'name' => 'recommended_articles_block',
+			'key' => 'field_5e0d1d65d84fe',
+			'label' => 'Header',
+			'name' => 'related_articles_header',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => 'Related reading',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
+		array(
+			'key' => 'field_5e0d1d86d84ff',
+			'label' => 'Recommended Articles',
+			'name' => 'recommended_articles_block_new',
 			'type' => 'relationship',
 			'instructions' => '',
 			'required' => 0,
@@ -5382,32 +5401,13 @@ acf_add_local_field_group(array(
 			'max' => 3,
 			'return_format' => 'object',
 		),
-		array(
-			'key' => 'field_5e0d18035dc19',
-			'label' => 'Header',
-			'name' => 'header-rec-block',
-			'type' => 'text',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'default_value' => 'Related reading',
-			'placeholder' => '',
-			'prepend' => '',
-			'append' => '',
-			'maxlength' => '',
-		),
 	),
 	'location' => array(
 		array(
 			array(
 				'param' => 'block',
 				'operator' => '==',
-				'value' => 'acf/recommended-articles-block',
+				'value' => 'acf/recommended-articles-inline-block',
 			),
 		),
 	),
@@ -5421,14 +5421,15 @@ acf_add_local_field_group(array(
 	'description' => '',
 ));
 
+
 acf_add_local_field_group(array(
-	'key' => 'group_5e0ae3916b0c9',
-	'title' => 'Recommended Articles Right Side Block',
+	'key' => 'group_5e0d206d34669',
+	'title' => 'Recommended Articles Block (Float Right)',
 	'fields' => array(
 		array(
-			'key' => 'field_5e0ae3918851b',
+			'key' => 'field_5e0d209315908',
 			'label' => 'Body Text',
-			'name' => 'body_text-rec-read-block',
+			'name' => 'body_text_articles_block',
 			'type' => 'wysiwyg',
 			'instructions' => '',
 			'required' => 0,
@@ -5441,13 +5442,13 @@ acf_add_local_field_group(array(
 			'default_value' => '',
 			'tabs' => 'all',
 			'toolbar' => 'full',
-			'media_upload' => 0,
+			'media_upload' => 1,
 			'delay' => 0,
 		),
 		array(
-			'key' => 'field_5e0ae39188526',
-			'label' => 'Recommended Articles Text',
-			'name' => 'recommended_articles_right-header',
+			'key' => 'field_5e0d20ae15909',
+			'label' => 'Header Text',
+			'name' => 'header_text_articles_block',
 			'type' => 'text',
 			'instructions' => '',
 			'required' => 0,
@@ -5458,7 +5459,7 @@ acf_add_local_field_group(array(
 				'id' => '',
 			),
 			'default_value' => 'Top Reads',
-			'placeholder' => 'Top Reads',
+			'placeholder' => '',
 			'prepend' => '',
 			'append' => '',
 			'maxlength' => '',
@@ -5469,7 +5470,7 @@ acf_add_local_field_group(array(
 			array(
 				'param' => 'block',
 				'operator' => '==',
-				'value' => 'acf/recommended-articles-right',
+				'value' => 'acf/recommended-articles-float-right',
 			),
 		),
 	),
@@ -5483,67 +5484,7 @@ acf_add_local_field_group(array(
 	'description' => '',
 ));
 
-// acf_add_local_field_group(array(
-// 	'key' => 'group_5dc58f3cd8646',
-// 	'title' => 'Recommended Articles Right Side Block - OLD and inactive',
-// 	'fields' => array(
-// 		array(
-// 			'key' => 'field_5dc8c5dd7dccf',
-// 			'label' => 'Body Text',
-// 			'name' => 'body_text-rec-read-block',
-// 			'type' => 'wysiwyg',
-// 			'instructions' => '',
-// 			'required' => 0,
-// 			'conditional_logic' => 0,
-// 			'wrapper' => array(
-// 				'width' => '',
-// 				'class' => '',
-// 				'id' => '',
-// 			),
-// 			'default_value' => '',
-// 			'tabs' => 'all',
-// 			'toolbar' => 'full',
-// 			'media_upload' => 0,
-// 			'delay' => 0,
-// 		),
-// 		array(
-// 			'key' => 'field_5dc58f3ce7359',
-// 			'label' => 'Recommended Articles Text 1',
-// 			'name' => 'recommended_articles_right-header',
-// 			'type' => 'text',
-// 			'instructions' => '',
-// 			'required' => 0,
-// 			'conditional_logic' => 0,
-// 			'wrapper' => array(
-// 				'width' => '',
-// 				'class' => '',
-// 				'id' => '',
-// 			),
-// 			'default_value' => 'Top Reads',
-// 			'placeholder' => 'Top Reads',
-// 			'prepend' => '',
-// 			'append' => '',
-// 			'maxlength' => '',
-// 		),
-// 	),
-// 	'location' => array(
-// 		array(
-// 			array(
-// 				'param' => 'block',
-// 				'operator' => '==',
-// 				'value' => 'acf/recommended-articles-right',
-// 			),
-// 		),
-// 	),
-// 	'menu_order' => 0,
-// 	'position' => 'normal',
-// 	'style' => 'default',
-// 	'label_placement' => 'top',
-// 	'instruction_placement' => 'label',
-// 	'hide_on_screen' => '',
-// 	'active' => false,
-// 	'description' => '',
-// ));
+
 
 
 
