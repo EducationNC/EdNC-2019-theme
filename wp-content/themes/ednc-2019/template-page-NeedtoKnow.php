@@ -36,7 +36,7 @@ while (have_posts()) : the_post(); ?>
 		              $featured_image = Media\get_featured_image('featured-four-block');
 		            	?>
 		                <div>
-											<a class="" href="<?php the_permalink(); ?>">
+											<a class="" target="_blank" href="<?php the_permalink(); ?>">
 			                  <div class="lead-image">
 			                    <img src="<?php echo $featured_image; ?>" alt="" title="" />
 			                  </div>
@@ -60,7 +60,7 @@ while (have_posts()) : the_post(); ?>
 		              $featured_image = Media\get_featured_image('featured-four-block');
 		              ?>
 		                <div>
-		                  <a class="" href="<?php the_permalink(); ?>">
+		                  <a class="" target="_blank" href="<?php the_permalink(); ?>">
 		                    <div class="lead-image">
 		                      <img src="<?php echo $featured_image; ?>" alt="" title="" />
 		                    </div>
