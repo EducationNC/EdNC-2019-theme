@@ -77,14 +77,14 @@ while (have_posts()) : the_post(); ?>
 		            <?php
 		            $top_fb_post = get_field('top_fb_post');
 		            if( $top_fb_post ): ?>
-		                <a class="" href="<?php echo esc_url( $top_fb_post ); ?>"><p><?php the_field('top_fb_text'); ?></p></a>
+		                <a class="" target="_blank" href="<?php echo esc_url( $top_fb_post ); ?>"><p><?php the_field('top_fb_text'); ?></p></a>
 		            <?php endif; ?>
 		          </div>
 							<div class="item tw-share">
 		            <?php
 		            $top_tweet_link = get_field('top_tweet_link');
 		            if( $top_tweet_link ): ?>
-		                <a class="" href="<?php echo esc_url( $top_tweet_link ); ?>"><p><?php the_field('top_tweet_text'); ?></p></a>
+		                <a class="" target="_blank" href="<?php echo esc_url( $top_tweet_link ); ?>"><p><?php the_field('top_tweet_text'); ?></p></a>
 		            <?php endif; ?>
 		          </div>
 							<!-- <div class="item reach">
