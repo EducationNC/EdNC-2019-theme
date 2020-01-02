@@ -167,17 +167,6 @@ $post_object = get_field('featured_article_category_pages', $term);
             </div>
           </div>
 
-          <!-- <div class="col-md-3 col-lg-push-1 sidebar xs">
-            <?php
-            /*
-            get_template_part('templates/components/sidebar', 'category');
-
-            if (is_tax('map-column')) {
-              echo '<a href="/maps-archive" class="btn btn-default">Click here for an archive of all maps</a>';
-            }
-            */
-            ?>
-          </div> -->
         </div>
       </div>
     </div>

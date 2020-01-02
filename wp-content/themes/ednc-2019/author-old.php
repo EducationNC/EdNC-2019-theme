@@ -7,7 +7,7 @@ use Roots\Sage\Media;
 <section id="author" class="block green">
   <div class="site-wrapper">
     <div class="container">
-
+      
       <div class="row">
          <div class="col-md-12 header-big">
            <?php

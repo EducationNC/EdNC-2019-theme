@@ -675,8 +675,10 @@ h3.rd.column {
   margin-top: 10px;
   display: grid;
   width: 100%;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  // grid-template-columns:  repeat(auto-fit, minmax(520px, 3fr));
+  // grid-template-rows:   repeat(auto-fit, minmax(520px, 12fr));
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(12, 1fr);
   grid-gap: 40px;
   grid-template-areas:
       "notes notes fb-share"
@@ -692,6 +694,7 @@ h3.rd.column {
       "news perspective reach"
       "news perspective reach"
 }
+
 
 .news {
   grid-area: news;
