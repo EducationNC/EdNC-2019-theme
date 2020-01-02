@@ -76,19 +76,21 @@ while (have_posts()) : the_post(); ?>
 							<?php
 							$top_fb_post = get_field('top_fb_post');
 							if( $top_fb_post ): ?>
-		              <a class="" target="_blank" href="<?php echo esc_url( $top_fb_post ); ?>">
-										<div class="item fb-share">
-											<p><?php the_field('top_fb_text'); ?></p>
-		          			</div>
-									</a>
+              <a class="item fb-share" target="_blank" href="<?php echo esc_url( $top_fb_post ); ?>">
+								<div class="item fb-share">
+									<p><?php the_field('top_fb_text'); ?></p>
+          			</div>
+							</a>
 							<?php endif; ?>
-							<div class="item tw-share">
-		            <?php
-		            $top_tweet_link = get_field('top_tweet_link');
-		            if( $top_tweet_link ): ?>
-		                <a class="" target="_blank" href="<?php echo esc_url( $top_tweet_link ); ?>"><p><?php the_field('top_tweet_text'); ?></p></a>
-		            <?php endif; ?>
-		          </div>
+							<?php
+							$top_tweet_link = get_field('top_tweet_link');
+							if( $top_tweet_link ): ?>
+							<a class="item tw-share" target="_blank" href="<?php echo esc_url( $top_tweet_link ); ?>">
+								<div class="item tw-share">
+									<p><?php the_field('top_tweet_text'); ?></p>
+							 	</div>
+							</a>
+							<?php endif; ?>
 							<!-- <div class="item reach">
 								<img class="reach-btn"src="<?php //echo Assets\asset_path('images/Need-reach-button.png'); ?>" alt="Reach Button" height="50" width="">
 							</div> -->
