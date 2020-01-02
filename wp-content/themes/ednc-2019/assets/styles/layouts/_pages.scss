@@ -678,20 +678,15 @@ h3.rd.column {
   // grid-template-columns:  repeat(auto-fit, minmax(520px, 3fr));
   // grid-template-rows:   repeat(auto-fit, minmax(520px, 12fr));
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(12, 1fr);
+  grid-template-rows: repeat(7, 1fr);
   grid-gap: 40px;
   grid-template-areas:
-      "notes notes fb-share"
-      "notes notes fb-share"
-      "notes notes fb-share"
-      "notes notes fb-share"
-      "news perspective fb-share"
-      "news perspective tw-share"
-      "news perspective tw-share"
-      "news perspective tw-share"
-      "news perspective tw-share"
-      "news perspective tw-share"
-      "news perspective reach"
+      "notes notes fb"
+      "notes notes fb"
+      "notes notes fb"
+      "news perspective tw"
+      "news perspective tw"
+      "news perspective tw"
       "news perspective reach"
 }
 
@@ -708,8 +703,16 @@ h3.rd.column {
   grid-area: perspective;
 }
 
+.fb {
+  grid-area: fb;
+}
+
+
+.tw {
+  grid-area: tw;
+}
+
 .fb-share {
-  grid-area: fb-share;
   border: 60px solid orange;
   border-image: url("../images/FBshareBox382by226.png")  115 120 110 120 stretch stretch;
   // border-image: url("https://mdn.mozillademos.org/files/6017/border-image-6.svg");
@@ -720,7 +723,6 @@ h3.rd.column {
 }
 
 .tw-share {
-  grid-area: tw-share;
   border: 60px solid orange;
   border-image: url("../images/TwittershareBox382by226.png")  115 120 110 120 stretch stretch;
   // border-image: url("https://mdn.mozillademos.org/files/6017/border-image-6.svg");

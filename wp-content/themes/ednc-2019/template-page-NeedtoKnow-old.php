@@ -82,17 +82,18 @@ while (have_posts()) : the_post(); ?>
           			</div>
 							</a>
 							<?php endif; ?>
-
 							<?php
 							$top_tweet_link = get_field('top_tweet_link');
 							if( $top_tweet_link ): ?>
 							<a class="item tw" target="_blank" href="<?php echo esc_url( $top_tweet_link ); ?>">
 								<div class="tw-share">
 									<p><?php the_field('top_tweet_text'); ?></p>
-								</div>
+							 	</div>
 							</a>
 							<?php endif; ?>
-
+							<!-- <div class="item reach">
+								<img class="reach-btn"src="<?php //echo Assets\asset_path('images/Need-reach-button.png'); ?>" alt="Reach Button" height="50" width="">
+							</div> -->
 
 							<?php
 							// Get latest reach question post
@@ -112,6 +113,8 @@ while (have_posts()) : the_post(); ?>
 							}
 							wp_reset_postdata();
 							?>
+
+
 
 						</div>
 					</div>
