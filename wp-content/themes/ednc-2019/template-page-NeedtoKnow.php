@@ -73,13 +73,15 @@ while (have_posts()) : the_post(); ?>
 		                <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
 		            <?php endif; ?>
 		          </div>
-							<div class="item fb-share">
-		            <?php
-		            $top_fb_post = get_field('top_fb_post');
-		            if( $top_fb_post ): ?>
-		                <a class="" target="_blank" href="<?php echo esc_url( $top_fb_post ); ?>"><p><?php the_field('top_fb_text'); ?></p></a>
-		            <?php endif; ?>
-		          </div>
+							<?php
+							$top_fb_post = get_field('top_fb_post');
+							if( $top_fb_post ): ?>
+		              <a class="" target="_blank" href="<?php echo esc_url( $top_fb_post ); ?>">
+										<div class="item fb-share">
+											<p><?php the_field('top_fb_text'); ?></p>
+		          			</div>
+									</a>
+							<?php endif; ?>
 							<div class="item tw-share">
 		            <?php
 		            $top_tweet_link = get_field('top_tweet_link');
