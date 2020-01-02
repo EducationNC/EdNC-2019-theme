@@ -32,6 +32,7 @@ $news_image = get_field('news-image');
     $args = array(
       'posts_per_page' => 3,
       'post_type' => array('post', 'map', 'ednews', 'edtalk', 'flash-cards'),
+      'paged' => get_query_var('paged'),
       'tax_query' => array(
         'relation' => 'AND',
         array(
@@ -93,7 +94,7 @@ $news_image = get_field('news-image');
     </div>
 
     <?php
-    $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+    $paged1 = get_query_var('paged') ? get_query_var('paged') : 1;
     $args = array(
       'post_type' => array('post', 'map', 'ednews', 'edtalk', 'flash-cards'),
       'tax_query' => array(
@@ -110,7 +111,7 @@ $news_image = get_field('news-image');
           'operator' => 'NOT IN'
         )
       ),
-      'paged' => $paged,
+      'paged' => $paged1,
       'post__not_in' => $firstPosts,
       'meta_key' => 'updated_date',
       'orderby' => 'meta_value_num',

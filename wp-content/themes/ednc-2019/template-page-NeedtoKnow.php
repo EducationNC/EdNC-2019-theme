@@ -26,7 +26,7 @@ while (have_posts()) : the_post(); ?>
 								<?php the_field('notes'); ?>
 							</div>
 							<div class="item news">
-		            <h3>Top News Article</h3>
+		            <h3>Top Article</h3>
 		            <?php
 		            $post_object = get_field('top_news_article');
 		            if( $post_object ):
@@ -90,27 +90,27 @@ while (have_posts()) : the_post(); ?>
 							<!-- <div class="item reach">
 								<img class="reach-btn"src="<?php //echo Assets\asset_path('images/Need-reach-button.png'); ?>" alt="Reach Button" height="50" width="">
 							</div> -->
-							
+
 							<?php
 							// Get latest reach question post
 							$rq_query = new WP_Query('post_type=reach-question&posts_per_page=1');
 							if ($rq_query->have_posts()) {
 							    while ($rq_query->have_posts()) {
 							        $rq_query->the_post(); ?>
-							        
+
 	    								<div class="item reach">
 											<a href="<?php the_permalink() ?>">
 												<img class="reach-btn" src="<?php echo Assets\asset_path('images/ReachButton400by50.png'); ?>" alt="Reach Button" height="" width="">
 											</a>
 										</div>
-								        
+
 							        <?php
 							    }
 							}
 							wp_reset_postdata();
 							?>
-							
-							
+
+
 
 						</div>
 					</div>

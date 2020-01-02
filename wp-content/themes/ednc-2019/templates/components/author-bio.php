@@ -70,17 +70,17 @@ $bio = new WP_Query($args);
            <?php setup_postdata($post); ?>
            <?php $featured_image = Media\get_featured_image('featured-four-block');
            $column = wp_get_post_terms(get_the_id(), 'column');
-           if ($column) {
-             $post_type = $column[0]->name;
+           if ( has_term( 'perspectives', 'appearance' ) ) {
+             $post_type = "Perspective";
            }
-           elseif ( has_term( 'press-release', 'appearance' ) ) {
-             $post_type = "Press Release";
+           elseif ( has_term ( 'news', 'appearance' ) ) {
+             $post_type = "News";
            }
-           elseif ( has_term ( 'issues', 'appearance' ) ) {
-             $post_type = "Issues";
+           elseif ( has_term ( 'featured', 'appearance' ) ) {
+             $post_type = "Featured";
            }
            else {
-             $post_type = "News";
+             $post_type = "";
            }
            ?>
            <div class="block-recommended-bio">
