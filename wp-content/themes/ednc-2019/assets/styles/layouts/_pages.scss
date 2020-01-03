@@ -282,6 +282,11 @@ color: white;
   @include content-box(-20px);
   justify-content: flex-start;
   // border: 2px solid red;
+  
+  .ednews {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }
 
 .border {
