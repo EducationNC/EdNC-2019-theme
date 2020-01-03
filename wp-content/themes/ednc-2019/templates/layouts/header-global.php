@@ -22,18 +22,18 @@ use Roots\Sage\Nav;
         </a>
 
         <?php $menus = get_nav_menu_locations(); ?>
-        <!-- <?php //if ($menu = wp_get_nav_menu_items($menus['left_navigation'])): foreach ($menu as $item): ?>
-          <a href="<?php //echo $item->url ?>" class="global-nav__link <?php //echo implode(" ", $item->classes) ?>"><?php //echo $item->title ?></a>
-        <?php//endforeach; endif; ?> -->
+        <?php if ($menu = wp_get_nav_menu_items($menus['left_navigation'])): foreach ($menu as $item): ?>
+          <a href="<?php echo $item->url ?>" class="global-nav__link <?php echo implode(" ", $item->classes) ?>"><?php echo $item->title ?></a>
+        <?php endforeach; endif; ?>
 
         <div class="global-nav__hamburger">
 
          <?php
-         // wp_nav_menu(array(
-         //   'theme_location' => 'primary_navigation',
-         //    'menu_class' => 'global-nav__hamburger__nav',
-         //    'depth' => 2
-         // ));
+         wp_nav_menu(array(
+           'theme_location' => 'primary_navigation',
+            'menu_class' => 'global-nav__hamburger__nav',
+            'depth' => 2
+         ));
          ?>
 
         </div>
