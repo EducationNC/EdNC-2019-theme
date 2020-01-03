@@ -99,7 +99,7 @@ use Roots\Sage\Nav;
           </div>
 
           <div class="global-nav__connect-menu__txt-msg">
-            <a href="#">Sign up for alerts by text&nbsp;message</a>
+            <a href="/reach-nc-voices/">Sign up for alerts by text&nbsp;message</a>
           </div>
 
         </div>
