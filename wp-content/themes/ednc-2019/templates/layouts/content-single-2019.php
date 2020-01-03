@@ -23,7 +23,7 @@ while (have_posts()) : the_post();
   $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
   $featured_image_src = wp_get_attachment_image_src($image_id, 'Contained');
   $featured_image_hero = wp_get_attachment_image_src($image_id, 'Hero');
-  
+
   $full_width_hero_img = get_field('full_width_hero_image');
 
   $thumb = get_post_thumbnail_id();
