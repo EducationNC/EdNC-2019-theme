@@ -87,7 +87,7 @@ $featured_ids[] = $featured_article[0]->ID;
         <header>
           <h2 class="header section-title">Editor's Picks</h2>
         </header>
-        <article class="post">
+        <article class="post carousel-popular__featured-article">
             <div class="lead-image">
 
               <?php

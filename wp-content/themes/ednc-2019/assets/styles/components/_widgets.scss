@@ -472,7 +472,9 @@ button.btn {
   background-color: $dark-blue;
 }
 
-
+.carousel-popular__featured-article {
+  max-width: 100%; 
+}
 
 
 /****** FEATURED AND RECENT *********/
@@ -480,6 +482,10 @@ button.btn {
 img.SL-featured {
   object-fit: cover;
   width: 100%;
+}
+
+#carousel-latest > .post {
+  max-width: 100%; 
 }
 
 #carousel-latest > article > p.small {
