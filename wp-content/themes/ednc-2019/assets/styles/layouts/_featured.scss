@@ -8,15 +8,15 @@
   clear: both;
 }
 
-body::before {
-  background: #ECEDE8;
-  content: '';
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 1;
-}
+// body::before {
+//   background: #ECEDE8;
+//   content: '';
+//   left: 0;
+//   position: absolute;
+//   right: 0;
+//   top: 0;
+//   z-index: 1;
+// }
 
 .home-page-wrapper {
   margin: 0 auto;
