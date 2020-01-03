@@ -678,13 +678,11 @@ h3.rd.column {
   // grid-template-columns:  repeat(auto-fit, minmax(520px, 3fr));
   // grid-template-rows:   repeat(auto-fit, minmax(520px, 12fr));
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(7, 1fr);
+  grid-template-rows: repeat(5, 1fr);
   grid-gap: 40px;
   grid-template-areas:
       "notes notes fb"
       "notes notes fb"
-      "notes notes fb"
-      "news perspective tw"
       "news perspective tw"
       "news perspective tw"
       "news perspective reach"
