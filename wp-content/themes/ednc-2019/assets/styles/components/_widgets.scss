@@ -90,6 +90,10 @@ img.favicon {
   .content-block-3,
   .content-block-4 {
     width: 100%;
+    
+    > .flex {
+      display: block !important; 
+    }
   }
 }
 
