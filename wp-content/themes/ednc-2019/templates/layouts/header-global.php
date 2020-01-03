@@ -22,18 +22,18 @@ use Roots\Sage\Nav;
         </a>
 
         <?php $menus = get_nav_menu_locations(); ?>
-        <?php if ($menu = wp_get_nav_menu_items($menus['left_navigation'])): foreach ($menu as $item): ?>
-          <a href="<?php echo $item->url ?>" class="global-nav__link <?php echo implode(" ", $item->classes) ?>"><?php echo $item->title ?></a>
-        <?php endforeach; endif; ?>
+        <!-- <?php //if ($menu = wp_get_nav_menu_items($menus['left_navigation'])): foreach ($menu as $item): ?>
+          <a href="<?php //echo $item->url ?>" class="global-nav__link <?php //echo implode(" ", $item->classes) ?>"><?php //echo $item->title ?></a>
+        <?php//endforeach; endif; ?> -->
 
         <div class="global-nav__hamburger">
 
          <?php
-         wp_nav_menu(array(
-           'theme_location' => 'primary_navigation',
-            'menu_class' => 'global-nav__hamburger__nav',
-            'depth' => 2
-         ));
+         // wp_nav_menu(array(
+         //   'theme_location' => 'primary_navigation',
+         //    'menu_class' => 'global-nav__hamburger__nav',
+         //    'depth' => 2
+         // ));
          ?>
 
         </div>
@@ -77,7 +77,17 @@ use Roots\Sage\Nav;
 
             <form action="https://ednc.us9.list-manage.com/subscribe/post?u=8ba11e9b3c5e00a64382db633&amp;id=2696365d99" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
               <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="your@email.com" required>
-              <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+              <div class="mc-field-group input-group">
+                <ul>
+                  <li><input type="checkbox" value="1" name="group[13145][1]" id="mce-group[13145]-13145-0" checked=checked><label for="mce-group[13145]-13145-0">Daily digest</label></li>
+                  <li><input type="checkbox" value="2" name="group[13145][2]" id="mce-group[13145]-13145-1" checked=checked><label for="mce-group[13145]-13145-1">Weekly wrapup</label></li>
+                  <li><input type="checkbox" value="64" name="group[13145][64]" id="mce-group[13145]-13145-2" checked=checked><label for="mce-group[13145]-13145-2">Breaking news alerts</label></li>
+                  <li><input type="checkbox" value="2097152" name="group[13145][2097152]" id="mce-group[13145]-13145-3" checked=checked><label for="mce-group[13145]-13145-3">Reach roundup</label></li>
+                  <li><input type="checkbox" value="4194304" name="group[13145][4194304]" id="mce-group[13145]-13145-4" checked=checked><label for="mce-group[13145]-13145-4">Friday@Five</label></li>
+                  <li><input type="checkbox" value="8388608" name="group[13145][8388608]" id="mce-group[13145]-13145-5" checked=checked><label for="mce-group[13145]-13145-5">Awake 58</label></li>
+                  <li><input type="checkbox" value="134217728" name="group[13145][134217728]" id="mce-group[13145]-13145-8" checked=checked><label for="mce-group[13145]-13145-8">Early Bird</label></li>
+                </ul>
+              </div>
               <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_8ba11e9b3c5e00a64382db633_2696365d99" tabindex="-1" value=""></div>
               <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
             </form>
@@ -151,7 +161,6 @@ use Roots\Sage\Nav;
             <li><input type="checkbox" value="134217728" name="group[13145][134217728]" id="mce-group[13145]-13145-8" checked=checked><label for="mce-group[13145]-13145-8">Early Bird</label></li>
           </ul>
         </div>
-        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
         <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_8ba11e9b3c5e00a64382db633_2696365d99" tabindex="-1" value=""></div>
         <input type="submit" value="SUBMIT" name="subscribe" id="mc-embedded-subscribe" class="button">
       </form>
