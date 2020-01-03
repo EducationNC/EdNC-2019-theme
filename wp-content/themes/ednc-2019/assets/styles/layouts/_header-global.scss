@@ -485,16 +485,16 @@ $nav-bg: #EDEFF2;
 
 // SPACER
 
-// .global-nav-spacer {
-//     height: 100px;
-//
-//     @media (min-width: $screen-md-min) {
-//         height: 145px;
-//     }
-// }
-//
-// // In iframe
-//
+.global-nav-spacer {
+    height: 100px;
+
+    @media (min-width: $screen-md-min) {
+        height: 145px;
+    }
+}
+
+// In iframe
+
 // .in-iframe {
 //     .global-nav-spacer, .global-nav, .global-nav-mobile {
 //         display: none;
