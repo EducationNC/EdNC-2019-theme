@@ -85,6 +85,18 @@ img.favicon {
   @include block-3(20px);
 }
 
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+  // IE 11 hacks
+  .content-block-3,
+  .content-block-4 {
+    width: 100%;
+    
+    > .flex {
+      display: block !important; 
+    }
+  }
+}
+
 .content-box-container {
   @include content-box(-20px);
 }
