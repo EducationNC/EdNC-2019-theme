@@ -243,6 +243,17 @@
         "perspective"
         "reach"
   }
+  .one-sign-up {
+    width: 100%;
+    // flex-direction: column;
+    // img {
+    //   width: 80%;
+    //   margin: 0 auto;
+    // }
+    // .section {
+    //   display: block;
+    // }
+  }
 
 
 
@@ -467,9 +478,9 @@
     margin-bottom: 0;
     padding-top: 10px;
   }
-  .one-sign-up {
-    width: 80%;
-  }
+  // .one-sign-up {
+  //   width: 80%;
+  // }
   .links {
     flex-basis: calc(40% - 40px);
   }

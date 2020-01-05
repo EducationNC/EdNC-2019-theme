@@ -282,7 +282,7 @@ color: white;
   @include content-box(-20px);
   justify-content: flex-start;
   // border: 2px solid red;
-  
+
   .ednews {
     padding-top: 0;
     padding-bottom: 0;
@@ -738,8 +738,4 @@ h3.rd.column {
 .reach {
   grid-area: reach;
   margin: 0 auto;
-}
-
-.reach-btn {
-
 }
