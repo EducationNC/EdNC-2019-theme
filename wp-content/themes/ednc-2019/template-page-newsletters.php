@@ -24,7 +24,7 @@ use Roots\Sage\Assets;
 				<h3><?php the_field('newsletter_heading'); ?></h3>
 				<hr>
 				<div class="one-sign-up">
-					<img class="logo" src="http://edncstaging.wpengine.com/wp-content/uploads/2020/01/EdNC-logo-1.png" alt="EdNC" height="70" width="70">
+					<img class="logo" src="http://edncstaging.wpengine.com/wp-content/uploads/2020/01/EdNC-logo-1.png" alt="EdNC">
 					<div class="section">
 						<div class="text">
 							<h5>EdNC</h5>

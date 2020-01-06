@@ -82,8 +82,9 @@ a.newsletter-link {
   flex-direction: row;
   justify-content: space-between;
   // align-items: stretch;
-  img {
+  img.logo {
     margin-right: 10px;
+    width: 20%;
   }
   .section{
     img {
