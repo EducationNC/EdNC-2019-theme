@@ -17,7 +17,7 @@ if ($whichday == 1) {
 
 $args = array(
   'post_type' => array('post', 'map'),
-  'posts_per_page' => -1,
+  'posts_per_page' => 50,
   'tax_query' => array(
     array(
       'taxonomy' => 'appearance',
@@ -26,18 +26,13 @@ $args = array(
       'operator' => 'NOT IN'
     )
   ),
-  'meta_query' => array(
+  'date_query' => array(
     array(
-      'key' => 'updated_date',
-      'value' => array(
-        strtotime("{$yesterday['year']}-{$yesterday['mon']}-{$yesterday['mday']} 7:59:59"),
-        strtotime("{$today['year']}-{$today['mon']}-{$today['mday']} 12:00:00")
-      ),
-      'compare' => 'BETWEEN'
-    )
+      'after' => "{$yesterday['year']}-{$yesterday['mon']}-{$yesterday['mday']} 7:59:59",
+      'before'=> "{$today['year']}-{$today['mon']}-{$today['mday']} 12:00:00"
+    ),
+    'inclusive' => true,
   ),
-  'meta_key' => 'updated_date',
-  'orderby' => 'meta_value_num',
   'order' => 'DESC'
 );
 $recent = new WP_Query($args);
