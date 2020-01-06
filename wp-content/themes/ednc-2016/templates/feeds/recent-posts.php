@@ -3,6 +3,8 @@
 * Posts since last email RSS2 Template
 */
 
+use Roots\Sage\Media;
+
 // check day of week
 $whichday = current_time('w');
 // get today's date
@@ -18,14 +20,20 @@ if ($whichday == 1) {
 $args = array(
   'post_type' => array('post', 'map'),
   'posts_per_page' => -1,
+  // 'tax_query' => array(
+  //   array(
+  //     'taxonomy' => 'appearance',
+  //     'field' => 'slug',
+  //     'terms' => array('featured', 'hide-from-home', 'hide-from-archives', 'digest-spotlight', 'press-release'),
+  //     'operator' => 'NOT IN'
+  //   )
+  // ),
   'tax_query' => array(
     array(
       'taxonomy' => 'appearance',
       'field' => 'slug',
-      'terms' => array('featured', 'hide-from-home', 'hide-from-archives', 'digest-spotlight', 'press-release'),
-      'operator' => 'NOT IN'
+      'terms' => array('featured', 'perspectives', 'news'),
     )
-  ),
   'meta_query' => array(
     array(
       'key' => 'updated_date',
