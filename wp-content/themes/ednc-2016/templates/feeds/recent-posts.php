@@ -34,6 +34,7 @@ $args = array(
       'field' => 'slug',
       'terms' => array('featured', 'perspectives', 'news'),
     )
+  ),
   'meta_query' => array(
     array(
       'key' => 'updated_date',
