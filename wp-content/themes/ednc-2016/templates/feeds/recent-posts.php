@@ -20,19 +20,12 @@ if ($whichday == 1) {
 $args = array(
   'post_type' => array('post', 'map'),
   'posts_per_page' => -1,
-  // 'tax_query' => array(
-  //   array(
-  //     'taxonomy' => 'appearance',
-  //     'field' => 'slug',
-  //     'terms' => array('featured', 'hide-from-home', 'hide-from-archives', 'digest-spotlight', 'press-release'),
-  //     'operator' => 'NOT IN'
-  //   )
-  // ),
   'tax_query' => array(
     array(
       'taxonomy' => 'appearance',
       'field' => 'slug',
-      'terms' => array('featured', 'perspectives', 'news'),
+      'terms' => array('featured', 'hide-from-home', 'hide-from-archives', 'digest-spotlight', 'press-release'),
+      'operator' => 'NOT IN'
     )
   ),
   'meta_query' => array(
