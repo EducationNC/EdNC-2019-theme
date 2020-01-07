@@ -724,7 +724,7 @@ register_taxonomy( 'column',
 			'add_new_item' => __( 'Add New Column' ),
 			'new_item_name' => __( 'New Column Name' )
 		),
-		'show_ui' => true,
+		'show_ui' => false,
 		'query_var' => true,
 		'show_in_rest' => true,
 		'hierarchical' => true,
