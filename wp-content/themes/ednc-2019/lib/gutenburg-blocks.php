@@ -87,7 +87,7 @@ function be_register_blocks() {
 	));
 	acf_register_block( array(
 		'name'			=> 'recommended-articles-float-right',
-		'title'			=> 'Recommended Articles Float Right',
+		'title'			=> 'Top Reads',
 		'description'		=> '',
 		'render_template'	=> 'templates/gutenberg/recommended-articles-float-right.php',
 		'category'		=> 'widgets',

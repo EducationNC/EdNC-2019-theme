@@ -96,7 +96,7 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
 		$args = array(
 			'posts_per_page' => -1,
 			'post_type' => 'post',
-			'cat' => 1329,
+			'cat' => 1385,
 		);
 
 		$innovations = new WP_Query($args);
