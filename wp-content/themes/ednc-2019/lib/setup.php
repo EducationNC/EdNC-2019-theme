@@ -153,6 +153,16 @@ if( (!is_page_template('page-minimal.php')) ) {
 }
 
 /**
+ * Remove Ninja Forms metabox from post editor
+ */
+add_action('add_meta_boxes', function() {
+    remove_meta_box('nf_admin_metaboxes_appendaform', ['page', 'post'], 'side');
+    // remove_meta_box( 'tagsdiv-post_tag' , 'post' , 'normal' );
+}, 99);
+
+
+
+/**
  * Required script for PrintFriendly.com
  */
 function printfriendly_script() {

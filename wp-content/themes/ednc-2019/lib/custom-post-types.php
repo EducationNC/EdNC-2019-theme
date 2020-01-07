@@ -699,13 +699,12 @@ register_taxonomy( 'podcast',
 			'add_new_item' => __( 'Add New Podcast' ),
 			'new_item_name' => __( 'New Podcast Name' )
 		),
-		'show_ui' => true,
+		'show_ui' => false,
 		'query_var' => true,
 		'show_in_rest' => true,
 		'public' => true,
 		'rewrite' => true,
 		'hierarchical' => true,
-		'show_in_rest' => true,
 	)
 );
 
@@ -728,7 +727,6 @@ register_taxonomy( 'column',
 		'query_var' => true,
 		'show_in_rest' => true,
 		'hierarchical' => true,
-		'show_in_rest' => true,
 	)
 );
 
