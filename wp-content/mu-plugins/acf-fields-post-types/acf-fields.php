@@ -5289,6 +5289,113 @@ acf_add_local_field_group(array(
 
 
 acf_add_local_field_group(array(
+	'key' => 'group_5457c96162201',
+	'title' => 'Recommended Articles 2016',
+	'fields' => array(
+		array(
+			'key' => 'field_545796bb0300f',
+			'label' => 'Recommended Articles',
+			'name' => 'recommended_articles',
+			'type' => 'relationship',
+			'instructions' => 'Choose an article to appear at bottom of post as a recommended article.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'post_type' => array(
+				0 => 'post',
+				1 => 'map',
+			),
+			'taxonomy' => '',
+			'filters' => array(
+				0 => 'search',
+				1 => 'post_type',
+				2 => 'taxonomy',
+			),
+			'elements' => '',
+			'max' => 1,
+			'return_format' => 'object',
+			'min' => 0,
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_template',
+				'operator' => '==',
+				'value' => 'page-2016-Template.php',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'seamless',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+acf_add_local_field_group(array(
+	'key' => 'group_5c87e9f8c2637',
+	'title' => 'Recommended Articles 2019',
+	'fields' => array(
+		array(
+			'key' => 'field_5c87ea49c7a3e',
+			'label' => 'Recommended Articles',
+			'name' => 'recommended-articles-2019',
+			'type' => 'relationship',
+			'instructions' => 'Choose an article to appear at bottom of post as a recommended article.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'post_type' => array(
+				0 => 'post',
+				1 => 'map',
+				2 => 'reach-question',
+			),
+			'taxonomy' => '',
+			'filters' => array(
+				0 => 'search',
+				1 => 'post_type',
+				2 => 'taxonomy',
+			),
+			'elements' => array(
+				0 => 'featured_image',
+			),
+			'min' => '',
+			'max' => 5,
+			'return_format' => 'object',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_template',
+				'operator' => '==',
+				'value' => 'default',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'seamless',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+acf_add_local_field_group(array(
 	'key' => 'group_5e0d1d5cbae4d',
 	'title' => 'Recommended Articles Block',
 	'fields' => array(
