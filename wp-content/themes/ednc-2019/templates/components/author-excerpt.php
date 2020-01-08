@@ -6,9 +6,9 @@
 
   if (get_field('has_bio_page') == 1) { ?>
     <div>
-      <?php $user = get_field('user') ?>
+      <?php  $user = get_field('user'); ?>
       <?php the_advanced_excerpt(); ?>
-      <a href="<?php the_permalink(); ?>" class="read-more">Read full bio &raquo;</a>
+      <a href="<?php echo get_author_posts_url($user['ID']); ?>" class="read-more">Read full bio &raquo;</a>
     </div>
   <?php } else { ?>
     <div>
