@@ -30,7 +30,7 @@ use Roots\Sage\Media;
            $twitter = get_field('twitter');
            $email = get_field('email');
            $website = get_field('website');
-           $bio_posts = get_field('recommended_articles_bio_pages');
+           $bio_posts = get_field('recommended_articles_bio_pages_new');
 
              ?>
             <div class="circle-image">

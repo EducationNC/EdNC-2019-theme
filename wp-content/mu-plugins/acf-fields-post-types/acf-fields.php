@@ -827,6 +827,31 @@ acf_add_local_field_group(array(
 				),
 			),
 		),
+		array(
+			'key' => 'field_5e152e6ee33a0',
+			'label' => 'Featured Articles',
+			'name' => 'recommended_articles_bio_pages_new',
+			'type' => 'relationship',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'post_type' => '',
+			'taxonomy' => '',
+			'filters' => array(
+				0 => 'search',
+				1 => 'post_type',
+				2 => 'taxonomy',
+			),
+			'elements' => '',
+			'min' => '',
+			'max' => 3,
+			'return_format' => 'object',
+		),
 	),
 	'location' => array(
 		array(
