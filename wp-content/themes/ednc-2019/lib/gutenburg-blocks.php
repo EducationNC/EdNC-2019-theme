@@ -63,20 +63,19 @@ function be_register_blocks() {
 		'icon'			=> 'format-aside',
 		'keywords'		=> array( 'center', 'quote', 'middle' )
 	));
-	acf_register_block( array(
-		'name'			=> 'gallery-block-acf',
-		'title'			=> __( 'Gallery ACF', 'clientname' ),
-		'render_template'	=> 'templates/gutenberg/gallery.php',
-		//'render_callback' => 'my_acf_block_render_callback',
-		'category'	=> 'formatting',
-		'icon'			=> 'admin-users',
-		'mode'			=> 'preview',
-		'icon'			=> 'format-gallery',
-		'keywords'		=> array ( 'gallery', 'images', 'image' ),
-		'supports' => array(
-			'align' => array( 'left', 'right', 'center', 'wide' ),
-		 ),
-	));
+	// acf_register_block( array(
+	// 	'name'			=> 'gallery-block-acf',
+	// 	'title'			=> __( 'Gallery ACF', 'clientname' ),
+	// 	'render_template'	=> 'templates/gutenberg/gallery.php',
+	// 	'category'	=> 'formatting',
+	// 	'icon'			=> 'admin-users',
+	// 	'mode'			=> 'preview',
+	// 	'icon'			=> 'format-gallery',
+	// 	'keywords'		=> array ( 'gallery', 'images', 'image' ),
+	// 	'supports' => array(
+	// 		'align' => array( 'left', 'right', 'center', 'wide' ),
+	// 	 ),
+	// ));
 	acf_register_block( array(
 		'name'			=> 'table-of-contents',
 		'title'			=> 'Table of Contents',
