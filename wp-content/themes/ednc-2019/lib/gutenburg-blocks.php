@@ -65,7 +65,7 @@ function be_register_blocks() {
 	));
 	acf_register_block( array(
 		'name'			=> 'gallery-block-acf',
-		'title'			=> __( 'Gallery', 'clientname' ),
+		'title'			=> __( 'Gallery ACF', 'clientname' ),
 		'render_template'	=> 'templates/gutenberg/gallery.php',
 		//'render_callback' => 'my_acf_block_render_callback',
 		'category'	=> 'formatting',
