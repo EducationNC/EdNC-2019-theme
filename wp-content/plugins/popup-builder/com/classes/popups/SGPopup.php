@@ -268,9 +268,11 @@ abstract class SGPopup
 			$saveMode = '_preview';
 		}
 
-		require_once(dirname(__FILE__).'/PopupData.php');
-		$savedData = PopupData::getPopupDataById($popupId, $saveMode);
-
+		$savedData = array();
+		if (file_exists(dirname(__FILE__).'/PopupData.php')) {
+			require_once(dirname(__FILE__).'/PopupData.php');
+			$savedData = PopupData::getPopupDataById($popupId, $saveMode);
+		}
 		$savedData = apply_filters('sgpbPopupSavedData', $savedData);
 
 		if (empty($savedData)) {
@@ -496,10 +498,9 @@ abstract class SGPopup
 		}
 		if (!empty($data['sgpb-events'])) {
 			$this->setEvents($data['sgpb-events']);
-
 			unset($data['sgpb-events']);
 		}
-
+		$data = $this->customScriptsSave($data);
 		$this->setOptions($data);
 
 		$targets = $this->targetSave();
@@ -541,6 +542,48 @@ abstract class SGPopup
 
 		$data = apply_filters('sgpbConvertImagesToData', $data);
 		$this->setSanitizedData($data);
+	}
+
+	private function customScriptsSave($data)
+	{
+		$popupId = $this->getId();
+		$popupContent = $this->getContent();
+
+		$defaultData = ConfigDataHelper::defaultData();
+		$defaultDataJs = $defaultData['customEditorContent']['js'];
+		$defaultDataCss = $defaultData['customEditorContent']['css'];
+
+		$finalData = array('js' => array(), 'css' => array());
+		$alreadySavedData = get_post_meta($popupId, 'sg_popup_scripts', true);
+
+		// get styles
+		$finalData['css'] = htmlspecialchars($data['sgpb-css-editor']);
+		unset($data['sgpb-css-editor']);
+		if ($finalData['css'] === $defaultDataCss[0]) {
+			unset($finalData['css']);
+		}
+
+		// get scripts
+		foreach ($defaultDataJs as $key => $value) {
+			if ($data['sgpb-'.$key] == '') {
+				unset($data['sgpb-'.$key]);
+				continue;
+			}
+			if ($key == 'ShouldOpen' || $key == 'ShouldClose') {
+				$finalData['js']['sgpb-'.$key] = $data['sgpb-'.$key];
+				continue;
+			}
+			$finalData['js']['sgpb-'.$key] = $data['sgpb-'.$key];
+			unset($data['sgpb-'.$key]);
+		}
+
+		if ($alreadySavedData == $finalData) {
+			return $data;
+		}
+
+		update_post_meta($popupId, 'sg_popup_scripts', $finalData);
+
+		return $data;
 	}
 
 	private function targetSave()
@@ -643,10 +686,6 @@ abstract class SGPopup
 		$alreadySavedEvents = get_post_meta($popupId, 'sg_popup_events'.$saveMode, true);
 		if ($alreadySavedEvents === $eventsFromPopup) {
 			return true;
-		}
-
-		if ($saveMode) {
-			$eventsFromPopup[] = array();
 		}
 
 		$eventsFromPopup = apply_filters('sgpbPopupEventsMetadata', $eventsFromPopup);
@@ -759,7 +798,7 @@ abstract class SGPopup
 			}
 		}
 
-		$popupSavedData += self::getPopupOptionsById($popupId, $saveMode);
+		$popupSavedData = array_merge($popupSavedData, self::getPopupOptionsById($popupId, $saveMode));
 
 		return $popupSavedData;
 	}
@@ -1264,20 +1303,24 @@ abstract class SGPopup
 	public static function getPopupsByTermSlug($popupTermSlug)
 	{
 		$popupIds = array();
-		// proStartSilver
-		$termPopups = get_posts(
-			array(
-				'post_type' => 'popupbuilder',
-				'numberposts' => -1,
-				'tax_query' => array(
-					array(
-						'taxonomy' => SG_POPUP_CATEGORY_TAXONOMY,
-						'field' => 'slug',
-						'terms' => $popupTermSlug
+
+		$termPopups = get_transient(SGPB_TRANSIENT_POPUPS_TERMS);
+		if ($termPopups === false) {
+			$termPopups = get_posts(
+				array(
+					'post_type' => 'popupbuilder',
+					'numberposts' => -1,
+					'tax_query' => array(
+						array(
+							'taxonomy' => SG_POPUP_CATEGORY_TAXONOMY,
+							'field' => 'slug',
+							'terms' => $popupTermSlug
+						)
 					)
 				)
-			)
-		);
+			);
+			set_transient(SGPB_TRANSIENT_POPUPS_TERMS, $termPopups, SGPB_TRANSIENT_TIMEOUT_WEEK);
+		}
 
 		if (empty($termPopups)) {
 			return $popupIds;
@@ -1286,7 +1329,7 @@ abstract class SGPopup
 		foreach ($termPopups as $termPopup) {
 			$popupIds[] = $termPopup->ID;
 		}
-		// proEndSilver
+
 		return $popupIds;
 	}
 
@@ -1472,17 +1515,19 @@ abstract class SGPopup
 				continue;
 			}
 
-			$popup = self::find($postData->ID);
-			if (empty($popup)) {
+			$popup = self::find($postData->ID, $args);
+			if (empty($popup) || !($popup instanceof SGPopup)) {
 				continue;
 			}
+			$type = @$popup->getType();
+
 			if (isset($filters['type'])) {
 				if (is_array($filters['type'])) {
-					if (!in_array($popup->getType(), $filters['type'])) {
+					if (!in_array($type, $filters['type'])) {
 						continue;
 					}
 				}
-				else if ($popup->getType() != $filters['type']) {
+				else if ($type != $filters['type']) {
 					continue;
 				}
 			}

@@ -14,14 +14,14 @@
 		exit;
 	}
 
-	if( !class_exists('Wbcr_FactoryForms418_ControlGroupItem') ) {
+	if( !class_exists('Wbcr_FactoryForms421_ControlGroupItem') ) {
 
 		/**
 		 * Tab Control Holder
 		 *
 		 * @since 1.0.0
 		 */
-		class Wbcr_FactoryForms418_ControlGroupItem extends Wbcr_FactoryForms418_Holder {
+		class Wbcr_FactoryForms421_ControlGroupItem extends Wbcr_FactoryForms421_Holder {
 
 			/**
 			 * A holder type.

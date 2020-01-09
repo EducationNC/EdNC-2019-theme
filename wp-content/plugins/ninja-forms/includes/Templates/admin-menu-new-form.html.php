@@ -475,7 +475,7 @@
     <div class="{{{ data.renderClasses() }}}" {{{ data.renderVisible() }}}>
         {{{ data.renderSetting() }}}
         <span class="nf-setting-error"></span>
-        <span class="nf-import-options" style="display:none">
+        <span class="nf-dev-import-options" style="display:none">
             <?php _e( 'Please use the following format', 'ninja-forms' ); ?>:
             <br>
             <br>
@@ -493,6 +493,28 @@ Label Three, value-three, 3
             <textarea></textarea>
             <a href="#" class="nf-button primary nf-import extra"><?php _e( 'Import', 'ninja-forms' ); ?></a>
         </span>
+        <span class="nf-import-options" style="display:none">
+            <?php _e( 'Please place one label on each line, separated by commas.', 'ninja-forms' ); ?>
+            <br>
+            <br>
+            <em>
+            Example:
+            </em>
+            <pre>
+Label One,
+Label Two,
+Label Three
+            </pre>
+            <textarea></textarea>
+            <a href="#" class="nf-button primary nf-import extra"><?php _e( 'Import', 'ninja-forms' ); ?></a>
+        </span>
+    </div>
+</script>
+
+<script id="tmpl-nf-edit-setting-image-option-repeater-wrap" type="text/template">
+    <div class="{{{ data.renderClasses() }}}" {{{ data.renderVisible() }}}>
+        {{{ data.renderSetting() }}}
+        <span class="nf-setting-error"></span>
     </div>
 </script>
 
@@ -511,6 +533,18 @@ Label Three, value-three, 3
     <label style="position:relative;" for="{{{ data.name }}}" class="{{{ data.renderLabelClasses() }}}">{{{ data.label }}} {{{ data.renderTooltip() }}}
         <input type="text" class="setting" id="{{{ data.name }}}" value="{{{ data.value }}}" readonly="readonly" />
         <button class="nf-button primary js-click-copytext" style="position:absolute;top:50%;right:5px;padding:0px 15px;"><?php echo __('Copy', 'ninja-forms'); ?></button>
+    </label>
+</script>
+
+<script id="tmpl-nf-edit-setting-copyresettext" type="text/template">
+    <label style="position:relative;" for="{{{ data.name }}}" class="{{{ data.renderLabelClasses() }}}">{{{ data.label }}} {{{ data.renderTooltip() }}}
+        <input type="text" class="setting" id="{{{ data.name }}}" value="{{{ data.value }}}" readonly="readonly" />
+        <div style="position:absolute;top:50%;right:5px;">
+            <button class="nf-button primary js-click-copytext" style="padding:0px 15px;"><?php echo __('Copy', 'ninja-forms'); ?></button>
+            <button class="nf-button secondary js-click-resettext" style="padding:0px 15px;"><?php echo __('Reset', 'ninja-forms'); ?></button>
+            <button class="nf-button primary js-click-confirm" style="padding:0px 15px;display:none;"><?php echo __('Confirm Reset', 'ninja-forms'); ?></button>
+            <button class="nf-button secondary js-click-cancel" style="padding:0px 15px;display:none;"><?php echo __('Cancel', 'ninja-forms'); ?></button>
+        </div>
     </label>
 </script>
 
@@ -684,6 +718,21 @@ Label Three, value-three, 3
     </fieldset>
 </script>
 
+<script id="tmpl-nf-edit-setting-image-option-repeater" type="text/template">
+
+    <fieldset class="nf-listimage-options {{{ data.renderFieldsetClasses() }}}" {{{ data.renderVisible() }}}>
+        <legend>{{{ data.label }}}</legend>
+        <div class="nf-div-table">
+            <div class="nf-table-row nf-table-header">
+                {{{ data.renderHeaders() }}}
+            </div>
+
+            <div class="nf-listimage-options-tbody">
+            </div>
+        </div>
+    </fieldset>
+</script>
+
 <script id="tmpl-nf-edit-setting-option-repeater-empty" type="text/template">
 
 </script>
@@ -698,7 +747,7 @@ Label Three, value-three, 3
     </div>
     <#
         var columns = data.getColumns();
-
+        
         if ( 'undefined' != typeof columns.label ) {
         #>
              <div>
@@ -738,6 +787,75 @@ Label Three, value-three, 3
     <div>
         <span class="dashicons dashicons-dismiss nf-delete"></span>
     </div>
+</script>
+
+<script id="tmpl-nf-edit-setting-image-option-repeater-default-row" type="text/template">
+    <div>
+        <span class="dashicons dashicons-menu handle"></span>
+    </div>
+    <#
+        var columns = data.getColumns();
+
+        if ( 'undefined' != typeof columns.label ) {
+        #>
+             <div>
+                <input type="text" class="setting" value="{{{ data.label }}}" data-id="label">
+            </div>
+            <#
+        }
+        
+    #>
+    <#
+        if ( 'undefined' != typeof columns.value ) {
+            #>
+             <div class='image-option-media-value'>
+                <input type="text" class="setting" value="{{{ data.value }}}" data-id="value">
+            </div>
+            <#
+        }
+    #>
+    <#
+        if ( 'undefined' != typeof columns.calc ) {
+        #>
+             <div>
+                <input type="text" class="setting" value="{{{ data.calc }}}" data-id="calc">
+            </div>
+            <#
+        }
+    #>
+    <#
+        if ( 'undefined' != typeof columns.selected ) {
+            #>
+            <div>
+                <input type="checkbox" class="setting" class="nf-checkbox" {{{ ( 1 == data.selected ) ? 'checked="checked"' : '' }}} value="1" data-id="selected">
+            </div>
+            <#
+        }
+    #>
+
+    <div>
+        <span class="dashicons dashicons-dismiss nf-delete"></span>
+    </div>
+    <br/>
+    
+    <div class='has-merge-tags' style='margin-left:40px;padding:0px 15px;width:45%;display:inline-block;'>
+        <label style="width:95%;text-transform:none;font-size:12px;">
+            <span><?php _e('Image', 'ninja-forms'); ?></span><br/>
+            <input type="text" class="setting" value="{{{ data.image }}}" data-id="image" style="width: 100%;margin-top: 5px;" disabled>
+            <span class="extra open-media-manager dashicons dashicons-admin-media merge-tags" style="top:30px;"></span>
+        </label>
+        <input type="hidden" class="setting" value="{{{ data.image_id }}}" data-id="image_id">
+    </div>
+    <div class="option-image-container" style="display:inline-block;width:45%;">
+    <#
+        if (data.image && 0 < data.image.length) {
+        #>
+            <img src="{{{ data.image }}}" style="max-width:100px;max-height:100px;display:inline-block;"/>
+        <#
+        }
+    #>
+    </div>
+    <hr style="border-top: 1px solid #ccc;" />       
 </script>
 
 <script id="tmpl-nf-edit-setting-html" type="text/template">

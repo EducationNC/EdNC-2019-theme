@@ -277,7 +277,7 @@ if (!empty($removedOptions['content-copy-to-clipboard'])) {
 			</div>
 			<?php if (empty($removedOptions['sgpb-disable-page-scrolling'])): ?>
 				<div class="row form-group">
-					<label class="col-md-5 sgpb-static-padding-top" for="disable-page-scrolling"">
+					<label class="col-md-5 sgpb-static-padding-top" for="disable-page-scrolling">
 					<?php _e('Disable page scrolling', SG_POPUP_TEXT_DOMAIN); ?>:
 					</label>
 					<div class="col-md-6">

@@ -27,7 +27,7 @@ class WIS_SettingsPage extends WIS_Page {
 	 * Mainly used to navigate between pages.
 	 *
 	 * @since 1.0.0
-	 * @see   FactoryPages420_AdminPage
+	 * @see   FactoryPages423_AdminPage
 	 *
 	 * @var string
 	 */
@@ -103,10 +103,10 @@ class WIS_SettingsPage extends WIS_Page {
 	 * @param WIS_Plugin $plugin
 	 */
 	public function __construct( $plugin ) {
-		$this->id         = $plugin->getPrefix()."settings";
+		$this->id         = "settings";
 		$this->page_title = __( 'Settings of Social Slider Widget', 'instagram-slider-widget' );
 		$this->menu_title = __( 'Settings', 'instagram-slider-widget' );
-		$this->menu_target= $plugin->getPrefix()."widgets-".$plugin->getPluginName();
+		$this->menu_target= "widgets-".$plugin->getPluginName();
 		$this->menu_icon = '~/admin/assets/img/wis.png';
 		$this->capabilitiy = "manage_options";
 		$this->template_name = "settings";
@@ -133,63 +133,31 @@ class WIS_SettingsPage extends WIS_Page {
 		], 'bootstrap' );
 	}
 
-	/**
-	 * Returns options for the Basic Settings screen.
-	 *
-	 * @since 1.0.0
-	 * @return array
-	 */
-	public function getOptions() {
-
-		$options = [];
-
-		$options[] = [
-			'type' => 'html',
-			'html' => '<h3 style="margin-left:0">General</h3>'
-		];
-
-		$options[] = [
-			'type' => 'separator'
-		];
-
-		/*
-		$options[] = [
-			'type'    => 'checkbox',
-			'way'     => 'buttons',
-			'name'    => 'auto-generation',
-			'title'   => __( 'Enable automatic post thumbnail generation', 'instagram-slider-widget' ),
-			'default' => false,
-			'hint'    => __( 'Enable automatic post thumbnail generation', 'instagram-slider-widget' )
-		];
-		*/
-
-		return $options;
-	}
-
 	public function indexAction() {
 
-		// creating a form
-		global $form;
-		$form = new Wbcr_FactoryForms418_Form( [
-			'scope' => substr( $this->plugin->getPrefix(), 0, - 1 ),
-			'name'  => 'setting'
-		], $this->plugin );
+		?>
+		<script>
+            jQuery(document).ready(function(){
+                var hash = document.location.hash;
+                var token = hash.substring(14);
+                if(token.length > 40)
+                {
+                    jQuery.post ( ajaxurl, {
+                        action:      'wis_add_account_by_token',
+                        insttoken:       token,
+                        _ajax_nonce: '<?php echo wp_create_nonce("addAccountByToken"); ?>',
+                    }).done( function( html ) {
+                        console.log(html);
+                        console.log(token);
+                        document.location.hash = "";
+                        window.location.reload();
+                    });
 
-		$form->setProvider( new Wbcr_FactoryForms418_OptionsValueProvider( $this->plugin ) );
-
-		$form->add( $this->getOptions() );
-
-		$wapt_saved = WIS_Plugin::app()->request->post( $this->plugin->getPrefix() . 'saved', '' );
-		if ( ! empty( $wapt_saved ) ) {
-			$wapt_nonce = WIS_Plugin::app()->request->post( $this->plugin->getPrefix() . 'nonce', '' );
-			if ( ! wp_verify_nonce( $wapt_nonce, $this->plugin->getPrefix() . 'settings_form' ) ) {
-				wp_die( 'Permission error. You can not edit this page.' );
-			}
-			$form->save();
-
-			do_action( 'wis/settings/after_form_save' );
-		}
-
+                    jQuery('#wis-spinner').addClass('is-active');
+                }
+            });
+		</script>
+		<?php
 		parent::indexAction();
 	}
 }

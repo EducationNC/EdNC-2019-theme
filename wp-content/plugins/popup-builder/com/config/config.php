@@ -87,7 +87,7 @@ class SgpbPopupConfig
 		self::addDefine('SGPB_POPUP_LICENSE', 'license');
 		self::addDefine('SG_POPUP_EXTEND_PAGE', 'extend');
 		self::addDefine('SGPB_FILTER_REPEAT_INTERVAL', 50);
-		self::addDefine('SG_POPUP_TEXT_DOMAIN', 'popupBuilder');
+		self::addDefine('SG_POPUP_TEXT_DOMAIN', 'popup-builder');
 		self::addDefine('SG_POPUP_STORE_URL', 'https://popup-builder.com/');
 		self::addDefine('SG_POPUP_AUTHOR', 'Sygnoos');
 		self::addDefine('SG_POPUP_KEY', 'POPUP_BUILDER');
@@ -100,12 +100,14 @@ class SgpbPopupConfig
 		self::addDefine('SGPB_APP_POPUP_TABLE_LIMIT', 15);
 		self::addDefine('SGPB_SUBSCRIBERS_ERROR_TABLE_NAME', 'sgpb_subscription_error_log');
 		self::addDefine('SGPB_CRON_REPEAT_INTERVAL', 1);
+		self::addDefine('SGPB_NOTIFICATIONS_CRON_REPEAT_INTERVAL', 1);
 		self::addDefine('SGPB_BANNER_CRON_TEXT_URL', 'https://popup-builder.com/sgpb-banner.php?banner=main');
 		self::addDefine('SGPB_METABOX_BANNER_CRON_TEXT_URL', 'https://popup-builder.com/sgpb-banner.php?banner=sidebar1');
 		self::addDefine('SGPB_FACEBOOK_APP_ID', 540547196484707);
 		self::addDefine('SGPB_POPUP_TYPE_RESTRICTION', 'ageRestriction');
 		self::addDefine('SGPB_POPUP_DEFAULT_SOUND', 'popupOpenSound.wav');
 		self::addDefine('SGPB_POPUP_EXTENSIONS_PATH', SG_POPUP_COM_PATH.'extensions/');
+		self::addDefine('SG_POPUP_BUILDER_NOTIFICATIONS_URL', 'https://popup-builder.com/notifications.json');
 		self::addDefine('SGPB_POPUP_ADVANCED_CLOSING_PLUGIN_KEY', 'popupbuilder-advanced-closing/PopupBuilderAdvancedClosing.php');
 		self::addDefine('SGPB_DONT_SHOW_POPUP_EXPIRY', 365);
 		self::addDefine('SGPB_CONTACT_FORM_7_BEHAVIOR_KEY', 'contact-form-7');
@@ -124,10 +126,15 @@ class SgpbPopupConfig
 		self::addDefine('SG_POPUP_AUTORESPONDER_POST_TYPE', 'sgpbautoresponder');
 		self::addDefine('SGPB_INACTIVE_EXTENSIONS', 'inactivePBExtensions');
 		self::addDefine('SGPB_POPUP_LICENSE_SCREEN', SG_POPUP_POST_TYPE.'_page_'.SGPB_POPUP_LICENSE);
-
 		self::addDefine('SGPB_SUBSCRIPTION_ERROR_MESSAGE', __('There was an error while trying to send your request. Please try again', SG_POPUP_TEXT_DOMAIN).'.');
 		self::addDefine('SGPB_SUBSCRIPTION_VALIDATION_MESSAGE', __('This field is required', SG_POPUP_TEXT_DOMAIN).'.');
 		self::addDefine('SGPB_SUBSCRIPTION_EMAIL_MESSAGE', __('Please enter a valid email address', SG_POPUP_TEXT_DOMAIN).'.');
+		self::addDefine('SGPB_TRANSIENT_TIMEOUT_HOUR', 60 * MINUTE_IN_SECONDS);
+		self::addDefine('SGPB_TRANSIENT_TIMEOUT_DAY', 24 * HOUR_IN_SECONDS);
+		self::addDefine('SGPB_TRANSIENT_TIMEOUT_WEEK', 7 * DAY_IN_SECONDS);
+		self::addDefine('SGPB_TRANSIENT_POPUPS_LOAD', 'sgpbLoadPopups');
+		self::addDefine('SGPB_TRANSIENT_POPUPS_TERMS', 'sgpbGetPopupsByTermSlug');
+		self::addDefine('SGPB_TRANSIENT_POPUPS_ALL_CATEGORIES', 'sgpbGetPostsAllCategories');
 		self::popupTypesInit();
 	}
 

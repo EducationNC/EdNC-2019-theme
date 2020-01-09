@@ -1,11 +1,11 @@
 <div class="wrap">
-	<div class="factory-bootstrap-421 factory-fontawesome-000">
+	<div class="factory-bootstrap-424 factory-fontawesome-000">
 		<?php wp_nonce_field( 'license' ); ?>
 		<div id="wis-license-wrapper"
 		     data-loader="<?php echo WIS_PLUGIN_URL . '/admin/assets/img/loader.gif'; ?>"
 		     data-plugin="<?php echo get_class( $this->plugin ) ?>">
 
-			<div class="factory-bootstrap-413 onp-page-wrap <?php echo $this->get_license_type() ?>-license-manager-content"
+			<div class="factory-bootstrap-424 onp-page-wrap <?php echo $this->get_license_type() ?>-license-manager-content"
 			     id="license-manager">
 				<div>
 					<h3><?php printf( __( 'Activate %s', 'instagram-slider-widget' ), $this->plan_name ) ?></h3>
@@ -19,7 +19,7 @@
 							<a href="<?php echo $this->plugin->get_support()->get_pricing_url( true, 'license_page' ); ?>"
 							   class="purchase-premium" target="_blank" rel="noopener">
                             <span class="btn btn-gold btn-inner-wrap">
-                            <?php printf( __( 'Upgrade to Premium for $%s', 'instagram-slider-widget' ), $this->premium->get_price() ) ?>
+                            <?php printf( __( 'Upgrade to Premium', 'instagram-slider-widget' ), $this->premium->get_price() ) ?>
                             </span>
 							</a>
 							<p><?php printf( __( 'Your current license for %1$s:', 'instagram-slider-widget' ), $this->plugin->getPluginTitle() ) ?></p>

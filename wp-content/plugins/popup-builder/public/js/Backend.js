@@ -78,7 +78,39 @@ SGPBBackend.prototype.sgInit = function()
 	this.editPopupSettingsForFullscreenMode();
 	this.autosave();
 	this.popupBuilderButton();
+	this.downloadSystemInfoFile();
 };
+
+SGPBBackend.prototype.changeTab = function(tab)
+{
+	jQuery('#sgpb-editor-options-tab-content-wrapper-'+tab).css('display', 'none');
+	var i, tabContent, tabLinks;
+
+	tabContent = jQuery('.sgpb-editor-options-tab-content-wrapper');
+	tabContent.each(function(){
+		jQuery(this).css('display', 'none');
+	});
+	tabLinks = jQuery('.sgpb-editor-tab-links');
+	tabLinks.each(function(){
+		jQuery(this).removeClass('sgpb-active-tab');
+	});
+	jQuery('#sgpb-editor-options-tab-content-wrapper-'+tab).css('display', 'block');
+	jQuery('.sgpb-editor-tab-'+tab).addClass('sgpb-active-tab');
+	this.rangeSlider();
+};
+
+SGPBBackend.prototype.downloadSystemInfoFile = function() {
+	if (!jQuery('.sgpb-download-system-info').length) {
+		return false;
+	}
+	jQuery('.sgpb-download-system-info').bind('click', function() {
+		window.location.href = SGPB_JS_PARAMS.postUrl+'?action=sgpb_system_info';
+	});
+}
+
+SGPBBackend.prototype.resetCssEditorContent = function() {
+	jQuery('.editor-content-css').val(SGPB_CSS_EDITOR_DEFAULT_CONTENT[0]);
+}
 
 SGPBBackend.prototype.popupBuilderButton = function()
 {
@@ -1456,6 +1488,7 @@ SGPBBackend.prototype.backgroundImageUpload = function()
 			jQuery('.sgpb-show-background-image-container').css({'background-image': 'url("' + attachment.url + '")'});
 			jQuery('.sgpb-show-background-image-container').html('');
 			jQuery('#js-background-upload-image').val(attachment.url);
+			jQuery('input[name="sgpb-background-image"]').attr('value', attachment.url);
 			jQuery('.js-sgpb-remove-background-image').removeClass('sg-hide');
 		});
 		/* Open the uploader dialog */
@@ -1548,17 +1581,21 @@ SGPBBackend.prototype.changeColor = function(element)
 
 SGPBBackend.prototype.previewInit = function()
 {
+	jQuery('input').on('change', function() {
+		jQuery('.wrap').on('click', function() {
+			SGPBBackend.prototype.autosave();
+		})
+	});
 	jQuery('#post-preview').click(function() {
 		SGPBBackend.prototype.autosave();
 		/* when preview button clicked, set input value to 1 */
 		jQuery('#sgpb-is-preview').val('1');
-		var popupId = jQuery('#post_ID').val();
 	});
 	jQuery('#title').on('change', function() {
 		SGPBBackend.prototype.autosave();
 	});
 	jQuery('#publish').click(function() {
-		/* when bublish/update clicked, set input value to 0 */
+		/* when publish/update clicked, set input value to 0 */
 		jQuery('#sgpb-is-preview').val('0');
 	});
 };
@@ -1765,6 +1802,10 @@ SGPBBackend.resetCount = function(popupId)
 
 SGPBBackend.prototype.autosave = function()
 {
+	if (!jQuery('#titlediv').length) {
+		return false;
+	}
+
 	var allPopupData = jQuery('form#post').serializeArray();
 	var data = {
 		nonce: SGPB_JS_PARAMS.nonce,

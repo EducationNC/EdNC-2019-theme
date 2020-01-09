@@ -26,7 +26,6 @@ class ConfigDataHelper
 			'post_type'        => 'post',
 			'posts_per_page'   => 1000
 		);
-
 		$args = wp_parse_args($args, $defaultArgs);
 		$query = new WP_Query($args);
 
@@ -159,15 +158,20 @@ class ConfigDataHelper
 
 	public static function getPostsAllCategories($postType = 'post', $taxonomies = array())
 	{
+		$cats = get_transient(SGPB_TRANSIENT_POPUPS_ALL_CATEGORIES);
+		if ($cats === false) {
+			$cats =  get_terms(
+				array(
+					'taxonomy' => $taxonomies,
+					'hide_empty' => false,
+					'type'      => $postType,
+					'orderby'   => 'name',
+					'order'     => 'ASC'
+				)
+			);
+			set_transient(SGPB_TRANSIENT_POPUPS_ALL_CATEGORIES, $cats, SGPB_TRANSIENT_TIMEOUT_WEEK);
+		}
 
-		$cats =  get_terms(
-			array(
-				'hide_empty' => 0,
-				'type'      => $postType,
-				'orderby'   => 'name',
-				'order'     => 'ASC'
-			)
-		);
 		$supportedTaxonomies = array('category');
 		if (!empty($taxonomies)) {
 			$supportedTaxonomies = $taxonomies;
@@ -198,6 +202,9 @@ class ConfigDataHelper
 		$postTypes['is_404'] = __('404 Pages', SG_POPUP_TEXT_DOMAIN);
 		if (function_exists('is_shop')) {
 			$postTypes['is_shop'] = __('Shop Page', SG_POPUP_TEXT_DOMAIN);
+		}
+		if (function_exists('is_archive')) {
+			$postTypes['is_archive'] = __('Archive Page', SG_POPUP_TEXT_DOMAIN);
 		}
 
 		return $postTypes;
@@ -286,6 +293,27 @@ class ConfigDataHelper
 						'name' => __('Copy to clipboard', SG_POPUP_TEXT_DOMAIN).':'
 					)
 				)
+			)
+		);
+
+		$data['customEditorContent'] = array(
+			'js' => array(
+				'ShouldOpen' => '<b>Opening events:</b><br><br><b>#1</b> Add the code you want to run <b>before</b> the popup opening. This will be a condition for opening the popup, that is processed and defined before the popup opening. If the return value is <b>"true"</b> then the popup will open, if the value is <b>"false"</b> the popup won\'t open.',
+				'WillOpen' => '<b>#2</b> Add the code you want to run <b>before</b> the popup opens. This will be the code that will work in the process of opening the popup. <b>true/false</b> conditions will not work in this phase.',
+				'DidOpen' => '<b>#3</b> Add the code you want to run <b>after</b> the popup opens. This code will work when the popup is already open on the page.',
+				'ShouldClose' => '<b>Closing events:</b><br><br><b>#1</b> Add the code that will be fired <b>before</b> the popup closes. This will be a condition for the popup closing. If the return value is <b>"true"</b> then the popup will close, if the value is <b>"false"</b> the popup won\'t close.',
+				'WillClose' => '<b>#2</b> Add the code you want to run <b>before</b> the popup closes.  This will be the code that will work in the process of closing the popup. <b>true/false</b> conditions will not work in this phase.',
+				'DidClose' => '<b>#3</b> Add the code you want to run <b>after</b> the popup closes. This code will work when the popup is already closed on the page.'
+			),
+			'css' => array(
+				'/*popup content wrapper*/'."\n".
+				'.sgpb-content-popupId {'."\n\n".'}'."\n\n".
+
+				'/*overlay*/'."\n".
+				'.sgpb-popup-overlay-popupId {'."\n\n".'}'."\n\n".
+
+				'/*popup wrapper*/'."\n".
+				'.sgpb-popup-builder-content-popupId {'."\n\n".'}'."\n\n"
 			)
 		);
 
@@ -465,7 +493,8 @@ class ConfigDataHelper
 			'user-role' => __('User Role', SG_POPUP_TEXT_DOMAIN),
 			'countries' => __('Countries', SG_POPUP_TEXT_DOMAIN),
 			'detect-by-url' => __('Detect by URL', SG_POPUP_TEXT_DOMAIN),
-			'cookie-detection' => __('Cookie Detection', SG_POPUP_TEXT_DOMAIN)
+			'cookie-detection' => __('Cookie Detection', SG_POPUP_TEXT_DOMAIN),
+			'operation-system' => __('Operating System', SG_POPUP_TEXT_DOMAIN)
 		);
 
 		$data['closeButtonPositions'] = array(

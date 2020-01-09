@@ -1,6 +1,6 @@
 <?php
 
-namespace WBCR\Factory_Adverts_102;
+namespace WBCR\Factory_Adverts_105;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Performs a server request, retrieves banner data and stores it in the cache.
  *
- * @author        Alexander Kovalev <alex.kovalevv@gmail.com>
+ * @author        Alexander Kovalev <alex.kovalevv@gmail.com>, Github: https://github.com/alexkovalevv
  * @author        Alexander Vitkalov <nechin.va@gmail.com>
  *
  * @since         1.0.1 Изменил имя класса и доработал его.
@@ -65,7 +65,7 @@ class Creative_Motion_API {
 	 *
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 * @since  1.0.1
-	 * @var \Wbcr_Factory420_Plugin
+	 * @var \Wbcr_Factory423_Plugin
 	 */
 	private $plugin;
 
@@ -77,9 +77,9 @@ class Creative_Motion_API {
 	 *
 	 * @since 1.0.0 Added
 	 *
-	 * @param \Wbcr_Factory420_Plugin $plugin_name
+	 * @param \Wbcr_Factory423_Plugin $plugin_name
 	 */
-	public function __construct( \Wbcr_Factory420_Plugin $plugin ) {
+	public function __construct( \Wbcr_Factory423_Plugin $plugin ) {
 		$this->plugin = $plugin;
 	}
 

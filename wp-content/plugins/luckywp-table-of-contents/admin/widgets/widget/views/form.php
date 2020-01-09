@@ -23,5 +23,5 @@ use luckywp\tableOfContents\core\helpers\Html;
     <?= Html::hiddenInput($inputName, $value, ['class' => 'lwptocWidget_input']) ?>
 </div>
 <script>
-    $.lwptocWidget.init();
+    jQuery.lwptocWidget.init();
 </script>

@@ -84,7 +84,7 @@ class ScriptsLoader
 		foreach ($popups as $popup) {
 			$popupId = $popup->getId();
 
-			$popupContent = apply_filters('sgpbPopupContentLoadToPage', $popup->getPopupTypeContent());
+			$popupContent = apply_filters('sgpbPopupContentLoadToPage', $popup->getPopupTypeContent(), $popupId);
 
 			$events = $popup->getPopupAllEvents($postId, $popupId, $popup);
 			// if popup's data has already loaded into the page with the same event
@@ -136,7 +136,7 @@ class ScriptsLoader
 
 			$popupOptions = $this->getEncodedOptionsFromPopup($popup);
 
-			$popupContent = apply_filters('sgpbPopupContentLoadToPage', $popup->getPopupTypeContent());
+			$popupContent = apply_filters('sgpbPopupContentLoadToPage', $popup->getPopupTypeContent(), $popupId);
 
 			add_action('admin_footer', function() use ($popupId, $events, $popupOptions, $popupContent) {
 				$footerPopupContent = '<div style="position:absolute;top: -999999999999999999999px;">

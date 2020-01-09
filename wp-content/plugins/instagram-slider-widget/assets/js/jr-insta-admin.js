@@ -1,13 +1,7 @@
 (function($) {
 	
 	$(document).ready(function($){
-		$('.donate-bitcoin-qr-address').hide();
-	    $('.donate-button-link').on('click', function (e) {
-	        e.preventDefault();
-	        //$(this).slideUp(100);
-	        $('.donate-bitcoin-qr-address').slideToggle();
-	    });
-		
+
 		// Hide Custom Url if image link is not set to custom url
 		$('body').on('change', '.jr-container select[id$="images_link"]', function(e){
 			var images_link = $(this);

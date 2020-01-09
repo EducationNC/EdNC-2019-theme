@@ -35,11 +35,11 @@ class WIS_AboutPage extends WIS_Page {
 	public $page_menu_dashicon;
 
 	/**
-	 * @param WAPT_Plugin $plugin
+	 * @param WIS_Plugin $plugin
 	 */
 	public function __construct( $plugin ) {
-		$this->id         = $plugin->getPrefix()."about";
-		$this->menu_target= $plugin->getPrefix()."settings-".$plugin->getPluginName();
+		$this->id         = "about";
+		$this->menu_target= "widgets-".$plugin->getPluginName();
 		$this->page_title = __( 'About Social Slider Widget', 'instagram-slider-widget' );
 		$this->menu_title = __( 'About', 'instagram-slider-widget' );
 		$this->template_name = "about";

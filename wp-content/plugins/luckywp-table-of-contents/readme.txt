@@ -3,8 +3,8 @@ Contributors: theluckywp
 Donate link: https://theluckywp.com/product/table-of-contents/
 Tags: table of contents, toc, navigation, links, seo
 Requires at least: 4.7
-Tested up to: 5.2.2
-Stable tag: 1.9.4
+Tested up to: 5.3
+Stable tag: 1.9.11
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -66,7 +66,7 @@ LuckyWP Table of Contents was successfully tested with the following plugins:
 * Elementor Page Builder
 * Beaver Builder and Beaver Builder Themer Add-On
 * WPBakery Page Builder
-* WordPress Multilingual Plugin (WPML)
+* WordPress Multilingual Plugin (WPML), [officially confirmed](https://wpml.org/plugin/luckywp-table-of-contents/)
 * Rank Math, [officially confirmed](https://rankmath.com/compatibility/luckywp-table-of-contents/)
 * WP Rocket
 * Toolset Views and Toolset Access
@@ -150,6 +150,28 @@ For non-English websites it is recommended to enable the `Intl` PHP extension.
 11. Miscellaneous Settings
 
 == Changelog ==
+
+= 1.9.11 — 2019-11-18 =
++ Added hook filters `lwptoc_force_wp_transliterate` and `lwptoc_transliterator`.
+* Fixed: in some cases for table of contents used a non-current post.
+
+= 1.9.10 — 2019-11-10 =
+* Fixed: in some cases hash for heading without transliteration was generated incorrectly.
+
+= 1.9.9 — 2019-11-06 =
+* Minor fixes for WPML compatibility.
+
+= 1.9.8 — 2019-10-23 =
+* Minor fixes for compatibility with WordPress 5.3.
+
+= 1.9.7 — 2019-10-17 =
+* Fixed: in some cases the widget was displayed incorrectly.
+
+= 1.9.6 — 2019-10-11 =
+* Enhancements for more compatible with themes and plugins.
+
+= 1.9.5 — 2019-10-09 =
+* Enhancements for more compatible with themes and plugins.
 
 = 1.9.4 — 2019-09-04 =
 * Enhancements for more compatible with themes and plugins.

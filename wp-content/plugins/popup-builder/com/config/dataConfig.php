@@ -7,6 +7,7 @@ class SgpbDataConfig
 	{
 		self::addFilters();
 		self::conditionInit();
+		self::transientConfig();
 		self::popupDefaultOptions();
 	}
 
@@ -949,5 +950,18 @@ class SgpbDataConfig
 	public static function addFilters()
 	{
 		ConfigDataHelper::addFilters();
+	}
+
+	public static function transientConfig()
+	{
+		global $SGPB_TRANSIENT_CONFIG;
+
+		$SGPB_TRANSIENT_CONFIG = array(
+			SGPB_TRANSIENT_POPUPS_LOAD,
+			SGPB_TRANSIENT_POPUPS_TERMS,
+			SGPB_TRANSIENT_POPUPS_ALL_CATEGORIES
+		);
+
+		$SGPB_TRANSIENT_CONFIG = apply_filters('sgpbAllTransients', $SGPB_TRANSIENT_CONFIG);
 	}
 }

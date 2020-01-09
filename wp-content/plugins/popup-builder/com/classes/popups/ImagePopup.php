@@ -18,9 +18,10 @@ class ImagePopup extends SGPopup
 		}
 
 		if ($imageUrl != $savedImageUrl) {
-			$imageData = AdminHelper::getImageDataFromUrl($imageUrl);
+			$imageUrl = AdminHelper::getImageDataFromUrl($imageUrl, true);
 		}
-		$data['sgpb-image-data'] = $imageData;
+
+		$data['sgpb-image-url'] = $imageUrl;
 		$this->setSanitizedData($data);
 
 		parent::save();
@@ -77,7 +78,10 @@ class ImagePopup extends SGPopup
 
 	public function getPopupTypeContent()
 	{
-		return '';
+		$id = $this->getId();
+		$imageUrl = $this->getOptionValue('sgpb-image-url');
+
+		return '<img width="1" height="1" class="sgpb-preloaded-image-'.$id.'" src="'.$imageUrl.'" style="position:absolute;right:9999999999999px;">';
 	}
 
 	public function getExtraRenderOptions()

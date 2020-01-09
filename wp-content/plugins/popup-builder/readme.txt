@@ -9,7 +9,7 @@ Tags: popup, pop up, wordpress popup, popup maker, exit popup, popup builder, wo
 Requires at least: 3.8
 Tested up to: 5.3
 Requires PHP: 5.3.3
-Stable tag: 3.47
+Stable tag: 3.59
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -185,6 +185,74 @@ Go to the Popup Builder settings and set your desired options.
 
 == Changelog ==
 
+= Version 3.59 =
+* Speed improvements.
+* Bug fixed related to Page Level Cookie on all browsers.
+
+= Version 3.58 =
+* Hot fix related to function arguments.
+
+= Version 3.57 =
+* Bug fixed related to get_option function.
+* Popup cache improvements.
+
+= Version 3.56 =
+* Transient name changed.
+* Max loaded popups limit increased.
+
+= Version 3.55 =
+* Bug fixed related to cron jobs.
+* Code improvements.
+
+= Version 3.54 =
+* Custom js issue related to code symbols (not encoded as expected).
+* Internet explorer compatibility issue fixed.
+* Popup speed improvements, decreasing of requests count to DB, AJAX.
+* System info view added which will help us to debug errors.
+* Duplicate queries were removed.
+* New types in the notification center added (separated by colors)
+* Safari overlay issue fixed
+
+= Version 3.53 =
+* Added missing text domain.
+* Fixes regarding cron tasks.
+* Code improvements.
+
+= Version 3.52 =
+* Popup notifications section improvements.
+* Translation .pot file updated.
+* Missing styles for the Close button fixed.
+* Fixed compatibility issues with Beaver Builder (page builder) plugin.
+* Speed improvements, related to getting popup data from a database.
+* JS code improvements related to popup opening, there were issues with old/new browsers.
+* Image popup improvements, when there is an incorrect image used: with incorrect URL, in this case, we will show the default "no image" placeholder.
+* Deprecated functions updated (JS).
+* Unneeded CSS code removed, which affected on the admin panel of the plugin.
+* New 'Archive' page added in Display Rules => Page types.
+* JS error fixed, which affected on correct work of extra events.
+
+= Version 3.51 =
+* Bug fixed related to Newsletter.
+* Added new parameter PopupID inside sgpbPopupContentLoadToPage filter.
+* Added plugin notification URL.
+* Typo fixes.
+
+= Version 3.50 =
+* Added new feature to add custom JS and CSS codes. You can add your custom JS logic to control popup opening also you can add custom CSS to change popup styles.
+* Bug fixed related to image upload.
+* Big fixed related to popup opening events. Sometimes it didn't get saved.
+* Code improvements. We have changed the auto save option to not call AJAX every time.
+
+= Version 3.49 =
+* Added async image preloading to make Image popup loads faster.
+* Code improvements and minor bug fixes.
+
+= Version 3.48 =
+* Code improvements and minor bug fixes.
+* Popup speed improvements.
+* Popup triggering events synchronisation.
+* PHP notices fixed.
+
 = Version 3.47 =
 * Bug fixed related to onclick event.
 
@@ -200,7 +268,7 @@ Go to the Popup Builder settings and set your desired options.
 = Version 3.45 =
 * Improvements of subscription form live preview.
 * Changed Support location URL to (Live Chat).
-* Bug fixed related to Subscribers Table ordering (credit: Tin Duong of Fortinetâ€™s FortiGuard Labs).
+* Bug fixed related to Subscribers Table ordering (credit: Tin Duong of Fortinets FortiGuard Labs).
 * Banner closing issue fixed.
 * Code/speed improvements, php notices have been removed.
 
@@ -1046,7 +1114,7 @@ Leave us a good review :)
 
 == Upgrade Notice ==
 
-Current Version of Popup Builder is 3.46
+Current Version of Popup Builder is 3.59
 
 == Other Notes ==
 

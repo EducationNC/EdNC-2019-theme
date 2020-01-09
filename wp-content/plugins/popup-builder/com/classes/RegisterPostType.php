@@ -83,10 +83,12 @@ class RegisterPostType
 
 	public function getPostTypeLabels()
 	{
+		$count = SGPBNotificationCenter::getAllActiveNotifications();
+		$count = '';
 		$labels = array(
 			'name'               => _x('Popups', 'post type general name', SG_POPUP_TEXT_DOMAIN),
 			'singular_name'      => _x('Popup', 'post type singular name', SG_POPUP_TEXT_DOMAIN),
-			'menu_name'          => _x('Popup Builder', 'admin menu', SG_POPUP_TEXT_DOMAIN),
+			'menu_name'          => _x('Popup Builder', 'admin menu', SG_POPUP_TEXT_DOMAIN).$count,
 			'name_admin_bar'     => _x('Popup', 'add new on admin bar', SG_POPUP_TEXT_DOMAIN),
 			'add_new'            => _x('Add New', 'Popup', SG_POPUP_TEXT_DOMAIN),
 			'add_new_item'       => __('Add New Popup', SG_POPUP_TEXT_DOMAIN),
@@ -314,6 +316,15 @@ class RegisterPostType
 	{
 		add_submenu_page(
 			'edit.php?post_type='.SG_POPUP_POST_TYPE,
+			__('Settings', SG_POPUP_TEXT_DOMAIN),
+			__('Settings', SG_POPUP_TEXT_DOMAIN),
+			'manage_options',
+			SG_POPUP_SETTINGS_PAGE,
+			array($this, 'settings')
+		);
+
+		add_submenu_page(
+			'edit.php?post_type='.SG_POPUP_POST_TYPE,
 			__('Extend', SG_POPUP_TEXT_DOMAIN),
 			__('Extend', SG_POPUP_TEXT_DOMAIN),
 			'sgpb_manage_options',
@@ -344,8 +355,8 @@ class RegisterPostType
 
 		add_submenu_page(
 			'edit.php?post_type='.SG_POPUP_POST_TYPE,
-			__('Subscribers', SG_POPUP_TEXT_DOMAIN),
-			__('Subscribers', SG_POPUP_TEXT_DOMAIN),
+			__('All Subscribers', SG_POPUP_TEXT_DOMAIN),
+			__('All Subscribers', SG_POPUP_TEXT_DOMAIN),
 			'sgpb_manage_options',
 			SG_POPUP_SUBSCRIBERS_PAGE,
 			array($this, 'subscribersPage')
@@ -358,15 +369,6 @@ class RegisterPostType
 			'sgpb_manage_options',
 			SG_POPUP_NEWSLETTER_PAGE,
 			array($this, 'newsletter')
-		);
-
-		add_submenu_page(
-			'edit.php?post_type='.SG_POPUP_POST_TYPE,
-			__('Settings', SG_POPUP_TEXT_DOMAIN),
-			__('Settings', SG_POPUP_TEXT_DOMAIN),
-			'manage_options',
-			SG_POPUP_SETTINGS_PAGE,
-			array($this, 'settings')
 		);
 	}
 

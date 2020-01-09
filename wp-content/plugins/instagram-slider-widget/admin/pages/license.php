@@ -52,7 +52,7 @@ class WIS_LicensePage extends WIS_Page {
 
 	/**
 	 * @since 2.0.7
-	 * @var \WBCR\Factory_413\Premium\Provider
+	 * @var \WBCR\Factory_423\Premium\Provider
 	 */
 	protected $premium;
 
@@ -70,7 +70,7 @@ class WIS_LicensePage extends WIS_Page {
 
 	/**
 	 * @since 2.0.7
-	 * @var \WBCR\Factory_413\Premium\Interfaces\License
+	 * @var \WBCR\Factory_423\Premium\Interfaces\License
 	 */
 	protected $premium_license;
 
@@ -79,18 +79,18 @@ class WIS_LicensePage extends WIS_Page {
 
 	/**
 	 * {@inheritdoc}
-	 * @param Wbcr_Factory420_Plugin $plugin
+	 * @param WIS_Plugin $plugin
 	 */
-	public function __construct ( Wbcr_Factory420_Plugin $plugin ) {
+	public function __construct ( $plugin ) {
 		$this->plugin = $plugin;
 
 		parent::__construct( $plugin );
 
-		$this->id             = $plugin->getPrefix().'license';
-		$this->menu_title     = __( 'License', 'instagram-slider-widget' );
-		$this->page_title = __( 'License of APT', 'instagram-slider-widget' );
+		$this->id             = 'license';
+		$this->menu_title     = '<span style="color:#f18500">'.__( 'License', 'instagram-slider-widget' ).'</span>';
+		$this->page_title = __( 'License of Social Slider Widget', 'instagram-slider-widget' );
 		$this->template_name = "license";
-		$this->menu_target= $plugin->getPrefix()."settings-".$plugin->getPluginName();
+		$this->menu_target= "widgets-".$plugin->getPluginName();
 		$this->capabilitiy = "manage_options";
 
 		$this->premium                  = WIS_Plugin::app()->premium;

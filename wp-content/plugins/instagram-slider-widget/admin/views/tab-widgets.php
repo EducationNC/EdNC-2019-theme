@@ -13,11 +13,20 @@ if ( !empty( $sidebars_widgets ) )
 			if(strstr($widget, 'jr_insta_slider'))
 			{
 				wp_list_widget_controls($key, $wp_registered_sidebars[$key]['name']);
+				break;
 			}
 		}
 	}
 }
 ?>
+<style>
+    .widget-inside
+    {
+        border-top: none;
+        padding: 1px 15px 15px 15px;
+        line-height: 1.2;
+    }
+</style>
 <script>
     jQuery(document).ready(function($) {
         $('.widget:not([id*="jr_insta_slider"])').remove();

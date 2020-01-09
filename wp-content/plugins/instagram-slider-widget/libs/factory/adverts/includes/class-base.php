@@ -1,6 +1,6 @@
 <?php
 
-namespace WBCR\Factory_Adverts_102;
+namespace WBCR\Factory_Adverts_105;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * This class use functional design pattern.
  *
  * @author        Alexander Vitkalov <nechin.va@gmail.com>
+ * @author        Alexander Kovalev <alex.kovalevv@gmail.com>, Github: https://github.com/alexkovalevv
+ *
  * @since         1.0.0 Added
  * @package       factory-adverts
  * @copyright (c) 2019 Webcraftic Ltd
@@ -26,7 +28,7 @@ class Base {
 	 *
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 * @since  1.0.1
-	 * @var \Wbcr_Factory420_Plugin
+	 * @var \Wbcr_Factory423_Plugin
 	 */
 	private $plugin;
 
@@ -37,10 +39,6 @@ class Base {
 	 * @since 1.0.0 Added
 	 *
 	 * @var array   Example: array(
-	 * 	    'prefix'                => 'wbcr_inp_',
-	 *      'plugin_name'           => 'wbcr_insert_php',
-	 *      'plugin_title'          => 'Woody ad snippets',
-	 *      'plugin_text_domain'    => 'insert-php',
 	 *      'dashboard_widget'      => true,
 	 *      'right_sidebar'         => true,
 	 *      'notice'                => true,
@@ -55,7 +53,7 @@ class Base {
 	 *
 	 * @author Alexander Kovalev <alex.kovalevv@gmail.com>
 	 * @since  1.0.1
-	 * @var \WBCR\Factory_Adverts_102\Creative_Motion_API
+	 * @var \WBCR\Factory_Adverts_105\Creative_Motion_API
 	 */
 	private $api;
 
@@ -84,9 +82,9 @@ class Base {
 	 *
 	 * @since 1.0.0 Added
 	 *
-	 * @param \Wbcr_Factory420_Plugin $plugin
+	 * @param \Wbcr_Factory423_Plugin $plugin
 	 */
-	public function __construct( \Wbcr_Factory420_Plugin $plugin, $settings ) {
+	public function __construct( \Wbcr_Factory423_Plugin $plugin, $settings ) {
 		$this->plugin = $plugin;
 
 		$this->settings = wp_parse_args( $settings, [
@@ -100,7 +98,7 @@ class Base {
 		$this->api = new Creative_Motion_API( $this->plugin );
 
 		add_filter( 'wbcr/factory/pages/impressive/widgets', [ $this, 'register_plugin_widgets' ], 10, 3 );
-		add_action( 'wbcr_factory_notices_000_list', [ $this, 'register_plugin_notice' ], 10, 2 );
+		add_action( 'wbcr/factory/admin_notices', [ $this, 'register_plugin_notice' ], 10, 2 );
 		add_action( 'current_screen', [ $this, 'register_dashboard_widget' ], 10, 2 );
 	}
 
@@ -215,7 +213,6 @@ class Base {
 						'id'              => 'adverts_debug',
 						'type'            => 'error',
 						'dismissible'     => false,
-						'where'           => [ 'plugins', 'themes', 'dashboard', 'edit' ],
 						'dismiss_expires' => 0,
 						'text'            => '<p><b>' . $this->plugin->getPluginTitle() . '</b>:<br>' . $debug_message . '</p>'
 					];
@@ -230,7 +227,6 @@ class Base {
 				'id'              => 'adverts_' . $hash,
 				'type'            => 'success',
 				'dismissible'     => true,
-				'where'           => [ 'plugins', 'themes', 'dashboard', 'edit' ],
 				'dismiss_expires' => 0,
 				'text'            => '<p><b>' . $this->plugin->getPluginTitle() . '</b>:<br>' . $notice_content . '</p>'
 			];
@@ -251,7 +247,7 @@ class Base {
 		if ( $this->settings['dashboard_widget'] && current_user_can( 'manage_options' ) ) {
 			$current_screen = get_current_screen();
 
-			if ( 'dashboard' !== $current_screen->id ) {
+			if ( ! in_array( $current_screen->id, [ 'dashboard', 'dashboard-network' ] ) ) {
 				return;
 			}
 
@@ -261,7 +257,7 @@ class Base {
 				$content = $this->get_debug_message( 'dashboard_widget' );
 			}
 
-			require_once FACTORY_ADVERTS_102_DIR . '/includes/class-dashboard-widget.php';
+			require_once FACTORY_ADVERTS_105_DIR . '/includes/class-dashboard-widget.php';
 			new Dashboard_Widget( $this->plugin, $content );
 		}
 	}

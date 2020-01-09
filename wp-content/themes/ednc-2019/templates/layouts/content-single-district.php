@@ -8,7 +8,6 @@
   $vimeo = get_field('vimeo');
   $vine = get_field('vine');
   $instagram = get_field('instagram');
-
   $links = get_field('links');
   $social_media_links = get_field('social_media_links');
   ?>
@@ -163,7 +162,6 @@
         'posts_per_page' => 4
       );
       $maps = new WP_Query($args);
-
       if ($maps->have_posts()) : ?>
         <div class="s-box">
           <div class="callout">
@@ -201,9 +199,7 @@
             while ($related->have_posts()) : $related->the_post();
               get_template_part('templates/layouts/block', 'post');
             endwhile;
-
             wp_reset_query();
-
             // This isn't working right now... what is the full URL?
             // if ($related->found_posts > $related->post_count) {
             //   echo '<a href="/district-posts/' . $post->post_name . '">See all related posts &raquo;</a>';
@@ -245,7 +241,6 @@
         $yt_name = $umatch[0];
         $yt_type = 'user';
       }
-
       if (isset($yt_name)) { ?>
         <div class="s-box">
           <div class="callout">
@@ -280,48 +275,151 @@
       <?php } ?>
     </div>
 
-    <?php if (have_rows('chart_section')): ?>
+    <?php if (have_rows('chart_section_districts')): ?>
 
-      <?php while (have_rows('chart_section')) : the_row(); ?>
+      <?php while (have_rows('chart_section_districts')) : the_row(); ?>
 
-        <div class="chart-section extra-bottom-margin clearfix">
+        <?php if( get_row_layout() == 'racial_breakdown' ): ?>
 
-          <div class="col-md-12 callout">
+          <div class="chart-section extra-bottom-margin clearfix">
 
-            <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
+            <div class="col-md-12 callout">
 
-            <h4><?php the_sub_field('source') ?></h4>
+              <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
+
+              <h4><?php the_sub_field('source') ?></h4>
+
+            </div>
+
+            <?php if( have_rows('black') ): ?>
+              <?php while( have_rows('black') ): the_row();  ?>
+                <div class="col-md-3">
+
+                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                    <p class="h1" style="margin-bottom: 1em;">
+                      <span class="big"><?php the_sub_field('percentage') ?></span>
+                    </p>
+
+                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                </div>
+
+              <?php endwhile; ?>
+            <?php endif; ?>
+
+            <?php if( have_rows('american_indian') ): ?>
+              <?php while( have_rows('american_indian') ): the_row();  ?>
+                <div class="col-md-3">
+
+                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                    <p class="h1" style="margin-bottom: 1em;">
+                      <span class="big"><?php the_sub_field('percentage') ?></span>
+                    </p>
+
+                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                </div>
+
+              <?php endwhile; ?>
+            <?php endif; ?>
+
+            <?php if( have_rows('asian') ): ?>
+              <?php while( have_rows('asian') ): the_row();  ?>
+                <div class="col-md-3">
+
+                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                    <p class="h1" style="margin-bottom: 1em;">
+                      <span class="big"><?php the_sub_field('percentage') ?></span>
+                    </p>
+
+                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                </div>
+
+              <?php endwhile; ?>
+            <?php endif; ?>
+
+            <?php if( have_rows('white') ): ?>
+              <?php while( have_rows('white') ): the_row();  ?>
+                <div class="col-md-3">
+
+                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                    <p class="h1" style="margin-bottom: 1em;">
+                      <span class="big"><?php the_sub_field('percentage') ?></span>
+                    </p>
+
+                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                </div>
+
+              <?php endwhile; ?>
+            <?php endif; ?>
+
+            <?php if( have_rows('hispanic') ): ?>
+              <?php while( have_rows('hispanic') ): the_row();  ?>
+                <div class="col-md-3">
+
+                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                    <p class="h1" style="margin-bottom: 1em;">
+                      <span class="big"><?php the_sub_field('percentage') ?></span>
+                    </p>
+
+                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                </div>
+
+              <?php endwhile; ?>
+            <?php endif; ?>
+
+            <?php if( have_rows('pacific-islander') ): ?>
+              <?php while( have_rows('pacific-islander') ): the_row();  ?>
+                <div class="col-md-3">
+
+                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                    <p class="h1" style="margin-bottom: 1em;">
+                      <span class="big"><?php the_sub_field('percentage') ?></span>
+                    </p>
+
+                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                </div>
+
+              <?php endwhile; ?>
+            <?php endif; ?>
+
+            <?php if( have_rows('two-or-more') ): ?>
+              <?php while( have_rows('two-or-more') ): the_row();  ?>
+                <div class="col-md-3">
+
+                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                    <p class="h1" style="margin-bottom: 1em;">
+                      <span class="big"><?php the_sub_field('percentage') ?></span>
+                    </p>
+
+                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                </div>
+
+              <?php endwhile; ?>
+            <?php endif; ?>
 
           </div>
 
-          <?php while (have_rows('chart')) : the_row(); ?>
-            <?php if (!get_sub_field('hide')): ?>
-              <div class="col-md-4">
-
-                <h6 style="color: #731454"><?php the_sub_field('chart_name'); ?></h6>
-                <p><?php the_sub_field('subtitle'); ?></p>
-
-                <?php if (get_sub_field('chart_type') == 'number'): ?>
-
-                  <p class="h1" style="margin-bottom: 1em;">
-                    <span class="big"><?php the_sub_field('number') ?></span>
-                  </p>
-
-                  <p><small><?php the_sub_field('number_description') ?></small></p>
-
-                <?php elseif (get_sub_field('chart_type') == 'image'): ?>
-
-                  <?php $image = get_sub_field('image'); ?>
-
-                  <img src="<?php echo $image['url'] ?>">
-
-                <?php endif; ?>
-
-              </div>
-            <?php endif; ?>
-          <?php endwhile; ?>
-
-        </div>
+          <?php endif; ?>
 
       <?php endwhile; ?>
 

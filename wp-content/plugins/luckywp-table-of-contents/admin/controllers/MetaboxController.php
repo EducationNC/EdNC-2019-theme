@@ -77,7 +77,7 @@ class MetaboxController extends AdminController
                 $model->toPostSettings($postSettings);
                 $postSettings->save();
                 echo CustomizeSuccess::widget([
-                    'after' => '<script>$(document).trigger("lwptocMetaboxCustomized", ' . Json::encode([
+                    'after' => '<script>jQuery(document).trigger("lwptocMetaboxCustomized", ' . Json::encode([
                             'metabox' => Metabox::widget(['post' => $post]),
                         ]) . ');</script>',
                 ]);

@@ -27,7 +27,7 @@ class WIS_WidgetsPage extends WIS_Page {
 	 * Mainly used to navigate between pages.
 	 *
 	 * @since 1.0.0
-	 * @see   FactoryPages420_AdminPage
+	 * @see   FactoryPages423_AdminPage
 	 *
 	 * @var string
 	 */
@@ -103,7 +103,7 @@ class WIS_WidgetsPage extends WIS_Page {
 	 * @param WIS_Plugin $plugin
 	 */
 	public function __construct( $plugin ) {
-		$this->id         = $plugin->getPrefix()."widgets";
+		$this->id         = "widgets";
 		$this->page_title = __( 'Social Slider Widgets', 'instagram-slider-widget' );
 		$this->menu_title = __( 'Social Slider Widgets', 'instagram-slider-widget' );
 		$this->menu_sub_title = __( 'Widgets', 'instagram-slider-widget' );;

@@ -12,17 +12,17 @@
 
 jQuery(function ($) {
 
-    $(document).on('click', '.wapt-control-btn', function () {
+    $(document).on('click', '.wis-control-btn', function () {
 
-        $('.wapt-control-btn').hide();
+        $('.wis-control-btn').hide();
 
-        var wrapper = $('#wapt-license-wrapper'),
+        var wrapper = $('#wis-license-wrapper'),
             loader = wrapper.data('loader');
 
-        $(this).after('<img class="wapt-loader" src="' + loader + '">');
+        $(this).after('<img class="wis-loader" src="' + loader + '">');
 
         var data = {
-            action: 'wapt_check_license',
+            action: 'wis_check_license',
             _wpnonce: $('#_wpnonce').val(),
             license_action: $(this).data('action'),
             licensekey: ''
@@ -41,8 +41,8 @@ jQuery(function ($) {
 
                 if (!response || !response.success) {
 
-                    $('.wapt-control-btn').show();
-                    $('.wapt-loader').remove();
+                    $('.wis-control-btn').show();
+                    $('.wis-loader').remove();
 
                     if (response.data) {
                         console.log(response.data.error_message);
@@ -62,8 +62,8 @@ jQuery(function ($) {
             },
             error: function (xhr, ajaxOptions, thrownError) {
 
-                $('.wapt-control-btn').show();
-                $('.wapt-loader').remove();
+                $('.wis-control-btn').show();
+                $('.wis-loader').remove();
 
                 console.log(xhr.status, xhr.responseText, thrownError);
 

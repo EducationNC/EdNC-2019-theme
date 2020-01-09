@@ -49,7 +49,7 @@ class WidgetController extends AdminController
                     return $v !== null;
                 });
                 echo CustomizeSuccess::widget([
-                    'after' => '<script>$(document).trigger("lwptocWidgetCustomized", ' . Json::encode([
+                    'after' => '<script>jQuery(document).trigger("lwptocWidgetCustomized", ' . Json::encode([
                             'id' => $widgetId,
                             'override' => Widget::overrideHtml($attrs),
                             'value' => Json::encode($attrs),

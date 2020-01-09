@@ -13,13 +13,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @version       1.0
  */
 
-class WIS_Plugin extends Wbcr_Factory420_Plugin {
+class WIS_Plugin extends Wbcr_Factory423_Plugin {
 
 	/**
 	 * @see self::app()
-	 * @var Wbcr_Factory420_Plugin
+	 * @var Wbcr_Factory423_Plugin
 	 */
 	private static $app;
+
+	/**
+	 * @var array Список слайдеров
+	 */
+	public $sliders = array();
 
 	/**
 	 * Статический метод для быстрого доступа к интерфейсу плагина.
@@ -30,7 +35,7 @@ class WIS_Plugin extends Wbcr_Factory420_Plugin {
 	 * Используется для получения настроек плагина, информации о плагине, для доступа к вспомогательным
 	 * классам.
 	 *
-	 * @return Wbcr_Factory420_Plugin
+	 * @return Wbcr_Factory423_Plugin
 	 */
 	public static function app() {
 		return self::$app;
@@ -81,11 +86,11 @@ class WIS_Plugin extends Wbcr_Factory420_Plugin {
 	 * Регистрирует классы страниц в плагине
 	 */
 	private function register_pages() {
-//		require_once WIS_PLUGIN_DIR . '/admin/class-wis-page.php';
-//		self::app()->registerPage( 'WIS_WidgetsPage', WIS_PLUGIN_DIR . '/admin/pages/widgets.php' );
-//		self::app()->registerPage( 'WIS_SettingsPage', WIS_PLUGIN_DIR . '/admin/pages/settings.php' );
-//		self::app()->registerPage( 'WIS_LicensePage', WIS_PLUGIN_DIR . '/admin/pages/license.php' );
-//		self::app()->registerPage( 'WIS_AboutPage', WIS_PLUGIN_DIR . '/admin/pages/about.php' );
+		require_once WIS_PLUGIN_DIR . '/admin/class-wis-page.php';
+		self::app()->registerPage( 'WIS_WidgetsPage', WIS_PLUGIN_DIR . '/admin/pages/widgets.php' );
+		self::app()->registerPage( 'WIS_SettingsPage', WIS_PLUGIN_DIR . '/admin/pages/settings.php' );
+		self::app()->registerPage( 'WIS_LicensePage', WIS_PLUGIN_DIR . '/admin/pages/license.php' );
+		self::app()->registerPage( 'WIS_AboutPage', WIS_PLUGIN_DIR . '/admin/pages/about.php' );
 	}
 
 	/**
@@ -107,7 +112,7 @@ class WIS_Plugin extends Wbcr_Factory420_Plugin {
 	}
 
 	/**
-	 * Код для админки и фронтенда
+	 * Код для фронтенда
 	 */
 	private function front_scripts() {
 		add_action( 'wp_enqueue_scripts', [$this, 'enqueue_assets'] );
@@ -117,11 +122,57 @@ class WIS_Plugin extends Wbcr_Factory420_Plugin {
 	{
 		wp_enqueue_style( 'jr-insta-admin-styles', WIS_PLUGIN_URL.'/admin/assets/css/jr-insta-admin.css', array(), WIS_PLUGIN_VERSION );
 		wp_enqueue_script( 'jr-insta-admin-script', WIS_PLUGIN_URL.'/admin/assets/js/jr-insta-admin.js',  array( 'jquery' ), WIS_PLUGIN_VERSION, true );
+		wp_localize_script('jr-insta-admin-script', 'wis', array(
+			'nonce' => wp_create_nonce('wis_nonce'),
+			'remove_account' => __('Are you sure want to delete this account?', 'instagram-slider-widget'),
+		));
+		wp_enqueue_script( 'jr-tinymce-button', WIS_PLUGIN_URL.'/admin/assets/js/tinymce_button.js',  array( 'jquery' ), WIS_PLUGIN_VERSION, false );
+		$wis_shortcodes = $this->get_isw_widgets();
+		wp_localize_script('jr-insta-admin-script', 'wis_shortcodes', $wis_shortcodes);
+		wp_localize_script('jr-insta-admin-script', 'add_account_nonce', array(
+			'nonce' => wp_create_nonce("addAccountByToken"),
+		));
+
 	}
 
 	public function enqueue_assets()
 	{
-		wp_enqueue_style( 'instag-slider', WIS_PLUGIN_URL.'/assets/css/instag-slider.css', array(), WIS_PLUGIN_VERSION );
-		wp_enqueue_script( 'jquery-pllexi-slider', WIS_PLUGIN_URL.'/assets/js/jquery.flexslider-min.js', array( 'jquery' ), '2.2', false );
 	}
+
+	/**
+	 * Метод проверяет активацию премиум плагина и наличие действующего лицензионнного ключа
+	 *
+	 * @return bool
+	 */
+	public function is_premium()
+	{
+		if(
+			$this->premium->is_active() &&
+			$this->premium->is_activate()
+			//&& is_plugin_active( "{$this->premium->get_setting('slug')}/{$this->premium->get_setting('slug')}.php" )
+		)
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * Получает все виджеты этого плагина
+	 *
+	 * @return array
+	 */
+	public function get_isw_widgets()
+	{
+		$settings = WIS_InstagramSlider::app()->get_settings();
+		$result = array();
+		foreach ($settings as $key => $widget)
+		{
+			$result[] = array(
+				'title' => $widget['title'],
+				'id' => $key,
+			);
+		}
+		return $result;
+	}
+
 }

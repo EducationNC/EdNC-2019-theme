@@ -13,7 +13,7 @@ class NF_AJAX_Controllers_Submission extends NF_Abstracts_Controller
     public function __construct()
     {
         if( isset( $_POST[ 'nf_resume' ] ) && isset( $_COOKIE[ 'nf_wp_session' ] ) ){
-            add_action( 'ninja_forms_loaded', array( $this, 'resume' ) );
+            add_action( 'init', array( $this, 'resume' ) );
             return;
         }
 
@@ -163,6 +163,11 @@ class NF_AJAX_Controllers_Submission extends NF_Abstracts_Controller
             $form_settings = $form->get_settings();
         }
 
+	    // Init Form Merge Tags.
+	    $form_merge_tags = Ninja_Forms()->merge_tags[ 'form' ];
+	    $form_merge_tags->set_form_id( $this->_form_id );
+	    $form_merge_tags->set_form_title( $form_settings['title'] );
+
         $this->_data[ 'form_id' ] = $this->_form_data[ 'form_id' ] = $this->_form_id;
         $this->_data[ 'settings' ] = $form_settings;
         $this->_data[ 'settings' ][ 'is_preview' ] = $this->is_preview();
@@ -261,7 +266,10 @@ class NF_AJAX_Controllers_Submission extends NF_Abstracts_Controller
         | Check for unique field settings.
         |--------------------------------------------------------------------------
         */
-        if ( isset ( $this->_data[ 'settings' ][ 'unique_field' ] ) && ! empty( $this->_data[ 'settings' ][ 'unique_field' ] ) ) {
+        if ( isset( $this->_data[ 'resume' ] ) && $this->_data[ 'resume' ] ){
+            // On Resume Submission, we don't need to run this check again.
+            // This section intentionally left blank.
+        } elseif ( isset ( $this->_data[ 'settings' ][ 'unique_field' ] ) && ! empty( $this->_data[ 'settings' ][ 'unique_field' ] ) ) {
             /*
              * Get our unique field
              */
@@ -273,17 +281,19 @@ class NF_AJAX_Controllers_Submission extends NF_Abstracts_Controller
                 $unique_field_value = serialize( $unique_field_value );
             }
 
-            /*
-             * Check our db for the value submitted.
-             */
-            
-            global $wpdb;
-            // @TODO: Rewrite this to use our submissions API.
-            $sql = $wpdb->prepare( "SELECT COUNT(m.meta_id) FROM `" . $wpdb->prefix . "postmeta` AS m LEFT JOIN `" . $wpdb->prefix . "posts` AS p ON p.id = m.post_id WHERE m.meta_key = '_field_%d' AND m.meta_value = '%s' AND p.post_status = 'publish'", $unique_field_id, $unique_field_value );
-            $result = $wpdb->get_results( $sql, 'ARRAY_N' );
-            if ( intval( $result[ 0 ][ 0 ] ) > 0 ) {
-                $this->_errors['fields'][ $unique_field_id ] = array( 'slug' => 'unique_field', 'message' => $unique_field_error );
-                $this->_respond();
+            if ( ! empty($unique_field_value) ) {
+                /*
+                 * Check our db for the value submitted.
+                 */
+                
+                global $wpdb;
+                // @TODO: Rewrite this to use our submissions API.
+                $sql = $wpdb->prepare( "SELECT COUNT(m.meta_id) FROM `" . $wpdb->prefix . "postmeta` AS m LEFT JOIN `" . $wpdb->prefix . "posts` AS p ON p.id = m.post_id WHERE m.meta_key = '_field_%d' AND m.meta_value = '%s' AND p.post_status = 'publish'", $unique_field_id, $unique_field_value );
+                $result = $wpdb->get_results( $sql, 'ARRAY_N' );
+                if ( intval( $result[ 0 ][ 0 ] ) > 0 ) {
+                    $this->_errors['fields'][ $unique_field_id ] = array( 'slug' => 'unique_field', 'message' => $unique_field_error );
+                    $this->_respond();
+                }
             }
         }
 

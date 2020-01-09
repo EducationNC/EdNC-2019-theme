@@ -249,4 +249,13 @@ class Functions
 
 		return $ipAddress;
 	}
+
+	public static function clearAllTransients()
+	{
+		global $SGPB_TRANSIENT_CONFIG;
+
+		foreach ($SGPB_TRANSIENT_CONFIG as $eachTransient) {
+			delete_transient($eachTransient);
+		}
+	}
 }

@@ -31,7 +31,10 @@ class WpWidget extends WP_Widget
     {
         $attrs = Shortcode::attrsFromJson(ArrayHelper::getValue($instance, 'config', ''));
         $attrs = apply_filters('lwptoc_widget_attrs', $attrs, $this);
-        echo do_shortcode(Core::$plugin->shortcode->make($attrs));
+        $html = do_shortcode(Core::$plugin->shortcode->make($attrs));
+        if ($html) {
+            echo $args['before_widget'] . $html . $args['after_widget'];
+        }
     }
 
     /**

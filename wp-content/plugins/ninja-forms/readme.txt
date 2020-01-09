@@ -1,9 +1,9 @@
 === Ninja Forms - The Easy and Powerful Forms Builder ===
 Contributors: wpninjasllc, kstover, jameslaws, kbjohnson90, klhall1987, krmoorhouse, jmcelhaney, wpnzach, ericwindhamsd
 Tags: form, forms, contact form, custom form, form builder, form creator, form manager, form creation, contact forms, custom forms, forms builder, forms creator, forms manager, forms creation, form administration,
-Requires at least: 5.0
-Tested up to: 5.2
-Stable tag: 3.4.18
+Requires at least: 5.1
+Tested up to: 5.3
+Stable tag: 3.4.22
 License: GPLv2 or later
 
 Ninja Forms is an easy to use drag and drop form builder with an intuitive UI that can be used to create contact forms, email subscription forms, lead generation forms, WordPress registration and login forms, order forms, payment and donation forms, and much more!
@@ -137,34 +137,70 @@ This section describes how to install the plugin and get it working.
 
 == Upgrade Notice ==
 
-= 3.4.18 (15 August 2019) =
-
-*Security:*
-
-* Removed an outdated template that was localizing a couple server variables.
+= 3.4.22 (21 November 2019) =
 
 *Bugs:*
 
-* Currency masks should no longer prevent text fields from working properly in calculations.
-* Cleaned up a few php notices due to older functions.
-* Corrected the issue that was preventing required updates from completing. (Required updates remain disabled for the time being.)
-* Number fields with a minimum value will now display that value as a placeholder, not a value.
-* Switched the first and last name translations in our French translation pack.
-* Added a missing attribute that was required by screen readers to the fields on our submission editor page.
-* Resolved an error that was causing multi-select lists to not work properly in calculations.
-* Submission limits should now be honored for forms that were displayed before the limit was reached.
-* Dynamic option values should now work for ALL list types.
-* Resolved an issue that was causing forms to display as code in some page builders.
-* SendWP registration should no longer cause an error when the SendWP plugin is already installed.
-* Resolved an issue that was causing several of our action settings to display improperly in Firefox.
-* Corrected a problem that was sometimes causing submission of forms with a PayPal action to fail.
+* The unique field restriction should no longer block payment actions from completing.
+* Corrected an error that was preventing the current list of favorite fields from displaying in any location.
+* Updated some of our builder styles to account for updates in WordPress 5.3.
+* Corrected an error that sometimes caused the images in the select image field to not be found.
+* Disabled an internal error logging function that was sometimes causing bloat in our database tables.
 
 *Changes:*
 
-* The Advanced tab in the form builder should now communicate that developer mode is disabled, if that is the case.
-* Added currency support for the Russian Ruble and the Chinese Yuan.
+* Email actions now support file attachments from the WordPress media library.
 
 == Changelog ==
+
+= 3.4.22 (21 November 2019) =
+
+*Bugs:*
+
+* The unique field restriction should no longer block payment actions from completing.
+* Corrected an error that was preventing the current list of favorite fields from displaying in any location.
+* Updated some of our builder styles to account for updates in WordPress 5.3.
+* Corrected an error that sometimes caused the images in the select image field to not be found.
+* Disabled an internal error logging function that was sometimes causing bloat in our database tables.
+
+*Changes:*
+
+* Email actions now support file attachments from the WordPress media library.
+
+= 3.4.21 (11 November 2019) =
+
+*Bugs:*
+
+* Added a missing label to our honeypot field, in case styling errors somehow make it visible.
+* Removed an errant console message from our admin dashboard.
+* Resolved an issue that was sometimes resulting in warnings being written to logs on form load.
+* Modified our Gutenberg block to prevent it from displaying improperly on Bedrock installations.
+
+*Changes:*
+
+* The select image field has arrived!
+* Added functionality for resetting the public link on a form.
+* Forms in the dashboard can now be sorted by shortcode (ID).
+* Added merge tags for form title, form id, and username (if authenticated).
+
+= 3.4.20 (19 September 2019) =
+
+*Bugs:*
+
+* Resolved an issue that was causing public links to fail on duplicated forms.
+* The merge tag selector box in the form builder should no longer appear halfway off the page on smaller screen sizes.
+* Long field keys should no longer cause the merge tag list to cover up the categories in the merge tag selector box.
+* Resolved an issue that was causing some actions to fail after returning from a redirected payment gateway.
+* List field options on imported forms should now appear in the correct order in the form builder.
+
+= 3.4.19 (16 September 2019) =
+
+*Bugs:*
+
+* Resolved an error that rarely caused form import to output as successful, when it had actually failed.
+* The unique field restriction should no longer honor "nothing" as a valid value.
+* Removed some deprecated dependencies that were throwing notices in the block editor.
+* Updated list field item import in the form builder to make it less confusing.
 
 = 3.4.18 (15 August 2019) =
 

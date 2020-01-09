@@ -26,8 +26,9 @@ add_action( 'delete_post', 'relevanssi_remove_doc' );
 
 // Comment indexing.
 add_action( 'comment_post', 'relevanssi_index_comment' );
-add_action( 'edit_comment', 'relevanssi_comment_edit' );
-add_action( 'delete_comment', 'relevanssi_comment_remove' );
+add_action( 'edit_comment', 'relevanssi_index_comment' );
+add_action( 'trashed_comment', 'relevanssi_index_comment' );
+add_action( 'deleted_comment', 'relevanssi_index_comment' );
 
 // Attachment indexing.
 add_action( 'delete_attachment', 'relevanssi_remove_doc' );
@@ -42,9 +43,11 @@ add_filter( 'relevanssi_remove_punctuation', 'relevanssi_remove_punct' );
 add_filter( 'relevanssi_post_ok', 'relevanssi_default_post_ok', 9, 2 );
 add_filter( 'relevanssi_query_filter', 'relevanssi_limit_filter' );
 add_action( 'relevanssi_trim_logs', 'relevanssi_trim_logs' );
+add_action( 'relevanssi_custom_field_value', 'relevanssi_filter_custom_fields', 10, 2 );
 
-// Plugin and theme compatibility.
+// Page builder shortcodes.
 add_filter( 'relevanssi_pre_excerpt_content', 'relevanssi_remove_page_builder_shortcodes', 9 );
+add_filter( 'relevanssi_post_content', 'relevanssi_remove_page_builder_shortcodes', 9 );
 
 // Permalink handling.
 add_filter( 'the_permalink', 'relevanssi_permalink', 10, 2 );
@@ -79,18 +82,16 @@ function relevanssi_init() {
 	}
 
 	if ( 'done' !== get_option( 'relevanssi_indexed' ) ) {
-		/**
-		 * Prints out the "You do not have an index!" warning.
-		 */
-		function relevanssi_warning() {
-			$plugin = 'relevanssi';
-			if ( RELEVANSSI_PREMIUM ) {
-				$plugin = 'relevanssi-premium';
-			}
-			printf( "<div id='relevanssi-warning' class='update-nag'><p><strong>%s</strong></p></div>", esc_html__( 'You do not have an index! Remember to build the index (click the "Build the index" button), otherwise searching won\'t work.', 'relevanssi' ) );
-		}
 		if ( 'options-general.php' === $pagenow && $on_relevanssi_page ) {
-			add_action( 'admin_notices', 'relevanssi_warning' );
+			add_action(
+				'admin_notices',
+				function() {
+					printf(
+						"<div id='relevanssi-warning' class='update-nag'><p><strong>%s</strong></p></div>",
+						esc_html__( 'You do not have an index! Remember to build the index (click the "Build the index" button), otherwise searching won\'t work.', 'relevanssi' )
+					);
+				}
+			);
 		}
 	}
 
@@ -192,6 +193,18 @@ function relevanssi_init() {
 
 	if ( function_exists( 'pmpro_has_membership_access' ) ) {
 		require_once 'compatibility/paidmembershippro.php';
+	}
+
+	// Always required, the functions check if TablePress is active.
+	require_once 'compatibility/tablepress.php';
+
+	if ( defined( 'NINJA_TABLES_VERSION' ) ) {
+		require_once 'compatibility/ninjatables.php';
+	}
+
+	// For problems in 2.5.0 / 4.4.0. Remove eventually.
+	if ( empty( get_option( 'relevanssi_stopwords', '' ) ) ) {
+		relevanssi_populate_stopwords();
 	}
 }
 
@@ -417,7 +430,7 @@ function relevanssi_create_database_tables( $relevanssi_db_version ) {
 		update_option( 'relevanssi_db_version', $relevanssi_db_version );
 	}
 
-	if ( $wpdb->get_var( "SELECT COUNT(*) FROM $relevanssi_stopword_table WHERE 1" ) < 1 ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.NoCaching
+	if ( empty( get_option( 'relevanssi_stopwords', '' ) ) ) {
 		relevanssi_populate_stopwords();
 	}
 }

@@ -199,6 +199,10 @@ class AdminHelper
 		if (isset($selectedValue)) {
 			$savedData = $selectedValue;
 		}
+		if (empty($savedData)) {
+			$savedData = '';
+		}
+
 		if (!empty($attrs) && isset($attrs)) {
 
 			foreach ($attrs as $attrName => $attrValue) {
@@ -208,6 +212,7 @@ class AdminHelper
 				$attrString .= ''.$attrName.'="'.$attrValue.'" ';
 			}
 		}
+
 		$input = "<input $attrString value=\"".esc_attr($savedData)."\">";
 
 		return $input;
@@ -307,7 +312,7 @@ class AdminHelper
 			return 'inherit';
 		}
 
-		$size = (int)$dimension . 'px';
+		$size = (int)$dimension.'px';
 		// If user write dimension in px or % we give that dimension to target otherwise the default value will be px
 		if (strpos($dimension, '%') || strpos($dimension, 'px')) {
 			$size = $dimension;
@@ -491,7 +496,8 @@ class AdminHelper
 
 		$savedUserRoles = self::getPopupPostAllowedUserRoles();
 		$currentUserRole = self::getCurrentUserRole();
-		if (!is_array($savedUserRoles) || !is_array($currentUserRole)) {
+		$userSavedRoles = get_option('sgpb-user-roles');
+		if (!is_array($savedUserRoles) || !is_array($currentUserRole) || empty($userSavedRoles)) {
 			return true;
 		}
 
@@ -519,12 +525,12 @@ class AdminHelper
 			if (!empty($excludesPopups)) {
 				foreach ($excludesPopups as $excludesPopupId) {
 					if ($excludesPopupId != $id) {
-						$popupIdTitles[$id] = $title . ' - ' . $type;
+						$popupIdTitles[$id] = $title.' - '.$type;
 					}
 				}
 			}
 			else {
-				$popupIdTitles[$id] = $title . ' - ' . $type;
+				$popupIdTitles[$id] = $title.' - '.$type;
 			}
 		}
 
@@ -835,22 +841,31 @@ class AdminHelper
 	 * Get image encoded data from URL
 	 *
 	 * @param $imageUrl
+	 * @param $shouldNotConvertBase64
 	 *
 	 * @return string
 	 */
-	public static function getImageDataFromUrl($imageUrl)
-	{
-		$data = '';
-		$remoteData = wp_remote_get($imageUrl);
 
-		if (is_wp_error($remoteData)) {
-			return $imageUrl;
+	public static function getImageDataFromUrl($imageUrl, $shouldNotConvertBase64 = false)
+	{
+		$remoteData = wp_remote_get($imageUrl);
+		$originalImageUrl = $imageUrl;
+		if (is_wp_error($remoteData) || (isset($remoteData['response']) && $remoteData['response']['code'] == 404)) {
+			if ($shouldNotConvertBase64) {
+				$imageUrl = SG_POPUP_IMG_URL.'NoImage.png';
+			}
+		}
+		else if (is_wp_error($remoteData) && empty($remoteData->error_data)) {
+			$imageUrl = $originalImageUrl;
+		}
+		if (!$shouldNotConvertBase64) {
+			$imageData = wp_remote_retrieve_body($remoteData);
+			$imageUrl = base64_encode($imageData);
 		}
 
-		$imageData = wp_remote_retrieve_body($remoteData);
-
-		return base64_encode($imageData);
+		return $imageUrl;
 	}
+
 
 	public static function deleteUserFromSubscribers($params = array())
 	{
@@ -1384,12 +1399,14 @@ class AdminHelper
 	public static function getBannerText()
 	{
 		$bannerText = get_option('sgpb-banner-remote-get');
+
 		return $bannerText;
 	}
 
 	public static function getRightMetaboxBannerText()
 	{
 		$bannerText = get_option('sgpb-metabox-banner-remote-get');
+
 		return $bannerText;
 	}
 
@@ -1416,7 +1433,7 @@ class AdminHelper
 					if ($excludesPopupId != $id) {
 						$array = array();
 						$array['id'] = $id;
-						$array['title'] = $title . ' - ' . $type;
+						$array['title'] = $title.' - '.$type;
 						$popupIdTitles[] = $array;
 					}
 				}
@@ -1424,7 +1441,7 @@ class AdminHelper
 			else {
 				$array = array();
 				$array['id'] = $id;
-				$array['title'] = $title . ' - ' . $type;
+				$array['title'] = $title.' - '.$type;
 				$popupIdTitles[] = $array;
 			}
 		}
@@ -1763,7 +1780,7 @@ class AdminHelper
 	public static function removeAllNonPrintableCharacters($title, $defaultValue)
 	{
 		$titleRes = $title;
-		$pattern  ='/[\\\^£$%&*()}{@#~?><>,|=_+¬-]/';
+		$pattern  = '/[\\\^£$%&*()}{@#~?><>,|=_+¬-]/';
 		$title = preg_replace($pattern, '', $title);
 		$title = mb_ereg_replace($pattern, '', $title);
 		$title = htmlspecialchars($title, ENT_IGNORE, 'UTF-8');
@@ -1773,5 +1790,397 @@ class AdminHelper
 		}
 
 		return $titleRes;
+	}
+
+	public static function renderCustomScripts($popupId)
+	{
+		$finalResult = '';
+		$postMeta = get_post_meta($popupId, 'sg_popup_scripts', true);
+		if (empty($postMeta)) {
+			return '';
+		}
+		$defaultData = \ConfigDataHelper::defaultData();
+
+		// get scripts
+		$jsPostMeta = @$postMeta['js'];
+		$jsDefaultData = $defaultData['customEditorContent']['js'];
+		$customScripts = '<script id="sgpb-custom-script-'.$popupId.'">';
+		$finalContent = '';
+		if (!empty($jsPostMeta)) {
+			foreach ($jsDefaultData as $key => $value) {
+				$eventName = 'sgpb'.$key;
+				$content = @$jsPostMeta['sgpb-'.$key];
+				if (empty($content) || $key == 'ShouldOpen' || $key == 'ShouldClose') {
+					continue;
+				}
+				$content = str_replace('popupId', $popupId, $content);
+				$content = html_entity_decode($content);
+
+				$finalContent .= 'sgAddEvent(window, "'.$eventName.'", function(e) {';
+				$finalContent .= 'if (e.detail.popupId == "'.$popupId.'") {';
+				$finalContent .= $content;
+				$finalContent .= '};';
+				$finalContent .= '});';
+			}
+		}
+		$customScripts .= $finalContent;
+		$customScripts .= '</script>';
+
+		// get styles
+		$cssPostMeta = @$postMeta['css'];
+		$customStyles = '<style id="sgpb-custom-style-'.$popupId.'">';
+		$finalContent = '';
+		if (!empty($cssPostMeta)) {
+			$finalContent = str_replace('popupId', $popupId, $cssPostMeta);
+			$finalContent = html_entity_decode($finalContent);
+		}
+		$customStyles .= $finalContent;
+		$customStyles .= '</style>';
+
+		$finalResult .= $customScripts;
+		$finalResult .= $customStyles;
+
+		return $finalResult;
+	}
+
+	public static function removeSelectedTypeOptions($type)
+	{
+		switch ($type) {
+			case 'cron':
+				$crons = _get_cron_array();
+				foreach ($crons as $key => $value) {
+					foreach ($value as $key => $body) {
+						if (strstr($key, 'sgpb')) {
+							wp_clear_scheduled_hook($key);
+						}
+					}
+				}
+				break;
+		}
+	}
+
+	public static function getSystemInfoText() {
+		global $wpdb;
+
+		$browser = self::getBrowser();
+
+		// Get theme info
+		if (get_bloginfo('version') < '3.4') {
+			$themeData = get_theme_data(get_stylesheet_directory().'/style.css');
+			$theme = $themeData['Name'].' '.$themeData['Version'];
+		}
+		else {
+			$themeData = wp_get_theme();
+			$theme = $themeData->Name.' '.$themeData->Version;
+		}
+
+		// Try to identify the hosting provider
+		$host = self::getHost();
+
+		$systemInfoContent = '### Start System Info ###'."\n\n";
+
+		// Start with the basics...
+		$systemInfoContent .= '-- Site Info'."\n\n";
+		$systemInfoContent .= 'Site URL:                 '.site_url()."\n";
+		$systemInfoContent .= 'Home URL:                 '.home_url()."\n";
+		$systemInfoContent .= 'Multisite:                '.(is_multisite() ? 'Yes' : 'No')."\n";
+
+		// Can we determine the site's host?
+		if ($host) {
+			$systemInfoContent .= "\n".'-- Hosting Provider'."\n\n";
+			$systemInfoContent .= 'Host:                     '.$host."\n";
+		}
+
+		// The local users' browser information, handled by the Browser class
+		$systemInfoContent .= "\n".'-- User Browser'."\n\n";
+		$systemInfoContent .= $browser;
+
+		// WordPress configuration
+		$systemInfoContent .= "\n".'-- WordPress Configuration'."\n\n";
+		$systemInfoContent .= 'Version:                  '.get_bloginfo('version')."\n";
+		$systemInfoContent .= 'Language:                 '.(defined('WPLANG') && WPLANG ? WPLANG : 'en_US')."\n";
+		$systemInfoContent .= 'Permalink Structure:      '.(get_option('permalink_structure') ? get_option('permalink_structure') : 'Default')."\n";
+		$systemInfoContent .= 'Active Theme:             '.$theme."\n";
+		$systemInfoContent .= 'Show On Front:            '.get_option('show_on_front')."\n";
+
+		// Only show page specs if frontpage is set to 'page'
+		if (get_option('show_on_front') == 'page') {
+			$frontPageId = get_option('page_on_front');
+			$blogPageId  = get_option('page_for_posts');
+
+			$systemInfoContent .= 'Page On Front:            '.($frontPageId != 0 ? get_the_title($frontPageId).' (#'.$frontPageId.')' : 'Unset')."\n";
+			$systemInfoContent .= 'Page For Posts:           '.($blogPageId != 0 ? get_the_title($blogPageId).' (#'.$blogPageId.')' : 'Unset')."\n";
+		}
+
+		$systemInfoContent .= 'Table Prefix:             '.'Prefix: '.$wpdb->prefix.'  Length: '.strlen($wpdb->prefix ).'   Status: '.( strlen($wpdb->prefix) > 16 ? 'ERROR: Too long' : 'Acceptable')."\n";
+		$systemInfoContent .= 'WP_DEBUG:                 '.(defined('WP_DEBUG') ? WP_DEBUG ? 'Enabled' : 'Disabled' : 'Not set')."\n";
+		$systemInfoContent .= 'Memory Limit:             '.WP_MEMORY_LIMIT."\n";
+		$systemInfoContent .= 'Registered Post Stati:    '.implode(', ', get_post_stati())."\n";
+
+		// Must-use plugins
+		$muplugins = get_mu_plugins();
+		if ($muplugins && count($muplugins)) {
+			$systemInfoContent .= "\n".'-- Must-Use Plugins'."\n\n";
+
+			foreach ($muplugins as $plugin => $plugin_data) {
+				$systemInfoContent .= $plugin_data['Name'].': '.$plugin_data['Version']."\n";
+			}
+		}
+
+		$registered = AdminHelper::getOption('SG_POPUP_BUILDER_REGISTERED_PLUGINS');
+		$registered = json_decode($registered, true);
+
+		if (empty($registered)) {
+			return false;
+		}
+		// remove free package data, we don't need it
+		array_shift($registered);
+
+		$systemInfoContent .= "\n".'-- Popup Builder License Data'."\n\n";
+		if (!empty($registered)) {
+			foreach ($registered as $singleExntensionData) {
+				$key = $singleExntensionData['options']['licence']['key'];
+				$name = $singleExntensionData['options']['licence']['itemName'];
+				$licenseKey = 'No license';
+				if (!empty(self::getOption('sgpb-license-key-'.$key))) {
+					$licenseKey = self::getOption('sgpb-license-key-'.$key);
+				}
+				$licenseStatus = 'Inactive';
+				if (self::getOption('sgpb-license-status-'.$key) == 'valid') {
+					$licenseStatus = 'Active';
+				}
+
+				$systemInfoContent .= 'Name:             '.$name."\n";
+				$systemInfoContent .= 'License key:      '.$licenseKey."\n";
+				$systemInfoContent .= 'License status:  '.$licenseStatus."\n";
+				$systemInfoContent .= "\n";
+			}
+		}
+
+		$systemInfoContent .= "\n".'-- All created Popups'."\n\n";
+		$allPopups = self::getPopupsIdAndTitle();
+		$args['status'] = array('publish', 'draft', 'pending', 'private', 'trash');
+		foreach ($allPopups as $id => $popupTitleType) {
+			$popup = SGPopup::find($id, $args);
+			$popupStatus = ($popup->getOptionValue('sgpb-is-active')) ? 'Enabled' : 'Disabled';
+			$systemInfoContent .= 'Id:     '.$id."\n";
+			$systemInfoContent .= 'Title:  '.get_the_title($id)."\n";
+			$systemInfoContent .= 'Type:   '.$popup->getOptionValue('sgpb-type')."\n";
+			$systemInfoContent .= 'Status: '.$popupStatus."\n";
+			$systemInfoContent .= "\n";
+		}
+
+		// WordPress active plugins
+		$systemInfoContent .= "\n".'-- WordPress Active Plugins'."\n\n";
+
+		$plugins        = get_plugins();
+		$activePlugins = get_option('active_plugins', array());
+		foreach ($plugins as $pluginPath => $plugin) {
+
+			if (! in_array($pluginPath, $activePlugins)) {
+				continue;
+			}
+
+			$systemInfoContent .= $plugin['Name'].': '.$plugin['Version']."\n";
+		}
+		// WordPress inactive plugins
+		$systemInfoContent .= "\n".'-- WordPress Inactive Plugins'."\n\n";
+
+		foreach ($plugins as $pluginPath => $plugin) {
+			if (in_array($pluginPath, $activePlugins)) {
+				continue;
+			}
+			$systemInfoContent .= $plugin['Name'].': '.$plugin['Version']."\n";
+		}
+
+		if (is_multisite()) {
+			// WordPress Multisite active plugins
+			$systemInfoContent .= "\n".'-- Network Active Plugins'."\n\n";
+
+			$plugins        = wp_get_active_network_plugins();
+			$activePlugins = get_site_option('active_sitewide_plugins', array());
+
+			foreach ($plugins as $pluginPath) {
+				$plugin_base = plugin_basename($pluginPath);
+
+				if (! array_key_exists($plugin_base, $activePlugins)) {
+					continue;
+				}
+
+				$plugin = get_plugin_data($pluginPath);
+				$systemInfoContent .= $plugin['Name'].': '.$plugin['Version']."\n";
+			}
+		}
+
+		// Server configuration (really just versioning)
+		$systemInfoContent .= "\n".'-- Webserver Configuration'."\n\n";
+		$systemInfoContent .= 'PHP Version:              '.PHP_VERSION."\n";
+		$systemInfoContent .= 'MySQL Version:            '.$wpdb->db_version()."\n";
+		$systemInfoContent .= 'Webserver Info:           '.$_SERVER['SERVER_SOFTWARE']."\n";
+
+		// PHP configs... now we're getting to the important stuff
+		$systemInfoContent .= "\n".'-- PHP Configuration'."\n\n";
+		$systemInfoContent .= 'Memory Limit:             '.ini_get('memory_limit')."\n";
+		$systemInfoContent .= 'Upload Max Size:          '.ini_get('upload_max_filesize')."\n";
+		$systemInfoContent .= 'Post Max Size:            '.ini_get('post_max_size')."\n";
+		$systemInfoContent .= 'Upload Max Filesize:      '.ini_get('upload_max_filesize')."\n";
+		$systemInfoContent .= 'Time Limit:               '.ini_get('max_execution_time')."\n";
+		$systemInfoContent .= 'Max Input Vars:           '.ini_get('max_input_vars')."\n";
+		$systemInfoContent .= 'Display Errors:           '.(ini_get('display_errors') ? 'On ('.ini_get('display_errors').')' : 'N/A')."\n";
+
+		// PHP extensions and such
+		$systemInfoContent .= "\n".'-- PHP Extensions'."\n\n";
+		$systemInfoContent .= 'cURL:                     '.(function_exists('curl_init') ? 'Supported' : 'Not Supported')."\n";
+		$systemInfoContent .= 'fsockopen:                '.(function_exists('fsockopen') ? 'Supported' : 'Not Supported')."\n";
+		$systemInfoContent .= 'SOAP Client:              '.(class_exists('SoapClient') ? 'Installed' : 'Not Installed')."\n";
+		$systemInfoContent .= 'Suhosin:                  '.(extension_loaded('suhosin') ? 'Installed' : 'Not Installed')."\n";
+
+		// Session stuff
+		$systemInfoContent .= "\n".'-- Session Configuration'."\n\n";
+		$systemInfoContent .= 'Session:                  '.(isset($_SESSION ) ? 'Enabled' : 'Disabled')."\n";
+
+		// The rest of this is only relevant is session is enabled
+		if (isset($_SESSION)) {
+			$systemInfoContent .= 'Session Name:             '.esc_html( ini_get('session.name'))."\n";
+			$systemInfoContent .= 'Cookie Path:              '.esc_html( ini_get('session.cookie_path'))."\n";
+			$systemInfoContent .= 'Save Path:                '.esc_html( ini_get('session.save_path'))."\n";
+			$systemInfoContent .= 'Use Cookies:              '.(ini_get('session.use_cookies') ? 'On' : 'Off')."\n";
+			$systemInfoContent .= 'Use Only Cookies:         '.(ini_get('session.use_only_cookies') ? 'On' : 'Off')."\n";
+		}
+
+		$systemInfoContent = apply_filters('sgpbSystemInformation', $systemInfoContent);
+
+		$systemInfoContent .= "\n".'### End System Info ###';
+
+		return $systemInfoContent;
+	}
+
+	public static function getHost()
+	{
+		if (defined('WPE_APIKEY')) {
+			return 'WP Engine';
+		}
+		else if (defined('PAGELYBIN')) {
+			return 'Pagely';
+		}
+		else if (DB_HOST == 'localhost:/tmp/mysql5.sock') {
+			return 'ICDSoft';
+		}
+		else if (DB_HOST == 'mysqlv5') {
+			return 'NetworkSolutions';
+		}
+		else if (strpos(DB_HOST, 'ipagemysql.com') !== false) {
+			return 'iPage';
+		}
+		else if (strpos(DB_HOST, 'ipowermysql.com') !== false) {
+			return 'IPower';
+		}
+		else if (strpos(DB_HOST, '.gridserver.com') !== false) {
+			return 'MediaTemple Grid';
+		}
+		else if (strpos(DB_HOST, '.pair.com') !== false) {
+			return 'pair Networks';
+		}
+		else if (strpos(DB_HOST, '.stabletransit.com') !== false) {
+			return 'Rackspace Cloud';
+		}
+		else if (strpos(DB_HOST, '.sysfix.eu') !== false) {
+			return 'SysFix.eu Power Hosting';
+		}
+		else if (strpos($_SERVER['SERVER_NAME'], 'Flywheel') !== false) {
+			return 'Flywheel';
+		}
+		else {
+			// Adding a general fallback for data gathering
+			return 'DBH: '.DB_HOST.', SRV: '.$_SERVER['SERVER_NAME'];
+		}
+	}
+
+	public function getBrowser()
+	{
+		$uAgent = 'Unknown';
+		if (isset($_SERVER['HTTP_USER_AGENT'])) {
+			$uAgent = $_SERVER['HTTP_USER_AGENT'];
+		}
+		$bname = 'Unknown';
+		$platform = 'Unknown';
+		$version= '';
+		$browserInfoContent = '';
+
+		//First get the platform?
+		if (preg_match('/linux/i', $uAgent)) {
+			$platform = 'Linux';
+		}
+		else if (preg_match('/macintosh|mac os x/i', $uAgent)) {
+			$platform = 'Apple';
+		}
+		else if (preg_match('/windows|win32/i', $uAgent)) {
+			$platform = 'Windows';
+		}
+
+		if (preg_match('/MSIE/i',$uAgent) && !preg_match('/Opera/i',$uAgent)) {
+			$bname = 'Internet Explorer';
+			$ub = "MSIE";
+		}
+		else if (preg_match('/Firefox/i',$uAgent)) {
+			$bname = 'Mozilla Firefox';
+			$ub = "Firefox";
+		}
+		else if (preg_match('/OPR/i',$uAgent)) {
+			$bname = 'Opera';
+			$ub = "Opera";
+		}
+		else if (preg_match('/Chrome/i',$uAgent) && !preg_match('/Edge/i',$uAgent)) {
+			$bname = 'Google Chrome';
+			$ub = "Chrome";
+		}
+		else if (preg_match('/Safari/i',$uAgent) && !preg_match('/Edge/i',$uAgent)) {
+			$bname = 'Apple Safari';
+			$ub = "Safari";
+		}
+		else if (preg_match('/Netscape/i',$uAgent)) {
+			$bname = 'Netscape';
+			$ub = "Netscape";
+		}
+		else if (preg_match('/Edge/i',$uAgent)) {
+			$bname = 'Edge';
+			$ub = "Edge";
+		}
+		else if (preg_match('/Trident/i',$uAgent)) {
+			$bname = 'Internet Explorer';
+			$ub = "MSIE";
+		}
+
+		// finally get the correct version number
+		$known = array('Version', $ub, 'other');
+		$pattern = '#(?<browser>'.join('|', $known).')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
+		if (!preg_match_all($pattern, $uAgent, $matches)) {
+			// we have no matching number just continue
+		}
+		// see how many we have
+		$i = count($matches['browser']);
+		//we will have two since we are not using 'other' argument yet
+		if ($i != 1) {
+			//see if version is before or after the name
+			if (strripos($uAgent,"Version") < strripos($uAgent,$ub)) {
+				$version= $matches['version'][0];
+			}
+			else {
+				$version= $matches['version'][1];
+			}
+		}
+		else {
+			$version= $matches['version'][0];
+		}
+
+		  // check if we have a number
+		if ($version == null || $version == "") {$version = "?" ;}
+
+		$browserInfoContent .= 'Platform:           '.$platform."\n";
+		$browserInfoContent .= 'Browser Name:       '.$bname."\n";
+		$browserInfoContent .= 'Browser Version:    '.$version."\n";
+		$browserInfoContent .= 'User Agent:         '.$uAgent."\n";
+
+		return $browserInfoContent;
 	}
 }

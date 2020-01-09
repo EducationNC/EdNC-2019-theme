@@ -39,7 +39,7 @@ class EditorBlockController extends AdminController
         if ($model->load(Core::$plugin->request->post())) {
             if ($model->validate()) {
                 echo CustomizeSuccess::widget([
-                    'after' => '<script>$(document).trigger("lwptocEditorBlockChanged", ' . Json::encode($model->getAttrs()) . ');</script>',
+                    'after' => '<script>jQuery(document).trigger("lwptocEditorBlockChanged", ' . Json::encode($model->getAttrs()) . ');</script>',
                 ]);
                 wp_die();
             }

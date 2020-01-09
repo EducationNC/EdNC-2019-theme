@@ -42,6 +42,14 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 			)
 		);
 
+		$defaultData = ConfigDataHelper::defaultData();
+		$defaultData = $defaultData['customEditorContent']['css'];
+		$localizeData[] = array(
+			'handle' => 'Backend.js',
+			'name' => 'SGPB_CSS_EDITOR_DEFAULT_CONTENT',
+			'data' => $defaultData
+		);
+
 		$allowPages = array(
 			'popupType',
 			'editpage',
@@ -97,6 +105,7 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'bootstrap.min.js');
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'sgPopupRangeSlider.js');
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'Backend.js');
+			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'NotificationCenter.js');
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'Popup.js');
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'PopupConfig.js');
 
@@ -105,6 +114,7 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 				'name' => 'SGPB_JS_PARAMS',
 				'data' => array(
 					'url'   => admin_url('admin-ajax.php'),
+					'postUrl'   => SG_POPUP_ADMIN_URL.'admin-post.php',
 					'nonce' => wp_create_nonce(SG_AJAX_NONCE)
 				)
 			);
@@ -276,6 +286,7 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 				'conditionalJsClasses' => apply_filters('sgpbConditionalJsClasses', array())
 			)
 		);
+
 		$localizeData[] = array(
 			'handle' => 'PopupBuilder.js',
 			'name' => 'SGPB_JS_PACKAGES',

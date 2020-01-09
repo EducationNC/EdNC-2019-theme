@@ -74,13 +74,15 @@ class ContentHandling
             case 'asheading':
             case 'asheadingwotransliterate':
             default:
-                $id = html_entity_decode($label, ENT_QUOTES, get_option('blog_charset'));
+                $id = $label;
                 if ($dto->hashFormat == 'asheadingwotransliterate') {
                     $id = htmlentities2($id);
                     $id = str_replace(['&amp;', '&nbsp;', '#', "\n\r", "\r\n", "\r", "\n"], '_', $id);
+                    $id = html_entity_decode($id, ENT_QUOTES, get_option('blog_charset'));
                 } else {
-                    if (function_exists('transliterator_transliterate')) {
-                        $id = transliterator_transliterate('Any-Latin; Latin-ASCII;', $id);
+                    $id = html_entity_decode($id, ENT_QUOTES, get_option('blog_charset'));
+                    if (function_exists('transliterator_transliterate') && !apply_filters('lwptoc_force_wp_transliterate', false)) {
+                        $id = transliterator_transliterate(apply_filters('lwptoc_transliterator', 'Any-Latin; Latin-ASCII;'), $id);
                     } else {
                         $id = remove_accents($id);
                     }

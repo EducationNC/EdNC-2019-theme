@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Social Slider Widget
-Plugin URI: https://cm-wp.com/instagram-slider-widget/
-Version: 1.5.0
+Plugin URI: https://cm-wp.com/instagram-slider-widget
+Version: 1.6.5
 Description: Social Slider Widget is a responsive slider widget that shows 12 latest images from a public Instagram user and up to 18 images from a hashtag.
 Author: creativemotion
 Author URI: https://cm-wp.com/
@@ -22,7 +22,7 @@ require_once( dirname( __FILE__ ) . '/libs/factory/core/includes/class-factory-r
 
 $plugin_info = array(
 	'prefix'               => 'wis_', // Префикс для базы данных и полей формы. Строка должна соответствовать условию [A-z0-9_].
-	'plugin_name'          => 'wbcr_isw', // Кодовое название плагина, используется как уникальный идентификатор. Строка должна соответствовать условию [A-z0-9_].
+	'plugin_name'          => 'wisw', // Кодовое название плагина, используется как уникальный идентификатор. Строка должна соответствовать условию [A-z0-9_].
 	'plugin_title'         => __( 'Social Slider Widget', 'instagram-slider-widget' ), // Название плагина. То же что и Plugin Name. Используется в интерфейсе и сообщениях.
 	'plugin_text_domain'   => 'instagram-slider-widget', // Идентификатор перевода, указывается в load_plugin_textdomain()
 
@@ -52,13 +52,14 @@ $plugin_info = array(
 
 	// Настройка премиум плагина
 	// Сюда входят настройки лицензирования и премиум обновлений плагина и его надстройки
-	'has_premium'          => false, // Есть ли у текущего плагина премиум? Если false, премиум модуль загружен не будет
+	'has_premium'          => true, // Есть ли у текущего плагина премиум? Если false, премиум модуль загружен не будет
 	'license_settings'     => array(
-		'provider'         => '', // Тип лицензионного поставщика, может быть freemius, codecanyon, templatemonster
-		'slug'             => 'instagram-slider-widget', // Слаг плагина в выбранном поставщике лицензий и обновлений
-		'plugin_id'        => '', // ID плагина в freemius.com
-		'public_key'       => '', // Публичный ключ плагина в freemius.com
-		'price'            => 0, // Минимальная цена плагина, выводится в рекламных блоках
+		'has_updates'      => true,
+		'provider'         => 'freemius', // Тип лицензионного поставщика, может быть freemius, codecanyon, templatemonster
+		'slug'             => 'instagram-slider-widget-premium', // Слаг плагина в выбранном поставщике лицензий и обновлений
+		'plugin_id'        => '4272', // ID плагина в freemius.com
+		'public_key'       => 'pk_5152229a4aba03187267a8bc88874', // Публичный ключ плагина в freemius.com
+		'price'            => 39, // Минимальная цена плагина, выводится в рекламных блоках
 		// Настройка обновлений премиум плагина
 		'updates_settings' => array(
 			'maybe_rollback'    => true, // Можно ли делать откат к предыдущей версии плагина?
@@ -79,15 +80,15 @@ $plugin_info = array(
 	// Подключаемые модуль фреймворка
 	// Необходимые для ускоренной разработки продуктов Webcrfatic
 	'load_factory_modules' => array(
-		array( 'libs/factory/bootstrap', 'factory_bootstrap_421', 'admin' ), // Модуль позволяет использовать различные js виджеты и стили оформление форм.
-		array( 'libs/factory/forms', 'factory_forms_418', 'admin' ), // Модуль позволяет быстро создавать формы и готовые поля настроек
-		array( 'libs/factory/pages', 'factory_pages_420', 'admin' ), // Модуль позволяет создавать страницы плагина, в том числе шаблонизированные страницы
-		array( 'libs/factory/freemius', 'factory_freemius_108', 'all' ), // Модуль для работы с freemius.com, содержит api библиотеку и провайдеры для премиум менеджера
-		array( 'libs/factory/adverts', 'factory_adverts_102', 'admin') // Модуль для показа рекламы в админпанели Wordpress, вся реклама вытягивается через API Creative Motion
+		array( 'libs/factory/bootstrap', 'factory_bootstrap_424', 'admin' ), // Модуль позволяет использовать различные js виджеты и стили оформление форм.
+		array( 'libs/factory/forms', 'factory_forms_421', 'admin' ), // Модуль позволяет быстро создавать формы и готовые поля настроек
+		array( 'libs/factory/pages', 'factory_pages_423', 'admin' ), // Модуль позволяет создавать страницы плагина, в том числе шаблонизированные страницы
+		array( 'libs/factory/freemius', 'factory_freemius_111', 'all' ), // Модуль для работы с freemius.com, содержит api библиотеку и провайдеры для премиум менеджера
+		array( 'libs/factory/adverts', 'factory_adverts_105', 'admin') // Модуль для показа рекламы в админпанели Wordpress, вся реклама вытягивается через API Creative Motion
 	)
 );
 
-$wis_compatibility = new Wbcr_Factory420_Requirements( __FILE__, array_merge( $plugin_info, array(
+$wis_compatibility = new Wbcr_Factory423_Requirements( __FILE__, array_merge( $plugin_info, array(
 	'plugin_already_activate' => defined( 'WIS_PLUGIN_ACTIVE' ),
 	'required_php_version' => '5.4',
 	'required_wp_version' => '4.2.0',
@@ -144,10 +145,11 @@ try {
 	add_action( 'network_admin_notices', $wis_plugin_error_func );
 }
 
+define('WIS_INSTAGRAM_CLIENT_ID', '217c51471f2f4e11abaeaef4a12b99a4');
 /*******************************************************************************/
 /**
  * On widgets Init register Widget
  */
-require_once "includes/class-wis_instagram_slider.php";
+require_once WIS_PLUGIN_DIR."/includes/class-wis_instagram_slider.php";
 add_action( 'widgets_init', array( 'WIS_InstagramSlider', 'register_widget' ) );
 ?>

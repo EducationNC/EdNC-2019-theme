@@ -157,18 +157,16 @@ class PopupChecker
 				}
 			}
 		}
+
 		$permissiveOptions = $conditions['permissive'];
 		if (!empty($permissiveOptions)) {
 			foreach ($permissiveOptions as $permissiveOption) {
 				$isPermissiveConditions = $this->isSatisfyForConditionsOptions($permissiveOption);
-
-				if ($isPermissiveConditions) {
+				if (!$isPermissiveConditions) {
 					return $isPermissiveConditions;
 				}
 
 			}
-
-			return false;
 		}
 
 		return true;
@@ -180,8 +178,6 @@ class PopupChecker
 		$paramName  = $option['param'];
 		$defaultStatus = false;
 		$isAllowedConditionFilters = array();
-
-		// proStartSilver
 		if ($paramName == 'select_role') {
 			return true;
 		}
@@ -189,6 +185,7 @@ class PopupChecker
 		if (!$defaultStatus && do_action('isAllowedForConditions', $option, $post)) {
 			$defaultStatus = true;
 		}
+
 		$isAllowedConditionFilters = apply_filters('isAllowedConditionFilters', array($option));
 		if (isset($isAllowedConditionFilters['status']) && $isAllowedConditionFilters['status'] === true) {
 			$defaultStatus = true;

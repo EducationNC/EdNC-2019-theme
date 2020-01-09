@@ -81,6 +81,13 @@ class Ajax
 
 	public function sgpbAutosave()
 	{
+		$popupId = @(int)$_POST['post_ID'];
+		$postStatus = get_post_status($popupId);
+		if ($postStatus == 'publish') {
+			echo '';
+			wp_die();
+		}
+
 		if (!isset($_POST['allPopupData'])) {
 			echo true;
 			wp_die();

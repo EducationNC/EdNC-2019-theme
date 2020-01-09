@@ -3,9 +3,9 @@
         <shortcode>
             <tag>lwptoc</tag>
             <attributes>
-                <attribute style="line">title</attribute>
-                <attribute style="line">labelshow</attribute>
-                <attribute style="line">labelhide</attribute>
+                <attribute>title</attribute>
+                <attribute>labelshow</attribute>
+                <attribute>labelhide</attribute>
             </attributes>
         </shortcode>
     </shortcodes>

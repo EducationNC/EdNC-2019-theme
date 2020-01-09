@@ -1,28 +1,62 @@
 === Social Slider Widget ===
 Contributors: creativemotion
-Tags: instagram, instagram feed, instagram gallery, Instagram widget
-Requires at least: 3.5
-Tested up to: 5.2.2
+Tags: instagram, instagram feed, instagram gallery, instagram photos, Instagram widget
+Requires at least: 4.8
+Tested up to: 5.3.0
+Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Social Slider Widget is a responsive slider widget that shows 12 latest images from a public instagram user or a hashtag.
+Social Slider Widget is a responsive slider widget that shows 20 latest images from a public instagram user or a hashtag.
 
 == Description ==
-= Social Slider Widget is a responsive slider widget that shows 12 latest images from a public instagram user or a hashtag. =
+= Display Instagram feeds in widgets, posts, pages, or anywhere else using shortcodes. =
 
-
-= Features =
-* Images from Instagram are imported as WordPress attachments
+### Features ###
+* Super easy to set up. Just create a widget with the necessary settings and add it anywhere on your website using shortcodes
 * Display Images in Slider or Thumbnails
-* No API Key Needed
+* No API Key Needed. Show Instagram feeds on your website without authorization. Just enter a username and see the result (make sure to check the Instagram limitations on showing feeds without authorization).
+* Show Instagram feeds on your website without authorization using hashtags (make sure to check the Instagram limitations on showing feeds without authorization).
+* Authorize several Instagram accounts and show multiple feeds simultaneously with no limitations.
+* Fully responsive for mobile devices. Great view on any screen size and width.
+* Flexible layout settings. Customize the size, the number of images and columns, image spacing and much more!
+* Show thumbnails, medium or full-size images from your Instagram feed
 * Link images to user profile, image URL, attachment URL, custom URL or none
 * Sort images Randomly, Popularity, Date
-* For more info visit https://cm-wp.com/instagram-slider-widget/
+* Customize the display order by date, popularity or random
+* Show or hide the account title
+* For more info visit [cm-wp.com](https://cm-wp.com/instagram-slider-widget/)
 
-= Where can I get support =
-We will try to respond to all on plugin support forum but users showing back-link on their website will be more privileged!
+https://youtu.be/7EQirSL0xm4
 
+### Benefits ###
+* Increase your visitors&#39; engagement. Get more followers on your Instagram account
+* Time-saving. You no longer need to post fresh images and entries on the website. Just upload them on Instagram, and your website visitors will know about it instantly
+* A new way of posting news. Flexible settings for widget display templates give your content a seamless and attractive view on any website design
+* Keep up your website. Post news on Instagram more often, and Social Slider Widget will take care of the rest
+* Intuitive settings. It will only take 10 seconds to configure the widget and get the content on your website; no need to authorize on Instagram or handle tokens. And you can authorize your account in one click!
+
+### PRO Version ###
+To maintain the free version and provide prompt, effective &amp; free support, we offer the Pro version. 
+In the Pro version, you can:
+* **authorize several accounts and display multiple feeds simultaneously (fully compatible with Instagram December 11, 2018, API changes);**
+* **display how many likes and comments each post has;**
+* **create carousels of posts;**
+* **use Masonry or Highlight for feeds;**
+* **display captions for images and videos;**
+* **View the photos and videos from your feed in a beautiful pop-up lightbox which allows users to experience your content without leaving your site;**
+Learn more about the [Pro version](https://cm-wp.com/instagram-slider-widget) or watch the [demo](https://cm-wp.com/instagram-slider-widget/#demos).
+
+### Feedback and support ###
+Our goal is to create a simple yet powerful plugin – customized and multifunctional, with prompt and helpful support. For any difficulties or questions about the setup, open a ticket on the [support forum](https://cm-wp.com/support) and get support in no time.
+
+### Why do you need it? ###
+* Increase your visitors&#39; engagement. Get more followers on your Instagram account.
+* Time-saving. You no longer need to post fresh images and entries on the website. Just upload them on Instagram, and your website visitors will know about it instantly.
+* A new way of posting news. Flexible settings for widget display templates give your content a seamless and attractive view on any website design.
+* Keep up your website. Post news on Instagram more often, and Social Slider Widget will take care of the rest.
+* Intuitive settings. It will only take 10 seconds to configure the widget and get the content on your website; no need to authorize on Instagram or handle tokens. And you can authorize your account in one click!
+* Great user support.
 
 = If you like this plugin. Rate it =
 
@@ -32,19 +66,49 @@ We will try to respond to all on plugin support forum but users showing back-lin
 1. Upload `instagram-slider-widget` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the \'Plugins\' menu in WordPress
 3. Go to Appearance > Widgets and drag \'Social Slider Widget\' to your sidebar
-4. Update the settings in the widget: Instagram Username, Images Layout, Number of Images to show, Check for new images hours 
+4. Update the settings in the widget: Instagram Username, Images Layout, Number of Images to show, Check for new images hours
 
 = Requirements =
-* PHP 5.2.0 or later
-* Wordpress 3.5 or later
+* PHP 5.4.0 or later
+* Wordpress 4.8 or later
 * WordPress Cron must be enabled
 
 == Screenshots ==
-1. Frontend Widget Slider
-2. Frontend Widget Thumbs
-3. Backend Configuration
+1. Authorize several accounts and display multiple feeds simultaneously
+2. Display Instagram feeds in widgets, posts, pages, or anywhere else using shortcodes
+3. Create carousels of posts
+4. No API Key Needed. Show Instagram feeds on your website without authorization. Just enter a username and see the result
+5. Normal slider
+6. Thumbnail
+7. Thumbnail without border
+8. Slick slider
+9. Masonry
+10. Highlight
 
 == Changelog ==
+= 1.6.5 =
+* Fix 'No images found' when searching by hashtag or username
+
+= 1.6.4 =
+* In free slider templates images are now crop to square
+* Added a pop-up window by clicking on the image in PRO version of the plugin
+* Trying to fix a problem with adding an account for some users
+* Minor bugfixes
+
+= 1.6.3 =
+* Bug fix
+
+= 1.6.2 =
+* Bug fix
+
+= 1.6.1 =
+* Fixed Slider Normal
+
+= 1.6.0 =
+* Added authorization via Instagram API
+* Fixed visual issues
+* Added PRO version of the plugin. Learn more about the [Pro version](https://cm-wp.com/instagram-slider-widget) or watch the [demo](https://cm-wp.com/instagram-slider-widget/#demos).
+
 = 1.5.0 =
 * Renamed the plugin to conform to Facebook and Instagram
 

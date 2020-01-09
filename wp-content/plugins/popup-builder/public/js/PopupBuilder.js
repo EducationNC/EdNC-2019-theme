@@ -121,8 +121,16 @@ SGPBPopup.listeners = function () {
 			var event = new Event('resize');
 		}
 		else {
-			var event = document.createEvent('Event');
-			event.initEvent('resize', true, true);
+			if (SGPBPopup.isIE()) {
+				var event = document.createEvent('Event');
+				event.initEvent('resize', true, true);
+			}
+			else {
+				var event = new CustomEvent('resize', {
+					bubbles: true,
+					cancelable: true
+				});
+			}
 		}
 		window.dispatchEvent(event);
 
@@ -422,8 +430,34 @@ SGPBPopup.prototype.prepareOpen = function()
 	var popupType = this.popupData['sgpb-type'];
 	this.setUpPopupConfig();
 	var that = this;
-
 	var popupConfig = this.getPopupConfig();
+
+	function decodeEntities(encodedString)
+	{
+		var textArea = document.createElement('textarea');
+		textArea.innerHTML = encodedString;
+
+		return textArea.value;
+	}
+
+	popupConfig.customShouldOpen = function()
+	{
+		var instructions = popupData['sgpb-ShouldOpen'];
+		instructions = decodeEntities(instructions);
+		var F = new Function (instructions);
+
+		return(F());
+	}
+
+	popupConfig.customShouldClose = function()
+	{
+		var instructions = popupData['sgpb-ShouldClose'];
+		instructions = decodeEntities(instructions);
+		var F = new Function (instructions);
+
+		return(F());
+	}
+
 	this.setPopupDimensions();
 
 	if (popupData['sgpb-disable-popup-closing'] == 'on') {
@@ -1326,7 +1360,6 @@ SGPBPopup.prototype.popupTriggeringListeners = function()
 		if (SGPBPopup.varToBool(disablePageScrolling)) {
 			jQuery('html, body').addClass('sgpb-overflow-hidden');
 		}
-
 	});
 
 	sgAddEvent(window, 'sgpbWillOpen', function(e) {
@@ -1422,6 +1455,7 @@ SGPBPopup.prototype.closeButtonDisplay = function(popupId, display, delay)
 
 SGPBPopup.prototype.open = function(args)
 {
+	var customEvent = this.customEvent;
 	var config = this.getPopupConfig();
 	var popupId = this.getPopupId();
 	var eventName = this.eventName;
@@ -1455,6 +1489,7 @@ SGPBPopup.prototype.open = function(args)
 		/* don't allow to count popup opening */
 		this.setCountPopupOpen(false);
 	}
+	popup.customEvent = customEvent;
 	popup.open();
 	this.setPopupObj(popup);
 
@@ -1687,12 +1722,7 @@ SGPBPopup.prototype.setPopupDimensions = function()
 	popupConfig.magicCall('setMinHeight', minHeight);
 
 	if (popupType == 'image') {
-		if (popupData['sgpb-image-data'] && popupData['sgpb-image-data'].indexOf('http') == -1) {
-			popupConfig.magicCall('setContentBackgroundImage', 'data:image/png;base64,'+popupData['sgpb-image-data']);
-		}
-		else {
-			popupConfig.magicCall('setContentBackgroundImage', popupData['sgpb-image-url']);
-		}
+		popupConfig.magicCall('setContentBackgroundImage', popupData['sgpb-image-url']);
 		popupConfig.magicCall('setContentBackgroundMode', 'contain');
 		if (dimensionData == 'customMode') {
 			popupConfig.magicCall('setContentBackgroundPosition', 'center center');
@@ -2160,7 +2190,6 @@ SGPBPopup.getParamFromUrl = function(param)
  * SGPBPopup Cookies' settings
  *
  */
-
 SGPBPopup.setCookie = function(cName, cValue, exDays, cPageLevel)
 {
 	var isPreview = SGPBPopup.getParamFromUrl('preview');
@@ -2168,7 +2197,7 @@ SGPBPopup.setCookie = function(cName, cValue, exDays, cPageLevel)
 		return false;
 	}
 	var expirationDate = new Date();
-	var cookiePageLevel = 'path=/;';
+	var cookiePageLevel = '';
 	var cookieExpirationData = 1;
 	if (!exDays || isNaN(exDays)) {
 		if (!exDays && exDays === 0) {
@@ -2178,8 +2207,9 @@ SGPBPopup.setCookie = function(cName, cValue, exDays, cPageLevel)
 			exDays = 365*50;
 		}
 	}
-	if (typeof cPageLevel == 'undefined') {
-		cPageLevel = false;
+
+	if ((typeof cPageLevel == 'boolean' && cPageLevel == false) || cPageLevel == '') {
+		cookiePageLevel = 'path=/;';
 	}
 
 	if (exDays == 'session') {
@@ -2194,9 +2224,6 @@ SGPBPopup.setCookie = function(cName, cValue, exDays, cPageLevel)
 		expires = '';
 	}
 
-	if (cPageLevel && typeof cPageLevel != 'boolean') {
-		cookiePageLevel = 'path=' + cPageLevel;
-	}
 	if (!cookieExpirationData) {
 		expires = '';
 	}
@@ -2499,7 +2526,6 @@ SgpbEventListener.prototype.sgpbClick = function(listenerObj, eventData)
 	popupIds.push(popupId);
 	var mapId = listenerObj.filterPopupId(popupId);
 	popupIds.push(mapId);
-
 	for(var key in popupIds) {
 		var popupId = popupIds[key];
 		if (!popupIds.hasOwnProperty(key)) {
@@ -2548,6 +2574,7 @@ SgpbEventListener.prototype.sgpbClick = function(listenerObj, eventData)
 						var mapId = listenerObj.filterPopupId(popupId);
 						popupObj = SGPBPopup.createPopupObjById(mapId);
 					}
+					popupObj.customEvent = 'Click';
 					popupObj.prepareOpen();
 					clickCount = 1;
 				}, delay);
@@ -2608,6 +2635,7 @@ SgpbEventListener.prototype.sgpbHover = function(listenerObj, eventData)
 						var mapId = listenerObj.filterPopupId(popupId);
 						popupObj = SGPBPopup.createPopupObjById(mapId);
 					}
+					popupObj.customEvent = 'Hover';
 					popupObj.prepareOpen();
 					hoverCount = 1;
 				}, delay);
@@ -2778,6 +2806,8 @@ SgpbEventListener.processCF7MailSent = function(popupId, options)
 };
 
 jQuery(document).ready(function(e) {
-	SgpbEventListener.init();
-	SGPBPopup.listeners();
+	setTimeout(function(){
+		SgpbEventListener.init();
+		SGPBPopup.listeners();
+	}, 1);
 });

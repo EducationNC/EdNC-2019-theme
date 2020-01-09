@@ -60,7 +60,8 @@ class Shortcode extends BaseObject
     {
         global $post;
         if (($this->theContentApplied && $this->headingsCache === null) ||
-            (!is_single($post) && !is_page($post))
+            (!is_single($post) && !is_page($post)) ||
+            !$this->isMainQueryPost()
         ) {
             return '';
         }
@@ -215,6 +216,10 @@ class Shortcode extends BaseObject
     {
         global $post;
 
+        if (!$this->isMainQueryPost()) {
+            return false;
+        }
+
         if ($this->headingsCache !== null) {
             return true;
         }
@@ -230,6 +235,16 @@ class Shortcode extends BaseObject
         }
 
         return (new PostSettings($post->ID))->processHeadings;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isMainQueryPost()
+    {
+        global $post, $wp_query;
+        return ($post instanceof WP_Post) &&
+            $post->ID == $wp_query->get_queried_object_id();
     }
 
     private $_tag;

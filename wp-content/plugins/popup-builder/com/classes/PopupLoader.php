@@ -91,6 +91,7 @@ class PopupLoader
 			global $post;
 			$foundPopup = $post;
 		}
+
 		if (!empty($foundPopup)) {
 			global $SGPB_DATA_CONFIG_ARRAY;
 			if (@$post->post_type == SG_POPUP_POST_TYPE) {
@@ -121,12 +122,17 @@ class PopupLoader
 			}
 		}
 
-		$popupBuilderPosts = new WP_Query(
-			array(
-				'post_type'      => SG_POPUP_POST_TYPE,
-				'posts_per_page' => - 1
-			)
-		);
+		$popupBuilderPosts = get_transient(SGPB_TRANSIENT_POPUPS_LOAD);
+		if ($popupBuilderPosts === false) {
+			$popupBuilderPosts = new WP_Query(
+				array(
+					'post_type'      => SG_POPUP_POST_TYPE,
+					'posts_per_page' => 100
+				)
+			);
+			set_transient(SGPB_TRANSIENT_POPUPS_LOAD, $popupBuilderPosts, SGPB_TRANSIENT_TIMEOUT_WEEK);
+		}
+
 		// We check all the popups one by one to realize whether they might be loaded or not.
 		while ($popupBuilderPosts->have_posts()) {
 			$popupBuilderPosts->next_post();

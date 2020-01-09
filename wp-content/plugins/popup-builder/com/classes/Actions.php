@@ -21,43 +21,53 @@ class Actions
 		add_action('admin_menu', array($this, 'addSubMenu'));
 		add_action('admin_menu', array($this, 'supportLinks'), 999);
 		add_action('admin_head', array($this, 'showPreviewButtonAfterPopupPublish'));
+		add_action('admin_enqueue_scripts', array($this, 'adminLoadPopups'));
+		add_action('admin_action_popupSaveAsNew', array($this, 'popupSaveAsNew'));
+		add_action('admin_post_csv_file', array($this, 'getSubscribersCsvFile'));
+		add_action('admin_post_sgpb_system_info', array($this, 'getSystemInfoFile'));
+		add_action('admin_post_sgpbSaveSettings', array($this, 'saveSettings'), 10, 1);
+		add_action('admin_init', array($this, 'userRolesCaps'));
+		add_action('admin_notices', array($this, 'pluginNotices'));
+		add_action('admin_notices', array($this, 'promotionalBanner'), 10);
+		add_action('admin_init', array($this, 'pluginLoaded'));
+		add_action('transition_post_status', array($this, 'deletePopup'), 100, 3);
+		// activate extensions
+		add_action('wp_before_admin_bar_render', array($this, 'pluginActivated'), 10, 2);
+		add_action('admin_head', array($this, 'hidePageBuilderEditButtons'));
+		add_action('admin_head', array($this, 'hidePublishingActions'));
+		add_action('add_meta_boxes', array($this, 'popupMetaboxes'), 100);
+		add_filter('post_updated_messages', array($this, 'popupPublishedMessage'), 1, 1);
+		add_action('before_delete_post', array($this, 'deleteSubscribersWithPopup'), 1, 1);
+		add_action('dp_duplicate_post', array($this, 'popupCopyPostMetaInfo'), 10, 2);
 		add_filter('get_sample_permalink_html', array($this, 'removePostPermalink'), 1, 1);
 		add_action('manage_'.SG_POPUP_POST_TYPE.'_posts_custom_column' , array($this, 'popupsTableColumnsValues'), 10, 2);
 		add_action('media_buttons', array($this, 'popupMediaButton'));
 		add_filter('mce_external_plugins', array($this, 'editorButton'), 1, 1);
 		add_action('admin_enqueue_scripts', array('sgpb\Style', 'enqueueStyles'));
 		add_action('admin_enqueue_scripts', array('sgpb\Javascript', 'enqueueScripts'));
-		add_action('add_meta_boxes', array($this, 'popupMetaboxes'), 100);
 		// this action for popup options saving and popup builder classes save ex from post and page
 		add_action('save_post', array($this, 'savePost'), 100, 3);
 		add_action('wp_enqueue_scripts', array($this, 'enqueuePopupBuilderScripts'));
-		add_action('admin_enqueue_scripts', array($this, 'adminLoadPopups'));
-		add_action('admin_action_popupSaveAsNew', array($this, 'popupSaveAsNew'));
-		add_action('dp_duplicate_post', array($this, 'popupCopyPostMetaInfo'), 10, 2);
 		add_filter('sgpbOtherConditions', array($this ,'conditionsSatisfy'), 11, 1);
-		add_filter('post_updated_messages', array($this, 'popupPublishedMessage'), 1, 1);
-		add_action('admin_post_csv_file', array($this, 'getSubscribersCsvFile'));
-		add_action('before_delete_post', array($this, 'deleteSubscribersWithPopup'), 1, 1);
 		add_shortcode('sg_popup', array($this, 'popupShortcode'));
 		add_filter('cron_schedules', array($this, 'cronAddMinutes'), 10, 1);
 		add_action('sgpb_send_newsletter', array($this, 'newsletterSendEmail'), 10, 1);
 		add_action('sgpbGetBannerContentOnce', array($this, 'getBannerContent'), 10, 1);
-		add_action('admin_post_sgpbSaveSettings', array($this, 'saveSettings'), 10, 1);
-		add_action('admin_init', array($this, 'userRolesCaps'));
-		add_action('admin_notices', array($this, 'pluginNotices'));
-		add_action('admin_notices', array($this, 'promotionalBanner'), 10);
-		add_action('admin_init', array($this, 'pluginLoaded'));
 		add_action('plugins_loaded', array($this, 'loadTextDomain'));
 		// for change admin popup list order
 		add_action('pre_get_posts', array($this, 'preGetPosts'));
 		add_action('template_redirect', array($this, 'redirectFromPopupPage'));
 		add_filter('views_edit-popupbuilder', array($this, 'mainActionButtons'), 10, 1);
-		// activate extensions
-		add_action('wp_before_admin_bar_render', array($this, 'pluginActivated'), 10, 2);
-		add_action('admin_head', array($this, 'hidePageBuilderEditButtons'));
-		add_action('admin_head', array($this, 'hidePublishingActions'));
-		add_action('admin_notices', array($this, 'inactiveExtensionNotice'));
 		new Ajax();
+	}
+
+	public function deletePopup($newStatus, $oldStatus, $post)
+	{
+		$currentPostType = AdminHelper::getCurrentPostType();
+
+		if (!empty($currentPostType) && $currentPostType == SG_POPUP_POST_TYPE) {
+			Functions::clearAllTransients();
+		}
 	}
 
 	public function showPreviewButtonAfterPopupPublish()
@@ -175,11 +185,9 @@ class Actions
 	public function wpInit()
 	{
 		require_once(ABSPATH.'wp-admin/includes/screen.php');
-		if (!get_option('sgpb-banner-cron-only-once')) {
-			update_option('sgpb-banner-cron-only-once', 1);
-			wp_schedule_event(time(), 'daily', 'sgpbGetBannerContentOnce');
+		if (!wp_next_scheduled('sgpbGetBannerContentOnce')) {
+			wp_schedule_event(time(), 'sgpb_banners', 'sgpbGetBannerContentOnce');
 		}
-		new Updates();
 	}
 
 	public function mainActionButtons($views)
@@ -262,13 +270,21 @@ class Actions
 			require_once(SG_POPUP_VIEWS_PATH.'mainRateUsBanner.php');
 		}
 
-		if (!get_option('SGPB_ASK_FOR_REVIEW_BANNER_CLOSED') && $post_type == SG_POPUP_POST_TYPE) {
+		/*if (!get_option('SGPB_ASK_FOR_REVIEW_BANNER_CLOSED') && $post_type == SG_POPUP_POST_TYPE) {
 			echo AdminHelper::showReviewPopup();
-		}
+		}*/
 	}
 
 	public function pluginNotices()
 	{
+		if (function_exists('get_current_screen')) {
+			$screen = get_current_screen();
+			$screenId = $screen->id;
+			if ($screenId == 'edit-popupbuilder') {
+				$notificationsObj = new SGPBNotificationCenter();
+				echo $notificationsObj->displayNotifications();
+			}
+		}
 		$extensions =  AdminHelper::getAllActiveExtensions();
 		$updated = get_option('sgpb_extensions_updated');
 
@@ -544,7 +560,13 @@ class Actions
 			'interval' => SGPB_CRON_REPEAT_INTERVAL * 60,
 			'display' => __('Once Every Minute', SG_POPUP_TEXT_DOMAIN)
 		);
-		$schedules = apply_filters('sgpNewsletterSendMinute', $schedules);
+
+		$schedules['sgpb_banners'] = array(
+			'interval' => SGPB_TRANSIENT_TIMEOUT_WEEK,
+			'display' => __('Once Every Week', SG_POPUP_TEXT_DOMAIN)
+		);
+
+		$schedules = apply_filters('sgpbCronTimeoutSettings', $schedules);
 
 		return $schedules;
 	}
@@ -569,10 +591,11 @@ class Actions
 		$allAvailableShortcodes['patternLastName'] = '/\[Last name]/';
 		$allAvailableShortcodes['patternBlogName'] = '/\[Blog name]/';
 		$allAvailableShortcodes['patternUserName'] = '/\[User name]/';
+		$allAvailableShortcodes['patternUnsubscribe'] = '';
 
 		$pattern = "/\[(\[?)(Unsubscribe)(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]\*+(?:\[(?!\/\2\])[^\[]\*+)\*+)\[\/\2\])?)(\]?)/";
 		preg_match($pattern, $emailMessage, $matches);
-		$title = 'Unsubscribe';
+		$title = __('Unsubscribe', SG_POPUP_TEXT_DOMAIN);
 		if ($matches) {
 			$patternUnsubscribe = $matches[0];
 			// If user didn't change anything inside the [unsubscribe] shortcode $matches[2] will be equal to 'Unsubscribe'
@@ -608,11 +631,11 @@ class Actions
 			}
 			$failedTotal = $totalSubscribers - $successTotal;
 
-			$emailMessageCustom = 'Your mail list '.$subscriptionFormTitle.' delivered successfully!
-						'.$successTotal.' of the '.$totalSubscribers.' emails succeeded, '.$failedTotal.' failed.
+			$emailMessageCustom = __('Your mail list %s delivered successfully!
+						%d of the %d emails succeeded, %d failed.
 						For more details, please download log file inside the plugin.
-
-						This email was generated via Popup Builder plugin.';
+						This email was generated via Popup Builder plugin.', SG_POPUP_TEXT_DOMAIN);
+			$emailMessageCustom = sprintf($emailMessageCustom, $subscriptionFormTitle, $successTotal, $totalSubscribers, $failedTotal);
 
 			wp_mail($fromEmail, $subscriptionFormTitle.' list has been successfully delivered!', $emailMessageCustom, $headers);
 			delete_option('SGPB_NEWSLETTER_'.$subscriptionFormId);
@@ -661,9 +684,7 @@ class Actions
 			$emailMessageCustom = stripslashes($emailMessageCustom);
 
 			$emailMessageCustom = apply_filters('sgpNewsletterSendingMessage', $emailMessageCustom);
-
 			$mailStatus = wp_mail($subscriber['email'], $mailSubject, $emailMessageCustom, $headers);
-
 			if (!$mailStatus) {
 				$errorLogSql = $wpdb->prepare('INSERT INTO '. $wpdb->prefix .SGPB_SUBSCRIBERS_ERROR_TABLE_NAME.' (`popupType`, `email`, `date`) VALUES (%s, %s, %s)', $subscriptionFormId, $subscriber['email'], date('Y-m-d H:i'));
 				$wpdb->query($errorLogSql);
@@ -757,13 +778,18 @@ class Actions
 
 	public function addSubMenu()
 	{
+		// We need to check license keys and statuses before adding new menu "License" item
+		new Updates();
+
 		$this->customPostTypeObj->addSubMenu();
 	}
 
 	public function supportLinks()
 	{
 		if (SGPB_POPUP_PKG == SGPB_POPUP_PKG_FREE) {
-			$this->customPostTypeObj->supportLinks();
+			if (method_exists($this->customPostTypeObj, 'supportLinks')) {
+				$this->customPostTypeObj->supportLinks();
+			}
 		}
 	}
 
@@ -774,6 +800,7 @@ class Actions
 
 	public function savePost($postId = 0, $post = array(), $update = false)
 	{
+		Functions::clearAllTransients();
 		$postData = SGPopup::parsePopupDataFromData($_POST);
 		$saveMode = '';
 		$postData['sgpb-post-id'] = $postId;
@@ -1195,6 +1222,21 @@ class Actions
 		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment; filename=subscribersList.csv;');
 		header('Content-Transfer-Encoding: binary');
+		echo $content;
+	}
+
+	public function getSystemInfoFile()
+	{
+		$content = AdminHelper::getSystemInfoText();
+
+		header('Pragma: public');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Cache-Control: private', false);
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename=popupBuilderSystemInfo.txt;');
+		header('Content-Transfer-Encoding: binary');
+
 		echo $content;
 	}
 

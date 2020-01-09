@@ -40,7 +40,7 @@ class ShortcodeController extends AdminController
         if ($model->load(Core::$plugin->request->post())) {
             if ($model->validate()) {
                 echo CustomizeSuccess::widget([
-                    'after' => '<script>$(document).trigger("lwptocShortcodeGenerated", ' . Json::encode(['shortcode' => $model->generateShortcode()]) . ');</script>',
+                    'after' => '<script>jQuery(document).trigger("lwptocShortcodeGenerated", ' . Json::encode(['shortcode' => $model->generateShortcode()]) . ');</script>',
                 ]);
                 wp_die();
             }

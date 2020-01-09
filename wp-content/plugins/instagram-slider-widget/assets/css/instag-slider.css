@@ -24,9 +24,9 @@
 .pllexislider .pllex-control-paging li a:hover,
 .pllexislider .pllex-control-paging li a.pllex-active { background: rgba(0,0,0,0.6); -webkit-box-shadow: 0px 0px 1px 2px rgba(255,255,255,1); -moz-box-shadow: 0px 0px 1px 2px rgba(255,255,255,0.7); box-shadow: 0px 0px 1px 2px rgba(255,255,255,1);}
 .pllexislider .pllex-control-paging li a.pllex-active { cursor: default; }
-
+.pllexislider .pllex-control-paging {width: 100%; text-align: center}
 /* Direction Nav */
-.pllexislider .pllex-direction-nav { z-index:2; position: absolute; list-style:none; padding: 0; top: 7px; right: 7px; margin: 0; background-color: rgba(0,0,0, 0.6); -webkit-border-radius: 15%; -moz-border-radius: 15%; -o-border-radius: 15%; border-radius: 15%; }
+.pllexislider .pllex-direction-nav { z-index:2; position: absolute; list-style:none; padding: 0; top: 7px; right: 2%; margin: 0; background-color: rgba(0,0,0, 0.6); -webkit-border-radius: 15%; -moz-border-radius: 15%; -o-border-radius: 15%; border-radius: 15%; }
 .pllexislider-overlay .pllex-direction-nav { display:none; }
 .pllexislider .pllex-direction-nav li a { line-height: normal; overflow: hidden; display: block; border: 0 }
 .pllexislider .pllex-direction-nav li a:focus { outline: 0 }
@@ -117,4 +117,71 @@
 	.jr-insta-thumb ul.thumbnails li {
 		width: 100% !important; /* over-ride all li styles */
  	}	
+}
+.graphdiv
+{
+  -webkit-box-align: end;
+  align-items: flex-end;
+  bottom: 0;
+  display: flex;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.GraphImage{position: relative;}
+.GraphSidecar {position: relative;}
+.GraphVideo{position: relative;}
+
+.GraphImage:before
+{
+  position: absolute;
+  content: '';
+  background-image: url('../in.png');
+  background-repeat: no-repeat;
+  background-position: -32px -32px;
+  background-color: transparent !important;
+  height: 32px;
+  width: 32px;
+  top: 5px;
+  right: 0;
+  z-index: 1;
+  opacity: 0.7;
+}
+.GraphSidecar:before
+{
+  position: absolute;
+  content: '';
+  background-image: url('../in.png');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  height: 32px;
+  width: 32px;
+  top: 1px;
+  right: 0;
+  z-index: 1;
+  opacity: 0.7;
+}
+.GraphVideo:before
+{
+  position: absolute;
+  content: '';
+  background-image: url('../in.png');
+  background-repeat: no-repeat;
+  background-position: 0 -32px;
+  height: 32px;
+  width: 32px;
+  top: 5px;
+  right: 0;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.jr-insta-thumb
+{
+  padding: 0 !important;
 }

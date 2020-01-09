@@ -46,16 +46,16 @@ class Plugin extends BasePlugin
 {
 
     /**
-     * @var bool
+     * @var int
      */
-    public $isTheContent = false;
+    public $isTheContent = 0;
 
     /**
      * Инициализация
      */
     public function init()
     {
-        add_filter('the_content', [$this, 'onTheContentTrue'], 1);
+        add_filter('the_content', [$this, 'onTheContentTrue'], -PHP_INT_MAX);
         add_filter('the_content', [$this, 'onTheContentFalse'], 10000);
         add_action('widgets_init', function () {
             register_widget(WpWidget::class);
@@ -87,7 +87,7 @@ class Plugin extends BasePlugin
      */
     public function onTheContentTrue($content)
     {
-        $this->isTheContent = true;
+        $this->isTheContent++;
         return $content;
     }
 
@@ -97,7 +97,7 @@ class Plugin extends BasePlugin
      */
     public function onTheContentFalse($content)
     {
-        $this->isTheContent = false;
+        $this->isTheContent--;
         return $content;
     }
 
