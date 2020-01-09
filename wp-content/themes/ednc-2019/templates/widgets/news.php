@@ -43,8 +43,8 @@ global $recent_ids;
              'terms' => 'news'
            )
          ),
-         'meta_key' => 'updated_date',
-         'orderby' => 'meta_value_num',
+        //  'meta_key' => 'updated_date',
+        //  'orderby' => 'meta_value_num',
          'order' => 'DESC'
        );
 

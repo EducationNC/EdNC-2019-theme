@@ -22,7 +22,7 @@ $args = array(
     array(
       'taxonomy' => 'appearance',
       'field' => 'slug',
-      'terms' => array('featured', 'hide-from-home', 'hide-from-archives', 'digest-spotlight', 'press-release'),
+      'terms' => array('featured', 'hide-from-home', 'hide-from-archives', 'digest-spotlight', 'press-release', 'perspectives'),
       'operator' => 'NOT IN'
     )
   ),
