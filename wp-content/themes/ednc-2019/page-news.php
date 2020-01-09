@@ -47,8 +47,7 @@ $news_image = get_field('news-image');
           'operator' => 'NOT IN'
         )
       ),
-      'meta_key' => 'updated_date',
-      'orderby' => 'meta_value_num',
+      'orderby' => 'publish_date',
       'order' => 'DESC'
     );
 
