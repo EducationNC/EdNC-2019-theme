@@ -47,8 +47,8 @@ $news_image = get_field('news-image');
           'operator' => 'NOT IN'
         )
       ),
-      'orderby' => 'publish_date',
-      'order' => 'DESC'
+      // 'orderby' => 'publish_date',
+      // 'order' => 'DESC'
     );
 
     $trending = new WP_Query($args);
