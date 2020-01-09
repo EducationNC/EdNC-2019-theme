@@ -112,8 +112,8 @@ $news_image = get_field('news-image');
       ),
       'paged' => $paged1,
       'post__not_in' => $firstPosts,
-      'meta_key' => 'updated_date',
-      'orderby' => 'meta_value_num',
+      // 'meta_key' => 'updated_date',
+      // 'orderby' => 'meta_value_num',
       'order' => 'DESC'
     );
 
