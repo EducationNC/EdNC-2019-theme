@@ -3,8 +3,7 @@
  * Template Name: News
  * Template Post Type: page, product
  */
-
-
+ 
 use Roots\Sage\Extras;
 use Roots\Sage\Media;
 use Roots\Sage\Assets;
@@ -37,6 +36,7 @@ $news_image = get_field('news-image');
     $args = array(
       'posts_per_page' => 3,
       'post_type' => array('post', 'map', 'ednews', 'edtalk', 'flash-cards'),
+      'paged' => get_query_var('paged'),
       'tax_query' => array(
         'relation' => 'AND',
         array(
@@ -51,8 +51,7 @@ $news_image = get_field('news-image');
           'operator' => 'NOT IN'
         )
       ),
-      'meta_key' => 'updated_date',
-      'orderby' => 'meta_value_num',
+      // 'orderby' => 'publish_date',
       'order' => 'DESC'
     );
 
@@ -68,27 +67,27 @@ $news_image = get_field('news-image');
 
               while ($trending->have_posts()) : $trending->the_post();
 
-              $firstPosts[] = $post->ID;
-              $featured_image = Media\get_featured_image('featured-four-block');
-              $size = 'full'; // (thumbnail, medium, large, full or custom size)?>
-
-              <article <?php post_class('block-news content-block-3 clearfix'); ?>>
-                <div class="flex">
-                  <div class="block-content">
-                    <?php if (!empty($featured_image)) { ?>
-                      <img class="" src="<?php echo $featured_image; ?>" />
-                    <?php } else { ?>
-                      <div class="circle-image">
-                        <?php echo $author_pic; ?>
-                      </div>
-                    <?php } ?>
-                    <h3 class="post-title"><?php the_title(); ?></h3>
-                    <?php get_template_part('templates/components/entry-meta'); ?>
-                    <a class="mega-link" href="<?php the_permalink(); ?>"></a>
-                    <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
+                $firstPosts[] = $post->ID;
+                $featured_image = Media\get_featured_image('featured-four-block');
+                $size = 'full'; // (thumbnail, medium, large, full or custom size)?>
+  
+                <article <?php post_class('block-news content-block-3 clearfix'); ?>>
+                  <div class="flex">
+                    <div class="block-content">
+                      <?php if (!empty($featured_image)) { ?>
+                        <img class="" src="<?php echo $featured_image; ?>" />
+                      <?php } else { ?>
+                        <div class="circle-image">
+                          <?php echo $author_pic; ?>
+                        </div>
+                      <?php } ?>
+                      <h3 class="post-title"><?php the_title(); ?></h3>
+                      <?php get_template_part('templates/components/entry-meta'); ?>
+                      <a class="mega-link" href="<?php the_permalink(); ?>"></a>
+                      <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
+                    </div>
                   </div>
-                </div>
-              </article>
+                </article>
 
             <?php endwhile; endif; wp_reset_query(); ?>
 
@@ -98,7 +97,7 @@ $news_image = get_field('news-image');
     </div>
 
     <?php
-    $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+    $paged1 = get_query_var('paged') ? get_query_var('paged') : 1;
     $args = array(
       'post_type' => array('post', 'map', 'ednews', 'edtalk', 'flash-cards'),
       'tax_query' => array(
@@ -115,10 +114,10 @@ $news_image = get_field('news-image');
           'operator' => 'NOT IN'
         )
       ),
-      'paged' => $paged,
+      'paged' => $paged1,
       'post__not_in' => $firstPosts,
-      'meta_key' => 'updated_date',
-      'orderby' => 'meta_value_num',
+      // 'meta_key' => 'updated_date',
+      // 'orderby' => 'meta_value_num',
       'order' => 'DESC'
     );
 
