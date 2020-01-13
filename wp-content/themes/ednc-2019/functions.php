@@ -317,3 +317,13 @@ function show_template() {
     } 
 }
 // add_action('wp_footer', 'show_template');
+
+
+// Change archive page title
+function remove_month_from_date_archive_title($title) {
+    if (is_date()) {
+        $title = str_replace("Month: ", "", $title);
+    }
+    return $title;
+}
+add_filter('get_the_archive_title', 'remove_month_from_date_archive_title');
