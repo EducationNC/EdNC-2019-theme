@@ -93,9 +93,16 @@ while (have_posts()) : the_post(); ?>
 							</a>
 							<?php endif; ?>
 
+							<div class="item reach">
+								<a href="https://www.ednc.org/join-the-virtual-town-hall/">
+									<img class="reach-btn" src="<?php echo Assets\asset_path('images/ReachButton400by50.png'); ?>" alt="Reach Button" height="" width="">
+								</a>
+							</div>
+
 
 							<?php
 							// Get latest reach question post
+							/*
 							$rq_query = new WP_Query('post_type=reach-question&posts_per_page=1');
 							if ($rq_query->have_posts()) {
 							    while ($rq_query->have_posts()) {
@@ -111,6 +118,7 @@ while (have_posts()) : the_post(); ?>
 							    }
 							}
 							wp_reset_postdata();
+							*/
 							?>
 
 						</div>
