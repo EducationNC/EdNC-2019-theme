@@ -1,6 +1,7 @@
 wp.domReady( () => {
   wp.blocks.unregisterBlockType( 'core/quote' );
   wp.blocks.unregisterBlockType( 'core/pullquote' );
+  wp.blocks.unregisterBlockType( 'core/gallery' );
 
   // wp.blocks.registerBlockStyle( 'core/heading', {
   //   name: 'default',
