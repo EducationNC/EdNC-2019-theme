@@ -111,6 +111,19 @@
         "news perspective"
         "reach reach"
   }
+  .ntk-main {
+    width: 100%;
+  }
+  .ntk-right {
+    width: 100%;
+  }
+  .ntk {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+
 }
 
 
