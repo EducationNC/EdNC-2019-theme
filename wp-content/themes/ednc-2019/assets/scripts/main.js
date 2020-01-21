@@ -410,11 +410,6 @@
         // Add special class to default WP embeds
         $('iframe.wp-embedded-content').not('[src*="/flash-cards/"]').closest('.entry-content-asset').addClass('wp-embed');
         
-        // Add body class if we're in an iframe
-        if (window.self !== window.top) {
-          $(document.body).addClass("in-iframe");
-        }
-        
       },
       finalize: function() {
         // JavaScript to be fired on all pages, after page specific JS is fired
