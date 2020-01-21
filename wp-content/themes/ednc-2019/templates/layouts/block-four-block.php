@@ -25,7 +25,7 @@ elseif ( has_term ( 'featured', 'appearance' ) ) {
   $post_type = "Featured";
 }
 else {
-  $post_type = "";
+  $post_type = "&nbsp;";
 }
 
 if ( function_exists( 'coauthors_posts_links' ) ) {
