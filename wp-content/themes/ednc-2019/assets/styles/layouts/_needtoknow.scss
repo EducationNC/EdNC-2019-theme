@@ -1,41 +1,36 @@
-// .ntk-main {
-//   width: 70%;
-// }
-
-
-.ntk-grid {
-  margin-top: 10px;
-  display: grid;
-  width: 100%;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-gap: 40px;
-  grid-template-areas:
-      "notes notes fb"
-      "notes notes fb"
-      "news perspective tw"
-      "news perspective tw"
-      "news perspective reach"
+.ntk-main {
+  width: 60%;
 }
 
-.news {
-  grid-area: news;
+.ntk {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .notes {
-  grid-area: notes;
+  width: 100%;
+}
+
+
+.articles {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.news {
+  width: 45%;
+  display: inline-block;
 }
 
 .perspective {
-  grid-area: perspective;
+  width: 45%;
+  display: inline-block;
 }
 
-.fb {
-  grid-area: fb;
-}
-
-.tw {
-  grid-area: tw;
+.ntk-right {
+  width: 35%;
 }
 
 .fb-share {
@@ -45,12 +40,65 @@
 }
 
 .tw-share {
-  border: 60px solid orange;
+  border: 60px solid red;
   border-image: url("../images/TwittershareBox382by226.png")  115 120 110 120 stretch stretch;
   border-image-repeat: round round;
 }
 
 .reach {
-  grid-area: reach;
+  padding: 30px 0px;
   margin: 0 auto;
 }
+
+
+// .ntk-grid {
+//   margin-top: 10px;
+//   display: grid;
+//   width: 100%;
+//   grid-template-columns: repeat(3, 1fr);
+//   grid-template-rows: repeat(5, 1fr);
+//   grid-gap: 40px;
+//   grid-template-areas:
+//       "notes notes fb"
+//       "notes notes fb"
+//       "news perspective tw"
+//       "news perspective tw"
+//       "news perspective reach"
+// }
+//
+// .news {
+//   grid-area: news;
+// }
+//
+// .notes {
+//   grid-area: notes;
+// }
+//
+// .perspective {
+//   grid-area: perspective;
+// }
+//
+// .fb {
+//   grid-area: fb;
+// }
+//
+// .tw {
+//   grid-area: tw;
+// }
+//
+// .fb-share {
+//   border: 60px solid orange;
+//   border-image: url("../images/FBshareBox382by226.png")  115 120 110 120 stretch stretch;
+//   border-image-repeat: round round;
+// }
+//
+// .tw-share {
+//   border: 60px solid orange;
+//   border-image: url("../images/TwittershareBox382by226.png")  115 120 110 120 stretch stretch;
+//   border-image-repeat: round round;
+// }
+//
+// .reach {
+//   grid-area: reach;
+//   margin: 0 auto;
+// }
