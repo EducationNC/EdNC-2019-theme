@@ -24,6 +24,9 @@ elseif ( has_term ( 'news', 'appearance' ) ) {
 elseif ( has_term ( 'featured', 'appearance' ) ) {
   $post_type = "Featured";
 }
+elseif ( $post->post_type == 'ednews' ) {
+  $post_type = "Editor’s Picks";
+}
 else {
   $post_type = "&nbsp;";
 }
