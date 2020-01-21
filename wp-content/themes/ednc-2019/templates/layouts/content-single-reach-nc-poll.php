@@ -107,7 +107,7 @@ while (have_posts()) : the_post();
               <div class="row">
                 <div class="col-md-8 col-centered">
                   <div class="h1"><?php //echo $banner_name; ?></div>
-                  <?php //if ($author_avatar) 
+                  <?php //if ($author_avatar)
 				  { ?>
                     <div class="avatar avatar-header hidden-xs">
                       <img src="<?php //echo $author_avatar_sized['url']; ?>" alt="<?php //the_author(); ?>" />
@@ -186,16 +186,6 @@ while (have_posts()) : the_post();
 
           <div class="col-md-2 col-md-pull-2 print-no">
             <div class="hidden-xs">
-              <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-              <!-- Article sidebar -->
-              <ins class="adsbygoogle"
-                   style="display:block"
-                   data-ad-client="ca-pub-2642458473228537"
-                   data-ad-slot="6263040202"
-                   data-ad-format="auto"></ins>
-              <script>
-              (adsbygoogle = window.adsbygoogle || []).push({});
-              </script>
             </div>
           </div>
 
@@ -283,5 +273,5 @@ while (have_posts()) : the_post();
     </footer>
   </article>
 
- 
+
 <?php endwhile; ?>
