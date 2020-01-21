@@ -2,7 +2,7 @@
 
 if( function_exists('acf_add_local_field_group') ):
 
-  acf_add_local_field_group(array(
+acf_add_local_field_group(array(
 	'key' => 'group_5dd5a52f91dba',
 	'title' => 'District Charts',
 	'fields' => array(
@@ -164,7 +164,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5de6a91658834',
@@ -235,7 +235,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5de68847c41df',
@@ -306,7 +306,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5de6af5af68d7',
@@ -377,7 +377,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5de6aa34a9d78',
@@ -448,7 +448,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5de6af27f68d1',
@@ -519,7 +519,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5de6af41f68d4',
@@ -561,16 +561,6 @@ if( function_exists('acf_add_local_field_group') ):
 								),
 							),
 						),
-					),
-					'min' => '',
-					'max' => '',
-				),
-				'layout_5e274e01abfe0' => array(
-					'key' => 'layout_5e274e01abfe0',
-					'name' => '',
-					'label' => '',
-					'display' => 'block',
-					'sub_fields' => array(
 					),
 					'min' => '',
 					'max' => '',
@@ -648,7 +638,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5e27400229cde',
@@ -738,7 +728,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5e274693a0983',
@@ -828,7 +818,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5e2746ba79c01',
@@ -966,7 +956,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5e2747eba0373',
@@ -1037,7 +1027,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5e2747eba0377',
@@ -1108,7 +1098,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5e2747eba037b',
@@ -1179,7 +1169,7 @@ if( function_exists('acf_add_local_field_group') ):
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'table',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5e2749ad309b8',
@@ -1488,6 +1478,7 @@ if( function_exists('acf_add_local_field_group') ):
 	'description' => '',
 ));
 
+endif;
 
 
 
