@@ -16,7 +16,7 @@ if ( ! headers_sent() ) {
 
 ?>
 <!DOCTYPE html>
-<html <?php language_attributes(); ?> class="no-js">
+<html <?php language_attributes(); ?> class="no-js embed">
 <head>
 	<title><?php echo wp_get_document_title(); ?></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,7 +31,7 @@ if ( ! headers_sent() ) {
 	do_action( 'embed_head' );
 	?>
 </head>
-<body <?php body_class(array('embed')); ?>>
+<body <?php body_class(); ?>>
 <?php
 if ( have_posts() ) :
 	while ( have_posts() ) : the_post();
