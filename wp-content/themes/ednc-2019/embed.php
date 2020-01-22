@@ -16,7 +16,7 @@ if ( ! headers_sent() ) {
 
 ?>
 <!DOCTYPE html>
-<html <?php language_attributes(); ?> class="no-js">
+<html <?php language_attributes(); ?> class="no-js embed">
 <head>
 	<title><?php echo wp_get_document_title(); ?></title>
 	<!-- <title>"hey"</title> -->
@@ -32,7 +32,7 @@ if ( ! headers_sent() ) {
 	do_action( 'embed_head' );
 	?>
 </head>
-<body <?php body_class('embed'); ?>>
+<body <?php body_class(); ?>>
 <?php
 if ( have_posts() ) :
 	while ( have_posts() ) : the_post();
