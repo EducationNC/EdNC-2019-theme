@@ -14,29 +14,24 @@ global $featured;
 $recent_ids = array();
 global $featured_recent;
 //$posts = get_field('featured_article');
-$ids2 = get_field('featured_article_widget', false, false);
-$widget_test = get_field('text-12345')
+$featured_article = get_field('featured_article_widget', 'widget_' . $this->id);
+$featured_ids[] = $featured_article[0]->ID;
 ?>
 <section id="carousel" class="block carousel">
   <div class="home-page-wrapper">
     <div class="carousel-right">
       <section id="carousel-latest" class="block listing listing-headline small">
-        <p><?php the_field('text-12345', 'widget_' . $widget_id); ?></p>
         <?php
-        $ids1 = new WP_Query(array(
+        $featured_post_query = new WP_Query(array(
         	'posts_per_page'	=> 1,
-        	'post__in'			=> $ids2,
-        	'post_status'		=> 'any',
+        	'post__in'			=> $featured_ids,
         	'orderby'        	=> 'post__in',
         ));
 
-        if ($ids1->have_posts()) : while ($ids1->have_posts()) : $ids1->the_post(); ?>
+        if ($featured_post_query->have_posts()) : while ($featured_post_query->have_posts()) : $featured_post_query->the_post(); ?>
           <?php
-          //global $featured;
-          //global $title;
-          //$featured_ids[] = get_the_id();
-          echo $widget_test;
-          get_template_part('templates/layouts/block', 'featured'); ?>
+          include(locate_template('templates/layouts/block-featured.php'));
+          ?>
 
         <?php endwhile; endif; wp_reset_query(); ?>
 
@@ -55,17 +50,11 @@ $widget_test = get_field('text-12345')
           'post__not_in' => $featured_ids,
           'post_type' => array('post', 'map', 'edtalk'),
           'tax_query' => array(
-            'relation' => 'OR',
-            array(
-              'taxonomy' => 'column',
-              'operator' => 'EXISTS',
-            ),
             array(
               'taxonomy' => 'appearance',
-              'field'    => 'slug',
-              'terms'    => 'news',
-              //'terms'    => array('news'),
-            ),
+              'field' => 'slug',
+              'terms' => array('news', 'featured'),
+            )
           ),
           // 'meta_key' => 'updated_date',
           // 'orderby' => 'meta_value_num',
@@ -98,36 +87,40 @@ $widget_test = get_field('text-12345')
         <header>
           <h2 class="header section-title">Editor's Picks</h2>
         </header>
-        <article class="post">
+        <article class="post carousel-popular__featured-article">
             <div class="lead-image">
 
               <?php
 
-              // check if the repeater field has rows of data
-              if( have_rows('featured_read') ):
+              $ednews = new WP_Query([
+                'post_type' => 'ednews',
+                'posts_per_page' => 1
+              ]);
 
-               	// loop through the rows of data
-                  while ( have_rows('featured_read') ) : the_row();
+              if ($ednews->have_posts()) : while ($ednews->have_posts()) : $ednews->the_post();
 
-                      if (get_sub_field('intro_text')) {  ?>
-                          <?php echo "yes"; ?>
-                      <?php } else { ?>
-                        <?php echo "no"; ?>
-                        <img src="<?php echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" />
-                      <?php }
 
-                  endwhile;
-
-              else :
-
-                  // no rows found
-
-              endif;
-
+              $feature = get_field('featured_read');
               ?>
 
-<!--
-              <img src="<?php //echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" /> -->
+              <?php if (!empty($feature[0]['featured_image'])) { ?>
+                <div class="row">
+                  <div class="col-sm-6 col-md-12">
+                    <div class="photo-overlay">
+                      <?php echo wp_get_attachment_image($feature[0]['featured_image']['ID'], 'featured-small'); ?>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6 col-md-12">
+              <?php } else { ?>
+                <img src="<?php echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" />
+              <?php } ?>
+
+              <?php endwhile; endif; wp_reset_query(); ?>
+
+
+              <!-- <img src="<?php //echo Assets\asset_path('images/Mebane_Rash-220x220newest.png'); ?>" alt="" title="" /> -->
+
             </div>
         </article><!-- .post -->
         <hr class="break">

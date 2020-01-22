@@ -25,7 +25,7 @@ while (have_posts()) : the_post(); ?>
 								<h3><?php the_title(); ?><h3>
 								<?php the_field('notes'); ?>
 							</div>
-							<div class="item news">
+							<div class="item news-ntk">
 		            <h3>Top Article</h3>
 		            <?php
 		            $post_object = get_field('top_news_article');
@@ -49,7 +49,7 @@ while (have_posts()) : the_post(); ?>
 		                <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
 		            <?php endif; ?>
 		          </div>
-							<div class="item perspective">
+							<div class="item perspective-ntk">
 		            <h3>Top Perspective</h3>
 		            <?php
 		            $post_object = get_field('top_perspective_article');
