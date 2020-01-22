@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Need to Know OLD
+Template Name: Need to Know
 */
 
 use Roots\Sage\Titles;
@@ -27,7 +27,7 @@ while (have_posts()) : the_post(); ?>
 									<?php the_field('notes'); ?>
 								</div>
 								<div class="articles">
-									<div class="news">
+									<div class="news-ntk">
 				            <h3>Top Article</h3>
 				            <?php
 				            $post_object = get_field('top_news_article');
@@ -51,7 +51,7 @@ while (have_posts()) : the_post(); ?>
 				                <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
 				            <?php endif; ?>
 				          </div>
-									<div class="perspective">
+									<div class="perspective-ntk">
 				            <h3>Top Perspective</h3>
 				            <?php
 				            $post_object = get_field('top_perspective_article');
