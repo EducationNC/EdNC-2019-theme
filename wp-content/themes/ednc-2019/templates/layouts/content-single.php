@@ -222,8 +222,6 @@ while (have_posts()) : the_post();
               <?php
             }
             ?>
-
-            <?php get_template_part('templates/components/labels'); ?>
           </div>
         </div>
 
