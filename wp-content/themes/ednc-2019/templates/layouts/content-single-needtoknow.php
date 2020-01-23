@@ -18,21 +18,23 @@ while (have_posts()) : the_post(); ?>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<div class="ntk">
+						<div class="ntk-taxonomy">
 							<div class="ntk-main">
 								<div class="notes">
 									<h3><?php the_title(); ?><h3>
 									<?php the_field('notes'); ?>
 								</div>
 								<div class="articles">
-									<div class="fb">
-										<iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fnewsandobserver%2Fposts%2F3199418633404387" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media">
-										</iframe>
-
+									<script async defer src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script>
+									<div class="fb-post"
+							      data-href="https://www.facebook.com/20531316728/posts/10154009990506729/"
+							      data-width="200">
 									</div>
-									<div class="twitter">
-										<iframe src="https://jsfiddle.net/about"></iframe>
-
+									<div class="fb-post"
+										data-href="https://www.facebook.com/20531316728/posts/10154009990506729/"
+										data-width="200">
+									</div>
+									<!-- <div class="twitter">
 										<?php
 										/*
 										$top_tweet_link = get_field('top_tweet_link');
@@ -44,7 +46,7 @@ while (have_posts()) : the_post(); ?>
 										</a>
 										<?php endif;
 										*/?>
-									</div>
+									</div> -->
 								</div>
 
 								<div class="entry-content">

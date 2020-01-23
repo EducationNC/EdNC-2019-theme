@@ -339,9 +339,9 @@
     // @include image-margin;
     max-height: 650px;
     overflow: hidden;
-    
+
     @media (min-width: $screen-lg-min) {
-      margin-top: -30px;  
+      margin-top: -30px;
     }
 
     .full-width-image {
@@ -505,6 +505,10 @@
 
 .block-quote--content {
   font-style: italic;
+}
+
+.article-content p {
+  font-weight: 300 !important;
 }
 
 .longformintro {

@@ -145,6 +145,8 @@ $text-color:            $ash;
 $link-color:            $sky;
 $link-hover-color:      $navy;
 
+$line-height: 1.42em;
+
 
 // Gradients
 // -------------------------
@@ -357,7 +359,7 @@ $link-hover-color:      $navy;
 @mixin p-rd {
   font-family: $font-family-serif;
   font-size: 18px;
-  line-height: 1.88em;
+  line-height: $line-height;
   font-weight: 300;
   word-wrap: break-word;
   color: $text;
@@ -372,7 +374,7 @@ $link-hover-color:      $navy;
 @mixin li-rd($color) {
   font-family: $font-family-sans-serif;
   font-size: 18px;
-  line-height: 1.88em;
+  line-height: $line-height;
   font-weight: 400;
   word-wrap: break-word;
   color: $color;
