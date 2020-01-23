@@ -56,13 +56,16 @@
 
   .articles {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
   }
 
   .news {
     width: 45%;
     display: inline-block;
+  }
+  .fb-post {
+    margin-bottom: 20px;
   }
 
   .perspective {

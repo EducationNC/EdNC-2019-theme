@@ -27,12 +27,10 @@ while (have_posts()) : the_post(); ?>
 								<div class="articles">
 									<script async defer src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script>
 									<div class="fb-post"
-							      data-href="https://www.facebook.com/20531316728/posts/10154009990506729/"
-							      data-width="200">
+							      data-href="https://www.facebook.com/educationnc/posts/1524236284419622">
 									</div>
 									<div class="fb-post"
-										data-href="https://www.facebook.com/20531316728/posts/10154009990506729/"
-										data-width="200">
+										data-href="https://www.facebook.com/educationnc/posts/1524236284419622">
 									</div>
 									<!-- <div class="twitter">
 										<?php

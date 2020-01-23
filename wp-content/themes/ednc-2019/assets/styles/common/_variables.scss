@@ -363,7 +363,7 @@ $line-height: 1.42em;
   font-weight: 300;
   word-wrap: break-word;
   color: $text;
-  margin-bottom: 1.88em;
+  margin-bottom: $line-height;
 }
 
 @mixin mobile-margins {

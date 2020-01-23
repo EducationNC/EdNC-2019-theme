@@ -431,10 +431,10 @@ function register_post_types() {
 			'show_in_rest' => true,
 			'show_in_nav_menus' => false,
 			'menu_position' => 8,
-			//'menu_icon' => get_stylesheet_directory_uri() . '/library/images/custom-post-icon.png',
 			'capability_type' => 'post',
 			'hierarchical' => false,
 			'supports' => array( 'title', 'author', 'revisions', 'editor', 'comments'),
+			// 'show_in_rest' => true,
 			'has_archive' => true,
 			'rewrite' => true,
 			'query_var' => true
