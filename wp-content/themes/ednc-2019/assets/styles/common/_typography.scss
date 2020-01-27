@@ -64,6 +64,14 @@ h1.rd, .h1-rd {
   }
 }
 
+h1.lato {
+  font-family: $font-family-sans-serif;
+  letter-spacing: .5px;
+  color: $text;
+  font-size: 52px;
+  font-weight: 700;
+}
+
 h2, .h2, .article-subtitle {
   font-family: $font-family-sans-serif;
   font-weight: normal;
@@ -74,6 +82,13 @@ h2, .h2, .article-subtitle {
   @media (min-width: $screen-md-min) {
     font-size: 30px;
   }
+}
+
+h2.lato {
+  font-family: $font-family-sans-serif;
+  font-size: 30px;
+  color: $text;
+  font-weight: 700;
 }
 
 h2.rd, .h2-rd {
@@ -170,6 +185,18 @@ p.small {
 
 p.medium {
   font-size: 16px;
+  line-height: 1.3em;
+  word-wrap: break-word;
+  color: $text;
+  // text-transform: uppercase;
+  // margin: 5px 0px;
+  font-family: $font-family-sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.1px;
+}
+
+p.large {
+  font-size: 19px;
   line-height: 1.3em;
   word-wrap: break-word;
   color: $text;
