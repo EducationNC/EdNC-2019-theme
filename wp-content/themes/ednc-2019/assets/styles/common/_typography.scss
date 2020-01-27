@@ -196,15 +196,7 @@ p.medium {
 }
 
 p.large {
-  font-size: 19px;
-  line-height: 1.3em;
-  word-wrap: break-word;
-  color: $text;
-  // text-transform: uppercase;
-  // margin: 5px 0px;
-  font-family: $font-family-sans-serif;
-  font-weight: 400;
-  letter-spacing: -0.1px;
+  @include p-large;
 }
 
 

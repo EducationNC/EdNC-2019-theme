@@ -180,3 +180,7 @@
     }
   }
 }
+
+.district-body p {
+  @include p-large;
+}

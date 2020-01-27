@@ -48,8 +48,8 @@ while (have_posts()) : the_post();
   <div <?php post_class('container'); ?>>
 
     <h1 class="lato">School District: <?php the_title(); ?></h1>
-    <div class="body">
-      <p class="large"><?php the_field('description'); ?></p>
+    <div class="district-body">
+      <?php the_field('description'); ?>
     </div>
 
     <div class="district-content">

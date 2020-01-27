@@ -366,6 +366,22 @@ $line-height: 1.42em;
   margin-bottom: $line-height;
 }
 
+@mixin p-large {
+  font-size: 19px;
+  line-height: 1.3em;
+  word-wrap: break-word;
+  color: $text;
+  font-family: $font-family-sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.1px;
+}
+
+
+
+
+
+
+
 @mixin mobile-margins {
   margin-left: 15px;
   margin-right: 15px;
