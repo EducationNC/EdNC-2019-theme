@@ -53,7 +53,7 @@ while (have_posts()) : the_post(); ?>
 									$feature = get_field('featured_read');
 									if (! empty($feature) ) { ?>
 										<div class="featured-pick-ntk extra-top-padding" data-source="<?php echo $feature[0]['link']; ?>">
-											<a class="mega-link" href="<?php echo $feature[0]['link']; ?>" target="_blank" onclick="ga('send', 'event', 'ednews', 'click');"></a>
+											<a class="" href="<?php echo $feature[0]['link']; ?>" target="_blank" onclick="ga('send', 'event', 'ednews', 'click');"></a>
 											<h6><?php the_field('featured_read', 'option'); ?></h6>
 											<?php
 											if (!empty($feature[0]['featured_image'])) { ?>
