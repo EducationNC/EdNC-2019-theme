@@ -171,10 +171,12 @@
     .left {
       display: inline-block;
       width: 60%;
+      vertical-align: top;
     }
     .right {
       display: inline-block;
       width: 30%;
+      vertical-align: top;
     }
   }
 }

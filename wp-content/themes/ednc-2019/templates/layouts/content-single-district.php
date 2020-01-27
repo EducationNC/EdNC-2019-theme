@@ -49,7 +49,7 @@ while (have_posts()) : the_post();
 
     <h1 class="lato">School District: <?php the_title(); ?></h1>
     <div class="body">
-      <p class="large"><?php the_field('decsription'); ?></p>
+      <p class="large"><?php the_field('description'); ?></p>
     </div>
 
     <div class="district-content">
