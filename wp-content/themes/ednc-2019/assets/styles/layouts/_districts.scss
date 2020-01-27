@@ -150,3 +150,37 @@
 .margin-none {
   margin-top: 0 !important;
 }
+
+.district-content {
+  background-color: $light-grey;
+  padding: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .section {
+    p.large {
+      margin-bottom: 0;
+    }
+  }
+
+  .section-split {
+    p.large {
+      margin-bottom: 0;
+    }
+    .left {
+      display: inline-block;
+      width: 60%;
+      vertical-align: top;
+    }
+    .right {
+      display: inline-block;
+      width: 30%;
+      vertical-align: top;
+    }
+  }
+}
+
+.district-body p {
+  @include p-large;
+}
