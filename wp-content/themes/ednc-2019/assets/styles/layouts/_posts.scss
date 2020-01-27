@@ -510,7 +510,10 @@
 // .article-content p [style] {
 //   font-weight: 300 !important;
 // }
-
+ 
+.article-content iframe {
+  max-width: 100%; 
+}
 
 .longformintro {
   background: #24315F;
