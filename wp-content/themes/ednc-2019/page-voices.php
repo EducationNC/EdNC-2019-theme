@@ -72,7 +72,7 @@
                   array(
                     'taxonomy' => 'author-year',
                     'field' => 'slug',
-                    'terms' => '2018'
+                    'terms' => '2020'
                   )
                 )
               );
@@ -126,7 +126,7 @@
                   array(
                     'taxonomy' => 'author-year',
                     'field' => 'slug',
-                    'terms' => '2018'
+                    'terms' => '2020'
                   )
                 )
               );
@@ -180,7 +180,7 @@
                       array(
                         'taxonomy' => 'author-year',
                         'field' => 'slug',
-                        'terms' => '2018'
+                        'terms' => '2020'
                       )
                     )
                   );
