@@ -214,7 +214,11 @@ img {
 
 object, embed, iframe {
   max-width: 100%;
-} 
+}
+
+.entry-content iframe {
+  width: 100%;
+}
 
 .entry-content-asset {
   &.twitter, &.instagram {
