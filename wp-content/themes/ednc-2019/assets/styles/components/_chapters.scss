@@ -5,20 +5,21 @@
 
   .nav {
     list-style: none;
-    background: $white;
+    background: blue;
     height: 37px;
     z-index: 9;
     margin-bottom: 0 !important;
 
     &.affix {
       position: fixed;
-      top: 0;
-      left: 50%;
-      transform: translate3d(-50%, 0, 0);
-      width: 100%;
+      top: 50px;
+      background: red;
+      // left: 50%;
+      // transform: translate3d(-50%, 0, 0);
+      width: 10%;
 
       .admin-bar & {
-        top: 32px;
+        top: 146px;
       }
     }
 
@@ -72,4 +73,191 @@ a.chapter {
   .admin-bar & {
     margin-bottom: 3em;
   }
+}
+
+@media (max-width: 990px) {
+  #chapters {
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+  }
+}
+
+.chapters-mobile {
+  margin-bottom: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// .chapters {
+//   height: 0;
+//   overflow: visible;
+//   margin-bottom: 3em;
+//
+//   .nav {
+//     list-style: none;
+//     background: $white;
+//     height: 37px;
+//     z-index: 9;
+//     margin-bottom: 0 !important;
+//
+//     &.affix {
+//       position: fixed;
+//       top: 0;
+//       left: 50%;
+//       transform: translate3d(-50%, 0, 0);
+//       width: 100%;
+//
+//       .admin-bar & {
+//         top: 32px;
+//       }
+//     }
+//
+//     &.affix-bottom {
+//       position: absolute;
+//       width: calc(100% - 20px);
+//     }
+//
+//     &.affix-top {
+//       background: $steel;
+//     }
+//
+//     li {
+//       display: inline-block;
+//       margin: 0 !important;
+//
+//       a {
+//         @extend h6;
+//         text-decoration: none;
+//         margin: 0;
+//         overflow: hidden;
+//
+//         &:after {
+//           content: '';
+//           width: 100%;
+//           height: 3px;
+//           background: $plum;
+//           position: absolute;
+//           left: 0;
+//           bottom: -3px;
+//           transform: translateY(0);
+//           transition: transform .3s;
+//         }
+//       }
+//
+//       &.active {
+//         a {
+//           &:after {
+//             transform: translateY(-3px);
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+//
+// a.chapter {
+//   display: inline-block;
+//   margin-bottom: 2em;
+//
+//   .admin-bar & {
+//     margin-bottom: 3em;
+//   }
+// }
+
+.lwptoc_header, .lwptoc_item_label, .lwptoc_item_number {
+  font-family: Lato;
+}
+
+.lwptoc_item_label, .lwptoc_item_number {
+  font-size: 14px;
+}
+// #chapters-inside {
+//   position: fixed;
+//   width: 200px;
+//   top: 275px;
+// }
+
+.chapters-full {
+  position: static;
+  width: 200px;
+  top: 85%;
+}
+
+@media (max-width: 1100px) {
+  #chapters-inside {
+    position: fixed;
+    width: 150px;
+  }
+}
+
+@media (max-width: 990px) {
+  .lwptoc:first-child {
+    margin-top: 0px;
+    // position: sticky;
+    // top: 0px;
+    width: 100%;
+    background-color: #DCDFE5;
+    z-index: 10000;
+  }
+  #chapters-inside {
+    position: fixed;
+    width: 100%;
+  }
+  .lwptoc_item {
+    padding: 10px 0px;
+  }
+  .lwptoc-light .lwptoc_i {
+    color: #333;
+    background: #fafafa;
+    background-color: #DCDFE5;
+    z-index: 10000;
+  }
+  .lwptoc_item_label, .lwptoc_item_number {
+    font-size: 12px;
+    line-height: 11px;
+  }
+  .lwptoc_item {
+    padding: 5px 0px;
+  }
+  .lwptoc {
+    margin: 0;
+  }
+  #chapters-inside {
+    position: sticky;
+  }
+  #chapters {
+    position: sticky;
+    top: 0px;
+    z-index: 10000;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+#chapters-inside{
+  overflow-y: scroll;
+  height: 70%;
+}
+
+.disable-scrollbars::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* Chrome/Safari/Webkit */
+}
+
+.disable-scrollbars {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
 }
