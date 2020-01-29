@@ -147,6 +147,18 @@ while (have_posts()) : the_post();
       </header>
     <?php } ?>
 
+    <div class="social-share-meta">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-2 col-md-push-10 meta hidden-xs hidden-sm print-no"></div>
+          <div class="col-md-2 col-md-pull-2 print-no"></div>
+          <div class="col-md-7 col-md-pull-1point5 print-only">
+            <?php get_template_part('templates/components/social-share'); ?>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <?php if (get_field('longform_intro') && $page < 2) { ?>
       <div class="longform-intro">
         <div class="container">

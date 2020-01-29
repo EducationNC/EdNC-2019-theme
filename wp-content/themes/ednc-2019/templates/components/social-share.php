@@ -26,7 +26,7 @@ if (is_page('story-2015-16')) {
   $printLink = "href=\"https://www.printfriendly.com/print\" onclick=\"window.open('https://www.printfriendly.com/print?url='+document.location.href); return false;\"";
 }
 
-// Get current counts of social media shares & store in transient 
+// Get current counts of social media shares & store in transient
 
 $counts = get_transient('social-counts-' . $id);
 if ($counts === false) {
@@ -62,8 +62,8 @@ $count_num = num_format($counts->total);
 ?>
 
 <div class="social-share-buttons print-no">
-  <?php if ($count_num != 0) { ?>
-  <?php } ?>
+  <?php //if ($count_num != 0) { ?>
+  <?php //} ?>
   <a rel="nofollow" class="icon-facebook social-share-link" href="<?php echo $facebookURL; ?>">
     Share on facebook
   </a>
@@ -79,28 +79,4 @@ $count_num = num_format($counts->total);
   <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" <?php echo $printLink; ?> target="_blank">
     Print this page
   </a>
-</div>
-
-<div class="social-share-modal print-no">
-    <a data-toggle="modal" data-target="#social-share-modal" class="icon-share" href="#"></a>
-
-    <div class="modal fade" id="social-share-modal" tabindex="-1" role="dialog" aria-labelledby="social-share-modal">
-      <div class="modal-dialog" role="document">
-            <a rel="nofollow" class="icon-facebook social-share-link" href="<?php echo $facebookURL; ?>">
-              Share on facebook
-            </a>
-            <a rel="nofollow" class="icon-twitter social-share-link" href="<?php echo $twitterURL; ?>">
-              Tweet on Twitter
-            </a>
-            <a rel="nofollow" class="icon-linkedin social-share-link" href="<?php echo $linkedinURL; ?>">
-              Share on LinkedIn
-            </a>
-            <a rel="nofollow" class="icon-email social-share-link" href="<?php echo $emailURL; ?>">
-              Email this page
-            </a>
-            <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" <?php echo $printLink; ?> target="_blank">
-              Print this page
-            </a>
-          </div>
-    </div>
 </div>
