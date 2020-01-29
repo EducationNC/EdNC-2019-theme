@@ -409,7 +409,7 @@
 
         // Add special class to default WP embeds
         $('iframe.wp-embedded-content').not('[src*="/flash-cards/"]').closest('.entry-content-asset').addClass('wp-embed');
-        
+
       },
       finalize: function() {
         // JavaScript to be fired on all pages, after page specific JS is fired
@@ -569,7 +569,6 @@
         // Automatically create TOC of chapters
         $('.hentry a.chapter').each(function() {
           $('#chapters .nav').append('<li><a href="#' + $(this).attr('name') + '">' + $(this).attr('data-name') + '</a></li>');
-          alert ("hey!");
         }).promise().done(function() {
           if ($('#chapters .nav').is(':empty')) {
             $('#chapters').hide();

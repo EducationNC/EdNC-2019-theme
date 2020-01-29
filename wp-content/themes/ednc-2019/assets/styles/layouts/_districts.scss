@@ -184,3 +184,27 @@
 .district-body p {
   @include p-large;
 }
+
+.flex-horizontal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .section {
+    h6, h1 {
+      margin: 0
+    }
+  }
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .image-district {
+    width: 80%;
+  }
+  .content-district {
+    width: 15%;
+  }
+
+}

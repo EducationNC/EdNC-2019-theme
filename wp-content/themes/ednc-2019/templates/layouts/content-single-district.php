@@ -47,6 +47,28 @@ while (have_posts()) : the_post();
 
   <div <?php post_class('container'); ?>>
 
+    <div class="row extra-bottom-margin">
+      <div class="col-md-12 flex">
+        <div class="image-district">
+          <?php the_post_thumbnail('large', array('class' => 'district-map')); ?>
+        </div>
+        <div class="content-district flex-horizontal">
+          <div class="section">
+            <h6>Schools</h6>
+            <h1 class="lato"><?php the_field('number_of_schools'); ?></h1>
+          </div>
+          <div class="section">
+            <h6>Teachers</h6>
+            <h1 class="lato"><?php the_field('number_of_teachers'); ?></h1>
+          </div>
+          <div class="section">
+            <h6>Students</h6>
+            <h1 class="lato"><?php the_field('number_of_students'); ?></h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <h1 class="lato">School District: <?php the_title(); ?></h1>
     <div class="district-body">
       <?php the_field('description'); ?>
