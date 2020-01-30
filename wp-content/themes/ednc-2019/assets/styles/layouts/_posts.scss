@@ -105,7 +105,7 @@
 
   li {
     margin: .75em 0;
-    line-height: 1.88em;
+    line-height: $line-height;
   }
 
   ol, ul {
@@ -192,7 +192,7 @@
     padding-bottom: 3em;
     font-family: $font-family-serif;
     font-size: $font-size-h4;
-    line-height: 1.88em;
+    line-height: $line-height;
 
     @media (max-width: $screen-xs-max) {
       font-size: 22px;
@@ -528,7 +528,7 @@
   padding-bottom: 3em;
   font-family: Merriweather,serif;
   font-size: 23px;
-  line-height: 1.88em;
+  line-height: $line-height;
 }
 
 .centerquote--content {
@@ -546,7 +546,7 @@
   color: #777A80;
   font-family: Merriweather,serif;
   font-size: 23px;
-  line-height: 1.88em;
+  line-height: $line-height;
   font-weight: 300;
 }
 

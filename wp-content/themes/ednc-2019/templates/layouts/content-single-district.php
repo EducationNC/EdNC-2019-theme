@@ -206,7 +206,8 @@ while (have_posts()) : the_post();
           <div class="col-md-12">
             <div class="category-content-justify-left">
               <?php
-              while ($related->have_posts()) : $related->the_post(); ?>
+              while ($related->have_posts()) : $related->the_post();
+              $featured_image = Media\get_featured_image('featured-four-block'); ?>
               <article <?php post_class('block-news content-block-4 clearfix'); ?>>
                 <div class="flex">
                   <div class="block-content">
