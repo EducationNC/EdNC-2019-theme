@@ -106,16 +106,12 @@
 }
 
 .social-share-buttons {
-  // display: none;
-  display: flex;
-  justify-content: space-between;
+  display: none;
 
   @media (min-width: $screen-md-min) {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    // left: 0;
-    // top: 30%;
+    display: inline-block;
+    left: 0;
+    top: 30%;
     z-index: 100;
     background: $white70;
 
