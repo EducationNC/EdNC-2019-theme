@@ -61,22 +61,46 @@ if (!function_exists('num_format')) {
 $count_num = num_format($counts->total);
 ?>
 
-<div class="social-share-buttons print-no">
-  <?php //if ($count_num != 0) { ?>
-  <?php //} ?>
-  <a rel="nofollow" class="icon-facebook social-share-link" href="<?php echo $facebookURL; ?>">
+<div class="social-share-buttons-2016 print-no">
+  <?php if ($count_num != 0) { ?>
+  <?php } ?>
+  <a rel="nofollow" class="icon-facebook social-share-link-2016" href="<?php echo $facebookURL; ?>">
     Share on facebook
   </a>
-  <a rel="nofollow" class="icon-twitter social-share-link " href="<?php echo $twitterURL; ?>">
+  <a rel="nofollow" class="icon-twitter social-share-link-2016" href="<?php echo $twitterURL; ?>">
     Tweet on Twitter
   </a>
-  <a rel="nofollow" class="icon-linkedin social-share-link" href="<?php echo $linkedinURL; ?>">
+  <a rel="nofollow" class="icon-linkedin social-share-link-2016" href="<?php echo $linkedinURL; ?>">
     Share on LinkedIn
   </a>
-  <a rel="nofollow" class="icon-email social-share-link" href="<?php echo $emailURL; ?>">
+  <a rel="nofollow" class="icon-email social-share-link-2016" href="<?php echo $emailURL; ?>">
     Email this page
   </a>
-  <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" <?php echo $printLink; ?> target="_blank">
+  <a rel="nofollow" class="other-share-2016 icon-fax hidden-xs hidden-sm" <?php echo $printLink; ?> target="_blank">
     Print this page
   </a>
+</div>
+
+<div class="social-share-modal print-no">
+    <a data-toggle="modal" data-target="#social-share-modal" class="icon-share" href="#"></a>
+
+    <div class="modal fade" id="social-share-modal" tabindex="-1" role="dialog" aria-labelledby="social-share-modal">
+      <div class="modal-dialog" role="document">
+            <a rel="nofollow" class="icon-facebook social-share-link" href="<?php echo $facebookURL; ?>">
+              Share on facebook
+            </a>
+            <a rel="nofollow" class="icon-twitter social-share-link" href="<?php echo $twitterURL; ?>">
+              Tweet on Twitter
+            </a>
+            <a rel="nofollow" class="icon-linkedin social-share-link" href="<?php echo $linkedinURL; ?>">
+              Share on LinkedIn
+            </a>
+            <a rel="nofollow" class="icon-email social-share-link" href="<?php echo $emailURL; ?>">
+              Email this page
+            </a>
+            <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" <?php echo $printLink; ?> target="_blank">
+              Print this page
+            </a>
+          </div>
+    </div>
 </div>
