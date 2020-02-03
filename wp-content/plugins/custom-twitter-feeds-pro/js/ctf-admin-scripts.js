@@ -412,4 +412,21 @@ jQuery(document).ready(function($){
         toggleListItemHtml($(this).attr('data-ctf-listid'), $(this));
     });
 
+    function ctfUpdateLayoutTypeOptionsDisplay() {
+        setTimeout(function(){
+            jQuery('.ctf_layout_settings').hide();
+            jQuery('.ctf_layout_settings.ctf_layout_type_'+jQuery('.ctf_layout_type:checked').val()).show();
+        }, 1);
+    }
+    ctfUpdateLayoutTypeOptionsDisplay();
+    jQuery('.ctf_layout_type').change(ctfUpdateLayoutTypeOptionsDisplay);
+    
+    //Selecting a post layout
+    jQuery('.ctf_layout_cell').click(function(){
+        var $self = jQuery(this);
+        $('.ctf_layout_type').trigger('change');
+        $self.addClass('ctf_layout_selected').find('.ctflayout_type').attr('checked', 'checked');
+        $self.siblings().removeClass('ctf_layout_selected');
+    });
+
 });

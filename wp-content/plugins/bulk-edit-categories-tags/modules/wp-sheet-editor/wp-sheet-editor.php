@@ -32,7 +32,7 @@ if (!class_exists('WP_Sheet_Editor')) {
 	class WP_Sheet_Editor {
 
 		private $post_type;
-		var $version = '2.15.4';
+		var $version = '2.16.0';
 		var $textname = 'vg_sheet_editor';
 		var $options_key = 'vg_sheet_editor';
 		var $plugin_url = null;
@@ -106,6 +106,10 @@ if (!class_exists('WP_Sheet_Editor')) {
 
 			if (!empty($_GET['wpse_hard_reset']) && current_user_can('manage_options')) {
 				$this->on_uninstall();
+				if (!headers_sent()) {
+					wp_redirect(remove_query_arg('wpse_hard_reset'));
+					exit();
+				}
 			}
 
 			$options = get_option($this->options_key);
@@ -172,19 +176,19 @@ if (!class_exists('WP_Sheet_Editor')) {
 					'post_types' => array(),
 					'extension_id' => 24
 				),
-				'events' => array(
-					'title' => __('Events Spreadsheet', VGSE()->textname),
-					'icon' => 'fa-ticket', // fa-search
+				'media_library' => array(
+					'title' => __('Media Library Spreadsheet', VGSE()->textname),
+					'icon' => 'fa-image', // fa-search
 					'image' => '', // fa-search
-					'description' => __('<p >View all the events in a spreadsheet, create events in bulk, edit hundreds of events at once using formulas, Advanced searches using multiple event fields, etc.</p>', VGSE()->textname), // incluir <p>
-					'inactive_action_url' => 'https://wpsheeteditor.com/go/events-addon?utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=events',
+					'description' => __('<p >View the image, videos, and all the files from the WP Media library in a spreadsheet. Edit all the file fields, including alt text, image captions, file descriptions, Advanced Search by any field , Auto generate alt text, captions, etc. using the parent post title or categorías, Update thousands of files at once, and more.</p>', VGSE()->textname), // incluir <p>
+					'inactive_action_url' => 'https://wpsheeteditor.com/go/media-addon?utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=media',
 					'inactive_action_label' => __('Buy', VGSE()->textname),
-					'freemius_function' => 'wpsee_fs',
+					'freemius_function' => 'wpseml_freemius',
 					'bundle' => false,
-					'class_function_name' => 'VGSE_EVENTS_IS_PREMIUM',
-					'wp_org_slug' => 'bulk-edit-events',
-					'post_types' => array('tribe_events', 'tribe_organizer', 'tribe_venue'),
-					'extension_id' => 22
+					'class_function_name' => 'VGSE_MEDIA_LIBRARY_IS_PREMIUM',
+					'wp_org_slug' => '',
+					'post_types' => array('attachment'),
+					'extension_id' => 78
 				),
 				'taxonomy_terms' => array(
 					'title' => __('Edit categories, tags, attributes in a spreadsheet', VGSE()->textname),
@@ -207,33 +211,6 @@ if (!class_exists('WP_Sheet_Editor')) {
 											), 'names'))),
 					'extension_id' => 19
 				),
-				'edd' => array(
-					'title' => __('Easy Digital Downloads Spreadsheet', VGSE()->textname),
-					'icon' => 'fa-download', // fa-search
-					'image' => '', // fa-search
-					'description' => __('<p >View all the EDD products in a spreadsheet, create downloads and files in bulk, edit hundreds of products at once using formulas, Advanced searches using multiple fields, etc.</p>', VGSE()->textname), // incluir <p>
-					'inactive_action_url' => 'https://wpsheeteditor.com/go/edd-downloads-addon?utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=edd',
-					'inactive_action_label' => __('Buy', VGSE()->textname),
-					'freemius_function' => 'wpseedd_fs',
-					'bundle' => false,
-					'class_function_name' => 'VGSE_EDD_DOWNLOADS_IS_PREMIUM',
-					'wp_org_slug' => 'wp-sheet-editor-edd-downloads',
-					'post_types' => array('download'),
-					'extension_id' => 18
-				),
-				'frontend_editor' => array(
-					'title' => __('Custom Spreadsheets for Your Users or Employees', VGSE()->textname),
-					'icon' => 'fa-rocket', // fa-search
-					'image' => '', // fa-search
-					'description' => __('<p >Create new spreadsheets with custom columns and Share the Spreadsheets with your Users or Employees. Useful for allowing Post Submissions on the Frontend, Events directories, Web Apps, Custom Dashboards, etc.</p>', VGSE()->textname), // incluir <p>
-					'inactive_action_url' => 'https://wpsheeteditor.com/go/frontend-addon?utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=frontend',
-					'inactive_action_label' => __('Buy', VGSE()->textname),
-					'freemius_function' => 'bepof_fs',
-					'bundle' => false,
-					'class_function_name' => 'VGSE_FRONTEND_IS_PREMIUM',
-					'post_types' => array(),
-					'extension_id' => 25
-				),
 				'woocommerce_coupons' => array(
 					'title' => __('WooCommerce Coupons Spreadsheet', VGSE()->textname),
 					'icon' => 'fa-bullhorn', // fa-search
@@ -248,19 +225,74 @@ if (!class_exists('WP_Sheet_Editor')) {
 					'post_types' => array('shop_coupon'),
 					'extension_id' => 21
 				),
-				'media_library' => array(
-					'title' => __('Media Library Spreadsheet', VGSE()->textname),
-					'icon' => 'fa-image', // fa-search
+				'woocommerce_orders' => array(
+					'title' => __('WooCommerce Orders Spreadsheet', VGSE()->textname),
+					'icon' => 'fa-shopping-cart', // fa-search
 					'image' => '', // fa-search
-					'description' => __('<p >View the image, videos, and all the files from the WP Media library in a spreadsheet. Edit all the file fields, including alt text, image captions, file descriptions, Advanced Search by any field , Auto generate alt text, captions, etc. using the parent post title or categorías, Update thousands of files at once, and more.</p>', VGSE()->textname), // incluir <p>
-					'inactive_action_url' => 'https://wpsheeteditor.com/go/media-addon?utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=media',
+					'description' => __('<p >View and dispatch all the Orders quickly. Advanced Search by any field (shipping method, taxes, VAT, payment methods, customers, products, etc), Export orders and customers information including guest customers; edit thousands of orders quickly, and more.</p>', VGSE()->textname), // incluir <p>
+					'inactive_action_url' => 'https://wpsheeteditor.com/extensions/woocommerce-orders-spreadsheet/?utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=orders',
 					'inactive_action_label' => __('Buy', VGSE()->textname),
-					'freemius_function' => 'wpseml_freemius',
+					'freemius_function' => 'wpsewco_fs',
 					'bundle' => false,
-					'class_function_name' => 'VGSE_MEDIA_LIBRARY_IS_PREMIUM',
+					'class_function_name' => 'VGSE_WC_ORDERS_IS_PREMIUM',
 					'wp_org_slug' => '',
-					'post_types' => array('attachment'),
-					'extension_id' => 78
+					'post_types' => array('shop_order'),
+					'extension_id' => 79
+				),
+				'comments' => array(
+					'title' => __('Comments, Reviews, and Order Notes Spreadsheet', VGSE()->textname),
+					'icon' => 'fa-comments', // fa-search
+					'image' => '', // fa-search
+					'description' => __('<p >It is the best way to manage your comments, WooCommerce customer reviews, event reviews, testimonials, and order notes in a spreadsheet. You can make advanced searches by any field (keyword, order note, status, find comments by post type, and all the fields). You can bulk edit them, delete all at once, export them to excel or external systems, import comments and reviews from other systems, and more.</p>', VGSE()->textname), // incluir <p>
+					'inactive_action_url' => 'https://wpsheeteditor.com/go/comments-addon?utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=comments',
+					'inactive_action_label' => __('Buy', VGSE()->textname),
+					'freemius_function' => 'wpsecr_fs',
+					'bundle' => false,
+					'class_function_name' => 'VGSE_COMMENTS_IS_PREMIUM',
+					'wp_org_slug' => '',
+					'post_types' => array('comments'),
+					'extension_id' => 81
+				),
+				'edd' => array(
+					'title' => __('Easy Digital Downloads Spreadsheet', VGSE()->textname),
+					'icon' => 'fa-download', // fa-search
+					'image' => '', // fa-search
+					'description' => __('<p >View all the EDD products in a spreadsheet, create downloads and files in bulk, edit hundreds of products at once using formulas, Advanced searches using multiple fields, etc.</p>', VGSE()->textname), // incluir <p>
+					'inactive_action_url' => 'https://wpsheeteditor.com/go/edd-downloads-addon?utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=edd',
+					'inactive_action_label' => __('Buy', VGSE()->textname),
+					'freemius_function' => 'wpseedd_fs',
+					'bundle' => false,
+					'class_function_name' => 'VGSE_EDD_DOWNLOADS_IS_PREMIUM',
+					'wp_org_slug' => 'wp-sheet-editor-edd-downloads',
+					'post_types' => array('download'),
+					'extension_id' => 18
+				),
+				'events' => array(
+					'title' => __('Events Spreadsheet', VGSE()->textname),
+					'icon' => 'fa-ticket', // fa-search
+					'image' => '', // fa-search
+					'description' => __('<p >View all the events in a spreadsheet, create events in bulk, edit hundreds of events at once using formulas, Advanced searches using multiple event fields, etc.</p>', VGSE()->textname), // incluir <p>
+					'inactive_action_url' => 'https://wpsheeteditor.com/go/events-addon?utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=events',
+					'inactive_action_label' => __('Buy', VGSE()->textname),
+					'freemius_function' => 'wpsee_fs',
+					'bundle' => false,
+					'class_function_name' => 'VGSE_EVENTS_IS_PREMIUM',
+					'wp_org_slug' => 'bulk-edit-events',
+					'post_types' => array('tribe_events', 'tribe_organizer', 'tribe_venue'),
+					'extension_id' => 22
+				),
+				'frontend_editor' => array(
+					'title' => __('Display the spreadsheet editor in the frontend', VGSE()->textname),
+					'icon' => 'fa-rocket', // fa-search
+					'image' => '', // fa-search
+					'description' => __('<p >Create new spreadsheets with custom columns and Share the Spreadsheets with your Users or Employees on the Frontend. Useful for marketplaces where vendors should edit products in the spreadsheet, allow post or event submissions on the Frontend, events directories, Web Apps, Custom Dashboards, etc.</p>', VGSE()->textname), // incluir <p>
+					'inactive_action_url' => 'https://wpsheeteditor.com/go/frontend-addon?utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=frontend',
+					'inactive_action_label' => __('Buy', VGSE()->textname),
+					'freemius_function' => 'bepof_fs',
+					'bundle' => false,
+					'class_function_name' => 'VGSE_FRONTEND_IS_PREMIUM',
+					'post_types' => array(),
+					'extension_id' => 25
 				),
 				'woocommerce' => array(
 					'title' => __('WooCommerce - Products Integration', VGSE()->textname),
@@ -438,7 +470,7 @@ if (!class_exists('WP_Sheet_Editor')) {
 					'percentage_off' => 50,
 					'coupon' => null,
 					'extensions' => array(),
-					'inactive_action_url' => 'https://wpsheeteditor.com?utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=posts-bundle',
+					'inactive_action_url' => 'https://wpsheeteditor.com/buy-extension/?extension_id=886&utm_source=wp-admin&utm_medium=extensions-list&utm_campaign=posts-bundle',
 					'inactive_action_label' => __('Buy bundle', VGSE()->textname),
 					'freemius_function' => 'vgse_freemius',
 					'wp_org_slug' => 'wp-sheet-editor-bulk-spreadsheet-editor-for-posts-and-pages',

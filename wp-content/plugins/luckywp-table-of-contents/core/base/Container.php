@@ -145,7 +145,7 @@ class Container
             $this->_reflections[$class] = $reflection;
         }
 
-        if ($reflection->isSubclassOf(BaseObject::className())) {
+        if ($reflection->isSubclassOf(BaseObject::class)) {
             $params[] = $config;
             $object = $reflection->newInstanceArgs($params);
         } else {

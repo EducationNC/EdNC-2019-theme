@@ -6,6 +6,7 @@ if (!class_exists('WPSE_WC_Products_Data_Formatting')) {
 
 		static private $instance = false;
 		var $wc_lookuptable_after_save_synced = array();
+		var $wc_subscriptions_after_save_synced = array();
 		var $wc_after_save_prices_synced = array();
 
 		private function __construct() {
@@ -65,6 +66,30 @@ if (!class_exists('WPSE_WC_Products_Data_Formatting')) {
 		}
 
 		/**
+		 * Compatibility for the WooCommerce Subscriptions plugin, it requires prices synchronization
+		 */
+		function _sync_subscription_prices($product_id, $modified_data = array()) {
+			if (!class_exists('WC_Subscriptions')) {
+				return;
+			}
+			$product_lookup_keys = array('_price', '_regular_price', '_sale_price', '_sale_price_dates_from', '_sale_price_dates_to');
+			if (array_intersect($modified_data, $product_lookup_keys) && !in_array($product_id, $this->wc_subscriptions_after_save_synced)) {
+
+				$_POST['variable_regular_price'] = get_post_meta($product_id, '_regular_price', true);
+				// Sync the min variation price
+				if (WC_Subscriptions::is_woocommerce_pre('3.0')) {
+					$variable_subscription = wc_get_product($product_id);
+					$variable_subscription->variable_product_sync();
+				} else {
+					WC_Product_Variable::sync($product_id);
+				}
+
+				$this->wc_subscriptions_after_save_synced[] = $product_id;
+				$this->clear_wc_caches($product_id);
+			}
+		}
+
+		/**
 		 * Sync with product lookup table
 		 * 
 		 * WC 3.6 introduces a new lookup table, we need to sync some fields after every change.
@@ -78,7 +103,7 @@ if (!class_exists('WPSE_WC_Products_Data_Formatting')) {
 				$regular_price = get_post_meta($product_id, '_regular_price', true);
 
 				$product = wc_get_product($product_id);
-				$product->set_regular_price(rand(1, 999999));
+				$product->set_regular_price(999999);
 				$product->save();
 				$product->set_regular_price($regular_price);
 				$product->save();
@@ -616,6 +641,7 @@ if (!class_exists('WPSE_WC_Products_Data_Formatting')) {
 			$this->_sync_product_terms($post_id, $modified_data, $column, $cell_args['data_type']);
 			$this->_sync_product_price($post_id, array($column));
 			$this->_sync_product_lookup_table($post_id, array($column));
+			$this->_sync_subscription_prices($post_id, array($column));
 			$this->_maybe_migrate_variation_to_product($post_id, array($column => $modified_data));
 		}
 
@@ -625,7 +651,16 @@ if (!class_exists('WPSE_WC_Products_Data_Formatting')) {
 			}
 			$this->_sync_product_price($product_id, array_keys($item));
 			$this->_sync_product_lookup_table($product_id, array_keys($item));
+			$this->_sync_subscription_prices($product_id, array_keys($item));
 			$this->_maybe_migrate_variation_to_product($product_id, $item);
+
+			// When we convert a product into a variation and the product has a status not supported by variations, automatically change it to "enabled variation"
+			if (get_post_type($product_id) === 'product_variation' && !in_array(get_post_status($product_id), array('trash', 'publish', 'private'), true)) {
+				wp_update_post(array(
+					'ID' => $product_id,
+					'post_status' => 'publish'
+				));
+			}
 		}
 
 		/**

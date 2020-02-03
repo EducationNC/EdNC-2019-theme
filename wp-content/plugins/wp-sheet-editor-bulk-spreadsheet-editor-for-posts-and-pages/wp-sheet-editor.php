@@ -1,16 +1,16 @@
 <?php
 
 /*
- Plugin Name: WP Sheet Editor
- Description: Bulk edit posts and pages easily using a beautiful spreadsheet inside WordPress.
- Version: 2.15.4
- Author: WP Sheet Editor
- Author URI: https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts
- Plugin URI: https://wpsheeteditor.com/extensions/posts-pages-post-types-spreadsheet/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts
- License:     GPL2
- License URI: https://www.gnu.org/licenses/gpl-2.0.html
- Text Domain: vg_sheet_editor_posts
- Domain Path: /lang
+  Plugin Name: WP Sheet Editor
+  Description: Bulk edit posts and pages easily using a beautiful spreadsheet inside WordPress.
+  Version: 2.16.0
+  Author: WP Sheet Editor
+  Author URI: https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts
+  Plugin URI: https://wpsheeteditor.com/extensions/posts-pages-post-types-spreadsheet/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts
+  License:     GPL2
+  License URI: https://www.gnu.org/licenses/gpl-2.0.html
+  Text Domain: vg_sheet_editor_posts
+  Domain Path: /lang
 */
 if ( !defined( 'ABSPATH' ) ) {
     exit;

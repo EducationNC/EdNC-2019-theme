@@ -2,9 +2,11 @@
 
 namespace luckywp\tableOfContents\front;
 
+use DOMXPath;
 use luckywp\tableOfContents\core\Core;
 use luckywp\tableOfContents\core\front\BaseFront;
 use luckywp\tableOfContents\core\helpers\ArrayHelper;
+use luckywp\tableOfContents\plugin\dom\Dom;
 use luckywp\tableOfContents\plugin\PostSettings;
 
 class Front extends BaseFront
@@ -16,25 +18,34 @@ class Front extends BaseFront
     {
         parent::init();
         if (Core::isFront()) {
-            add_action('wp_enqueue_scripts', [$this, 'assets']);
+            add_action('wp_enqueue_scripts', [$this, 'registerAssets']);
             add_action('init', function () {
                 if (Core::$plugin->settings->getPostTypesForProcessingHeadings()) {
                     add_filter('the_content', [$this, 'autoInsert'], 998);
                 }
             });
-            add_action('wp_footer', [$this, 'overrideColors']);
+            add_action('wp_footer', [$this, 'overrideColors'], 21);
         }
     }
 
-    public function assets()
+    public function registerAssets()
     {
         wp_register_style('lwptoc-main', Core::$plugin->url . '/front/assets/main.min.css', [], Core::$plugin->version);
-        if (apply_filters('lwptoc_enqueue_style', true)) {
-            wp_enqueue_style('lwptoc-main');
-        }
-        wp_register_script('lwptoc-main', Core::$plugin->url . '/front/assets/main.min.js', ['jquery'], Core::$plugin->version);
-        if (apply_filters('lwptoc_enqueue_script', true)) {
-            wp_enqueue_script('lwptoc-main');
+        wp_register_script('lwptoc-main', Core::$plugin->url . '/front/assets/main.min.js', [], Core::$plugin->version);
+    }
+
+    private $_assetsEnqueued = false;
+
+    public function enqueueAssets()
+    {
+        if (!$this->_assetsEnqueued) {
+            if (apply_filters('lwptoc_enqueue_style', true)) {
+                wp_enqueue_style('lwptoc-main');
+            }
+            if (apply_filters('lwptoc_enqueue_script', true)) {
+                wp_enqueue_script('lwptoc-main');
+            }
+            $this->_assetsEnqueued = true;
         }
     }
 
@@ -138,17 +149,42 @@ class Front extends BaseFront
         $position = $settings->position ? $settings->position : Core::$plugin->settings->autoInsertPosition;
         switch ($position) {
             case 'beforefirstheading':
-            default:
-                $result = preg_replace($this->generateRegexp('h[1-6]'), $shortcode . ' $1', $content, 1, $count);
-                return $count ? $result : ($shortcode . $content);
-
             case 'afterfirstheading':
-                $result = preg_replace($this->generateRegexp('h[1-6]'), '$1 ' . $shortcode, $content, 1, $count);
-                return $count ? $result : ($shortcode . $content);
+            default:
+                $dom = Dom::make($content);
+                if ($dom === false) {
+                    return $shortcode . $content;
+                }
+
+                $xpath = new DOMXPath($dom);
+                $nodes = $xpath->query('//h1|//h2|//h3|//h4|//h5|//h6');
+                if (!$nodes->length) {
+                    return $shortcode . $content;
+                }
+
+                if ($position == 'afterfirstheading') {
+                    Dom::afterNodeInsertHtml($nodes->item(0), $shortcode);
+                } else {
+                    Dom::beforeNodeInsertHtml($nodes->item(0), $shortcode);
+                }
+
+                return Dom::getBody($dom);
 
             case 'afterfirstblock':
-                $result = preg_replace($this->generateRegexp('p|h[1-6]'), '$1 ' . $shortcode, $content, 1, $count);
-                return $count ? $result : ($shortcode . $content);
+                $dom = Dom::make($content);
+                if ($dom === false) {
+                    return $shortcode . $content;
+                }
+
+                $xpath = new DOMXPath($dom);
+                $nodes = $xpath->query('//h1|//h2|//h3|//h4|//h5|//h6|//p');
+                if (!$nodes->length) {
+                    return $shortcode . $content;
+                }
+
+                Dom::afterNodeInsertHtml($nodes->item(0), $shortcode);
+
+                return Dom::getBody($dom);
 
             case 'bottom':
                 return $content . $shortcode;
@@ -156,14 +192,5 @@ class Front extends BaseFront
             case 'top':
                 return $shortcode . $content;
         }
-    }
-
-    /**
-     * @param string $tagsRe
-     * @return string
-     */
-    protected function generateRegexp($tagsRe)
-    {
-        return '#(<(' . $tagsRe . ')[^>]*>.*?</\2>)#imsu';
     }
 }

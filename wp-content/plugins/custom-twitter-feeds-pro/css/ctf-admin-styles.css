@@ -83,6 +83,134 @@
     width: 50px;
 }
 
+/* Layout */
+.form-table .ctf_layout_type {
+    display: inline-block;
+    margin-left: 20px;
+}
+.form-table .ctf_layout_type:first-child {
+    margin-left: 0;
+}
+.ctf_layout_setting,
+.ctf_box_setting{
+    margin-bottom: 20px;
+}
+.ctf_layout_setting:last-child,
+.ctf_box_setting:last-child {
+    margin-bottom: 0;
+}
+.ctf_layout_setting label,
+.ctf_box_setting label {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 14px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+}
+#ctf-admin .ctf_layout_options_wrap .ctf_shortcode_symbol{
+    bottom: 4px;
+    right: -20px;
+}
+#ctf-admin .ctf_layout_options_wrap .ctf_shortcode,
+#ctf-admin .ctf_box_setting .ctf_shortcode{
+    position: relative;
+    float: none;
+    top: -4px
+}
+
+.ctf_layout_cell {
+    padding: 0;
+    display: inline-block;
+    float: left;
+    width: 155px;
+    padding: 15px 15px 10px 15px;
+    margin-right: 10px;
+    background: #f6f6f6;
+    border: 1px solid #ddd;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    vertical-align: top;
+}
+.ctf_layout_cell:nth-child(4) {
+    margin-right: 0;
+}
+@media all and (max-width: 1200px){
+    .ctf_layout_cell{
+        width: 21%;
+        padding: 1%;
+        margin-right: 1%;
+    }
+}
+@media all and (max-width: 480px){
+    .ctf_layout_cell{
+        width: 98%;
+        padding: 1%;
+        margin: 5px 0;
+    }
+}
+.ctf_label {
+    font-size: 16px;
+    font-weight: bold;
+    padding-left: 2px;
+}
+.ctf_layout_cell:hover,
+.ctf_layout_cell:focus{
+    background: #fcfcfc;
+    cursor: pointer;
+}
+.ctf_layout_cell.ctf_layout_selected{
+    background: #f7faf1;
+    border: 1px solid #7ad03a;
+}
+.ctf_layout_cell h3{
+    font-size: 15px;
+    margin-top: 0;
+}
+.ctf_layout_cell img{
+    width: 100%;
+    border: 1px solid #ddd;
+    margin-top: 5px;
+}
+
+#ctf-admin #ctf_width_options{
+    margin-top: 5px;
+    display: none;
+}
+#ctf-admin #ctf_width_options label {
+    font-size: 13px;
+    position: relative;
+    top: -2px;
+}
+#ctf-admin .ctf_layout_settings{
+    float: left;
+    clear: both;
+    width: 96%;
+
+    padding: 20px 2%;
+    margin: 10px 0;
+    font-size: 13px;
+    background: #f9f9f9;
+    background: rgba(255,255,255,0.8);
+
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+}
+.ctf_layout_setting {
+    clear:left;
+    margin-bottom: 10px;
+}
+#ctf-admin .ctf_layout_options_wrap .ctf-tooltip{
+    width: 98%;
+    padding: 10px 1%;
+    background: #eee;
+    background: rgba(0,0,0,0.05);
+}
+#ctf-admin .ctf_layout_mobile_layout_setting {
+    width: auto;
+}
+
 /* Tooltip table */
 #ctf-admin .ctf_tooltip_table{
     display: block;
@@ -516,10 +644,12 @@
 .ctf-welcome .changelog h3{
     font-size: 16px;
     font-weight: bold;
+    margin-top: 0;
 }
 .ctf-welcome .ctf-feature-section-content{
     float: left;
     padding-right: 3%;
+    padding-bottom: 20px;
     width: 46%;
     box-sizing: border-box;
 }
@@ -681,39 +811,6 @@
           opacity: 0;
       }
 }
-
-/* Icons */
-@font-face{
-    font-family:'FontAwesome';
-    src:url('../fonts/fontawesome-webfont.eot?v=4.7.0');
-    src:url('../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),
-    url('../fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),
-    url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'),
-    url('../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
-    font-weight:normal;
-    font-style:normal
-}
-#ctf-admin .fa,
-.ctf-welcome .fa{
-    display:inline-block;
-    font:normal normal normal 14px/1 FontAwesome;
-    font-size:inherit;
-    text-rendering:auto;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale
-}
-#ctf-admin .fa-twitter:before{content:"\f099"}
-#ctf-admin .fa-life-ring:before,.ctf-welcome .fa-life-ring:before{content:"\f1cd"}
-#ctf-admin .fa-envelope:before{content:"\f0e0"}
-#ctf-admin .fa-rocket:before{content:"\f135"}
-#ctf-admin .fa-chevron-circle-right:before{content:"\f138"}
-#ctf-admin .fa-question-circle:before{content:"\f059"}
-#ctf-admin .fa-check-circle:before{content:"\f058"}
-#ctf-admin .fa-question-circle:before{content:"\f059"}
-#ctf-admin .fa-youtube-play:before{content: "\f16a";}
-#ctf-admin .fa-heart:before,.ctf-welcome .fa-heart:before{content: "\f004";}
-.ctf-welcome .fa-times:before{content: "\f00d";}
-.ctf-welcome .fa-file-text-o:before{content: "\f0f6";}
 
 
 /* Test connection */

@@ -3,7 +3,7 @@
 Plugin Name: Custom Twitter Feeds Pro Personal
 Plugin URI: http://smashballoon.com/custom-twitter-feeds
 Description: Customizable Twitter feeds for your website
-Version: 1.6.1
+Version: 1.7.1
 Author: Smash Balloon
 Author URI: http://smashballoon.com/
 Text Domain: custom-twitter-feeds
@@ -21,10 +21,10 @@ if ( ! defined( 'CTF_URL' ) ) {
     //Update info
     define( 'CTF_PRODUCT_NAME', 'Custom Twitter Feeds Personal' );
     define( 'CTF_PRODUCT_ID', '177805' ); //177805, 188603, 188605
-    define( 'CTF_VERSION', '1.6.1' );
+    define( 'CTF_VERSION', '1.7.1' );
     //
     define( 'CTF_URL', plugin_dir_path( __FILE__ )  );
-    define( 'CTF_JS_URL', plugins_url( '/js/ctf-scripts.js?ver=' . CTF_VERSION , __FILE__ ) );
+    define( 'CTF_JS_URL', plugins_url( '/js/ctf-scripts.min.js?ver=' . CTF_VERSION , __FILE__ ) );
     define( 'OAUTH_PROCESSOR_URL', 'https://api.smashballoon.com/twitter-login.php?return_uri=' );
     define( 'CTF_STORE_URL', 'https://smashballoon.com/' );
 	define( 'CTF_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -78,18 +78,23 @@ function ctf_scripts_and_styles_pro() {
 	$options = get_option( 'ctf_options' );
 	$font_method = isset( $options['font_method'] ) ? $options['font_method'] : 'svg';
 	$not_ajax_theme = (! isset( $options['ajax_theme'] ) || ! $options['ajax_theme']);
+	$disable_awesome = isset( $options['disableawesome'] ) ? $options['disableawesome'] : false;
 
-    wp_enqueue_style( 'ctf_styles', plugins_url( '/css/ctf-styles.css', __FILE__ ), array(), CTF_VERSION );
+    wp_enqueue_style( 'ctf_styles', plugins_url( '/css/ctf-styles.min.css', __FILE__ ), array(), CTF_VERSION );
 
-	if ( $font_method === 'fontfile' ) {
+	if ( $font_method === 'fontfile' && ! $disable_awesome ) {
 		wp_enqueue_style( 'sb-font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
 	}
 
-	wp_register_script( 'ctf_twitter_intents', plugins_url( '/js/ctf-widgets.js', __FILE__ ), array( 'jquery' ), CTF_VERSION, true );
-
 	if ( $not_ajax_theme ) {
-		wp_register_script( 'ctf_scripts', plugins_url( '/js/ctf-scripts.js', __FILE__ ), array( 'jquery' ), CTF_VERSION, true );
+		wp_register_script( 'ctf_scripts', plugins_url( '/js/ctf-scripts.min.js', __FILE__ ), array( 'jquery' ), CTF_VERSION, true );
 		wp_localize_script( 'ctf_scripts', 'ctf', array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'font_method' => $font_method
+			)
+		);
+	} else {
+		wp_localize_script( 'ctf_scripts', 'jquery', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'font_method' => $font_method
 			)
@@ -132,7 +137,8 @@ if ( ! function_exists( 'sb_remove_script_version' ) ) {
  */
 function ctf_admin_scripts_and_styles_pro() {
     wp_enqueue_style( 'ctf_admin_styles', plugins_url( '/css/ctf-admin-styles.css', __FILE__ ), array(), CTF_VERSION );
-    wp_enqueue_script( 'ctf_admin_scripts', plugins_url( '/js/ctf-admin-scripts.js', __FILE__ ) , array( 'jquery' ), CTF_VERSION, false );
+	wp_enqueue_style( 'sb-font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
+	wp_enqueue_script( 'ctf_admin_scripts', plugins_url( '/js/ctf-admin-scripts.js', __FILE__ ) , array( 'jquery' ), CTF_VERSION, false );
     wp_localize_script( 'ctf_admin_scripts', 'ctf', array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'sb_nonce' => wp_create_nonce( 'ctf-smash-balloon' )

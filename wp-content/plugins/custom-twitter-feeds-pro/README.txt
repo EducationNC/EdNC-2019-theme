@@ -3,8 +3,8 @@ Author: Smash Balloon
 Contributors: smashballoon, craig-at-smash-balloon
 Support Website: http://smashballoon/custom-twitter-feeds/
 Requires at least: 3.0
-Tested up to: 5.2
-Stable tag: 1.6.1
+Tested up to: 5.3
+Stable tag: 1.7.1
 License: Non-distributable, Not for resale
 
 Custom Twitter Feeds Pro allows you to display completely customizable Twitter feeds of your user timeline, home timeline, hashtag, and more on your website.
@@ -41,6 +41,42 @@ If you like the plugin then please consider leaving a [review](https://wordpress
 For simple step-by-step directions on how to set up Custom Twitter Feeds plugin please refer to our [setup guide](http://smashballoon.com/custom-twitter-feeds/docs/ 'Custom Twitter Feeds setup guide').
 
 == Changelog ==
+= 1.7.1 =
+* New: Added hooks for applying custom filters to feeds "ctf_filter_out_tweet".
+* Tweak: Quoted tweets with videos now open a video in the lightbox instead of linking to the original tweet.
+* Tweak: Added aria-label attributes to SVG icons for improved accessibility.
+* Fix: Fixed PHP warning that occurred when a URL in the tweet text did not have a full length URL available from the Twitter API.
+* Fix: Using the setting to link the tweet text to Twitter would cause nested links and invalid HTML.
+* Fix: Fixed Twitter logo not displaying if avatar, author, and date were hidden.
+
+= 1.7 =
+* New: Twitter logo added to the top right of each tweet to fit with Twitter's display guidelines. Customize the logo on the "Style" tab, "Author" area or hide it using the settings on the "Customize" tab "Show/Hide" settings.
+* New: Minified versions of JavaScript and CSS files now used.
+* New: Tweets that are replies to the same account or mention the same account can be included in the feed by enabling the setting "Always include replies to self in the feed".
+* New: Added a setting to completely disable Twitter intents widget.js file.
+* New: Full urls now displayed in tweet text. You can display the shortened urls by enabling the setting on the "Customize" tab, "Advanced" sub-tab or adding shorturls=true in the shortcode.
+* New: Added support for a "layout" setting. Choose the default layout of your feeds on the "Customize" tab or use layout=list, layout=carousel, or layout=masonry in the shortcode.
+* New: Added hooks for changing Twitter card data: "ctf_tc_text" and "ctf_tc_data". Also added support for executing JavaScript after a Twitter card is added to the page.
+* New: Added hooks for changing media data before being added to the page: "ctf_item_media". This can be used to present certain media types, such as youtube embeds, in a custom way.
+* New: Custom JavaScript can now be executed when the lightbox opens and changes slides by assigning a function to ctfLightboxAction.
+* Tweak: Combined widgets.js file with native JavaScript file for the plugin.
+* Tweak: Twitter widgets.js will only be enqueued when "actions" are included in the feed.
+* Tweak: Several improvements in includewords and excludewords filtering.
+* Tweak: Twitter cards will default to summary_large_image type if card type is not valid.
+* Tweak: Added support for list= as well as lists= in shortcodes to display tweets from a Twitter list.
+* Tweak: Tweet text line height style set to 1.4.
+* Tweak: Urls being checked for Twitter cards are hidden instead of removed to allow for customization.
+* Tweak: Improved compatibility with lazy-loading scripts.
+* Fix: Using custom header text for a search or hashtag feed would result in the link to twitter being incorrect.
+* Fix: "Verified" icon was not rendering as an svg causing accessibility issues.
+* Fix: Added additional check for incorrect encoding of "å" character.
+* Fix: Fixed duplicate checks of a url when no Twitter card data was found for it.
+* Fix: Fixed invalid CSS.
+* Fix: Box-sizing unset for SVGs.
+
+= 1.6.2 =
+* Fix: Corrected improper encoding of Twitter Card titles and descriptions with accents and other diacritical marks in some cases.
+
 = 1.6.1 =
 * Tweak: Added support for Spotify embeds.
 * Tweak: Audio file embeds are now shorter and easier to click the play button in the lightbox.

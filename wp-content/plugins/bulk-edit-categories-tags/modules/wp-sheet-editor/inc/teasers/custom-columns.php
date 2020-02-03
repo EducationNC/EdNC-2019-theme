@@ -41,7 +41,7 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns_Teaser')) {
 		 */
 		function register_columns($editor) {
 			$post_type = $editor->args['provider'];
-			$meta_keys = apply_filters('vg_sheet_editor/custom_columns/all_meta_keys', VGSE()->helpers->get_all_meta_keys($post_type), $post_type, $editor);
+			$meta_keys = apply_filters('vg_sheet_editor/custom_columns/all_meta_keys', VGSE()->helpers->get_all_meta_keys($post_type, 1000), $post_type, $editor);
 
 			$this->found_columns[$post_type] = array();
 

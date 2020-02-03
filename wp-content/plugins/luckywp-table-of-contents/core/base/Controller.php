@@ -65,7 +65,7 @@ abstract class Controller extends BaseObject implements ViewContextInterface
     public static function getInstance()
     {
         static $instances = [];
-        $className = static::className();
+        $className = static::class;
         if (!isset($instances[$className])) {
             $instances[$className] = Core::createObject($className);
         }

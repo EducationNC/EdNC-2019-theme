@@ -99,15 +99,17 @@
 
 							<?php do_action('vg_sheet_editor/import/before_existing_wp_check_message', $post_type); ?>
 
-							<p class="wp-check-message"><?php _e('We find rows with the same value in the CSV Field and the WP Field.<br>I.e. Products with same SKU (you can select two fields in case the title is not unique),<br>Note. The fields you select here should be selected in step 2 to be imported.', VGSE()->textname); ?></p>
+							<p class="wp-check-message"><?php _e('We find rows with the same value in the CSV Field and the WP Field.<br>I.e. Products with same SKU or ID.', VGSE()->textname); ?></p>
+
+							<p class="wp-field-requires-ignored-column alert alert-blue"><?php _e('You selected a column from the CSV file below but the column is not <br>being imported. Please go to the previous step and select the column to be imported.<br>Hypothetical example, if you want to update existing products with same ID, you need to import the ID column otherwise we don\'t have the IDs to find them.', VGSE()->textname); ?></p>
 							<div class="field-wrapper">
-								<label><?php _e('Field 1: CSV Field', VGSE()->textname); ?></label>
+								<label><?php _e('CSV Field', VGSE()->textname); ?></label>
 								<select name="existing_check_csv_field[]" class="select2 existing-check-csv-field">
 									<option value="">- -</option>
 								</select>	
 							</div>
 							<div class="field-wrapper">
-								<label><?php _e('Field 1: WordPress Field', VGSE()->textname); ?></label>
+								<label><?php _e('WordPress Field', VGSE()->textname); ?></label>
 								<select name="existing_check_wp_field[]" class="select2">
 									<option value="">- -</option>
 									<?php
@@ -121,7 +123,8 @@
 									?>
 								</select>	
 							</div>
-							<div class="field-wrapper">
+							<!--Deactivated temporarily, I don't think this option is being used and it causes confusion-->
+							<!--<div class="field-wrapper">
 								<label><?php _e('Field 2: CSV Field', VGSE()->textname); ?></label>
 								<select name="existing_check_csv_field[]" class="select2 existing-check-csv-field">
 									<option value="">- -</option>
@@ -131,9 +134,9 @@
 								<label><?php _e('Field 2: WordPress Field', VGSE()->textname); ?></label>
 								<select name="existing_check_wp_field[]" class="select2">
 									<option value="">- -</option>
-									<?php echo $wp_columns_to_search; ?>
+							<?php echo $wp_columns_to_search; ?>
 								</select>	
-							</div>
+							</div>-->
 						</div>
 						<button class="button button-primary button-primario prev-step step-nav" ><i class="fa fa-chevron-left"></i> <?php _e('Previous', VGSE()->textname); ?></button>								
 						<button class="button button-primary button-primario next-step step-nav" ><?php _e('Next', VGSE()->textname); ?> <i class="fa fa-chevron-right"></i></button>
@@ -142,7 +145,7 @@
 						<h3><?php _e('Final step', VGSE()->textname); ?></h3>
 						<p><?php _e('1. Are we reading the file properly? Here is a preview of the first 5 rows from the file.', VGSE()->textname); ?></p>
 						<div id="hot-preview"></div>
-						<p><?php _e('2. Please make a backup before executing the import, so you can revert in case you used wrong settings or the file was wrong.', VGSE()->textname); ?></p>
+						<p><?php _e('2. Please make a backup before executing the import, so you can revert in case you used wrong settings or the file was wrong. The import will save the information directly.', VGSE()->textname); ?></p>
 						<button class="button button-primary button-primario prev-step step-nav step-nav" ><i class="fa fa-chevron-left"></i> <?php _e('Previous', VGSE()->textname); ?></button>
 					</li>
 				</ul>

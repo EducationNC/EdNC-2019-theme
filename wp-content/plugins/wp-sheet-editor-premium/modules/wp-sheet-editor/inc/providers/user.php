@@ -15,6 +15,23 @@ class VGSE_Provider_User {
 		return 'list_users';
 	}
 
+	function delete_meta_key($old_key, $post_type) {
+		global $wpdb;
+		$meta_table_name = $this->get_meta_table_name($post_type);
+		$modified = $wpdb->query("DELETE $meta_table_name pm 
+WHERE pm.meta_key = '" . esc_sql($old_key) . "' ");
+		return $modified;
+	}
+
+	function rename_meta_key($old_key, $new_key, $post_type) {
+		global $wpdb;
+		$meta_table_name = $this->get_meta_table_name($post_type);
+		$modified = $wpdb->query("UPDATE $meta_table_name pm 
+SET pm.meta_key = '" . esc_sql($new_key) . "' 
+WHERE pm.meta_key = '" . esc_sql($old_key) . "' ");
+		return $modified;
+	}
+
 	function get_provider_edit_capability($post_type_key) {
 		return 'edit_users';
 	}
@@ -137,7 +154,11 @@ class VGSE_Provider_User {
 		if (!empty($query_args['s'])) {
 			$query_args['search'] = '*' . $query_args['s'] . '*';
 		}
-		$users = get_users($query_args);
+		$query_args['count_total'] = false;
+
+		// We use WP_User_Query instead of get_users() because we need the full object of the User_Query
+		$user_search = new WP_User_Query($query_args);
+		$users = (array) $user_search->get_results();
 
 		$query_args['number'] = '';
 		$query_args['fields'] = 'ID';
@@ -147,6 +168,7 @@ class VGSE_Provider_User {
 		$out = (object) array();
 		$out->found_posts = $total_users;
 		$out->posts = array();
+		$out->request = $user_search->request;
 		if (!empty($users)) {
 			foreach ($users as $user) {
 				if (is_object($user)) {
@@ -330,7 +352,7 @@ class VGSE_Provider_User {
 		}
 		$meta_table = $this->get_meta_table_name($this->key);
 		$id_key = $this->get_meta_table_post_id_key($this->key);
-		$meta_keys_sql = "SELECT m.meta_key FROM $wpdb->users p LEFT JOIN $meta_table m ON p.ID = m.$id_key WHERE m.meta_value NOT LIKE 'field_%' AND m.meta_key NOT LIKE '_oembed%' GROUP BY m.meta_key";
+		$meta_keys_sql = "SELECT m.meta_key FROM $wpdb->users p LEFT JOIN $meta_table m ON p.ID = m.$id_key WHERE m.meta_value NOT LIKE 'field_%' AND m.meta_key NOT LIKE '_oembed%' GROUP BY m.meta_key LIMIT 4000";
 		$meta_keys = $wpdb->get_col($meta_keys_sql);
 		return apply_filters('vg_sheet_editor/provider/user/all_meta_fields', $meta_keys, $this->key);
 	}

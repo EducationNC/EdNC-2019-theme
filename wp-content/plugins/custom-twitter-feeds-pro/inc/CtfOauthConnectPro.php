@@ -31,6 +31,9 @@ class CtfOauthConnectPro extends CtfOauthConnect
 	        case "listsmeta":
 		        $this->base_url = 'https://api.twitter.com/1.1/lists/list.json';
 		        break;
+	        case "accountlookup":
+	        	$this->base_url = 'https://api.twitter.com/1.1/account/verify_credentials.json';
+	        	break;
             default:
                 $this->base_url = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
         }

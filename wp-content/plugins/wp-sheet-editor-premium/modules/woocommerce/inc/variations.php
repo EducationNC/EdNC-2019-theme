@@ -192,11 +192,12 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				$this->posts_to_inject_query = $posts_to_inject_query;
 
 				$new_posts = array();
+				$wc_default_non_variable_types = array('simple', 'grouped', 'external');
 
 				foreach ($posts as $post) {
 					$new_posts[] = $post;
 
-					if (VGSE()->WC->get_product_type($post->ID) !== 'variable') {
+					if (in_array(VGSE()->WC->get_product_type($post->ID), $wc_default_non_variable_types, true)) {
 						continue;
 					}
 
@@ -631,7 +632,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				if (!is_object($provider)) {
 					return array();
 				}
-				$variation_meta_keys = array_diff(VGSE()->helpers->get_all_meta_keys($this->variation_post_type), array_keys(WP_Sheet_Editor_WooCommerce::get_instance()->core_to_woo_importer_columns_list));
+				$variation_meta_keys = array_diff(VGSE()->helpers->get_all_meta_keys($this->variation_post_type, 1000), array_keys(WP_Sheet_Editor_WooCommerce::get_instance()->core_to_woo_importer_columns_list));
 
 				foreach ($variation_meta_keys as $index => $meta_key) {
 					if (strpos($meta_key, 'attribute_') === 0) {

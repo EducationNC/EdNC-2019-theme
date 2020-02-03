@@ -54,12 +54,19 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'column_for_parent_products_only' => __('This column is for parent products only, variations don\'t use this field', VGSE()->textname),
 				'how_to_paste' => __('Paste using keyboard: Ctrl+V', VGSE()->textname),
 				'realign_cells' => __('Realign cells', VGSE()->textname),
-				'auto_resize_columns' => __('Automatically resize columns based on their values', VGSE()->textname),
+				'remove_all_filters' => __('Remove all filters', VGSE()->textname),
+				'auto_resize_columns' => __('Resize columns based on the values', VGSE()->textname),
+				'delete_row' => __('Delete row', VGSE()->textname),
+				'confirm_delete_row' => __('We will delete the selected row(s) from the database completely. If you want to restore them later, you should make a backup before. Do you want to delete them?', VGSE()->textname),
 				'duplicate_row' => __('Duplicate row', VGSE()->textname),
 				'hide_column' => __('Hide column', VGSE()->textname),
 				'create_variations' => __('Create variations', VGSE()->textname),
 				'copy_variations' => __('Copy variations from this product', VGSE()->textname),
 				'enter_column_name' => __('Rename column', VGSE()->textname),
+				'delete_meta_key' => __('Delete field', VGSE()->textname),
+				'delete_meta_key_confirmation' => __('We will delete this meta field from the database and you will lose the values saved in this field on all the rows. You should make a backup to be able to restore in the future. Do you want to continue with the deletion?', VGSE()->textname),
+				'edit_meta_key' => __('Edit meta key', VGSE()->textname),
+				'new_value_empty_or_equal' => __('Error: The new value is empty or is equal to the old value', VGSE()->textname),
 				'last_session_filters_notice' => __('Showing rows from your last session.', VGSE()->textname),
 				'export_column' => __('Export column', VGSE()->textname),
 				'formula_execution_failed' => __('<p>The formula was not applied completely. The process was canceled due to an error.</p><p>You can close this window.</p>', VGSE()->textname),
@@ -71,7 +78,7 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'column_removed' => __('Column removed. Go to "settings > hide/display columns" to enable it again', VGSE()->textname),
 				'save_changes_before_remove_filter' => __('You have modified posts. Please save the changes because we will refresh the spreadsheet.', VGSE()->textname),
 				'save_changes_before_remove_column' => __('You have modified rows. Please save the changes before removing columns from the spreadsheet.', VGSE()->textname),
-				'save_changes_before_we_reload' => __('You have modified posts. Please save the changes because we will refresh the spreadsheet. Do you want to continue?', VGSE()->textname),
+				'save_changes_before_we_reload' => __('You have modified posts. Please save the changes because we will refresh the spreadsheet. Do you want to refresh now?', VGSE()->textname),
 				'save_changes_reload_optional' => __('Some rows were modified in the background. Please save the changes and reload the spreadsheet to see the changes', VGSE()->textname),
 				'no_rows_for_formula' => __("We didn't find rows to update from the search query. Please try another search query.", VGSE()->textname),
 				'settings_moved_submenu' => __('You can find all the settings here, like columns visibility, etc.', VGSE()->textname),
@@ -159,7 +166,11 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'edd-admin-scripts',
 				'chosen-drop-down',
 				'csf-plugins',
-				'martfury-shortcodes'
+				'martfury-shortcodes',
+				'wc-admin-order-meta-boxes',
+				'ced_wovpe_js',
+				'ced-wovpr-custom-script',
+				'datepicker-style',
 			);
 
 
@@ -230,7 +241,8 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'taxonomy_terms_separator' => (!empty(VGSE()->options['be_taxonomy_terms_separator']) ) ? VGSE()->options['be_taxonomy_terms_separator'] : ',',
 				'is_editor_page' => VGSE()->helpers->is_editor_page(),
 				'is_premium' => VGSE()->helpers->get_plugin_mode() === 'pro-plugin',
-				'is_post_type' => $this->provider->is_post_type
+				'is_post_type' => $this->provider->is_post_type,
+				'is_administrator' => current_user_can('manage_options')
 			);
 
 			$all_settings = wp_parse_args($settings, $this->args);

@@ -13,6 +13,11 @@ abstract class BasePlugin extends ServiceLocator
     /**
      * @var string
      */
+    public $slug;
+
+    /**
+     * @var string
+     */
     public $version;
 
     /**
@@ -78,6 +83,8 @@ abstract class BasePlugin extends ServiceLocator
 
     public function run($version, $fileName, $prefix)
     {
+        $this->slug = basename($fileName, '.php');
+        $this->textDomain = $this->slug;
         $this->version = $version;
         $this->fileName = $fileName;
         $this->dir = dirname($fileName);

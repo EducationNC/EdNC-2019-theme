@@ -1,15 +1,15 @@
-# Copyright (C) 2019 WP Sheet Editor
+# Copyright (C) 2020 WP Sheet Editor
 # This file is distributed under the same license as the WP Sheet Editor - Taxonomy Terms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Sheet Editor - Taxonomy Terms 1.2.4\n"
+"Project-Id-Version: WP Sheet Editor - Taxonomy Terms 1.2.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/taxonomy-terms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-11-23T21:17:46+00:00\n"
+"POT-Creation-Date: 2020-01-13T19:25:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.2.0\n"
 
@@ -65,43 +65,43 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: inc/bootstrap.php:129
+#: inc/bootstrap.php:135
 msgid "Count"
 msgstr ""
 
-#: inc/bootstrap.php:139
+#: inc/bootstrap.php:145
 msgid "Description"
 msgstr ""
 
-#: inc/bootstrap.php:153
+#: inc/bootstrap.php:159
 msgid "Taxonomy"
 msgstr ""
 
-#: inc/bootstrap.php:162
+#: inc/bootstrap.php:168
 msgid "Display type"
 msgstr ""
 
-#: inc/bootstrap.php:169
+#: inc/bootstrap.php:175
 msgid "Default"
 msgstr ""
 
-#: inc/bootstrap.php:170
+#: inc/bootstrap.php:176
 msgid "Products"
 msgstr ""
 
-#: inc/bootstrap.php:171
+#: inc/bootstrap.php:177
 msgid "Subcategories"
 msgstr ""
 
-#: inc/bootstrap.php:172
+#: inc/bootstrap.php:178
 msgid "Both"
 msgstr ""
 
-#: inc/bootstrap.php:177
+#: inc/bootstrap.php:183
 msgid "Thumbnail"
 msgstr ""
 
-#: inc/providers/term.php:336
+#: inc/providers/term.php:360
 msgid "The item id does not exist. Error #89827j"
 msgstr ""
 

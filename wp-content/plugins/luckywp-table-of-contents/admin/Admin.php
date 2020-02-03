@@ -41,6 +41,9 @@ class Admin extends BaseObject
             EditorBlockController::getInstance();
             WidgetController::getInstance();
             RateController::getInstance();
+
+            // Здоровье сайта
+            new SiteHealth();
         }
     }
 
@@ -52,7 +55,7 @@ class Admin extends BaseObject
             esc_html__('Table of Contents', 'luckywp-table-of-contents'),
             'manage_options',
             Core::$plugin->prefix . 'settings',
-            [SettingsController::className(), 'router']
+            [SettingsController::class, 'router']
         );
     }
 

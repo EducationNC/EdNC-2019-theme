@@ -1,7 +1,7 @@
 === Bulk Edit Categories and Tags - Create Thousands Quickly on the Editor ===
 Contributors: wpsheeteditor,vegacorp,josevega
 Tags: posts, taxonomies, bulk edit, spreadsheet, spreadsheet editor
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 Requires at least: 4.7
 Tested up to: 5.3
 License: GPLv2
@@ -130,17 +130,21 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 1. bulk editor
 
 == Changelog ==
+= V 1.2.5 - 2020-01-13 =
+* FIX - TERMS - Product categories and tags - The count column doesn't show the real number because WC uses a meta field instead. So allow to view the meta field used by WC.
+
+
 = V 1.2.4 - 2019-11-24 =
 * Updated to CORE v2.15.4
 
 
-= V 1.2.4 - 2019-11-18 =
+= V 1.2.3 - 2019-11-18 =
 * CHANGE - TERMS - Display user friendly names instead of encoded special characters
 * FIX - TERMS - IMPORT - When we update existing by ID, it doesn't find the existing term to update
 * FIX - TERMS - When searching by keyword, it returns empty results but the term exists
 
 
-= V 1.2.4 - 2019-10-18 =
+= V 1.2.1 - 2019-10-18 =
 * Updated to CORE v2.15.2
 
 

@@ -64,14 +64,6 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 				return;
 			}
 
-			// Include files
-			require_once 'inc/attributes.php';
-			require_once 'inc/variations.php';
-			require_once 'inc/import-export.php';
-			require_once 'inc/downloadable.php';
-			require_once 'inc/formatting.php';
-
-			$this->variations = WP_Sheet_Editor_WooCommerce_Variations::get_instance();
 			$this->special_columns_import_prefixes = array(
 				'downloads_name',
 				'downloads_url',
@@ -128,12 +120,23 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 				"product_tag" => 'tag_ids',
 				"product_visibility" => 'catalog_visibility',
 				"product_type" => 'type',
-				"_download_type" => '_download_type',
+				"_download_type" => 'download_type',
 				"_featured" => 'featured',
 				"default_attributes" => 'attributes',
 				"_vgse_create_attribute" => 'attributes',
 					), array_fill_keys(wc_get_attribute_taxonomy_names(), 'attributes'));
+
+
+			// Include files
+			require_once 'inc/attributes.php';
+			require_once 'inc/variations.php';
+			require_once 'inc/import-export.php';
+			require_once 'inc/downloadable.php';
+			require_once 'inc/formatting.php';
+			$this->variations = WP_Sheet_Editor_WooCommerce_Variations::get_instance();
+
 			$this->core_columns_list = array_unique(array_merge(array_keys($this->core_to_woo_importer_columns_list), WP_Sheet_Editor_WooCommerce_Variations::get_instance()->get_variation_whitelisted_columns()));
+
 
 			// init wp hooks
 			add_action('vg_sheet_editor/columns/all_items', array($this, 'filter_columns_settings'), 10, 3);

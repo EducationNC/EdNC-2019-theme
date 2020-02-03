@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-08-02 22:23+0300\n"
-"PO-Revision-Date: 2019-08-02 22:25+0300\n"
+"POT-Creation-Date: 2020-01-07 22:29+0300\n"
+"PO-Revision-Date: 2020-01-07 22:29+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
@@ -17,155 +17,171 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: plugin/editorBlock/src\n"
 
-#: admin/Admin.php:34
+#: admin/Admin.php:34 admin/SiteHealth.php:34
 msgid "Settings"
 msgstr ""
 
-#: admin/Admin.php:51 admin/Admin.php:52 admin/Admin.php:72 admin/Admin.php:99
+#: admin/Admin.php:54 admin/Admin.php:55 admin/Admin.php:75 admin/Admin.php:113
 #: admin/controllers/EditorBlockController.php:65
-#: admin/controllers/ShortcodeController.php:68 plugin/Plugin.php:452
-#: plugin/WpWidget.php:20
+#: admin/controllers/ShortcodeController.php:68 plugin/Plugin.php:464
+#: plugin/WpWidget.php:22
 msgid "Table of Contents"
 msgstr ""
 
-#: admin/Admin.php:101
+#: admin/Admin.php:115
 msgid "Edit"
 msgstr ""
 
-#: admin/Admin.php:128 admin/forms/CustomizeForm.php:246
-#: admin/widgets/customizeModal/views/modal.php:52 config/settings.php:305
+#: admin/Admin.php:142 admin/forms/CustomizeForm.php:246
+#: admin/widgets/customizeModal/views/modal.php:53 config/settings.php:305
 msgid "Position"
 msgstr ""
 
-#: admin/Admin.php:131 admin/widgets/customizeModal/views/modal.php:75
+#: admin/Admin.php:145 admin/widgets/customizeModal/views/modal.php:76
 #: config/settings.php:22
 msgid "Minimal Count of Headings"
 msgstr ""
 
-#: admin/Admin.php:134 admin/forms/CustomizeForm.php:241
-#: admin/widgets/customizeModal/views/modal.php:98 config/settings.php:34
+#: admin/Admin.php:148 admin/forms/CustomizeForm.php:241
+#: admin/widgets/customizeModal/views/modal.php:99 config/settings.php:34
 msgid "Depth"
 msgstr ""
 
-#: admin/Admin.php:137 admin/widgets/customizeModal/views/modal.php:120
+#: admin/Admin.php:151 admin/widgets/customizeModal/views/modal.php:121
 #: config/settings.php:43
 msgid "Hierarchical View"
 msgstr ""
 
-#: admin/Admin.php:137 admin/Admin.php:149 admin/Admin.php:158
-#: admin/Admin.php:161 admin/Admin.php:203 admin/Admin.php:213
-#: admin/widgets/customizeModal/views/modal.php:136
-#: admin/widgets/customizeModal/views/modal.php:229
-#: admin/widgets/customizeModal/views/modal.php:292
-#: admin/widgets/customizeModal/views/modal.php:315
-#: admin/widgets/customizeModal/views/modal.php:600
-#: admin/widgets/customizeModal/views/modal.php:627
+#: admin/Admin.php:151 admin/Admin.php:163 admin/Admin.php:172
+#: admin/Admin.php:175 admin/Admin.php:217 admin/Admin.php:227
+#: admin/widgets/customizeModal/views/modal.php:137
+#: admin/widgets/customizeModal/views/modal.php:230
+#: admin/widgets/customizeModal/views/modal.php:293
+#: admin/widgets/customizeModal/views/modal.php:316
+#: admin/widgets/customizeModal/views/modal.php:601
+#: admin/widgets/customizeModal/views/modal.php:628
 msgid "Enabled"
 msgstr ""
 
-#: admin/Admin.php:137 admin/Admin.php:149 admin/Admin.php:158
-#: admin/Admin.php:161 admin/Admin.php:203 admin/Admin.php:213
-#: admin/widgets/customizeModal/views/modal.php:136
-#: admin/widgets/customizeModal/views/modal.php:229
-#: admin/widgets/customizeModal/views/modal.php:292
-#: admin/widgets/customizeModal/views/modal.php:315
-#: admin/widgets/customizeModal/views/modal.php:600
-#: admin/widgets/customizeModal/views/modal.php:627
+#: admin/Admin.php:151 admin/Admin.php:163 admin/Admin.php:172
+#: admin/Admin.php:175 admin/Admin.php:217 admin/Admin.php:227
+#: admin/widgets/customizeModal/views/modal.php:137
+#: admin/widgets/customizeModal/views/modal.php:230
+#: admin/widgets/customizeModal/views/modal.php:293
+#: admin/widgets/customizeModal/views/modal.php:316
+#: admin/widgets/customizeModal/views/modal.php:601
+#: admin/widgets/customizeModal/views/modal.php:628
 msgid "Disabled"
 msgstr ""
 
-#: admin/Admin.php:140 admin/forms/CustomizeForm.php:242
-#: admin/widgets/customizeModal/views/modal.php:143 config/settings.php:54
+#: admin/Admin.php:154 admin/forms/CustomizeForm.php:242
+#: admin/widgets/customizeModal/views/modal.php:144 config/settings.php:54
 msgid "Numeration"
 msgstr ""
 
-#: admin/Admin.php:143 admin/forms/CustomizeForm.php:243
-#: admin/widgets/customizeModal/views/modal.php:165 config/settings.php:66
+#: admin/Admin.php:157 admin/forms/CustomizeForm.php:243
+#: admin/widgets/customizeModal/views/modal.php:166 config/settings.php:66
 msgid "Numeration Suffix"
 msgstr ""
 
-#: admin/Admin.php:146 admin/widgets/customizeModal/views/modal.php:187
+#: admin/Admin.php:160 admin/widgets/customizeModal/views/modal.php:188
 #: config/settings.php:89
 msgid "Title"
 msgstr ""
 
-#: admin/Admin.php:149 admin/widgets/customizeModal/views/modal.php:213
+#: admin/Admin.php:163 admin/widgets/customizeModal/views/modal.php:214
 #: config/settings.php:95
 msgid "Toggle Show/Hide"
 msgstr ""
 
-#: admin/Admin.php:152 admin/forms/CustomizeForm.php:244
-#: admin/widgets/customizeModal/views/modal.php:236 config/settings.php:107
+#: admin/Admin.php:166 admin/forms/CustomizeForm.php:244
+#: admin/widgets/customizeModal/views/modal.php:237 config/settings.php:107
 msgid "Label Show"
 msgstr ""
 
-#: admin/Admin.php:155 admin/forms/CustomizeForm.php:245
-#: admin/widgets/customizeModal/views/modal.php:256 config/settings.php:118
+#: admin/Admin.php:169 admin/forms/CustomizeForm.php:245
+#: admin/widgets/customizeModal/views/modal.php:257 config/settings.php:118
 msgid "Label Hide"
 msgstr ""
 
-#: admin/Admin.php:158
+#: admin/Admin.php:172
 msgid "Hide Items"
 msgstr ""
 
-#: admin/Admin.php:161 admin/widgets/customizeModal/views/modal.php:299
+#: admin/Admin.php:175 admin/widgets/customizeModal/views/modal.php:300
 #: config/settings.php:146
 msgid "Smooth Scroll"
 msgstr ""
 
-#: admin/Admin.php:164 admin/widgets/customizeModal/views/modal.php:322
+#: admin/Admin.php:178 admin/widgets/customizeModal/views/modal.php:323
 msgid "Smooth Scroll Offset Top"
 msgstr ""
 
-#: admin/Admin.php:167 admin/widgets/customizeModal/views/modal.php:346
+#: admin/Admin.php:181 admin/widgets/customizeModal/views/modal.php:347
 #: config/settings.php:182
 msgid "Width"
 msgstr ""
 
-#: admin/Admin.php:170 admin/forms/CustomizeForm.php:247
-#: admin/widgets/customizeModal/views/modal.php:369 config/settings.php:194
+#: admin/Admin.php:184 admin/forms/CustomizeForm.php:247
+#: admin/widgets/customizeModal/views/modal.php:370 config/settings.php:194
 msgid "Float"
 msgstr ""
 
-#: admin/Admin.php:173 admin/widgets/customizeModal/views/modal.php:391
+#: admin/Admin.php:187 admin/widgets/customizeModal/views/modal.php:392
 #: config/settings.php:203
 msgid "Title Font Size"
 msgstr ""
 
-#: admin/Admin.php:176 admin/forms/CustomizeForm.php:248
-#: admin/widgets/customizeModal/views/modal.php:415 config/settings.php:216
+#: admin/Admin.php:190 admin/forms/CustomizeForm.php:248
+#: admin/widgets/customizeModal/views/modal.php:416 config/settings.php:216
 msgid "Title Font Weight"
 msgstr ""
 
-#: admin/Admin.php:179 admin/widgets/customizeModal/views/modal.php:437
+#: admin/Admin.php:193 admin/widgets/customizeModal/views/modal.php:438
 #: config/settings.php:225
 msgid "Items Font Size"
 msgstr ""
 
-#: admin/Admin.php:182 admin/forms/CustomizeForm.php:249
-#: admin/widgets/customizeModal/views/modal.php:461 config/settings.php:238
+#: admin/Admin.php:196 admin/forms/CustomizeForm.php:249
+#: admin/widgets/customizeModal/views/modal.php:462 config/settings.php:238
 msgid "Color Scheme"
 msgstr ""
 
-#: admin/Admin.php:200 admin/widgets/customizeModal/views/modal.php:582
+#: admin/Admin.php:214 admin/widgets/customizeModal/views/modal.php:583
 #: config/settings.php:447
 #, php-format
 msgid "Wrap table of contents with %s tag"
 msgstr ""
 
-#: admin/Admin.php:210 admin/widgets/customizeModal/views/modal.php:609
+#: admin/Admin.php:224 admin/widgets/customizeModal/views/modal.php:610
 #: config/settings.php:462
 #, php-format
 msgid "Use %s for links"
 msgstr ""
 
-#: admin/Admin.php:217 admin/Admin.php:220
+#: admin/Admin.php:231 admin/Admin.php:234
 msgid "Skip headings"
+msgstr ""
+
+#: admin/SiteHealth.php:26
+msgid "DOM/XML Version"
+msgstr ""
+
+#: admin/SiteHealth.php:27 admin/SiteHealth.php:31
+msgid "not loaded"
+msgstr ""
+
+#: admin/SiteHealth.php:30
+msgid "libXML Version"
+msgstr ""
+
+#: admin/SiteHealth.php:35
+msgid "encoded data to copy"
 msgstr ""
 
 #: admin/controllers/EditorBlockController.php:71
 #: admin/controllers/ShortcodeController.php:74
-#: admin/widgets/customizeModal/views/modal.php:569
+#: admin/widgets/customizeModal/views/modal.php:570
 #: admin/widgets/metabox/views/box.php:33
 #: admin/widgets/widget/views/_override.php:18
 msgid "empty"
@@ -214,101 +230,101 @@ msgstr ""
 msgid "from scheme"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:18
+#: admin/widgets/customizeModal/views/modal.php:19
 msgid "Click to override default value"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:27
-#: admin/widgets/customizeModal/views/modal.php:636
+#: admin/widgets/customizeModal/views/modal.php:28
+#: admin/widgets/customizeModal/views/modal.php:637
 msgid "Cancel"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:28
+#: admin/widgets/customizeModal/views/modal.php:29
 msgid "Customize Table of Contents"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:42 config/settings.php:16
+#: admin/widgets/customizeModal/views/modal.php:43 config/settings.php:16
 msgid "General"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:43 config/settings.php:176
+#: admin/widgets/customizeModal/views/modal.php:44 config/settings.php:176
 msgid "Appearance"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:44 config/settings.php:354
+#: admin/widgets/customizeModal/views/modal.php:45 config/settings.php:354
 msgid "Misc."
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:53
-#: admin/widgets/customizeModal/views/modal.php:76
-#: admin/widgets/customizeModal/views/modal.php:99
-#: admin/widgets/customizeModal/views/modal.php:121
-#: admin/widgets/customizeModal/views/modal.php:144
-#: admin/widgets/customizeModal/views/modal.php:166
-#: admin/widgets/customizeModal/views/modal.php:188
-#: admin/widgets/customizeModal/views/modal.php:214
-#: admin/widgets/customizeModal/views/modal.php:237
-#: admin/widgets/customizeModal/views/modal.php:257
-#: admin/widgets/customizeModal/views/modal.php:277
-#: admin/widgets/customizeModal/views/modal.php:300
-#: admin/widgets/customizeModal/views/modal.php:323
-#: admin/widgets/customizeModal/views/modal.php:347
-#: admin/widgets/customizeModal/views/modal.php:370
-#: admin/widgets/customizeModal/views/modal.php:392
-#: admin/widgets/customizeModal/views/modal.php:416
-#: admin/widgets/customizeModal/views/modal.php:438
-#: admin/widgets/customizeModal/views/modal.php:462
-#: admin/widgets/customizeModal/views/modal.php:492
-#: admin/widgets/customizeModal/views/modal.php:517
-#: admin/widgets/customizeModal/views/modal.php:540
-#: admin/widgets/customizeModal/views/modal.php:585
-#: admin/widgets/customizeModal/views/modal.php:612
+#: admin/widgets/customizeModal/views/modal.php:54
+#: admin/widgets/customizeModal/views/modal.php:77
+#: admin/widgets/customizeModal/views/modal.php:100
+#: admin/widgets/customizeModal/views/modal.php:122
+#: admin/widgets/customizeModal/views/modal.php:145
+#: admin/widgets/customizeModal/views/modal.php:167
+#: admin/widgets/customizeModal/views/modal.php:189
+#: admin/widgets/customizeModal/views/modal.php:215
+#: admin/widgets/customizeModal/views/modal.php:238
+#: admin/widgets/customizeModal/views/modal.php:258
+#: admin/widgets/customizeModal/views/modal.php:278
+#: admin/widgets/customizeModal/views/modal.php:301
+#: admin/widgets/customizeModal/views/modal.php:324
+#: admin/widgets/customizeModal/views/modal.php:348
+#: admin/widgets/customizeModal/views/modal.php:371
+#: admin/widgets/customizeModal/views/modal.php:393
+#: admin/widgets/customizeModal/views/modal.php:417
+#: admin/widgets/customizeModal/views/modal.php:439
+#: admin/widgets/customizeModal/views/modal.php:463
+#: admin/widgets/customizeModal/views/modal.php:493
+#: admin/widgets/customizeModal/views/modal.php:518
+#: admin/widgets/customizeModal/views/modal.php:541
+#: admin/widgets/customizeModal/views/modal.php:586
+#: admin/widgets/customizeModal/views/modal.php:613
 msgid "default"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:88 config/settings.php:30
+#: admin/widgets/customizeModal/views/modal.php:89 config/settings.php:30
 msgid ""
 "If the count of headings in the post is less, then table of contents is not "
 "displayed."
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:129
-#: admin/widgets/customizeModal/views/modal.php:222
-#: admin/widgets/customizeModal/views/modal.php:285
-#: admin/widgets/customizeModal/views/modal.php:308
-#: admin/widgets/customizeModal/views/modal.php:593
-#: admin/widgets/customizeModal/views/modal.php:620 config/settings.php:47
+#: admin/widgets/customizeModal/views/modal.php:130
+#: admin/widgets/customizeModal/views/modal.php:223
+#: admin/widgets/customizeModal/views/modal.php:286
+#: admin/widgets/customizeModal/views/modal.php:309
+#: admin/widgets/customizeModal/views/modal.php:594
+#: admin/widgets/customizeModal/views/modal.php:621 config/settings.php:47
 #: config/settings.php:99 config/settings.php:150 config/settings.php:297
 msgid "Enable"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:202
+#: admin/widgets/customizeModal/views/modal.php:203
 msgid "Without title"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:276 config/settings.php:133
+#: admin/widgets/customizeModal/views/modal.php:277 config/settings.php:133
 msgid "By default, items of contents will be hidden"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:516
+#: admin/widgets/customizeModal/views/modal.php:517
 msgid "Skip heading by level"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:539
+#: admin/widgets/customizeModal/views/modal.php:540
 msgid "Skip heading by text"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:553 config/settings.php:378
+#: admin/widgets/customizeModal/views/modal.php:554 config/settings.php:378
 msgid ""
 "Specify headings (one per line) to be excluded from the table of contents."
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:557 config/settings.php:382
+#: admin/widgets/customizeModal/views/modal.php:558 config/settings.php:382
 #, php-format
 msgid "Use an asterisk %s as a wildcard to match any text."
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:639
+#: admin/widgets/customizeModal/views/modal.php:641
 msgid "Save"
 msgstr ""
 
@@ -316,11 +332,11 @@ msgstr ""
 msgid "Saved!"
 msgstr ""
 
-#: admin/widgets/fontSizeField/views/widget.php:16 plugin/Plugin.php:311
+#: admin/widgets/fontSizeField/views/widget.php:16 plugin/Plugin.php:323
 msgid "Default"
 msgstr ""
 
-#: admin/widgets/fontSizeField/views/widget.php:17 plugin/Plugin.php:276
+#: admin/widgets/fontSizeField/views/widget.php:17 plugin/Plugin.php:288
 msgid "Custom Value"
 msgstr ""
 
@@ -509,144 +525,149 @@ msgstr ""
 msgid "%s cannot be blank."
 msgstr ""
 
-#: plugin/Plugin.php:128
+#: luckywp-table-of-contents.php:33
+#, php-format
+msgid "%1$s plugin require PHP extension %2$s to work."
+msgstr ""
+
+#: plugin/Plugin.php:140
 msgid "Without numeration"
 msgstr ""
 
-#: plugin/Plugin.php:129
+#: plugin/Plugin.php:141
 msgid "Decimal numbers (nested)"
 msgstr ""
 
-#: plugin/Plugin.php:130
+#: plugin/Plugin.php:142
 msgid "Decimal numbers"
 msgstr ""
 
-#: plugin/Plugin.php:131
+#: plugin/Plugin.php:143
 msgid "Roman numbers (nested)"
 msgstr ""
 
-#: plugin/Plugin.php:132
+#: plugin/Plugin.php:144
 msgid "Roman numbers"
 msgstr ""
 
-#: plugin/Plugin.php:142 plugin/Plugin.php:229 plugin/Plugin.php:373
+#: plugin/Plugin.php:154 plugin/Plugin.php:241 plugin/Plugin.php:385
 msgid "None"
 msgstr ""
 
-#: plugin/Plugin.php:154
+#: plugin/Plugin.php:166
 msgid "Before first heading"
 msgstr ""
 
-#: plugin/Plugin.php:155
+#: plugin/Plugin.php:167
 msgid "After first heading"
 msgstr ""
 
-#: plugin/Plugin.php:156
+#: plugin/Plugin.php:168
 msgid "After first block (paragraph or heading)"
 msgstr ""
 
-#: plugin/Plugin.php:157
+#: plugin/Plugin.php:169
 msgid "Top"
 msgstr ""
 
-#: plugin/Plugin.php:158
+#: plugin/Plugin.php:170
 msgid "Bottom"
 msgstr ""
 
-#: plugin/Plugin.php:192
+#: plugin/Plugin.php:204
 msgid "Thin"
 msgstr ""
 
-#: plugin/Plugin.php:193
+#: plugin/Plugin.php:205
 msgid "Extra Light"
 msgstr ""
 
-#: plugin/Plugin.php:194
+#: plugin/Plugin.php:206
 msgid "Light"
 msgstr ""
 
-#: plugin/Plugin.php:195
+#: plugin/Plugin.php:207
 msgid "Normal"
 msgstr ""
 
-#: plugin/Plugin.php:196
+#: plugin/Plugin.php:208
 msgid "Medium"
 msgstr ""
 
-#: plugin/Plugin.php:197
+#: plugin/Plugin.php:209
 msgid "Semi Bold"
 msgstr ""
 
-#: plugin/Plugin.php:198
+#: plugin/Plugin.php:210
 msgid "Bold"
 msgstr ""
 
-#: plugin/Plugin.php:199
+#: plugin/Plugin.php:211
 msgid "Extra Bold"
 msgstr ""
 
-#: plugin/Plugin.php:200
+#: plugin/Plugin.php:212
 msgid "Heavy"
 msgstr ""
 
-#: plugin/Plugin.php:230
+#: plugin/Plugin.php:242
 msgid "Left"
 msgstr ""
 
-#: plugin/Plugin.php:231
+#: plugin/Plugin.php:243
 msgid "Right"
 msgstr ""
 
-#: plugin/Plugin.php:232
+#: plugin/Plugin.php:244
 msgid "Right without flow"
 msgstr ""
 
-#: plugin/Plugin.php:233
+#: plugin/Plugin.php:245
 msgid "Center"
 msgstr ""
 
-#: plugin/Plugin.php:243
+#: plugin/Plugin.php:255
 msgid "Light Colors"
 msgstr ""
 
-#: plugin/Plugin.php:244
+#: plugin/Plugin.php:256
 msgid "Dark Colors"
 msgstr ""
 
-#: plugin/Plugin.php:245
+#: plugin/Plugin.php:257
 msgid "White"
 msgstr ""
 
-#: plugin/Plugin.php:246
+#: plugin/Plugin.php:258
 msgid "Transparent"
 msgstr ""
 
-#: plugin/Plugin.php:247
+#: plugin/Plugin.php:259
 msgid "Inherit from theme"
 msgstr ""
 
-#: plugin/Plugin.php:257
+#: plugin/Plugin.php:269
 msgid "As heading (#Example_Heading_Text)"
 msgstr ""
 
-#: plugin/Plugin.php:258
+#: plugin/Plugin.php:270
 msgid "As heading without transliterate (#Example_Heading_Text)"
 msgstr ""
 
-#: plugin/Plugin.php:261
+#: plugin/Plugin.php:273
 #, php-format
 msgid "Counter %s"
 msgstr ""
 
-#: plugin/Plugin.php:274
+#: plugin/Plugin.php:286
 msgid "Auto"
 msgstr ""
 
-#: plugin/Plugin.php:275
+#: plugin/Plugin.php:287
 msgid "Full Width"
 msgstr ""
 
-#: plugin/Plugin.php:457
+#: plugin/Plugin.php:469
 msgid ""
 "Creates a table of contents for your posts/pages. Works automatically or "
 "manually (via shortcode, Gutenberg block or widget)."

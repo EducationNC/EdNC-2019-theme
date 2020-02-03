@@ -109,6 +109,22 @@ if (!class_exists('WP_Sheet_Editor_Universal_Sheet')) {
 					'extra_html_attributes' => 'data-remodal-target="export-csv-modal"',
 					'footer_callback' => array($this, 'render_export_csv_modal')
 						), $post_type);
+
+				if (current_user_can('manage_options')) {
+					$saved_exports = WPSE_CSV_API_Obj()->get_saved_exports($post_type);
+					foreach ($saved_exports as $index => $saved_export) {
+						$editor->args['toolbars']->register_item('save_export' . $index, array(
+							'type' => 'button',
+							'content' => esc_html($saved_export['name']),
+							'toolbar_key' => 'secondary',
+							'allow_in_frontend' => false,
+							'parent' => 'export_csv',
+							'extra_html_attributes' => 'data-start-saved-export="' . esc_attr(json_encode($saved_export)) . '"',
+								), $post_type);
+					}
+				}
+
+
 				$editor->args['toolbars']->register_item('share_export', array(
 					'type' => 'button',
 					'content' => __('Download CSV file', VGSE()->textname),

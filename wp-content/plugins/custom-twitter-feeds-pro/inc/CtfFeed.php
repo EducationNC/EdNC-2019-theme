@@ -119,7 +119,9 @@ class CtfFeed
             'width_mobile_no_fixed',
             'disablelinks',
             'linktexttotwitter',
-            'creditctf'
+            'creditctf',
+	        'selfreplies',
+	        'disableintents'
         );
         $this->setStandardBoolOptions( $bool_false, false );
 
@@ -156,7 +158,8 @@ class CtfFeed
             'tweettextsize',
             'datetextsize',
             'quotedauthorsize',
-            'iconsize'
+            'iconsize',
+	        'logosize'
         );
         $this->setTextSizeOptions( $text_size );
 
@@ -173,6 +176,7 @@ class CtfFeed
             'textcolor',
             'linktextcolor',
             'iconcolor',
+	        'logocolor',
             'buttontextcolor'
         );
         $this->setStandardStyleProperty( $text_color, 'color' );
@@ -612,6 +616,17 @@ class CtfFeed
             $trimmed_tweets[$i]['retweet_count'] = $tweets[$i]['retweet_count'];
             $trimmed_tweets[$i]['favorite_count'] = $tweets[$i]['favorite_count'];
 
+            if ( isset( $tweets[$i]['entities']['urls'][0] ) ) {
+            	foreach ( $tweets[$i]['entities']['urls'] as $url ) {
+		            $trimmed_tweets[$i]['entities']['urls'][] = array(
+		            	'url' => $url['url'],
+			            'expanded_url' => $url['expanded_url'],
+			            'display_url' => $url['display_url'],
+
+		            );
+	            }
+            }
+
             if ( isset( $tweets[$i]['retweeted_status'] ) ) {
                 $trimmed_tweets[$i]['retweeted_status']['user']['name'] = $tweets[$i]['retweeted_status']['user']['name'];
                 $trimmed_tweets[$i]['retweeted_status']['user']['screen_name'] = $tweets[$i]['retweeted_status']['user']['screen_name'];
@@ -623,6 +638,33 @@ class CtfFeed
                 $trimmed_tweets[$i]['retweeted_status']['created_at']= $tweets[$i]['retweeted_status']['created_at'];
                 $trimmed_tweets[$i]['retweeted_status']['retweet_count']= $tweets[$i]['retweeted_status']['retweet_count'];
                 $trimmed_tweets[$i]['retweeted_status']['favorite_count']= $tweets[$i]['retweeted_status']['favorite_count'];
+	            if ( isset( $tweets[$i]['retweeted_status']['entities']['urls'][0] ) ) {
+		            foreach ( $tweets[$i]['retweeted_status']['entities']['urls'] as $url ) {
+			            $trimmed_tweets[$i]['retweeted_status']['entities']['urls'][] = array(
+				            'url' => $url['url'],
+				            'expanded_url' => $url['expanded_url'],
+				            'display_url' => $url['display_url'],
+
+			            );
+		            }
+	            }
+
+	            if ( isset( $tweets[$i]['retweeted_status']['quoted_status'] ) ) {
+		            $trimmed_tweets[$i]['retweeted_status']['quoted_status']['user']['name'] = $tweets[$i]['retweeted_status']['quoted_status']['user']['name'];
+		            $trimmed_tweets[$i]['retweeted_status']['quoted_status']['user']['screen_name'] = $tweets[$i]['retweeted_status']['quoted_status']['user']['screen_name'];
+		            $trimmed_tweets[$i]['retweeted_status']['quoted_status']['user']['verified'] = $tweets[$i]['retweeted_status']['quoted_status']['user']['verified'];
+		            $trimmed_tweets[$i]['retweeted_status']['quoted_status']['text'] = isset( $tweets[$i]['retweeted_status']['quoted_status']['text'] ) ? $tweets[$i]['retweeted_status']['quoted_status']['text'] : $tweets[$i]['retweeted_status']['quoted_status']['full_text'];
+		            $trimmed_tweets[$i]['retweeted_status']['quoted_status']['id_str'] = $tweets[$i]['retweeted_status']['quoted_status']['id_str'];
+		            if ( isset( $tweets[$i]['retweeted_status']['quoted_status']['entities']['urls'][0] ) ) {
+			            foreach ( $tweets[$i]['retweeted_status']['quoted_status']['entities']['urls'] as $url ) {
+				            $trimmed_tweets[$i]['retweeted_status']['quoted_status']['entities']['urls'][] = array(
+					            'url' => $url['url'],
+					            'expanded_url' => $url['expanded_url'],
+					            'display_url' => $url['display_url'],
+				            );
+			            }
+		            }
+	            }
             }
 
             if ( isset( $tweets[$i]['quoted_status'] ) ) {
@@ -631,6 +673,15 @@ class CtfFeed
                 $trimmed_tweets[$i]['quoted_status']['user']['verified'] = $tweets[$i]['quoted_status']['user']['verified'];
                 $trimmed_tweets[$i]['quoted_status']['text'] = isset( $tweets[$i]['quoted_status']['text'] ) ? $tweets[$i]['quoted_status']['text'] : $tweets[$i]['quoted_status']['full_text'];
                 $trimmed_tweets[$i]['quoted_status']['id_str'] = $tweets[$i]['quoted_status']['id_str'];
+	            if ( isset( $tweets[$i]['quoted_status']['entities']['urls'][0] ) ) {
+		            foreach ( $tweets[$i]['quoted_status']['entities']['urls'] as $url ) {
+			            $trimmed_tweets[$i]['quoted_status']['entities']['urls'][] = array(
+				            'url' => $url['url'],
+				            'expanded_url' => $url['expanded_url'],
+				            'display_url' => $url['display_url'],
+			            );
+		            }
+	            }
             }
 
             $trimmed_tweets[$i] = $this->filterTrimmedTweets( $trimmed_tweets[$i], $tweets[$i] );
@@ -703,7 +754,9 @@ class CtfFeed
             if ( ! empty ( $feed_term ) ) {
                 $get_fields['screen_name'] = $feed_term;
             }
-            $get_fields['exclude_replies'] = 'true';
+            if ( ! $this->feed_options['selfreplies'] ) {
+	            $get_fields['exclude_replies'] = 'true';
+            }
         }
         if ( $end_point === 'hometimeline' ) {
             $get_fields['exclude_replies'] = 'true';
@@ -779,8 +832,10 @@ class CtfFeed
             $html .= '<a class="twitter-follow-button" href="https://twitter.com/' . $feed_options['screenname'] . '" target="_blank" data-show-count="false" data-size="large" data-dnt="true">Follow</a>';
         }
         $html .= '</p>';
-        $html .= "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
-        $html .= '</div>';
+	    if ( !$feed_options['disableintents'] ) {
+		    $html .= "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
+	    }
+	    $html .= '</div>';
 
         return $html;
     }
@@ -1017,7 +1072,7 @@ class CtfFeed
                 if ( ctf_show( 'author', $feed_options ) ) {
                     $tweet_html .= '<a href="https://twitter.com/' . $post['user']['screen_name'] . '" target="_blank" class="ctf-author-name" style="' . $feed_options['authortextsize'] . $feed_options['authortextweight'] .  $feed_options['textcolor'] . '">' . $post['user']['name'] . '</a>';
                     if ( $post['user']['verified'] == 1 ) {
-                        $tweet_html .= '<span class="ctf-verified" ><i class="fa fa-check-circle" ></i ></span>';
+                        $tweet_html .= '<span class="ctf-verified" >' . ctf_get_fa_el( 'fa-check-circle' ) . '</span>';
                     }
                     $tweet_html .= '<a href="https://twitter.com/' . $post['user']['screen_name'] . '" class="ctf-author-screenname" target="_blank" style="' . $feed_options['authortextsize'] . $feed_options['authortextweight'] .  $feed_options['textcolor'] . '">@' . $post['user']['screen_name'] . '</a>';
                     $tweet_html .= '<span class="ctf-screename-sep">&middot;</span>';
@@ -1029,6 +1084,11 @@ class CtfFeed
                     $tweet_html .= '</div>';
                 } // show date
                 $tweet_html .= '</div>';
+	            if ( ctf_show( 'logo', $feed_options ) ) {
+		            $tweet_html .= '<div class="ctf-corner-logo" style="' . $feed_options['logosize'] . $feed_options['logocolor'] . '">';
+		            $tweet_html .= ctf_get_fa_el( 'fa-twitter' );
+		            $tweet_html .= '</div>';
+	            }
                 $tweet_html .= '</div>';
 
                 if ( ctf_show( 'text', $feed_options ) ) {
@@ -1050,7 +1110,7 @@ class CtfFeed
                     $tweet_html .= '<span class="ctf-quoted-author-name">' . $quoted['user']['name'] . '</span>';
 
                     if ($quoted['user']['verified'] == 1) {
-                        $tweet_html .= '<span class="ctf-quoted-verified"><i class="fa fa-check-circle" ></i></span>';
+                        $tweet_html .= '<span class="ctf-quoted-verified">' . ctf_get_fa_el( 'fa-check-circle' ) . '</span>';
                     } // user is verified
 
                     $tweet_html .= '<span class="ctf-quoted-author-screenname">@' . $quoted['user']['screen_name'] . '</span>';
@@ -1089,53 +1149,47 @@ class CtfFeed
      *
      * @return string error html
      */
-    public function getErrorHtml()
-    {
-        $error_html = '';
-        $error_html .= '<div id="ctf" class="ctf">';
-        $error_html .= '<div class="ctf-error">';
-        $error_html .= '<div class="ctf-error-user">';
-        $error_html .= '<p>Unable to load Tweets</p>';
-        $error_html .= '<a class="twitter-share-button"';
-        $error_html .= 'href="https://twitter.com/share"';
-        $error_html .= 'data-size="large"';
-        $error_html .= 'data-url="' . get_the_permalink() . '"';
-        $error_html .= 'data-text="Check out this website">';
-        $error_html .= '</a>';
-
-        if ( !empty( $this->feed_options['screenname'] ) ) {
-            $error_html .= '<a class="twitter-follow-button"';
-            $error_html .= 'href="https://twitter.com/' . $this->feed_options['screenname'] . '"';
-            $error_html .= 'data-show-count="false"';
-            $error_html .= 'data-size="large"';
-            $error_html .= 'data-dnt="true">Follow</a>';
-        }
-        $error_html .= '</div>';
-
-        if ( current_user_can( 'manage_options' ) ) {
-            $error_html .= '<div class="ctf-error-admin">';
-
-            $error_html .= '<p><b>This message is only visible to admins:</b><br />';
-            $error_html .= 'An error has occurred with your feed.<br />';
-            if ( $this->missing_credentials ) {
-                $error_html .= 'There is a problem with your access token, access token secret, consumer token, or consumer secret<br />';
-            }
-            if ( isset( $this->errors['error_message'] ) ) {
-                $error_html .= $this->errors['error_message'] . '<br />';
-            }
-            if( ! empty( $this->api_obj->api_error_no ) ) {
-                $error_html .= 'The error response from the Twitter API is the following:<br />';
-                $error_html .= '<code>Error number: ' . $this->api_obj->api_error_no . '<br />';
-                $error_html .= 'Message: ' . $this->api_obj->api_error_message . '</code>';
-            }
-
-            $error_html .= '<a href="https://smashballoon.com/custom-twitter-feeds/docs/errors/" target="_blank">Click here to troubleshoot</a></p>';
-
-            $error_html .= '</div>';
-        }
-        $error_html .= '</div>'; // end .ctf-error
-        $error_html .= '</div>'; // end #ctf
-
-        return $error_html;
-    }
+	public function getErrorHtml()
+	{
+		$error_html = '';
+		$error_html .= '<div id="ctf" class="ctf">';
+		$error_html .= '<div class="ctf-error">';
+		$error_html .= '<div class="ctf-error-user">';
+		$error_html .= '<p>Unable to load Tweets</p>';
+		$error_html .= '<a class="twitter-share-button"';
+		$error_html .= 'href="https://twitter.com/share"';
+		$error_html .= 'data-size="large"';
+		$error_html .= 'data-url="' . get_the_permalink() . '"';
+		$error_html .= 'data-text="Check out this website">';
+		$error_html .= '</a>';
+		if ( !empty( $this->feed_options['screenname'] ) ) {
+			$error_html .= '<a class="twitter-follow-button"';
+			$error_html .= 'href="https://twitter.com/' . $this->feed_options['screenname'] . '"';
+			$error_html .= 'data-show-count="false"';
+			$error_html .= 'data-size="large"';
+			$error_html .= 'data-dnt="true">Follow</a>';
+		}
+		$error_html .= '</div>';
+		if ( current_user_can( 'manage_options' ) ) {
+			$error_html .= '<div class="ctf-error-admin">';
+			$error_html .= '<p><b>This message is only visible to admins:</b><br />';
+			$error_html .= 'An error has occurred with your feed.<br />';
+			if ( $this->missing_credentials ) {
+				$error_html .= 'There is a problem with your access token, access token secret, consumer token, or consumer secret<br />';
+			}
+			if ( isset( $this->errors['error_message'] ) ) {
+				$error_html .= $this->errors['error_message'] . '<br />';
+			}
+			if( ! empty( $this->api_obj->api_error_no ) ) {
+				$error_html .= 'The error response from the Twitter API is the following:<br />';
+				$error_html .= '<code>Error number: ' . $this->api_obj->api_error_no . '<br />';
+				$error_html .= 'Message: ' . $this->api_obj->api_error_message . '</code>';
+			}
+			$error_html .= '<a href="https://smashballoon.com/custom-twitter-feeds/docs/errors/" target="_blank">Click here to troubleshoot</a></p>';
+			$error_html .= '</div>';
+		}
+		$error_html .= '</div>'; // end .ctf-error
+		$error_html .= '</div>'; // end #ctf
+		return $error_html;
+	}
 }

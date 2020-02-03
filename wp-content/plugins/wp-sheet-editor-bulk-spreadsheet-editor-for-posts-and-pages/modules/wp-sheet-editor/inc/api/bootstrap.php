@@ -222,6 +222,28 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 					'default_value' => VGSE()->options['be_load_items_on_scroll'] == true,
 					'parent' => 'settings',
 						), $post_type);
+				if (current_user_can('manage_options')) {
+					$toolbars->register_item('rescan_db', array(
+						'type' => 'button',
+						'content' => __('Scan DB to find fields', VGSE()->textname),
+						'id' => 'rescan_db',
+						'allow_in_frontend' => false,
+						'toolbar_key' => 'secondary',
+						'help_tooltip' => __('We can scan the database, find new fields, and create columns automatically for the supported fields.', VGSE()->textname),
+						'parent' => 'settings',
+						'url' => add_query_arg('wpse_rescan_db_fields', 1)
+							), $post_type);
+					$toolbars->register_item('reset_settings', array(
+						'type' => 'button',
+						'content' => __('Reset settings', VGSE()->textname),
+						'id' => 'reset_settings',
+						'allow_in_frontend' => false,
+						'toolbar_key' => 'secondary',
+						'help_tooltip' => __('We will display all the columns that were deleted or disabled, renamed columns will show the original titles, we will rescan the database to find columns again, and the speed/advanced settings will be reset to the defaults. This only affects settings of our plugin and it does not affect the data edited with the sheet.', VGSE()->textname),
+						'parent' => 'settings',
+						'url' => add_query_arg('wpse_hard_reset', 1)
+							), $post_type);
+				}
 			}
 
 			do_action('vg_sheet_editor/toolbar/core_items_registered');
@@ -499,7 +521,7 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 						'title' => __('Page Parent', VGSE()->textname),
 						'type' => '',
 						'supports_formulas' => true,
-						'formatted' => array('data' => 'post_parent', 'type' => 'autocomplete', 'source' => array(VGSE()->data_helpers, 'get_all_post_titles_from_post_type'), 'callback_args' => array($post_type, ARRAY_N, true)),
+						'formatted' => array('data' => 'post_parent', 'type' => 'autocomplete', 'source' => 'searchPostByKeyword'),
 						'allow_to_hide' => true,
 						'allow_to_rename' => true,
 					));

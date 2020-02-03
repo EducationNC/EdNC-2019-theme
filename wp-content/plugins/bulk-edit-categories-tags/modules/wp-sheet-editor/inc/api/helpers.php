@@ -7,6 +7,7 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 		var $post_type;
 		static private $instance = false;
 		var $urls_to_file_ids_cache = array();
+		var $meta_keys_refreshed = array();
 
 		private function __construct() {
 			
@@ -29,7 +30,12 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 		function get_current_query_session_id() {
 			global $wp_query;
 			$out = false;
-			if (!is_object($wp_query) || empty($wp_query->query_vars)) {
+
+			$url_parameters = $_GET;
+			if (!empty($url_parameters['post_type'])) {
+				unset($url_parameters['post_type']);
+			}
+			if (!is_object($wp_query) || empty($wp_query->query_vars) || empty($url_parameters)) {
 				return $out;
 			}
 			$wp_query_vars = json_encode(array_filter($wp_query->query_vars));
@@ -112,9 +118,13 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 			return add_query_arg(array('page' => VGSE()->options_key), admin_url('admin.php'));
 		}
 
-		function get_all_meta_keys($post_type = '') {
+		function get_all_meta_keys($post_type = '', $limit = null) {
 			$transient_key = 'vgse_all_meta_keys_' . $post_type;
-			if (!empty($_GET['wpse_rescan_db_fields'])) {
+			// Only clear the cache once per page execution
+			// We call this function many times, if we don't use meta_keys_refreshed 
+			// it will make the heavy query to the DB many times and sometimes overloading the server
+			if (!empty($_GET['wpse_rescan_db_fields']) && !in_array($post_type, $this->meta_keys_refreshed, true)) {
+				$this->meta_keys_refreshed[] = $post_type;
 				delete_transient($transient_key);
 			}
 			$meta_keys = get_transient($transient_key);
@@ -126,6 +136,11 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 			if (!$meta_keys) {
 				$meta_keys = array();
 			}
+
+			if (is_int($limit) && count($meta_keys) > $limit) {
+				$meta_keys = array_slice($meta_keys, 0, $limit);
+			}
+
 			return $meta_keys;
 		}
 
@@ -173,7 +188,8 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 					}
 					$maybe_go_premium = !empty($disabled) ? '<small><a href="' . VGSE()->get_buy_link('setup-post-type-selector', $buy_link) . '" target="_blank">' . __('(Go premium)', VGSE()->textname) . '</a></small>' : '';
 
-					if ($disabled && in_array($key, $free)) {
+					// The free extension option will be displayed from 2020-01-20 to 2020-01-27 only
+					if ($disabled && in_array($key, $free) && (date('Y-m-d') >= '2020-01-20' && date('Y-m-d') <= '2020-01-27' )) {
 						$maybe_go_premium = '<small><a href="' . esc_url($free_install_url) . '" target="_blank">' . __('(Install free extension)', VGSE()->textname) . '</a></small>';
 					}
 
@@ -709,6 +725,7 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 			$data = apply_filters('vg_sheet_editor/load_rows/output', $data, $wp_query_args, $spreadsheet_columns, $clean_data);
 			$out = array(
 				'rows' => $data,
+				'request' => current_user_can('manage_options') && is_object($query) && property_exists($query, 'request') ? $query->request : null,
 				'total' => (int) $query->found_posts,
 				'message' => apply_filters('vg_sheet_editor/load_rows/rows_found_message', __('Items loaded in the spreadsheet', VGSE()->textname), $wp_query_args, $spreadsheet_columns, $clean_data)
 			);
@@ -1548,7 +1565,7 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 			$out = get_post_types($args, $output, $condition);
 			$post_types = apply_filters('vg_sheet_editor/api/all_post_types', $out, $args, $output);
 
-			$private_post_types = apply_filters('vg_sheet_editor/api/blacklisted_post_types', get_post_types(array('public' => false)), $post_types, $args, $output);
+			$private_post_types = apply_filters('vg_sheet_editor/api/blacklisted_post_types', get_post_types(array('show_ui' => false)), $post_types, $args, $output);
 
 			foreach ($post_types as $index => $post_type) {
 				$post_type_key = ( is_object($post_type) ) ? $post_type->name : $post_type;
@@ -1556,8 +1573,6 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 				$post_types[$post_type_key] = $post_type;
 				if (!empty($private_post_types)) {
 					if (in_array($post_type_key, $private_post_types)) {
-						unset($post_types[$index]);
-					} elseif (in_array($post_type_key, $private_post_types)) {
 						unset($post_types[$index]);
 					}
 				}

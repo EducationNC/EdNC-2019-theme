@@ -43,7 +43,8 @@ class CtfFeedPro extends CtfFeed
 			'carousel',
 			'carouselautoplay',
 			'carouselpag',
-			'sslonly'
+			'sslonly',
+			'shorturls'
 		);
 		$feed->setStandardBoolOptions( $bool_false, false );
 		$feed->setStandardBoolOptions( array( 'persistentcache', 'includeretweets', 'autores' ), true );
@@ -67,9 +68,11 @@ class CtfFeedPro extends CtfFeed
 
 		$feed->setDatabaseOnlyOptions( 'remove_by_id' );
 
-		$feed->setCarouselClasses();
+		$feed->setLayout();
 
-		if ( ! $feed->feed_options['carousel'] ) {
+		if ( $feed->feed_options['layout'] === 'carousel' ) {
+			$feed->setCarouselClasses();
+		} elseif ( $feed->feed_options['layout'] === 'masonry' ) {
 			$feed->setMasonryClasses();
 		}
 
@@ -85,6 +88,48 @@ class CtfFeedPro extends CtfFeed
 		$feed->setTweetSet();
 
 		return $feed;
+	}
+
+	public function setLayout() {
+
+		$db = $this->db_options;
+		$atts = $this->atts;
+
+		if ( ! empty( $atts['layout'] ) ) {
+			switch ( $atts['layout'] ) {
+				case 'carousel' :
+					$this->feed_options['layout'] = 'carousel';
+					break;
+				case 'masonry' :
+					$this->feed_options['layout'] = 'masonry';
+					break;
+				default :
+					$this->feed_options['layout'] = 'list';
+					break;
+			}
+		} elseif ( ! empty( $atts['carousel'] ) && $atts['carousel'] === 'true' ) {
+			$this->feed_options['layout'] = 'carousel';
+		} elseif ( ! empty( $atts['masonry'] ) && $atts['masonry'] === 'true' ) {
+			$this->feed_options['layout'] = 'masonry';
+		} elseif ( isset( $db['layout'] ) ) {
+			switch ( $db['layout'] ) {
+				case 'carousel' :
+					$this->feed_options['layout'] = 'carousel';
+					break;
+				case 'masonry' :
+					$this->feed_options['layout'] = 'masonry';
+					break;
+				default :
+					$this->feed_options['layout'] = 'list';
+					break;
+			}
+		} elseif ( isset( $db['carousel'] ) && $db['carousel'] ) {
+			$this->feed_options['layout'] = 'carousel';
+		} elseif ( isset( $db['masonry'] ) && $db['masonry'] ) {
+			$this->feed_options['layout'] = 'masonry';
+		} else {
+			$this->feed_options['layout'] = 'list';
+		}
 	}
 
 
@@ -150,6 +195,14 @@ class CtfFeedPro extends CtfFeed
 			}
 		}
 
+		if ( isset( $this->atts['list'] ) ) {
+			$lists = explode( ',', $this->atts['list'] );
+
+			foreach ( $lists as $list ) {
+				$this->feed_options['feed_types_and_terms'][] = array( 'lists', $list );
+			}
+		}
+
 		// if there is only one feed type and term, just use the single feed creation method
 		if ( sizeof( $this->feed_options['feed_types_and_terms'] ) == 1 ) {
 			$this->feed_options['type'] = $this->feed_options['feed_types_and_terms'][0][0];
@@ -182,7 +235,7 @@ class CtfFeedPro extends CtfFeed
 
 					break;
 				case 'lists':
-					$lists_str = isset( $this->db_options['lists_id'] ) ? $this->db_options['lists_id'] : '';
+				$lists_str = isset( $this->db_options['lists_id'] ) ? $this->db_options['lists_id'] : '';
 					$lists = explode( ',', $lists_str );
 
 					foreach ( $lists as $list ) {
@@ -257,6 +310,7 @@ class CtfFeedPro extends CtfFeed
 			$this->feed_options['tweet_includes'][] = isset( $this->db_options['include_retweeter'] ) && $this->db_options['include_retweeter'] == false ? null : 'retweeter';
 			$this->feed_options['tweet_includes'][] = isset( $this->db_options['include_avatar'] ) && $this->db_options['include_avatar'] == false ? null : 'avatar';
 			$this->feed_options['tweet_includes'][] = isset( $this->db_options['include_author'] ) && $this->db_options['include_author'] == false ? null : 'author';
+			$this->feed_options['tweet_includes'][] = isset( $this->db_options['include_logo'] ) && $this->db_options['include_logo'] == false ? null : 'logo';
 			$this->feed_options['tweet_includes'][] = isset( $this->db_options['include_text'] ) && $this->db_options['include_text'] == false ? null : 'text';
 			$this->feed_options['tweet_includes'][] = isset( $this->db_options['include_date'] ) && $this->db_options['include_date'] == false ? null : 'date';
 			$this->feed_options['tweet_includes'][] = isset( $this->db_options['include_actions'] ) && $this->db_options['include_actions'] == false ? null : 'actions';
@@ -277,7 +331,7 @@ class CtfFeedPro extends CtfFeed
 		$options = $this->feed_options;
 		$classes_to_add = '';
 
-		if ( $options['masonry'] ) {
+		if ( $this->feed_options['layout'] === 'masonry' ) {
 			$classes_to_add .= ' ctf-masonry';
 
 			if ( $options['masonrycols'] > 3 && $options['masonrycols'] < 7 ) {
@@ -303,14 +357,7 @@ class CtfFeedPro extends CtfFeed
 	 */
 	private function setCarouselClasses()
 	{
-		$options = $this->feed_options;
-		$classes_to_add = '';
-
-		if ( $options['carousel'] ) {
-			$classes_to_add .= ' ctf-carousel';
-		}
-
-		$this->feed_options['class'] .= $classes_to_add;
+		$this->feed_options['class'] .= ' ctf-carousel';
 	}
 
 	/**
@@ -423,7 +470,9 @@ class CtfFeedPro extends CtfFeed
 	private function reduceTweetSetData( $tweet_set, $limit = true ) {
 		if ( $this->hasTweetTextFilter() || ! $this->feed_options['includereplies'] ) {
 			$tweet_set = $this->filterTweetSet( $tweet_set, $limit );
-		} elseif ( $this->check_for_duplicates ) {
+		}
+
+		if ( $this->check_for_duplicates ) {
 			$tweet_set = $this->removeDuplicates( $tweet_set, $limit );
 		}
 
@@ -575,10 +624,14 @@ class CtfFeedPro extends CtfFeed
 		if ( empty( $good_text ) ) { // don't factor in the includewords if there aren't any
 			return $default;
 		} else {
+			$encoded_text = ' ' . str_replace( array( '+', '%0A' ), ' ',  urlencode( str_replace( '#', ' HASHTAG', strtolower( $tweet_text ) ) ) ) . ' ';
+
 			if ( $any_or_all == 'any' ) {
 				// as soon as we find any of the includewords, stop searching and return true
 				foreach ( $good_text as $good ) {
-					if ( stripos( $tweet_text, ' ' . strtolower( $good ) . ' ' ) !== false ) {
+					$converted_includeword = trim( str_replace('+', ' ', urlencode( str_replace( '#', 'HASHTAG', strtolower( $good ) ) ) ) );
+
+					if ( preg_match('/\b'.$converted_includeword.'\b/i', $encoded_text, $matches ) ) {
 						return true;
 					}
 				}
@@ -590,9 +643,12 @@ class CtfFeedPro extends CtfFeed
 				$good_text_matches = 0;
 				$number_of_good_text_to_look_for = count( $good_text );
 				foreach ( $good_text as $good ) {
-					if ( stripos( $tweet_text, ' ' . strtolower( $good ) . ' ' ) !== false ) {
+					$converted_includeword = trim( str_replace('+', ' ', urlencode( str_replace( '#', 'HASHTAG', strtolower( $good ) ) ) ) );
+
+					if ( preg_match('/\b'.$converted_includeword.'\b/i', $encoded_text, $matches ) ) {
 						$good_text_matches++;
 					}
+
 				}
 				if ( $good_text_matches >= $number_of_good_text_to_look_for ) {
 					return true;
@@ -619,10 +675,16 @@ class CtfFeedPro extends CtfFeed
 		if ( empty( $bad_text ) ) { // don't factor in the excludewords if there aren't any
 			return $default;
 		} else {
+			$encoded_text = ' ' . str_replace( array( '+', '%0A' ), ' ',  urlencode( str_replace( '#', ' HASHTAG', strtolower( $tweet_text ) ) ) ) . ' ';
+
 			if ( $any_or_all == 'any' ) {
 				// as soon as we find any of the excludewords, stop searching and return false
 				foreach ( $bad_text as $bad ) {
-					if ( stripos( $tweet_text, ' ' . strtolower( $bad ). ' ' ) !== false ) {
+					if ( empty( $bad ) ) {
+						return true;
+					}
+					$converted_excludeword = trim( str_replace('+', ' ', urlencode( str_replace( '#', 'HASHTAG', strtolower( $bad ) ) ) ) );
+					if ( preg_match('/\b'.$converted_excludeword.'\b/i', $encoded_text, $matches ) ) {
 						return false;
 					}
 				}
@@ -634,9 +696,12 @@ class CtfFeedPro extends CtfFeed
 				$bad_text_matches = 0;
 				$number_of_bad_text_to_look_for = count( $bad_text );
 				foreach ( $bad_text as $bad ) {
-					if ( stripos( $tweet_text, ' ' . strtolower( $bad ) . ' ' ) !== false ) {
+					$converted_excludeword = trim( str_replace('+', ' ', urlencode( str_replace( '#', 'HASHTAG', strtolower( $bad ) ) ) ) );
+
+					if ( preg_match('/\b'.$converted_excludeword.'\b/i', $encoded_text, $matches ) ) {
 						$bad_text_matches++;
 					}
+
 				}
 				if ( $bad_text_matches >= $number_of_bad_text_to_look_for ) {
 					return false;
@@ -656,6 +721,7 @@ class CtfFeedPro extends CtfFeed
 	 */
 	private function tweetShouldBeRemoved( $tweet )
 	{
+		$return = false;
 		$good_text = ! empty( $this->feed_options['includewords'] ) ? explode( ',', str_replace( ' ', '', $this->feed_options['includewords'] ) ) : '';
 		$bad_text = ! empty( $this->feed_options['excludewords'] ) ? explode( ',', str_replace( ' ', '', $this->feed_options['excludewords'] ) ) : '';
 		$includewords_any_all = $this->feed_options['includeanyall'];
@@ -675,23 +741,25 @@ class CtfFeedPro extends CtfFeed
 		$tweet_text = ' ' . preg_replace( '/[,.!?:;"]+/', '', $tweet_text )  . ' '; // spaces added so that we can use strpos instead of regex to find words
 		$tweet_text = strtolower( preg_replace( '/[\n]+/', ' ', $tweet_text ) );
 		// don't bother with filtering process if both filters are empty
-		if ( empty( $good_text ) && empty( $bad_text ) ) {
-			return false;
+		if ( ! empty( $good_text ) || ! empty( $bad_text ) ) {
+			if ( $filter_and_or == 'and' && ! empty( $good_text ) && ! empty( $bad_text ) ) {
+				if ( $this->hasGoodText( $good_text, $includewords_any_all, $tweet_text, true ) && $this->hasNoBadText( $bad_text, 'any', $tweet_text, true ) ) {
+					$return = false;
+				} else {
+					$return = true;
+				}
+			} else {
+				if ( $this->hasGoodText( $good_text, $includewords_any_all, $tweet_text, false ) || $this->hasNoBadText( $bad_text, $excludewords_any_all, $tweet_text, false ) ) {
+					$return = false;
+				} else {
+					$return = true;
+				}
+			}
 		}
 
-		if ( $filter_and_or == 'and' ) {
-			if ( $this->hasGoodText( $good_text, $includewords_any_all, $tweet_text, true ) && $this->hasNoBadText( $bad_text, 'any', $tweet_text, true ) ) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
-			if ( $this->hasGoodText( $good_text, $includewords_any_all, $tweet_text, false ) || $this->hasNoBadText( $bad_text, $excludewords_any_all, $tweet_text, false ) ) {
-				return false;
-			} else {
-				return true;
-			}
-		}
+		$return = apply_filters( 'ctf_filter_out_tweet', $return, $tweet_text, $tweet  );
+
+		return $return;
 	}
 
 	/**
@@ -717,7 +785,12 @@ class CtfFeedPro extends CtfFeed
 				$retweet_id = isset( $working_tweet_set[$i]['retweeted_status']['id_str'] ) ? $working_tweet_set[$i]['retweeted_status']['id_str'] : '';
 				if ( ! empty( $retweet_id ) && ! $this->feed_options['includeretweets'] ) {
 					unset( $working_tweet_set[ $i ] );
-				} elseif ( !$this->feed_options['includereplies'] && isset( $working_tweet_set[$i]['in_reply_to_screen_name'] ) ) {
+				} elseif ( !$this->feed_options['includereplies'] && !$this->feed_options['selfreplies'] && isset( $working_tweet_set[$i]['in_reply_to_screen_name'] ) ) {
+					unset( $working_tweet_set[$i] );
+				} elseif ( !$this->feed_options['includereplies']
+				           && $this->feed_options['selfreplies']
+				           && isset( $working_tweet_set[$i]['in_reply_to_screen_name'] )
+				           && $working_tweet_set[$i]['in_reply_to_screen_name'] !== $working_tweet_set[$i]['user']['screen_name']) {
 					unset( $working_tweet_set[$i] );
 				} elseif ( ! empty( $ids_of_tweets_to_remove ) && in_array( $working_tweet_set[$i]['id_str'], $ids_of_tweets_to_remove ) ) {
 					unset( $working_tweet_set[$i] );
@@ -904,7 +977,7 @@ class CtfFeedPro extends CtfFeed
 			if ( ! empty ( $feed_term  ) ) {
 				$get_fields['screen_name'] = $feed_term;
 			}
-			if ( $this->feed_options['includereplies'] ) {
+			if ( $this->feed_options['includereplies'] || $this->feed_options['selfreplies'] ) {
 				$get_fields['exclude_replies'] = 'false';
 			} else {
 				$get_fields['exclude_replies'] = 'true';
@@ -912,7 +985,7 @@ class CtfFeedPro extends CtfFeed
 		}
 
 		if ( $feed_type === 'hometimeline' ) {
-			if ( $this->feed_options['includereplies'] ) {
+			if ( $this->feed_options['includereplies'] || $this->feed_options['selfreplies'] ) {
 				$get_fields['exclude_replies'] = 'false';
 			} else {
 				$get_fields['exclude_replies'] = 'true';
@@ -1162,6 +1235,60 @@ class CtfFeedPro extends CtfFeed
 
 		}
 
+		if ( isset( $tweet['retweeted_status']['quoted_status']['extended_entities']['media'] ) ) {
+			// if there is media, we need to remove the media url from the tweet text
+			$retweeted_text = isset( $tweet['retweeted_status']['quoted_status']['full_text'] ) ? $tweet['retweeted_status']['quoted_status']['full_text'] : $tweet['retweeted_status']['quoted_status']['text'];
+			if ( isset( $tweet['retweeted_status']['quoted_status']['extended_entities']['media'][0]['url'] ) ) {
+				$trimmed['retweeted_status']['quoted_status']['text'] = $this->removeStringFromText( $tweet['retweeted_status']['quoted_status']['extended_entities']['media'][0]['url'], $retweeted_text );
+			}
+
+			$num_media = count( $tweet['retweeted_status']['quoted_status']['extended_entities']['media'] );
+			for ( $i = 0; $i < $num_media; $i++ ) {
+				$trimmed['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['media_url_https'] = $tweet['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['media_url_https'];
+				$trimmed['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['type'] = $tweet['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['type'];
+				if ( isset( $tweet['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['sizes'] ) ) {
+					$trimmed['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['sizes'] = $tweet['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['sizes'];
+				}
+				if ( $tweet['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['type'] == 'video' || $tweet['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['type'] == 'animated_gif' ) {
+					foreach ( $tweet['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['video_info']['variants'] as $variant ) {
+						if ( isset( $variant['content_type'] ) && $variant['content_type'] == 'video/mp4' ) {
+							$trimmed['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['video_info']['variants'][$i]['url'] = $variant['url'];
+						}
+					}
+					if ( ! isset( $trimmed['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['video_info']['variants'][$i]['url'] ) ) {
+						$trimmed['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['video_info']['variants'][$i]['url'] = $tweet['retweeted_status']['quoted_status']['extended_entities']['media'][$i]['video_info']['variants'][0]['url'];
+					}
+				}
+			}
+
+		} elseif ( isset( $tweet['retweeted_status']['quoted_status']['entities']['media'] ) ) {
+			// if there is media, we need to remove the media url from the tweet text
+			$retweeted_text = isset( $tweet['retweeted_status']['quoted_status']['full_text'] ) ? $tweet['retweeted_status']['quoted_status']['full_text'] : $tweet['retweeted_status']['quoted_status']['text'];
+			if ( isset( $tweet['retweeted_status']['quoted_status']['entities']['media'][0]['url'] ) ) {
+				$trimmed['retweeted_status']['quoted_status']['text'] = $this->removeStringFromText( $tweet['retweeted_status']['quoted_status']['entities']['media'][0]['url'], $retweeted_text );
+			}
+
+			$num_media = count( $tweet['retweeted_status']['quoted_status']['entities']['media'] );
+			for( $i = 0; $i < $num_media; $i++ ) {
+				$trimmed['retweeted_status']['quoted_status']['entities']['media'][$i]['media_url_https'] = $tweet['retweeted_status']['quoted_status']['entities']['media'][$i]['media_url_https'];
+				$trimmed['retweeted_status']['quoted_status']['entities']['media'][$i]['type'] = $tweet['retweeted_status']['quoted_status']['entities']['media'][$i]['type'];
+				if ( isset( $tweet['retweeted_status']['quoted_status']['entities']['media'][$i]['sizes'] ) ) {
+					$trimmed['retweeted_status']['quoted_status']['entities']['media'][$i]['sizes'] = $tweet['retweeted_status']['quoted_status']['entities']['media'][$i]['sizes'];
+				}
+				if ( $tweet['retweeted_status']['quoted_status']['entities']['media'][$i]['type'] == 'video' || $tweet['retweeted_status']['quoted_status']['entities']['media'][$i]['type'] == 'animated_gif' ) {
+					foreach ( $tweet['retweeted_status']['quoted_status']['entities']['media'][$i]['video_info']['variants'] as $variant ) {
+						if ( isset( $variant['content_type'] ) && $variant['content_type'] == 'video/mp4' ) {
+							$trimmed['retweeted_status']['quoted_status']['entities']['media'][$i]['video_info']['variants'][$i]['url'] = $variant['url'];
+						}
+					}
+					if ( ! isset( $trimmed['retweeted_status']['quoted_status']['entities']['media'][$i]['video_info']['variants'][$i]['url'] ) ) {
+						$trimmed['retweeted_status']['quoted_status']['entities']['media'][$i]['video_info']['variants'][$i]['url'] = $tweet['retweeted_status']['quoted_status']['entities']['media'][$i]['video_info']['variants'][0]['url'];
+					}
+				}
+			}
+
+		}
+
 		//remove the url from the text if it links to a quoted tweet that is already linked to
 		if ( isset( $tweet['quoted_status'] ) ) {
 			$maybe_remove_index = count( $tweet['entities']['urls'] ) - 1;
@@ -1240,28 +1367,29 @@ class CtfFeedPro extends CtfFeed
 	 */
 	private function carouselDataAtts( $options )
 	{
-		if ( isset( $options['carousel'] ) ) {
-			if ( $options['carousel'] === 'on' || $options['carousel'] === true || $options['carousel'] === 'true' ) {
-				$data = '';
+		if ( $this->feed_options['layout'] === 'carousel' ) {
+			$data = '';
 
-				if ( $options['carouselautoplay'] ) {
-					$data .= ' data-ctf-interval=' . $options['carouseltime'];
-				}
+			$custom_breakpoints = apply_filters( 'ctf_carousel_breakpoints', array() );
 
-				$data .= ' data-ctf-loop="'.$options['carouselloop'] .'"';
-				$data .= isset( $options['carouselcols'] ) ?  ' data-ctf-cols="' . $options['carouselcols'] . '"' : '';
-				$data .= isset( $options['carouselmobilecols'] ) ? ' data-ctf-mobilecols="' . $options['carouselmobilecols'] . '"' : '';
-				$data .= isset( $options['carouselarrows'] ) ?  ' data-ctf-arrows="' . $options['carouselarrows']  . '"' : '';
-				$data .= isset( $options['carouselheight'] ) ?  ' data-ctf-height="' . $options['carouselheight']  . '"' : '';
-
-				if ( $options['carouselpag'] ) {
-					$data .= ' data-ctf-pag="true"';
-				} else {
-					$data .= ' data-ctf-pag="false"';
-				}
-
-				return $data;
+			if ( $options['carouselautoplay'] ) {
+				$data .= ' data-ctf-interval=' . $options['carouseltime'];
 			}
+
+			$data .= ' data-ctf-loop="'.$options['carouselloop'] .'"';
+			$data .= isset( $options['carouselcols'] ) ?  ' data-ctf-cols="' . $options['carouselcols'] . '"' : '';
+			$data .= isset( $options['carouselmobilecols'] ) ? ' data-ctf-mobilecols="' . $options['carouselmobilecols'] . '"' : '';
+			$data .= isset( $options['carouselarrows'] ) ?  ' data-ctf-arrows="' . $options['carouselarrows']  . '"' : '';
+			$data .= isset( $options['carouselheight'] ) ?  ' data-ctf-height="' . $options['carouselheight']  . '"' : '';
+			$data .= ! empty( $custom_breakpoints ) ?  ' data-ctf-breakpoints="' . esc_attr( wp_json_encode( $custom_breakpoints ) ) . '"' : '';
+
+			if ( $options['carouselpag'] ) {
+				$data .= ' data-ctf-pag="true"';
+			} else {
+				$data .= ' data-ctf-pag="false"';
+			}
+
+			return $data;
 		}
 		return '';
 	}
@@ -1281,6 +1409,8 @@ class CtfFeedPro extends CtfFeed
 		$ctf_data_maxmedia = isset( $feed_options['maxmedia'] ) ? ' data-ctfmaxmedia="'.$feed_options['maxmedia'].'"' : '4';
 		$ctf_data_imagecols = isset( $feed_options['imagecols'] ) != 0 ? ' data-ctfimagecols="'.$feed_options['imagecols'].'"' : 'auto';
 		$ctf_data_other = $this->carouselDataAtts( $feed_options );
+		$ctf_enable_intents = ($feed_options['disableintents'] === false || $feed_options['disableintents'] === 0) && ctf_show( 'actions', $feed_options ) ? ' data-ctfintents="1"' : '';
+
 		$ctf_data_needed = $this->num_tweets_needed;
 
 		$ctf_feed_type = ! empty ( $feed_options['type'] ) ? $feed_options['type'] : 'multiple';
@@ -1297,7 +1427,7 @@ class CtfFeedPro extends CtfFeed
 		$ctf_feed_html = '';
 
 		$ctf_feed_html .= '<!-- Custom Twitter Feeds by Smash Balloon -->';
-		$ctf_feed_html .= '<div id="ctf" class="' . $ctf_feed_classes . '" style="' . $feed_options['width'] . $feed_options['height'] . $feed_options['bgcolor'] . '" data-ctfshortcode="' . $this->getShortCodeJSON() . '"' .$ctf_data_disablelinks . $ctf_data_linktextcolor . $ctf_data_autoscrolldistance . ' data-ctfneeded="'. $ctf_data_needed . '"' . $ctf_data_other . $ctf_data_maxmedia . $ctf_data_imagecols . '>';
+		$ctf_feed_html .= '<div id="ctf" class="' . $ctf_feed_classes . '" style="' . $feed_options['width'] . $feed_options['height'] . $feed_options['bgcolor'] . '" data-ctfshortcode="' . $this->getShortCodeJSON() . '"' .$ctf_data_disablelinks . $ctf_data_linktextcolor . $ctf_data_autoscrolldistance . $ctf_enable_intents . ' data-ctfneeded="'. $ctf_data_needed . '"' . $ctf_data_other . $ctf_data_maxmedia . $ctf_data_imagecols . '>';
 		$tweet_set = $this->tweet_set;
 
 		// dynamically include header
@@ -1321,11 +1451,38 @@ class CtfFeedPro extends CtfFeed
 	{
 		$ctf_header_html = '';
 
+		$header_info = $tweet_set[0]['user'];
+
+		if ( $feed_options['type'] === 'mentionstimeline' ) {
+			// Only can be set in the options page
+			$request_settings = array(
+				'consumer_key' => $this->feed_options['consumer_key'],
+				'consumer_secret' => $this->feed_options['consumer_secret'],
+				'access_token' => $this->feed_options['access_token'],
+				'access_token_secret' => $this->feed_options['access_token_secret'],
+			);
+
+			$get_fields = $this->setGetFieldsArray( 'accountlookup', '' );
+
+			include_once( CTF_URL . '/inc/CtfOauthConnect.php' );
+			include_once( CTF_URL . '/inc/CtfOauthConnectPro.php' );
+
+			// actual connection
+			$twitter_connect = new CtfOauthConnectPro( $request_settings, 'accountlookup' );
+			$twitter_connect->setUrlBase();
+			$twitter_connect->setGetFields( $get_fields );
+			$twitter_connect->setRequestMethod( $this->feed_options['request_method'] );
+
+			$request_results = $twitter_connect->performRequest();
+
+			$header_info = isset( $request_results->json ) ? json_decode( $request_results->json, true ) : array();
+		}
+
 		if ( $feed_options['type'] === 'usertimeline' || $feed_options['type'] === 'hometimeline' || $feed_options['type'] === 'mentionstimeline' ) {
 			$ctf_header_html .= '<div class="ctf-header';
-			if( !$feed_options['showbio'] || empty( $tweet_set[0]['user']['description'] ) ) $ctf_header_html .= ' ctf-no-bio';
+			if( !$feed_options['showbio'] || empty( $header_info['description'] ) ) $ctf_header_html .= ' ctf-no-bio';
 			$ctf_header_html .= '" style="' . $feed_options['headerbgcolor'] . $feed_options['headertextcolor'] . '">';
-			$ctf_header_html .= '<a href="https://twitter.com/' . $tweet_set[0]['user']['screen_name'] . '" target="_blank" title="@' . $tweet_set[0]['user']['screen_name'] . '" class="ctf-header-link">';
+			$ctf_header_html .= '<a href="https://twitter.com/' . $header_info['screen_name'] . '" target="_blank" title="@' . $header_info['screen_name'] . '" class="ctf-header-link">';
 			$ctf_header_html .= '<div class="ctf-header-text">';
 			$ctf_header_html .= '<p class="ctf-header-user">';
 			$ctf_header_html .= '<span class="ctf-header-name">';
@@ -1333,12 +1490,12 @@ class CtfFeedPro extends CtfFeed
 			if ( $feed_options['headertext'] != '' ) {
 				$ctf_header_html .= $feed_options['headertext'];
 			} else {
-				$ctf_header_html .= $tweet_set[0]['user']['name'];
+				$ctf_header_html .= $header_info['name'];
 			}
 
 			$ctf_header_html .= '</span>';
 
-			if ( $tweet_set[0]['user']['verified'] == 1 ) {
+			if ( $header_info['verified'] == 1 ) {
 				$ctf_header_html .= '<span class="ctf-verified">' . ctf_get_fa_el( 'fa-check-circle' ) . '</span>';
 			}
 
@@ -1346,46 +1503,52 @@ class CtfFeedPro extends CtfFeed
 
 			// Tweet and follower counts
 			$ctf_header_html .= '<span class="ctf-header-counts">';
-			$ctf_header_html .= '<span class="ctf-header-tweets-count" title="'.number_format( intval( $tweet_set[0]['user']['statuses_count'] ) ).' Tweets">' . ctf_get_fa_el( 'fa-twitter' );
-			$ctf_header_html .= number_format( intval( $tweet_set[0]['user']['statuses_count'] ) );
+			$ctf_header_html .= '<span class="ctf-header-tweets-count" title="'.number_format( intval( $header_info['statuses_count'] ) ).' Tweets">' . ctf_get_fa_el( 'fa-twitter' );
+			$ctf_header_html .= number_format( intval( $header_info['statuses_count'] ) );
 			$ctf_header_html .= '</span>';
-			$ctf_header_html .= '<span class="ctf-header-followers"  title="'.number_format( intval( $tweet_set[0]['user']['followers_count'] ) ).' Followers">' . ctf_get_fa_el( 'fa-user' );
-			$ctf_header_html .= number_format( intval( $tweet_set[0]['user']['followers_count'] ) );
+			$ctf_header_html .= '<span class="ctf-header-followers"  title="'.number_format( intval( $header_info['followers_count'] ) ).' Followers">' . ctf_get_fa_el( 'fa-user' );
+			$ctf_header_html .= number_format( intval( $header_info['followers_count'] ) );
 			$ctf_header_html .= '</span>';
 			$ctf_header_html .= '</span>';
 
 			$ctf_header_html .= '</p>';
 
-			if ( $feed_options['showbio'] && !empty( $tweet_set[0]['user']['description'] ) ) {
-				$ctf_header_html .= '<p class="ctf-header-bio">' . esc_html( $tweet_set[0]['user']['description'] ) . '</p>';
+			if ( $feed_options['showbio'] && !empty( $header_info['description'] ) ) {
+				$ctf_header_html .= '<p class="ctf-header-bio">' . esc_html( $header_info['description'] ) . '</p>';
 			}
 
 			$ctf_header_html .= '</div>';
 			$ctf_header_html .= '<div class="ctf-header-img">';
 			$ctf_header_html .= '<div class="ctf-header-img-hover">' . ctf_get_fa_el( 'fa-twitter' ) . '</div>';
-			$ctf_header_html .= '<img src="' . esc_url( $tweet_set[0]['user']['profile_image_url_https'] ) . '" alt="' . esc_attr( $tweet_set[0]['user']['name'] ). '" width="48" height="48">';
+			$ctf_header_html .= '<img src="' . esc_url( $header_info['profile_image_url_https'] ) . '" alt="' . esc_attr( $header_info['name'] ). '" width="48" height="48">';
 			$ctf_header_html .= '</div>';
 			$ctf_header_html .= '</a>';
 			$ctf_header_html .= '</div>';
 		} else {
 
 			if ( $feed_options['type'] === 'search' || $feed_options['type'] === 'hashtag' ) {
-				$raw_header_text = $feed_options['headertext'] != '' ? $feed_options['headertext'] : $feed_options['feed_term'];
+				$using_custom = $feed_options['headertext'] != '';
+				$raw_header_text = $using_custom ? $feed_options['headertext'] : $feed_options['feed_term'];
 
 				//List multiple terms
-				$hashtags = explode(" OR ", $raw_header_text);
-				$default_header_text = '';
-				$h_index = 0;
-				foreach ( $hashtags as $hashtag ) {
-					if( $h_index > 0 ) $default_header_text .= ', ';
-					$default_header_text .= $hashtag;
-					$h_index++;
+				$hashtags = explode(" OR ", $feed_options['feed_term']);
+				if ( ! $using_custom ) {
+					$default_header_text = '';
+					$h_index = 0;
+					foreach ( $hashtags as $hashtag ) {
+						if( $h_index > 0 ) $default_header_text .= ', ';
+						$default_header_text .= $hashtag;
+						$h_index++;
+					}
+				} else {
+					$default_header_text = $feed_options['headertext'];
 				}
+
 
 				if ( $feed_options['type'] === 'hashtag' ) {
 					$url_part = 'hashtag/' . str_replace("#", "", $hashtags[0]);
 				} else {
-					$url_part = 'search?q=' . rawurlencode( str_replace( array( ', ', "'" ), array( ' OR ', '"' ), $raw_header_text ) );
+					$url_part = 'search?q=' . rawurlencode( str_replace( array( ', ', "'" ), array( ' OR ', '"' ), $feed_options['feed_term'] ) );
 				}
 
 			} else {
@@ -1401,7 +1564,7 @@ class CtfFeedPro extends CtfFeed
 					if ( $feed_options['feed_types_and_terms'][0][0] === 'search' || $feed_options['feed_types_and_terms'][0][0] === 'hashtag' ) {
 						$raw_header_text = $feed_options['feed_types_and_terms'][0][1];
 						//List multiple terms
-						$hashtags = explode( " OR ", $raw_header_text );
+						$hashtags = explode( " OR ", $feed_options['feed_types_and_terms'][0][1] );
 
 						if ( $feed_options['feed_types_and_terms'][0][0] === 'hashtag' ) {
 							$url_part = 'hashtag/' . str_replace( "#", "", $hashtags[0] );
@@ -1409,7 +1572,7 @@ class CtfFeedPro extends CtfFeed
 							$url_part = 'search?q=' . rawurlencode( str_replace( array( ', ', "'" ), array(
 									' OR ',
 									'"'
-								), $raw_header_text ) );
+								), $feed_options['feed_types_and_terms'][0][1] ) );
 						}
 					}
 
@@ -1478,11 +1641,6 @@ class CtfFeedPro extends CtfFeed
 		$feed_options = $this->feed_options;
 		$tweet_html = $this->feed_html;
 
-		// dequeue intents if not being used
-		if ( ! ctf_show( 'actions', $feed_options ) ) {
-			wp_dequeue_script( 'ctf_twitter_intents' );
-		}
-
 		if ( $is_pagination && ( ! isset ( $tweet_set[1]['id_str'] ) ) ) {
 			$tweet_html .= $this->getOutOfTweetsHtml( $this->feed_options );
 		} else {
@@ -1515,7 +1673,7 @@ class CtfFeedPro extends CtfFeed
 				}
 
 				// check for reply
-				if ( isset( $post['in_reply_to_screen_name'] ) ) {
+				if ( isset( $post['in_reply_to_screen_name'] ) && $post['in_reply_to_screen_name'] !== $post['user']['screen_name'] ) {
 					$tweet_classes .= ' ctf-reply';
 					$replied_to = array(
 						'screen_name' => $post['in_reply_to_screen_name'],
@@ -1526,6 +1684,7 @@ class CtfFeedPro extends CtfFeed
 					unset( $replied_to );
 				}
 
+				$disable_tc_for_quoted = false;
 				// check for quoted
 				if ( isset( $post['quoted_status'] ) ) {
 					$tweet_classes .= ' ctf-quoted';
@@ -1583,6 +1742,7 @@ class CtfFeedPro extends CtfFeed
 
 				//Quoted Tweets Media
 				$quoted_media = false ;
+
 				if ( isset( $quoted['extended_entities']['media'] ) ) {
 
 					$num_media = count( $quoted['extended_entities']['media'] );
@@ -1599,6 +1759,12 @@ class CtfFeedPro extends CtfFeed
 							$quoted_media[$ii]['video_atts'] = 'controls loop autoplay muted';
 						}
 						$quoted_media[$ii]['poster'] = $quoted['extended_entities']['media'][$ii]['media_url_https'];
+					}
+
+					// don't get the twitter card if it's a quoted video
+					if ( $quoted_media ) {
+						$disable_tc_for_quoted = true;
+						unset( $post['twitter_card'] );
 					}
 
 				} elseif ( isset( $quoted['entities']['media'] ) ) {
@@ -1619,6 +1785,12 @@ class CtfFeedPro extends CtfFeed
 						$quoted_media[$ii]['poster'] = $quoted['entities']['media'][$ii]['media_url_https'];
 					}
 
+					// don't get the twitter card if it's a quoted video
+					if ( $quoted_media ) {
+						$disable_tc_for_quoted = true;
+						unset( $post['twitter_card'] );
+				    }
+
 				}
 
 				$twitter_card_data_att = '';
@@ -1627,7 +1799,11 @@ class CtfFeedPro extends CtfFeed
 					$twitter_card_url = $post['entities']['urls'][0]['expanded_url'];
 				}
 
-				if ( ! isset( $post['twitter_card'] ) && ctf_show( 'twittercards', $feed_options ) && isset( $post['entities']['urls'][0]['expanded_url'] ) && ! $media ) {
+				if ( ! isset( $post['twitter_card'] )
+				     && ctf_show( 'twittercards', $feed_options )
+				     && isset( $post['entities']['urls'][0]['expanded_url'] )
+				     && ! $media
+					 && ! $disable_tc_for_quoted) {
 					$twitter_card_data_att = ' data-ctflinkurl="' . esc_url_raw( $twitter_card_url ) . '"';
 					$tweet_classes .= ' ctf-check-link';
 				}
@@ -1747,7 +1923,7 @@ class CtfFeedPro extends CtfFeed
 					$tweet_classes .= ' ctf-tc-checked';
 				}
 
-				// include tweet view
+					// include tweet view
 				$tweet_html .= '<div class="'. $tweet_classes . '" id="ctf_' . esc_attr( $post_id ) . '" style="' . $feed_options['tweetbgcolor'] .'"' . $twitter_card_data_att . $retweet_data_att . '>';
 
 				if ( isset( $retweeter ) && ctf_show( 'retweeter', $feed_options ) ) {
@@ -1762,7 +1938,7 @@ class CtfFeedPro extends CtfFeed
 					$tweet_html .= '</div>';
 				} // show repliedto
 
-				if ( ctf_show( 'avatar', $feed_options ) || ctf_show( 'author', $feed_options ) || ctf_show( 'date', $feed_options ) ) {
+				if ( ctf_show( 'avatar', $feed_options ) || ctf_show( 'author', $feed_options ) || ctf_show( 'logo', $feed_options ) || ctf_show( 'date', $feed_options ) ) {
 					$tweet_html .= '<div class="ctf-author-box">';
 					$tweet_html .= '<div class="ctf-author-box-link" style="' . $feed_options['authortextsize'] . $feed_options['authortextweight'] . $feed_options['textcolor'] . '">';
 					if ( ctf_show( 'avatar', $feed_options ) ) {
@@ -1786,6 +1962,11 @@ class CtfFeedPro extends CtfFeed
 						$tweet_html .= '</div>';
 					} // show date
 					$tweet_html .= '</div>';
+					if ( ctf_show( 'logo', $feed_options ) ) {
+						$tweet_html .= '<div class="ctf-corner-logo" style="' . $feed_options['logosize'] . $feed_options['logocolor'] . '">';
+						$tweet_html .= ctf_get_fa_el( 'fa-twitter' );
+						$tweet_html .= '</div>';
+					}
 					$tweet_html .= '</div>';
 				}
 				$disablelightbox = $feed_options['disablelightbox'];
@@ -1796,9 +1977,9 @@ class CtfFeedPro extends CtfFeed
 					$tweet_html .= '">';
 
 					if ( ctf_show( 'text', $feed_options ) ) {
-						$post_text = apply_filters( 'ctf_tweet_text', $post['text'], $feed_options );
+						$post_text = apply_filters( 'ctf_tweet_text', $post['text'], $feed_options, $post );
 						if ( $feed_options['linktexttotwitter'] ) {
-							$tweet_html .= '<a href="https://twitter.com/' .$post['user']['screen_name'] . '/status/' . $post['id_str'] . '" target="_blank">';
+							$tweet_html .= '<a class="ctf-tweet-text-link" href="https://twitter.com/' .$post['user']['screen_name'] . '/status/' . $post['id_str'] . '" target="_blank">';
 							$tweet_html .= '<p class="ctf-tweet-text" style="' . $feed_options['tweettextsize'] . $feed_options['tweettextweight'] . $feed_options['textcolor'] . '">' . nl2br( $post_text ) . '</p>';
 							$tweet_html .= '</a>';
 						} else {
@@ -1806,7 +1987,9 @@ class CtfFeedPro extends CtfFeed
 						} // link text to twitter option is selected
 					}
 
-					if ( ( ctf_show( 'media', $feed_options ) ) && $media ) {
+					$media = apply_filters( 'ctf_item_media', $media );
+
+					if ( ctf_show( 'media', $feed_options ) && $media ) {
 						$media_classes = 'ctf-tweet-media';
 						$media_classes .= $num_media > 1 ? ' ctf-tweet-media-masonry' : '';
 						$tweet_html .= '<div class="' . $media_classes . '">';
@@ -1845,7 +2028,7 @@ class CtfFeedPro extends CtfFeed
 									$media_link .= 'href="'.esc_url( $ctf_lightbox_image ).'" data-ctf-lightbox="1" data-title="'.esc_attr( $post['text'] ).'" data-user="'.$post['user']['screen_name'].'" data-name="'.esc_attr($post['user']['name']).'" data-id="'.$post_id.'" data-url="https://twitter.com/' .$post['user']['screen_name'] . '/status/' . $post['id_str'] . '" data-avatar="'.esc_url( $post['user']['profile_image_url_https'] ).'" data-date="'.ctf_get_formatted_date( $post['created_at'] , $feed_options, $post['user']['utc_offset'] ).'" class="ctf-lightbox-link ';
 								}
 								if ( $medium['type'] == 'video' || $medium['type'] == 'animated_gif') {
-									$media_link .= 'ctf-video" data-video="'.esc_url( $medium['url'] ).'" data-iframe=""><span class="ctf-screenreader">Twitter feed video.</span>';
+									$media_link .= 'ctf-video ctf-video-type-'.esc_attr( $medium['type'] ).'" data-video="'.esc_url( $medium['url'] ).'" data-iframe=""><span class="ctf-screenreader">Twitter feed video.</span>';
 								} else if ( $medium['type'] == 'iframe' ) {
 									$media_link .= 'ctf-iframe" data-video="" data-iframe="'.esc_url( $medium['url'] ).'"><span class="ctf-screenreader">Twitter feed video.</span>';
 								} else {
@@ -1887,12 +2070,12 @@ class CtfFeedPro extends CtfFeed
 						}// end foreach
 						
 						$tweet_html .= '</div>';
-					} elseif ( ctf_show( 'twittercards', $feed_options ) && isset( $post['twitter_card'] ) && ! empty( $post['twitter_card']['twitter:card'] ) ) {
+					} elseif ( ctf_show( 'twittercards', $feed_options ) && isset( $post['twitter_card'] ) && ! empty( $post['twitter_card']['twitter:card'] ) && ! $disable_tc_for_quoted ) {
 
 						if ( $post['twitter_card']['twitter:card'] === 'summary' || $post['twitter_card']['twitter:card'] === 'summary_large_image' || $post['twitter_card']['twitter:card'] === 'player' ) {
 							$tweet_html .= '<a href="' . $twitter_card_url . '" class="ctf-twitter-card ctf-tc-type-' . $post['twitter_card']['twitter:card'] . '" target="_blank">';
 							if ( !empty( $post['twitter_card']['twitter:image'] ) ) {
-								$tweet_html .= '<div class="ctf-tc-image"><img src="' . esc_url( $post['twitter_card']['twitter:image'] ) . '" alt="'.esc_attr( $post['twitter_card']['twitter:image:alt'] ).'"></div>';
+								$tweet_html .= '<div class="ctf-tc-image" data-bg="' . esc_url( $post['twitter_card']['twitter:image'] ) . '"><img src="' . esc_url( $post['twitter_card']['twitter:image'] ) . '" alt="'.esc_attr( $post['twitter_card']['twitter:image:alt'] ).'"></div>';
 							}
 							$tweet_html .= '<div class="ctf-tc-summary-info">';
 							$tweet_html .= '<p class="ctf-tc-heading">'.esc_html( $post['twitter_card']['twitter:title'] ).'</p>';
@@ -1928,44 +2111,86 @@ class CtfFeedPro extends CtfFeed
 
 
 					if ( ctf_show( 'linkbox', $feed_options ) && isset( $quoted ) ) {
-						$tweet_html .= '<a href="https://twitter.com/' .$quoted['user']['screen_name'] . '/status/' . $quoted['id_str'] . '" class="ctf-quoted-tweet" style="' . $feed_options['quotedauthorsize'] . $feed_options['quotedauthorweight'] . $feed_options['textcolor'] . '" target="_blank">';
+						if ( $quoted_media
+						     && ($quoted_media[0]['type'] == 'video' || $quoted_media[0]['type'] == 'animated_gif') ) {
+							$medium = $quoted_media[0];
+							isset($medium['poster']) ? $ctf_lightbox_image = $medium['poster'] : $ctf_lightbox_image = $medium['url'];
+							isset($post['text']) ? $ctf_alt_text = htmlspecialchars($post['text']) : $ctf_alt_text = 'View on Twitter';
+							$tweet_html .= '<div class="ctf-quoted-video">';
+							$media_link = '<a ';
 
-						if ( $quoted_media ) {
-							foreach ( $quoted_media as $medium ) {
+							if($disablelightbox){
+								$media_link .= 'href="https://twitter.com/' .$post['user']['screen_name'] . '/status/' . $post['id_str'] . '" target="_blank" class="ctf-media-link ';
+							} else {
+								$media_link .= 'href="'.esc_url( $ctf_lightbox_image ).'" data-ctf-lightbox="1" data-title="'.esc_attr( $post['text'] ).'" data-user="'.$post['user']['screen_name'].'" data-name="'.esc_attr($post['user']['name']).'" data-id="'.$post_id.'" data-url="https://twitter.com/' .$post['user']['screen_name'] . '/status/' . $post['id_str'] . '" data-avatar="'.esc_url( $post['user']['profile_image_url_https'] ).'" data-date="'.ctf_get_formatted_date( $post['created_at'] , $feed_options, $post['user']['utc_offset'] ).'" class="ctf-lightbox-link ';
+							}
+							if ( $medium['type'] == 'video' || $medium['type'] == 'animated_gif') {
+								$media_link .= 'ctf-video ctf-video-type-'.esc_attr( $medium['type'] ).'" data-video="'.esc_url( $medium['url'] ).'" data-iframe=""><span class="ctf-screenreader">Twitter feed video.</span>';
+							}
 
-								//Define image for lightbox
-								isset($medium['poster']) ? $ctf_lightbox_image = $medium['poster'] : $ctf_lightbox_image = $medium['url'];
-								isset($post['text']) ? $ctf_alt_text = htmlspecialchars($post['text']) : $ctf_alt_text = 'View on Twitter';
+							//Don't include the media link if the lightbox is disabled and it's a video
+							( ($medium['type'] == 'video' || $medium['type'] == 'animated_gif') && $disablelightbox ) ? $tweet_html .= '' : $tweet_html .= $media_link;
+							$tweet_html .= ctf_get_fa_el( 'ctf_playbtn' );
 
-								$tweet_html .= '<div class="ctf-tc-image"><img src="' . esc_url( $ctf_lightbox_image ) . '" alt="'.esc_attr( $ctf_alt_text ).'"></div>';
+							if( $disablelightbox || $medium['type'] == 'animated_gif' ) $tweet_html .= '<video ' . $medium['video_atts'] .' src="' . esc_url( $medium['url'] ) . '" type="video/mp4" poster="'.esc_url( $ctf_lightbox_image ).'">';
+							$tweet_html .= '<img src="'.$ctf_lightbox_image.'" alt="'.esc_attr( $ctf_alt_text ).'" />';
+							if( $disablelightbox || $medium['type'] == 'animated_gif' ) $tweet_html .= '</video>';
 
-								// $tweet_html .= '<div class="ctf-tc-summary-info">';
-								//     $tweet_html .= '<p class="ctf-tc-heading">'.$post['twitter_card']['twitter:title'].'</p>';
-								//     $tweet_html .= '<p class="ctf-tc-desc">'.substr($post['twitter_card']['twitter:description'], 0, 150);
-								//     if( strlen($post['twitter_card']['twitter:description']) > 150 ) $tweet_html .= '...';
-								//     $tweet_html .= '</p>';
-								//     $working_url = explode("/", preg_replace("(^https?://)", "", $twitter_card_url));
-								//     $tweet_html .= '<p class="ctf-tc-url">'.$working_url[0].'</p>';
-								// $tweet_html .= '</div>';
+							( ($medium['type'] == 'video' || $medium['type'] == 'animated_gif') && $disablelightbox ) ? $tweet_html .= '' : $tweet_html .= '</a>';
+							$tweet_html .= '<div class="ctf-tc-summary-info">';
+							$tweet_html .= '<span class="ctf-quoted-author-name">' . esc_html( $quoted['user']['name'] ) . '</span>';
+
+							if ($quoted['user']['verified'] == 1) {
+								$tweet_html .= '<span class="ctf-quoted-verified">' . ctf_get_fa_el( 'fa-check-circle' ) . '</span>';
+							} // user is verified
+							$quoted_text = apply_filters( 'ctf_quoted_tweet_text', $quoted['text'], $feed_options, $quoted );
+							$tweet_html .= '<span class="ctf-quoted-author-screenname">@' . esc_html( $quoted['user']['screen_name'] ) . '</span>';
+							$tweet_html .= '<p class="ctf-quoted-tweet-text" style="' . $feed_options['tweettextsize'] . $feed_options['tweettextweight'] . $feed_options['textcolor'] . '">' . nl2br( $quoted_text ) . '</p>';
+							$tweet_html .= '</div>';
+
+							$tweet_html .= '</div>';
+
+						} else {
+							$tweet_html .= '<a href="https://twitter.com/' .$quoted['user']['screen_name'] . '/status/' . $quoted['id_str'] . '" class="ctf-quoted-tweet" style="' . $feed_options['quotedauthorsize'] . $feed_options['quotedauthorweight'] . $feed_options['textcolor'] . '" target="_blank">';
+
+							if ( $quoted_media ) {
+								foreach ( $quoted_media as $medium ) {
+									//Define image for lightbox
+									isset($medium['poster']) ? $ctf_lightbox_image = $medium['poster'] : $ctf_lightbox_image = $medium['url'];
+									isset($post['text']) ? $ctf_alt_text = htmlspecialchars($post['text']) : $ctf_alt_text = 'View on Twitter';
+
+									$tweet_html .= '<div class="ctf-tc-image" data-bg="' . esc_url( $ctf_lightbox_image ) . '"><img src="' . esc_url( $ctf_lightbox_image ) . '" alt="'.esc_attr( $ctf_alt_text ).'"></div>';
+
+
+									// $tweet_html .= '<div class="ctf-tc-summary-info">';
+									//     $tweet_html .= '<p class="ctf-tc-heading">'.$post['twitter_card']['twitter:title'].'</p>';
+									//     $tweet_html .= '<p class="ctf-tc-desc">'.substr($post['twitter_card']['twitter:description'], 0, 150);
+									//     if( strlen($post['twitter_card']['twitter:description']) > 150 ) $tweet_html .= '...';
+									//     $tweet_html .= '</p>';
+									//     $working_url = explode("/", preg_replace("(^https?://)", "", $twitter_card_url));
+									//     $tweet_html .= '<p class="ctf-tc-url">'.$working_url[0].'</p>';
+									// $tweet_html .= '</div>';
 
 
 
 
 
-							}// end foreach
+								}// end foreach
+							}
+
+							$tweet_html .= '<div class="ctf-tc-summary-info">';
+							$tweet_html .= '<span class="ctf-quoted-author-name">' . esc_html( $quoted['user']['name'] ) . '</span>';
+
+							if ($quoted['user']['verified'] == 1) {
+								$tweet_html .= '<span class="ctf-quoted-verified">' . ctf_get_fa_el( 'fa-check-circle' ) . '</span>';
+							} // user is verified
+							$quoted_text = apply_filters( 'ctf_quoted_tweet_text', $quoted['text'], $feed_options, $quoted );
+							$tweet_html .= '<span class="ctf-quoted-author-screenname">@' . esc_html( $quoted['user']['screen_name'] ) . '</span>';
+							$tweet_html .= '<p class="ctf-quoted-tweet-text" style="' . $feed_options['tweettextsize'] . $feed_options['tweettextweight'] . $feed_options['textcolor'] . '">' . nl2br( $quoted_text ) . '</p>';
+							$tweet_html .= '</div>';
+							$tweet_html .= '</a>';
 						}
 
-						$tweet_html .= '<div class="ctf-tc-summary-info">';
-						$tweet_html .= '<span class="ctf-quoted-author-name">' . esc_html( $quoted['user']['name'] ) . '</span>';
-
-						if ($quoted['user']['verified'] == 1) {
-							$tweet_html .= '<span class="ctf-quoted-verified">' . ctf_get_fa_el( 'fa-check-circle' ) . '</span>';
-						} // user is verified
-						$quoted_text = $quoted['text'];
-						$tweet_html .= '<span class="ctf-quoted-author-screenname">@' . esc_html( $quoted['user']['screen_name'] ) . '</span>';
-						$tweet_html .= '<p class="ctf-quoted-tweet-text" style="' . $feed_options['tweettextsize'] . $feed_options['tweettextweight'] . $feed_options['textcolor'] . '">' . nl2br( $quoted_text ) . '</p>';
-						$tweet_html .= '</div>';
-						$tweet_html .= '</a>';
 					}// show link box
 
 

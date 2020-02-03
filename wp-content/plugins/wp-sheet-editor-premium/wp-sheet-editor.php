@@ -2,7 +2,7 @@
 /*
   Plugin Name: WP Sheet Editor (Premium)
   Description: Bulk edit posts and pages easily using a beautiful spreadsheet inside WordPress.
-  Version: 2.15.4
+  Version: 2.16.0
   Author: WP Sheet Editor
   Author URI: https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts
   Plugin URI: https://wpsheeteditor.com/extensions/posts-pages-post-types-spreadsheet/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts

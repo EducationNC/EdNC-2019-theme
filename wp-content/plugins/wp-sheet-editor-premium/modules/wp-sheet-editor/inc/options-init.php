@@ -179,7 +179,7 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 						'id' => 'be_disable_serialized_columns',
 						'type' => 'switch',
 						'title' => __('Disable serialized columns support?', VGSE()->textname),
-						'desc' => __('The spreadsheet automatically generates columns for serialized fields, but this can use a lot of CPU cycles depending on the number of serialized fields. You can disable this feature if the sheet is too slow to load or you get errors when loading the rows.', VGSE()->textname),
+						'desc' => __('The spreadsheet automatically generates columns for serialized fields, but this can use a lot of CPU cycles depending on the number of serialized fields. You can disable this feature if the sheet is too slow to load or you get errors when loading the rows or you dont want to see columns with prefix "SEIS".', VGSE()->textname),
 						'default' => false,
 					),
 					array(
@@ -244,7 +244,7 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 						'id' => 'be_enable_fancy_taxonomy_cell',
 						'type' => 'switch',
 						'title' => __('Enable the fancy taxonomy terms selector', VGSE()->textname),
-						'desc' => __('The taxonomy columns (i.e. categories, tags) use a fancy dropdown selector, which has better auto complete, allows selecting multiple options, etc. but it uses more server resources and it doesn\'t allow copy pasting in these cells. You can activate it here if you prefer a better dropdown over the ability to copy paste.', VGSE()->textname),
+						'desc' => __('The taxonomy columns (i.e. categories, tags) use a limited dropdown by default for selecting one term only and the column can be copy pasted. We have a fancy dropdown selector, which has better auto complete, allows selecting multiple options, etc. but it uses more server resources and it doesn\'t allow copy pasting in these cells. You can activate it here if you prefer a better dropdown over the ability to copy paste.', VGSE()->textname),
 						'default' => false,
 					),
 					array(
@@ -260,6 +260,12 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 						'title' => __('Delete the attached images when deleting a post?', VGSE()->textname),
 						'desc' => __('For example, when deleting a post completely (not moving to the trash), delete the featured image and product gallery images from the media library. CAREFUL.If you use the same images on multiple posts, it will break the images on other posts', VGSE()->textname),
 						'default' => false,
+					),
+					array(
+						'id' => 'keys_for_infinite_serialized_handler',
+						'type' => 'text',
+						'title' => __('Meta keys that should use the infinite serialized fields handler', VGSE()->textname),
+						'desc' => __('This is only for advanced users or if our support team asks you to use this option. We have 2 ways to handle serialized fields: the old handler (used by default, which has limitations) and the infinite serialization handler (better, it is not active by default to not break previous integrations). Use this option if you have serialized fields that save incorrectly or dont appear in the spreadsheet.', VGSE()->textname),
 					),
 				)
 			);

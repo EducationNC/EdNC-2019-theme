@@ -17,8 +17,6 @@ $nonce = wp_create_nonce('bep-nonce');
 			<p><?php _e('You can start using the spreadsheet editor in just 5 minutes. Please follow these steps.', VGSE()->textname); ?></p>
 
 			<?php
-			$custom_post_types = implode(',', array_filter(array_map('sanitize_title', get_option($this->custom_post_types_key, array()))));
-
 			ob_start();
 			require VGSE_DIR . '/views/post-types-form.php';
 			$post_types_form = str_replace(array(

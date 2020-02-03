@@ -186,7 +186,7 @@ return [
                                 'value' => Core::$plugin->settings->getValue($field['group'], $field['id'], 'auto', false),
                             ]);
                         },
-                        'sanitizeCallback' => [Settings::className(), 'sanitizeWidth'],
+                        'sanitizeCallback' => [Settings::class, 'sanitizeWidth'],
                         'default' => 'auto',
                     ],
 
@@ -208,7 +208,7 @@ return [
                                 'defaultSize' => 100,
                             ]);
                         },
-                        'sanitizeCallback' => [Settings::className(), 'sanitizeFontSize'],
+                        'sanitizeCallback' => [Settings::class, 'sanitizeFontSize'],
                         'default' => 'default',
                     ],
 
@@ -230,7 +230,7 @@ return [
                                 'defaultSize' => 90,
                             ]);
                         },
-                        'sanitizeCallback' => [Settings::className(), 'sanitizeFontSize'],
+                        'sanitizeCallback' => [Settings::class, 'sanitizeFontSize'],
                         'default' => '90%',
                     ],
 
@@ -364,7 +364,7 @@ return [
                                 'value' => Core::$plugin->settings->getValue($field['group'], $field['id'], [], false),
                             ]);
                         },
-                        'sanitizeCallback' => [Settings::className(), 'sanitizeSkipHeadingLevel'],
+                        'sanitizeCallback' => [Settings::class, 'sanitizeSkipHeadingLevel'],
                     ],
                     'skipHeadingText' => [
                         'label' => esc_html__('By Text', 'luckywp-table-of-contents'),

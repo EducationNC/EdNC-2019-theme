@@ -295,6 +295,9 @@ class Toc
             $after = $after . '<!--/noindex-->';
         }
 
+        // Подключаем CSS/JS
+        Core::$plugin->front->enqueueAssets();
+
         // Вывод
         static::$currentOutputDepth = -1;
         return Core::$plugin->front->render('body', [

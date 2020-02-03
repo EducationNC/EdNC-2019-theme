@@ -15,6 +15,7 @@ use luckywp\tableOfContents\integrations\BeaverBuilder;
 use luckywp\tableOfContents\integrations\elementor\Elementor;
 use luckywp\tableOfContents\integrations\RankMath;
 use luckywp\tableOfContents\integrations\ToolsetViews;
+use luckywp\tableOfContents\integrations\TwentyTwentyTheme;
 use luckywp\tableOfContents\integrations\Wpml;
 use luckywp\tableOfContents\plugin\editorBlock\EditorBlock;
 use luckywp\tableOfContents\plugin\mcePlugin\McePlugin;
@@ -64,19 +65,26 @@ class Plugin extends BasePlugin
         // Интеграции с другими плагинами
         add_action('plugins_loaded', function () {
             if (defined('FL_BUILDER_VERSION')) {
-                Core::createObject(BeaverBuilder::className());
+                Core::createObject(BeaverBuilder::class);
             }
             if (class_exists('\RankMath')) {
-                Core::createObject(RankMath::className());
+                Core::createObject(RankMath::class);
             }
             if (defined('WPV_VERSION')) {
-                Core::createObject(ToolsetViews::className());
+                Core::createObject(ToolsetViews::class);
             }
             if (defined('ELEMENTOR_VERSION')) {
-                Core::createObject(Elementor::className());
+                Core::createObject(Elementor::class);
             }
             if (class_exists('\SitePress')) {
-                Core::createObject(Wpml::className());
+                Core::createObject(Wpml::class);
+            }
+        });
+
+        // Интеграция с темами
+        add_action('init', function () {
+             if (get_template() == 'twentytwenty') {
+                Core::createObject(TwentyTwentyTheme::class);
             }
         });
     }

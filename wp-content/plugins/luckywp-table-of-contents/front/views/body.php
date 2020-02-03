@@ -29,7 +29,7 @@ echo $before . Html::beginTag('div', $containerOptions) . Html::beginTag('div', 
         <?php } ?>
     </div>
 <?php } ?>
-<div class="lwptoc_items"<?= $itemsStyles ? ' style="' . implode('', $itemsStyles) . '"' : '' ?>>
+<div class="lwptoc_items<?= $hideItems ? '' : ' lwptoc_items-visible'?>"<?= $itemsStyles ? ' style="' . implode('', $itemsStyles) . '"' : '' ?>>
     <?php lwptoc_items($items) ?>
 </div>
 <?= '</div></div>' . $after ?>
