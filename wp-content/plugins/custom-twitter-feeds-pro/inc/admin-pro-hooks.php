@@ -28,6 +28,8 @@ function ctf_pro_admin_search_whatis() {
 
 <span class="ctf_tooltip_table">
     <span class="ctf_col_1 ctf_table_header">Search Terms</span><span class="ctf_col_2 ctf_table_header">Result</span>
+    <span class="ctf_col_1">-filter:retweets</span><span class="ctf_col_2">Exclude retweets</span>
+    <span class="ctf_col_1">-filter:replies</span><span class="ctf_col_2">Exclude replies</span>
     <span class="ctf_col_1">#awesome</span><span class="ctf_col_2">Tweets tagged with #awesome</span>
     <span class="ctf_col_1">@smashballoon</span><span class="ctf_col_2">Tweets which mention "@smashballoon"</span>
     <span class="ctf_col_1">purple wristwatches</span><span class="ctf_col_2">Tweets which contain both the words "purple" and "wristwatches"</span>
@@ -47,9 +49,9 @@ function ctf_pro_search_guide() {
 
 add_filter( 'ctf_admin_show_hide_list', 'ctf_show_hide_list', 10, 1 );
 function ctf_show_hide_list( $show_hide_list ) {
-    $show_hide_list[8] = array( 'include_replied_to', 'In reply to text' );
-    $show_hide_list[9] = array( 'include_media', 'Media (images, videos, gifs)' );
-    $show_hide_list[10] = array( 'include_twittercards', 'Twitter Cards' );
+    $show_hide_list[] = array( 'include_replied_to', 'In reply to text' );
+    $show_hide_list[] = array( 'include_media', 'Media (images, videos, gifs)' );
+    $show_hide_list[] = array( 'include_twittercards', 'Twitter Cards' );
     return $show_hide_list;
 }
 
@@ -69,212 +71,6 @@ function ctf_add_masonry_autoscroll_options( $admin )
         'whatis' => 'This will replace the default text displayed for "In reply to"',
         'default' => 'In reply to'// "what is this?" text
     ));
-
-    add_settings_section(
-        'ctf_options_carousel', // matches the section name
-        'Carousel',
-        array( $admin, 'general_section_text' ), // callback function to explain the section
-        'ctf_options_carousel' // matches the section name
-    );
-
-    // carousel default
-    $admin->create_settings_field( array(
-        'name' => 'carousel',
-        'title' => '<label for="ctf_carousel">Set Carousel as Default</label><code class="ctf_shortcode">carousel
-            Eg: carousel=true</code>', // label for the input field
-        'callback'  => 'default_checkbox', // name of the function that outputs the html
-        'page' => 'ctf_options_carousel', // matches the section name
-        'section' => 'ctf_options_carousel', // matches the section name
-        'option' => 'ctf_options', // matches the options name
-        'class' => '',
-        'whatis' => "This will make every Twitter feed display in a carousel by default"
-    ));
-
-    // carousel desktop columns
-    $admin->create_settings_field( array(
-        'name' => 'carouselcols',
-        'title' => '<label for="ctf_carouselcols">Desktop Columns</label><code class="ctf_shortcode">carouselcols
-            Eg: carouselcols=5</code>', // label for the input field
-        'callback'  => 'default_select', // name of the function that outputs the html
-        'page' => 'ctf_options_carousel', // matches the section name
-        'section' => 'ctf_options_carousel', // matches the section name
-        'option' => 'ctf_options', // matches the options name
-        'class' => '', // class for the wrapper and input field
-        'fields' => array(
-            0 => array( '1', 1 ),
-            1 => array( '2', 2 ),
-            2 => array( '3', 3 ),
-            3 => array( '4', 4 ),
-            4 => array( '5', 5 ),
-            5 => array( '6', 6 )
-        ),
-        'whatis' => "Number of vertical columns the carousel feed will use when the screen is viewed on wide screens" // what is this? text
-    ) );
-
-    // carousel mobile columns
-    $admin->create_settings_field( array(
-        'name' => 'carouselmobilecols',
-        'title' => '<label for="ctf_carouselmobilecols">Mobile Columns</label><code class="ctf_shortcode">carouselmobilecols
-            Eg: carouselmobilecols=2</code>', // label for the input field
-        'callback'  => 'default_select', // name of the function that outputs the html
-        'page' => 'ctf_options_carousel', // matches the section name
-        'section' => 'ctf_options_carousel', // matches the section name
-        'option' => 'ctf_options', // matches the options name
-        'class' => '', // class for the wrapper and input field
-        'fields' => array(
-            0 => array( '1', 1 ),
-            1 => array( '2', 2 )
-        ),
-        'whatis' => "Number of vertical columns the carousel feed will use when the screen is viewed on small screens" // what is this? text
-    ) );
-
-    // carousel arrows
-    $admin->create_settings_field( array(
-        'name' => 'carouselarrows',
-        'title' => '<label for="ctf_carouselarrows">Navigation Arrows</label><code class="ctf_shortcode">carouselarrows
-            Eg: carouselarrows=below</code>', // label for the input field
-        'callback'  => 'default_select', // name of the function that outputs the html
-        'page' => 'ctf_options_carousel', // matches the section name
-        'section' => 'ctf_options_carousel', // matches the section name
-        'option' => 'ctf_options', // matches the options name
-        'class' => '', // class for the wrapper and input field
-        'fields' => array(
-            0 => array( 'onhover', 'Show on Hover' ),
-            1 => array( 'below', 'Show below feed' ),
-            2 => array( 'hide', 'Hide arrows' ),
-        )
-    ) );
-
-    // carousel pagination
-    $admin->create_settings_field( array(
-        'name' => 'carouselpag',
-        'title' => '<label for="ctf_carouselpag">Show Pagination</label><code class="ctf_shortcode">carouselpag
-            Eg: carouselpag=true</code>', // label for the input field
-        'callback'  => 'default_checkbox', // name of the function that outputs the html
-        'page' => 'ctf_options_carousel', // matches the section name
-        'section' => 'ctf_options_carousel', // matches the section name
-        'option' => 'ctf_options', // matches the options name
-        'class' => ''
-    ));
-
-    // carousel height
-    $admin->create_settings_field( array(
-        'name' => 'carouselheight',
-        'title' => '<label for="ctf_carouselheight">Height of Carousel</label><code class="ctf_shortcode">carouselheight
-            Eg: carouselheight="auto"</code>', // label for the input field
-        'callback'  => 'default_select', // name of the function that outputs the html
-        'page' => 'ctf_options_carousel', // matches the section name
-        'section' => 'ctf_options_carousel', // matches the section name
-        'option' => 'ctf_options', // matches the options name
-        'class' => '', // class for the wrapper and input field
-        'fields' => array(
-            0 => array( 'tallest', 'Always set to tallest post' ),
-            1 => array( 'clickexpand', 'Set to shortest post, button to expand' ),
-            2 => array( 'auto', 'Automatically set to post height (forces single column)' )
-
-        ),
-    ) );
-
-	// carousel autoplay
-	$admin->create_settings_field( array(
-		'name' => 'carouselautoplay',
-		'title' => '<label for="ctf_carouselautoplay">Enable Autoplay</label><code class="ctf_shortcode">carouselautoplay
-            Eg: carouselautoplay=true</code>', // label for the input field
-		'callback'  => 'default_checkbox', // name of the function that outputs the html
-		'page' => 'ctf_options_carousel', // matches the section name
-		'section' => 'ctf_options_carousel', // matches the section name
-		'option' => 'ctf_options', // matches the options name
-		'class' => ''
-	));
-
-	// carousel timeout
-	$admin->create_settings_field( array(
-		'name' => 'carouseltime',
-		'title' => '<label for="ctf_carouseltime">Autoplay interval Time</label><code class="ctf_shortcode">carouseltime
-            Eg: carouseltime=8000</code>', // label for the input field
-		'callback'  => 'default_text', // name of the function that outputs the html
-		'page' => 'ctf_options_carousel', // matches the section name
-		'section' => 'ctf_options_carousel', // matches the section name
-		'option' => 'ctf_options', // matches the options name
-		'class' => 'default-text', // class for the wrapper and input field
-		'whatis' => 'Time it takes for the carousel to change in milliseconds', // "what is this?" text
-		'default' => '5000',
-	) );
-
-    // carousel infinite loop
-    $admin->create_settings_field( array(
-        'name' => 'carouselloop',
-        'title' => '<label for="ctf_carouselloop">Loop Type</label><code class="ctf_shortcode">carouselloop
-            Eg: carouselloop=none</code>', // label for the input field
-        'callback'  => 'default_select', // name of the function that outputs the html
-        'page' => 'ctf_options_carousel', // matches the section name
-        'section' => 'ctf_options_carousel', // matches the section name
-        'option' => 'ctf_options', // matches the options name
-        'class' => 'default-text', // class for the wrapper and input field
-        'fields' => array(
-            1 => array( 'none', 'None' ),
-            2 => array( 'infinite', 'Infinite' ),
-            3 => array( 'rewind', 'Rewind' )
-        ),
-        'whatis' => 'This is where you can set what happens when the carousel reaches the last item', // "what is this?" text
-    ) );
-
-    add_settings_section(
-        'ctf_options_masonry', // matches the section name
-        'Masonry Columns',
-        array( $admin, 'general_section_text' ), // callback function to explain the section
-        'ctf_options_masonry' // matches the section name
-    );
-
-    // masonry default
-    $admin->create_settings_field( array(
-        'name' => 'masonry',
-        'title' => '<label for="ctf_masonry">Set Masonry Columns as Default</label><code class="ctf_shortcode">masonry
-            Eg: masonry=true</code>', // label for the input field
-        'callback'  => 'default_checkbox', // name of the function that outputs the html
-        'page' => 'ctf_options_masonry', // matches the section name
-        'section' => 'ctf_options_masonry', // matches the section name
-        'option' => 'ctf_options', // matches the options name
-        'class' => '',
-        'whatis' => "This will make every Twitter feed show as masonry style columns by default"
-    ));
-
-    // masonry desktop columns
-    $admin->create_settings_field( array(
-        'name' => 'masonrycols',
-        'title' => '<label for="ctf_masonrycols">Desktop Columns</label><code class="ctf_shortcode">masonrycols
-            Eg: masonrycols=5</code>', // label for the input field
-        'callback'  => 'default_select', // name of the function that outputs the html
-        'page' => 'ctf_options_masonry', // matches the section name
-        'section' => 'ctf_options_masonry', // matches the section name
-        'option' => 'ctf_options', // matches the options name
-        'class' => '', // class for the wrapper and input field
-        'fields' => array(
-            0 => array( '2', 2 ),
-            1 => array( '3', 3 ),
-            2 => array( '4', 4 ),
-            3 => array( '5', 5 ),
-            4 => array( '6', 6 )
-        ),
-        'whatis' => "Number of vertical columns the masonry feed will use when the screen is viewed on wide screens" // what is this? text
-    ) );
-
-    // masonry mobile columns
-    $admin->create_settings_field( array(
-        'name' => 'masonrymobilecols',
-        'title' => '<label for="ctf_masonrymobilecols">Mobile Columns</label><code class="ctf_shortcode">masonrymobilecols
-            Eg: masonrymobilecols=2</code>', // label for the input field
-        'callback'  => 'default_select', // name of the function that outputs the html
-        'page' => 'ctf_options_masonry', // matches the section name
-        'section' => 'ctf_options_masonry', // matches the section name
-        'option' => 'ctf_options', // matches the options name
-        'class' => '', // class for the wrapper and input field
-        'fields' => array(
-            0 => array( '1', 1 ),
-            1 => array( '2', 2 )
-        ),
-        'whatis' => "Number of vertical columns the masonry feed will use when the screen is viewed on small screens" // what is this? text
-    ) );
 
     add_settings_section(
         'ctf_options_autoscroll', // matches the section name
@@ -464,12 +260,6 @@ function ctf_filter_operator( $args ) {
 add_action( 'ctf_admin_add_settings_sections_to_customize', 'ctf_add_masonry_autoload_section_to_customize' );
 function ctf_add_masonry_autoload_section_to_customize() {
     ?>
-    <a id="carousel"></a>
-    <?php do_settings_sections( 'ctf_options_carousel' ); ?>
-    <hr>
-    <a id="masonry"></a>
-    <?php do_settings_sections( 'ctf_options_masonry' ); ?>
-    <hr>
     <a id="autoscroll"></a>
     <?php do_settings_sections( 'ctf_options_autoscroll' ); ?>
     <p class="submit"><input class="button-primary" type="submit" name="save" value="<?php esc_attr_e( 'Save Changes' ); ?>" /></p>
@@ -571,15 +361,14 @@ function ctf_customize_checkbox_settings( $checkbox_settings ) {
 add_filter( 'ctf_admin_customize_quick_links', 'ctf_return_customize_quick_links' );
 function ctf_return_customize_quick_links() {
     return array(
-        0 => array( 'general', 'General' ),
-        1 => array( 'showhide', 'Show/Hide' ),
-        2 => array( 'carousel', 'Carousel' ),
-        3 => array( 'masonry', 'Masonry' ),
-        4 => array( 'autoscroll', 'Auto Scroll' ),
-        4 => array( 'media', 'Media Layout' ),
-        5 => array( 'moderation', 'Moderation' ),
-        6 => array( 'misc', 'Misc' ),
-        7 => array( 'advanced', 'Advanced' )
+        array( 'general', 'General' ),
+	    array( 'layout', 'Layout' ),
+	    array( 'showhide', 'Show/Hide' ),
+        array( 'autoscroll', 'Auto Scroll' ),
+        array( 'media', 'Media Layout' ),
+        array( 'moderation', 'Moderation' ),
+        array( 'misc', 'Misc' ),
+        array( 'advanced', 'Advanced' )
     );
 }
 

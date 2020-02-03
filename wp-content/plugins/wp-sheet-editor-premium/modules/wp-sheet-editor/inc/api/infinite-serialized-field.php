@@ -15,6 +15,8 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 				'prefix' => 'seis_',
 			);
 			$this->settings = apply_filters('vg_sheet_editor/infinite_serialized_column/settings', wp_parse_args($settings, $defaults));
+
+			$this->settings['prefix'] = $this->settings['sample_field_key'] . '_';
 			$this->column_keys = array_keys($this->get_column_keys());
 
 			// Priority 20 to allow to instantiate from another editor/before_init function
@@ -66,10 +68,11 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 			foreach ($post_types as $post_type) {
 				foreach ($fields as $field_key) {
 					$column_key = str_replace('.', '=', $field_key);
+					$title = vgse_custom_columns_init()->_convert_key_to_label(str_replace(array($this->settings['prefix'], '='), array($this->settings['prefix'] . ': ', ' : '), $column_key));
 					$editor->args['columns']->register_item($column_key, $post_type, apply_filters('vg_sheet_editor/infinite_serialized_column/column_settings', array(
 						'data_type' => 'meta_data',
 						'column_width' => 300,
-						'title' => vgse_custom_columns_init()->_convert_key_to_label($field_key),
+						'title' => $title,
 						'type' => '',
 						'get_value_callback' => array($this, 'get_value'),
 						'save_value_callback' => array($this, 'save_value'),

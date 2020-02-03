@@ -3,8 +3,8 @@ Contributors: theluckywp
 Donate link: https://theluckywp.com/product/table-of-contents/
 Tags: table of contents, toc, navigation, links, seo
 Requires at least: 4.7
-Tested up to: 5.3
-Stable tag: 1.9.11
+Tested up to: 5.3.2
+Stable tag: 2.0.7
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,14 @@ Supported positions:
 * bottom of post content.
 
 You can also select post types to which the table of contents will be automatically added.
+
+#### Manual Insert
+
+For manual insertion a table of content in a posts, use one of the ways:
+
+* button "Table of Contents" on toolbar in classic editor;
+* gutenberg block "Table of Contents";
+* shortcode `[lwptoc]`.
 
 #### Pretty hash in URL
 
@@ -150,6 +158,45 @@ For non-English websites it is recommended to enable the `Intl` PHP extension.
 11. Miscellaneous Settings
 
 == Changelog ==
+
+= 2.0.7 — 2020-01-31 =
++ Added support child themes of "Twenty Twenty".
+* Fixed: incorrect smooth scroll behavior when on page use CSS `html {scroll-behavior: smooth;}`.
+* Fixed: in some cases auto insert after first block work incorrectly.
+
+= 2.0.6 — 2020-01-29 =
+* When enabled smooth scroll hash changed after complete animation.
+* Fixed: incorrectly processing conditional comments in content.
+* Fixed: JS don't work on asynchronous loading.
+
+= 2.0.5 — 2020-01-26 =
+* Fixed: incorrectly processing HTML entities in links.
+* Fixed: incorrectly processing scripts, styles and CDATA in content.
+
+= 2.0.4 — 2020-01-25 =
++ In debugging information for "Site Health" tool added "intl Version" and "ICU Version".
+* From hash is removed colon symbol when used hash format "As heading without transliterate".
+* Fixed: incorrectly processing HTML entities.
+
+= 2.0.3 — 2020-01-19 =
++ Added support "Twenty Twenty" theme.
+* Minor code refactoring.
+
+= 2.0.2 — 2020-01-10 =
+* Fixed: in some cases plugin incorrectly work with UTF-8.
+* Fixed: on automatically insertion table of contents with option “Before/after first heading” to posts without headings occurred error.
+* Fixed: if disabled show/hide toggle occured JS error.
+
+= 2.0.1 — 2020-01-08 =
+* Fixed: in some cases headings processing incorrectly.
+
+= 2.0 — 2020-01-07 =
++ Added debugging information for "Site Health" tool.
+* CSS and JS are included only when table of content is displayed.
+* Removed dependency to jQuery on frontend.
+* Redesigned automatic insertion of table of contents using the PHP extension DOM (Document Object Model).
+* Redesigned processing headings using the PHP extension DOM (Document Object Model).
+* Minor enhancements in CSS.
 
 = 1.9.11 — 2019-11-18 =
 + Added hook filters `lwptoc_force_wp_transliterate` and `lwptoc_transliterator`.

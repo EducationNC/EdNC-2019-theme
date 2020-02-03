@@ -20,7 +20,7 @@ if (!class_exists('WPSE_CSV_API')) {
 		}
 
 		function init() {
-			$this->uploads_dir = WP_CONTENT_DIR . '/wp-sheet-editor-universal-sheet';
+			$this->uploads_dir = apply_filters('vg_sheet_editor/csv/base_folder', WP_CONTENT_DIR . '/wp-sheet-editor-universal-sheet');
 			$this->imports_dir = $this->uploads_dir . '/imports/';
 			$this->exports_dir = $this->uploads_dir . '/exports/';
 
@@ -501,14 +501,14 @@ if (!class_exists('WPSE_CSV_API')) {
 			$total_updated = count($rows);
 			$created = count(wp_list_filter($rows, array('ID' => null)));
 
-			$save_result = VGSE()->helpers->save_rows(array(
+			$save_result = VGSE()->helpers->save_rows(apply_filters('vg_sheet_editor/import/save_rows_args', array(
 				'nonce' => $nonce,
 				'data' => $rows,
 				'post_type' => $post_type,
 				'allow_to_create_new' => true,
 				'wpse_source' => 'import',
 				'wpse_import_settings' => $settings
-			));
+			)));
 			if (is_wp_error($save_result)) {
 				return $save_result;
 			}
@@ -618,9 +618,48 @@ if (!class_exists('WPSE_CSV_API')) {
 			));
 		}
 
+		function get_saved_exports($post_type) {
+
+			$saved_exports = get_option('vgse_saved_exports');
+			if (empty($saved_exports)) {
+				$saved_exports = array();
+			}
+
+			if (!isset($saved_exports[$post_type])) {
+				$saved_exports[$post_type] = array();
+			}
+			return $saved_exports[$post_type];
+		}
+
+		function save_export($data) {
+			if (empty($data['name'])) {
+				return;
+			}
+			$post_type = $data['post_type'];
+			$saved_exports = get_option('vgse_saved_exports');
+			if (empty($saved_exports)) {
+				$saved_exports = array();
+			}
+
+			if (!isset($saved_exports[$post_type])) {
+				$saved_exports[$post_type] = array();
+			}
+
+			$same_name = wp_list_filter($saved_exports[$post_type], array('name' => $data['name']));
+			foreach ($same_name as $index => $same_name_export) {
+				unset($saved_exports[$post_type][$index]);
+			}
+			$saved_exports[$post_type][] = $data;
+			update_option('vgse_saved_exports', $saved_exports);
+		}
+
 		function export_csv($out, $wp_query_args, $spreadsheet_columns, $clean_data) {
 			if (empty($clean_data['export_key'])) {
 				return $out;
+			}
+
+			if (!empty($clean_data['save_for_later']) && current_user_can('manage_options')) {
+				$this->save_export($clean_data['save_for_later']);
 			}
 
 			$base_dir = $this->exports_dir;

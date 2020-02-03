@@ -244,7 +244,13 @@ if ( !class_exists( 'WPSE_Taxonomy_Terms_Sheet' ) ) {
             if ( !in_array( $provider, $this->post_type ) ) {
                 return $blacklisted_fields;
             }
-            $blacklisted_fields[] = '^product_count_';
+            //			We have allowed the product_count_xxx" term meta because WooCommerce uses this as usage count
+            //			so we need this for the searches to delete unused tags and categories,
+            //			to prevent confusions we are blacklisting the core count column
+            //			$blacklisted_fields[] = '^product_count_';
+            if ( in_array( $provider, array( 'product_cat', 'product_tag' ), true ) ) {
+                $blacklisted_fields[] = '^count$';
+            }
             return $blacklisted_fields;
         }
         

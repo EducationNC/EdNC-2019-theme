@@ -73,6 +73,11 @@
 
         <tr class="ctf_table_header"><td colspan=3><?php _e("Customize Options", 'custom-twitter-feeds' ); ?></td></tr>
         <tr>
+            <td>layout</td>
+            <td><?php _e("How posts are arranged visually in the feed.", 'custom-twitter-feeds' ); ?> 'list', 'carousel', or 'masonry'</td>
+            <td><code>[instagram-feed layout=carousel]</code></td>
+        </tr>
+        <tr>
             <td>class</td>
             <td><?php _e( "A custom CSS class added to the feed", 'custom-twitter-feeds' ); ?></td>
             <td><code>[custom-twitter-feeds class="my-class"]</code></td>
@@ -101,7 +106,7 @@
         <tr>
             <td>include</td>
             <td><?php _e( "Parts of the Tweet to include in the feed. <b>Available options:</b><br />retweeter, avatar, author, text, date, actions, twitterlink, linkbox, repliedto, media, twittercards", 'custom-twitter-feeds' ); ?></td>
-            <td><code>[custom-twitter-feeds include="author,date,text,avatar"]</code></td>
+            <td><code>[custom-twitter-feeds include="author,date,text,avatar,logo"]</code></td>
         </tr>
         <tr>
             <td>exclude</td>
@@ -242,6 +247,16 @@
             <td><code>[custom-twitter-feeds authortextweight="bold"]</code></td>
         </tr>
         <tr>
+            <td>logosize</td>
+            <td><?php _e( "Size of Twitter logo in pixels", 'custom-twitter-feeds' ); ?></td>
+            <td><code>[custom-twitter-feeds logosize="16"]</code></td>
+        </tr>
+        <tr>
+            <td>logocolor</td>
+            <td><?php _e( "Color of Twitter logo. Any color hex code.", 'custom-twitter-feeds' ); ?></td>
+            <td><code>[custom-twitter-feeds logocolor="0ff"]</code></td>
+        </tr>
+        <tr>
             <td>datetextsize</td>
             <td><?php _e( "Size of date info font in pixels", 'custom-twitter-feeds' ); ?></td>
             <td><code>[custom-twitter-feeds datetextsize="16"]</code></td>
@@ -312,11 +327,6 @@
 
         <tr class="ctf_table_header"><td colspan=3><?php _e("Carousel", 'custom-twitter-feeds' ); ?></td></tr>
         <tr>
-            <td>carousel</td>
-            <td><?php _e( "Set feed to display as a carousel", 'custom-twitter-feeds' ); ?></td>
-            <td><code>[custom-twitter-feeds carousel=true]</code></td>
-        </tr>
-        <tr>
             <td>carouselcols</td>
             <td><?php _e( "Number of columns for the carousel feed for desktop", 'custom-twitter-feeds' ); ?></td>
             <td><code>[custom-twitter-feeds carouselcols=3]</code></td>
@@ -358,11 +368,6 @@
         </tr>
 
         <tr class="ctf_table_header"><td colspan=3><?php _e("Masonry Columns", 'custom-twitter-feeds' ); ?></td></tr>
-        <tr>
-            <td>masonry</td>
-            <td><?php _e( "Set feed to display in \"masonry\" columns layout", 'custom-twitter-feeds' ); ?></td>
-            <td><code>[custom-twitter-feeds masonry=true]</code></td>
-        </tr>
         <tr>
             <td>masonrycols</td>
             <td><?php _e( "Number of columns for the masonry feed for desktop", 'custom-twitter-feeds' ); ?></td>

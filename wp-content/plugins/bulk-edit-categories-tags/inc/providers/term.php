@@ -16,6 +16,27 @@ class VGSE_Provider_Term {
 		return $this->get_provider_edit_capability($post_type_key);
 	}
 
+	function delete_meta_key($old_key, $post_type) {
+		global $wpdb;
+		$meta_table_name = $this->get_meta_table_name($post_type);
+		$modified = $wpdb->query("DELETE pm FROM $meta_table_name pm 			
+INNER JOIN $wpdb->term_taxonomy AS tt
+	ON pm.term_id = tt.term_id 	
+WHERE tt.taxonomy = '" . esc_sql($post_type) . "' AND pm.meta_key = '" . esc_sql($old_key) . "' ");
+		return $modified;
+	}
+
+	function rename_meta_key($old_key, $new_key, $post_type) {
+		global $wpdb;
+		$meta_table_name = $this->get_meta_table_name($post_type);
+		$modified = $wpdb->query("UPDATE $meta_table_name pm 			
+INNER JOIN $wpdb->term_taxonomy AS tt
+	ON pm.term_id = tt.term_id 	
+SET pm.meta_key = '" . esc_sql($new_key) . "' 
+WHERE tt.taxonomy = '" . esc_sql($post_type) . "' AND pm.meta_key = '" . esc_sql($old_key) . "' ");
+		return $modified;
+	}
+
 	function get_provider_edit_capability($post_type_key) {
 		if (!taxonomy_exists($post_type_key)) {
 			return false;
@@ -140,7 +161,9 @@ class VGSE_Provider_Term {
 			$query_args['number'] = $query_args['offset'] = 0;
 		}
 
-		$terms = get_terms($query_args);
+		// We use WP_Term_Query instead of get_terms() because we need the full object of the Term_Query
+		$term_query = new WP_Term_Query();
+		$terms = $term_query->query($query_args);
 
 		if (is_taxonomy_hierarchical($query_args['taxonomy'])) {
 			$total_terms = count($terms);
@@ -175,6 +198,7 @@ class VGSE_Provider_Term {
 		$out = (object) array();
 		$out->found_posts = $total_terms;
 		$out->posts = array();
+		$out->request = $term_query->request;
 		if (!empty($terms)) {
 			foreach ($terms as $term) {
 				if (is_object($term)) {
@@ -319,14 +343,14 @@ class VGSE_Provider_Term {
 		}
 
 		if (!empty($values['parent']) && !is_numeric($values['parent'])) {
-			$parent_term = get_term_by('name', $values['parent'], $taxonomy);
-
-			// If parent term doesn't exist, auto create it
-			if (is_wp_error($parent_term) || !$parent_term) {
-				wp_insert_term($values['parent'], $taxonomy);
-				$parent_term = get_term_by('name', $values['parent'], $taxonomy);
+			// We use prepare_post_terms_for_saving instead of get_term_by/wp_insert_term to allow to
+			// save hierarchical parents like cat > cat2 and it saves the child as parent
+			$parent_terms = VGSE()->data_helpers->prepare_post_terms_for_saving($values['parent'], $taxonomy);
+			if (!empty($parent_terms)) {
+				$values['parent'] = $parent_terms[0];
+			} else {
+				unset($values['parent']);
 			}
-			$values['parent'] = $parent_term->term_id;
 		}
 
 		if ($values['ID'] === PHP_INT_MAX) {
@@ -357,6 +381,8 @@ class VGSE_Provider_Term {
 		if (!is_wp_error($result)) {
 			$result = $term_id;
 		}
+
+		wp_cache_set('last_changed', microtime(), 'terms');
 
 		return $result;
 	}

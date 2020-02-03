@@ -2,7 +2,7 @@
 Contributors: wpsheeteditor,vegacorp,josevega
 Tags: woocommerce, easy digital downloads, events, bulk edit, spreadsheet
 Tested up to: 5.3
-Stable tag: 2.15.4
+Stable tag: 2.16.0
 Requires at least: 3.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -230,13 +230,50 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 2. settings page
 
 == Changelog ==
+= V 2.16.0 - 2020-01-13 =
+* NEW - CORE - Add option to "settings" menu to reset all settings
+* NEW - FORMULAS - Add variable $current_value_capitalize_each_word$ and option "Capitalize each word" to the "type of edit" list
+* NEW - FORMULAS - Added variable tags: $uuid$, $uniqid$, $current_value_lowercase$
+* NEW - FILTERS - Add "Remove all" option to remove all active filters
+* NEW - UNIVERSAL SHEET - EXPORT - Allow to save the export with a name and show as dropdown in the toolbar to execute with one click in the future
+* NEW - CUSTOM COLUMNS - Add context menu option to rename meta key of meta columns
+* NEW - CUSTOM COLUMNS - Add option to delete custom field from database (full field, including key and values)
+* NEW - CORE - Allow to delete rows using the context menu and delete the selected items
+* NEW - CORE - Add option to scan DB to the settings dropdown to make it easier to find
+* CHANGE - WC Products - When we convert a product into a variation and the product has a status not supported by variations, automatically change it to "enabled variation"
+* CHANGE - CORE - Indicate in import modal that changes are saved directly
+* CHANGE - SEARCH - When we click to open the search tool and there are modified cells, notify that they should save first
+* CHANGE - FORMULAS - Modify the progress text to indicate that the numbers reflect updates per batch
+* CHANGE - CORE - Allow to select in the advanced settings which fields use the new serialization handler
+* CHANGE - WC Products - Added support for Subscription products
+* CHANGE - CORE - Performance optimizations: The "post parent" column should not load all the titles, it should be a dropdown with ajax search
+* CHANGE - CORE - Performance optimizations: Limit the usage of meta keys to 2500 columns, no one needs to search/edit more than 2500 keys and sites with +10000 meta keys are super slow
+* CHANGE - ADVANCED SEARCH - Performance optimizations: Limit the meta keys to 1000 options in the search dropdowns.
+* CHANGE - WC Products - Performance optimizations: Limit the variation meta keys to 1000 columns
+* CHANGE - CORE - Performance optimizations: When we rescan DB to find new columns, only scan once per page load
+* CHANGE - CORE - Return the full SQL query as meta data of the ajax call when loading rows to help during tech support/debugging, do this only for administrator
+* CHANGE - WC Products - Allow to load variation rows for products with a custom product type (i.e. registration products)
+* CHANGE - FREE YOAST - Display a wp-admin notice indicating why it was deactivated automatically when using a premium plugin
+* CHANGE - UNIVERSAL SHEET - IMPORT - Don't let the user continue in step 3 if they selected a column that is not being imported
+* CHANGE - FORMULAS - MATH - Automatically round number to the 2 nearest decimals
+* FIX - FORMULAS - When the post has orphan meta, the success message might say it updated more posts than the total causing confusion ("559 of 559 items have been processed. 606 items have been updated")
+* FIX - CORE - The post modified date is not being saved when edited in the cells
+* FIX - WC Products - Free version - When we edit prices, sometimes it doesn't show it on the frontend
+* FIX - WC Products - Free version - Sync price, sku, and stock changes with the lookup table introduced with WC +3.6
+* FIX - ADVANCED FILTERS - The "exclude keyword" option is not returning the correct posts
+* FIX - WC Products - When searching by "search on variations" and leaving all the other fields empty, it doesn't return results
+* FIX - WC Products - Import - Some fields appear duplicated in the dropdown for mapping the columns so they are imported through Sheet Editor CORE instead of using the WooCommerce API causing duplicate sku issues
+* FIX - CORE - When we freeze a column, it freezes the wrong column
+* FIX - WC Coupons - Compatibility issue with the "Ordered Variable Product Report" plugin
+* FIX - CORE - Sometimes cells are misaligned
+
+
 = V 2.15.4 - 2019-11-24 =
 * FIX - WC Products - If variations of the same product have the same menu order, it only saves one of them
 * FIX - CORE - When using a free plugin and a premium plugin, don't initialize unsupported modules when using the free spreadsheet to prevent major issues
 * FIX - CORE - the gutenberg editor can't be opened when a post title contains double quotes
 
-
-= V 2.15.4 - 2019-11-18 =
+= V 2.15.3 - 2019-11-18 =
 * CHANGE - CORE - blacklist columns with keys containing -wpfoof-
 * CHANGE - ACF - Register text columns from the ACF module instead of relying on the "custom columns" module
 * CHANGE - CORE - When changing the settings to load > 300 rows per page, show a notification indicating that it may overload the server
@@ -273,9 +310,12 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 * FIX - UNIVERSAL SHEET - Sometimes the export file has duplicate rows
 * FIX - CORE - When many posts have exact same date, sometimes the database returns duplicate posts during pagination because they are sorted by date
 * FIX - CORE - When saving taxonomy terms that contain + and there is a term with same name except +, the term with + is saved without +
+* FIX - WC Products - "Edit Attributes" column - sometimes it doesn't save new custom attributes
+* FIX - CORE - When we show 2 consecutive notifications of different type (success and info), they appear one on top of another
+* FIX - WC Products - Export - The "attribute : is taxonomy" column shows the "attribute : visible" value by mistake, which breaks the attribute import
 
 
-= V 2.15.1.2 - 2019-10-18 =
+= V 2.15.1 - 2019-10-18 =
 * CHANGE - CORE - Allow to define default settings for product attributes (is visible, used for variations)
 * CHANGE - CORE - View Post column should use the real link for published posts
 * CHANGE - CORE - Automatic column detection should take the columns limit into consideration (i.e. to avoid scanning thousands of fields if only 100 are allowed)
@@ -287,21 +327,6 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 * FIX - FORMULAS - it doesn't work when editing image cells
 * FIX - WC Products - Downloadable files - When editing as plain text in the cell, it saves the files with the wrong format
 * FIX - UNIVERSAL SHEET - IMPORT - JS error when a column name contains only numbers
-
-
-= V 2.15.4 - 2019-10-18 =
-* CHANGE - CORE - Allow to define default settings for product attributes (is visible, used for variations)
-* CHANGE - CORE - View Post column should use the real link for published posts
-* CHANGE - CORE - Automatic column detection should take the columns limit into consideration (i.e. to avoid scanning thousands of fields if only 100 are allowed)
-* CHANGE - WC Products - IMPORT - Allow to skip broken images and don't stop the import
-* FIX - CORE - Factory - On rare occasions, the taxonomies sheet shows columns as a post type
-* FIX - CORE - Factory - Some columns were missing because the sheet initialized twice
-* FIX - FORMULAS - Allow to replace empty value with empty value
-* FIX - WC PRODUCTS - Clear the cache when the column _thumbnail_id is edited
-* FIX - FORMULAS - it doesn't work when editing image cells
-* FIX - WC Products - Downloadable files - When editing as plain text in the cell, it saves the files with the wrong format
-* FIX - UNIVERSAL SHEET - IMPORT - JS error when a column name contains only numbers
-
 
 = V 2.15.0 - 2019-10-01 =
 * NEW - FORMULAS - Add placeholder: $random_date$

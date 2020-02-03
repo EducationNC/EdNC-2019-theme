@@ -131,13 +131,17 @@ if (!class_exists('WP_Sheet_Editor_Filters')) {
 			return $clauses;
 		}
 
-		function add_search_by_keyword_clause($clauses, $raw_keywords, $operator) {
+		function add_search_by_keyword_clause($clauses, $raw_keywords, $operator, $internal_join = 'OR') {
 			global $wpdb;
+
+			if (!in_array($internal_join, array('AND', 'OR'), true)) {
+				$internal_join = 'OR';
+			}
 
 			$checks = array();
 			$keywords = array_map('trim', explode(';', $raw_keywords));
 			foreach ($keywords as $single_keyword) {
-				$checks[] = " $wpdb->posts.post_title $operator '%" . esc_sql($single_keyword) . "%' OR $wpdb->posts.post_content $operator '%" . esc_sql($single_keyword) . "%' OR $wpdb->posts.post_excerpt $operator '%" . esc_sql($single_keyword) . "%' ";
+				$checks[] = " $wpdb->posts.post_title $operator '%" . esc_sql($single_keyword) . "%' $internal_join $wpdb->posts.post_content $operator '%" . esc_sql($single_keyword) . "%' $internal_join $wpdb->posts.post_excerpt $operator '%" . esc_sql($single_keyword) . "%' ";
 			}
 			$clauses['where'] .= " AND ( " . implode(' OR ', $checks) . " ) ";
 			return $clauses;
@@ -220,6 +224,16 @@ if (!class_exists('WP_Sheet_Editor_Filters')) {
 				}
 				if (is_array($filter_value)) {
 					$filters[$filter_key] = array_filter($filter_value);
+				}
+			}
+			if (!empty($filters['meta_query']) && is_array($filters['meta_query'])) {
+				foreach ($filters['meta_query'] as $index => $meta_query) {
+					if (is_array($meta_query['key'])) {
+						$meta_query['key'] = array_filter($meta_query['key']);
+					}
+					if (empty($meta_query['key']) || empty($meta_query['compare']) || empty($meta_query['source'])) {
+						unset($filters['meta_query'][$index]);
+					}
 				}
 			}
 			$filters = array_filter($filters);

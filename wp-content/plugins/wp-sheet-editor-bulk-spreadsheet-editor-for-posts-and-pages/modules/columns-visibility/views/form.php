@@ -95,7 +95,7 @@
 								$options[$post_type]['disabled'] = array();
 							}
 							?>
-							<li><?php _e('- We can scan the database, find new fields, and create columns automatically', VGSE()->textname); ?> <a class="tipso" href="<?php
+							<li><?php _e('- We can scan the database, find new fields, and create columns automatically', VGSE()->textname); ?> <a class="tipso wpse-scan-db-link" href="<?php
 								$rescan_url = ( $current_url ) ? add_query_arg(array('wpse_rescan_db_fields' => 1), $current_url) : add_query_arg(array('wpse_rescan_db_fields' => 1));
 								echo esc_url($rescan_url);
 								?>" data-tipso="<?php esc_attr_e('You can do this multiple times', VGSE()->textname); ?>"><?php _e('Scan Now', VGSE()->textname); ?></a></li>

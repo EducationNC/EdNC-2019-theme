@@ -68,8 +68,10 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 				'allow_rename' => 'yes',
 			);
 			add_action('admin_menu', array($this, 'register_menu_page'), 99);
-			add_action('admin_enqueue_scripts', array($this, 'register_frontend_assets'));
+			add_action('vg_sheet_editor/after_enqueue_assets', array($this, 'register_frontend_assets'));
 			add_action('wp_ajax_vgse_save_columns', array($this, 'save_columns'));
+			add_action('wp_ajax_vgse_rename_meta_key', array($this, 'rename_meta_key'));
+			add_action('wp_ajax_vgse_delete_meta_key', array($this, 'delete_meta_key'));
 
 			// We use priority 40 to overwrite any column through the UI
 			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_columns'), 40);
@@ -86,7 +88,7 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 		 * @return string
 		 */
 		function _convert_key_to_label($input) {
-			return str_replace(array('-', '_'), ' ', preg_replace("/[^a-zA-Z0-9\.\-\_\s\(\)]/", "", $input));
+			return ucwords(trim(str_replace(array('-', '_'), ' ', preg_replace("/[^a-zA-Z0-9\:\.\-\_\s\(\)]/", "", $input))));
 		}
 
 		/**
@@ -109,19 +111,17 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 			if (!empty($_GET['wpse_rescan_db_fields'])) {
 				$columns_detected = false;
 				// Increase columns limit every time we rescan
-				$options = get_option(VGSE()->options_key);
-				$options['be_columns_limit'] = VGSE()->helpers->get_columns_limit() + 300;
-				update_option(VGSE()->options_key, $options);
+				if (empty($_GET['wpse_dont_increase_limit'])) {
+					$options = get_option(VGSE()->options_key);
+					$options['be_columns_limit'] = VGSE()->helpers->get_columns_limit() + 300;
+					update_option(VGSE()->options_key, $options);
+				}
 			}
 
 			if (empty($columns_detected)) {
-				$meta_keys = apply_filters('vg_sheet_editor/custom_columns/all_meta_keys', VGSE()->helpers->get_all_meta_keys($post_type), $post_type, $editor);
-
-				if (count($meta_keys) > VGSE()->helpers->get_columns_limit()) {
-					// We will process meta keys limited to the columns limit+200
-					// we can't limit to the columns limit because sometimes columns are blacklisted and we miss good columns
-					$meta_keys = array_slice($meta_keys, 0, VGSE()->helpers->get_columns_limit() + 200);
-				}
+				// We will process meta keys limited to the columns limit+200
+				// we can't limit to the columns limit because sometimes columns are blacklisted and we miss good columns
+				$meta_keys = apply_filters('vg_sheet_editor/custom_columns/all_meta_keys', VGSE()->helpers->get_all_meta_keys($post_type, VGSE()->helpers->get_columns_limit() + 200), $post_type, $editor);
 
 				$this->found_columns[$post_type] = array();
 
@@ -221,6 +221,7 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 			);
 			$positive_values = array();
 			$negative_values = array();
+			$forced_infinite_serialized_handler = isset(VGSE()->options['keys_for_infinite_serialized_handler']) ? array_map('trim', explode(',', VGSE()->options['keys_for_infinite_serialized_handler'])) : array();
 			foreach ($values as $value) {
 
 				$value = maybe_unserialize($value);
@@ -228,7 +229,7 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 				if (is_array($value)) {
 					$array_level = $this->_array_depth($value);
 					if (!empty($value)) {
-						if ($array_level < 3 && $this->_array_depth_uniform($value)) {
+						if ($array_level < 3 && $this->_array_depth_uniform($value) && !in_array($meta_key, $forced_infinite_serialized_handler, true)) {
 							$out['type'] = 'serialized';
 							$out['is_single_level'] = $array_level === 1;
 							if ($array_level === 1) {
@@ -479,6 +480,55 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 			return true;
 		}
 
+		function delete_meta_key() {
+			$data = VGSE()->helpers->clean_data($_REQUEST);
+
+			if (!wp_verify_nonce($data['nonce'], 'bep-nonce') || !current_user_can('manage_options')) {
+				wp_send_json_error(array('message' => __('You are not allowed to do this action. Please reload the page or log in again.', VGSE()->textname)));
+			}
+			if (empty($data['post_type']) || empty($data['column_key'])) {
+				wp_send_json_error(__('Missing post type or column_key'));
+			}
+
+			$post_type = sanitize_text_field($data['post_type']);
+			$column_key = sanitize_text_field($data['column_key']);
+			$result = VGSE()->helpers->get_current_provider()->delete_meta_key($column_key, $post_type);
+
+			if (is_numeric($result)) {
+				wp_send_json_success(array(
+					'message' => __('The meta field was deleted successfully', VGSE()->textname)
+				));
+			} else {
+				wp_send_json_error(array('message' => __('The meta field could not be deleted.', VGSE()->textname)));
+			}
+		}
+
+		function rename_meta_key() {
+			$data = VGSE()->helpers->clean_data($_REQUEST);
+
+			if (!wp_verify_nonce($data['nonce'], 'bep-nonce') || !current_user_can('manage_options')) {
+				wp_send_json_error(array('message' => __('You are not allowed to do this action. Please reload the page or log in again.', VGSE()->textname)));
+			}
+			if (empty($data['post_type']) || empty($data['old_column_key']) || empty($data['new_column_key']) || $data['old_column_key'] === $data['new_column_key']) {
+				wp_send_json_error(__('Missing post type, old_column_key, or new_column_key; or the old and new key are the same.'));
+			}
+
+			$post_type = sanitize_text_field($data['post_type']);
+			$old_column_key = sanitize_text_field($data['old_column_key']);
+			$new_column_key = sanitize_text_field($data['new_column_key']);
+			$result = VGSE()->helpers->get_current_provider()->rename_meta_key($old_column_key, $new_column_key, $post_type);
+
+			if (is_numeric($result)) {
+				wp_send_json_success(array(
+					'label' => $this->_convert_key_to_label($new_column_key),
+					'key' => $new_column_key,
+					'message' => __('The meta key was renamed successfully', VGSE()->textname)
+				));
+			} else {
+				wp_send_json_error(array('message' => __('The meta key couldnt be renamed.', VGSE()->textname)));
+			}
+		}
+
 		function save_columns() {
 			$data = VGSE()->helpers->clean_data($_REQUEST);
 
@@ -501,11 +551,6 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 		}
 
 		function register_frontend_assets() {
-
-			$pages_to_load_assets = VGSE()->frontend_assets_allowed_on_pages();
-			if (empty($_GET['page']) || !in_array($_GET['page'], $pages_to_load_assets)) {
-				return;
-			}
 			wp_enqueue_script($this->key . '-repeater', plugins_url('/', __FILE__) . 'assets/vendor/jquery.repeater/jquery.repeater.js', array('jquery'), VGSE()->version, true);
 			wp_enqueue_script($this->key . '-init', plugins_url('/', __FILE__) . 'assets/js/init.js', array('jquery'), VGSE()->version, true);
 

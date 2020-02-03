@@ -41,10 +41,10 @@ abstract class Validator extends BaseObject
     public static function builtInValidators()
     {
         return [
-            'boolean' => BooleanValidator::className(),
-            'filter' => FilterValidator::className(),
-            'in' => RangeValidator::className(),
-            'required' => RequiredValidator::className(),
+            'boolean' => BooleanValidator::class,
+            'filter' => FilterValidator::class,
+            'in' => RangeValidator::class,
+            'required' => RequiredValidator::class,
         ];
     }
 
@@ -60,7 +60,7 @@ abstract class Validator extends BaseObject
     {
         $params['attributes'] = $attributes;
         if (is_callable($name) || method_exists($model, $name)) {
-            $params['class'] = InlineValidator::className();
+            $params['class'] = InlineValidator::class;
             $params['method'] = $name;
         } else {
             if (isset(static::builtInValidators()[$name])) {

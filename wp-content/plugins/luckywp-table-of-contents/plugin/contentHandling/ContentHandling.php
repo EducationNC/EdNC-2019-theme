@@ -2,8 +2,9 @@
 
 namespace luckywp\tableOfContents\plugin\contentHandling;
 
+use DOMXPath;
 use luckywp\tableOfContents\core\Core;
-use luckywp\tableOfContents\core\helpers\Html;
+use luckywp\tableOfContents\plugin\dom\Dom;
 
 class ContentHandling
 {
@@ -21,30 +22,53 @@ class ContentHandling
 
         static::$headingIdCounter = 0;
         static::$headingIds = [];
-        $result->content = preg_replace_callback('#<h([1-6])(.*?)>(.*?)</h\d>#imsu', function ($m) use ($dto, $result, $skipRegex) {
-            $label = trim(strip_tags($m[3]));
-            if ($label == '') {
-                return $m[0];
-            }
 
-            $headingId = static::makeHeadingId($label, $dto);
-            $headingIndex = (int)$m[1];
+        $dom = Dom::make($dto->content);
+        if ($dom === false) {
+            return $result;
+        }
+
+        $xpath = new DOMXPath($dom);
+        $headingNodes = $xpath->query('//h1|//h2|//h3|//h4|//h5|//h6');
+
+        // Собираем все заголовки
+        foreach ($headingNodes as $node) {
+            /** @var $node \DOMElement */
+
+            $label = Dom::getNodeValue($node);
+            $label = trim($label);
+            if ($label == '') {
+                continue;
+            }
+            $label = html_entity_decode($label, ENT_HTML5, 'UTF-8');
+
+            $id = static::makeHeadingId($label, $dto);
+
+            $index = (int)mb_substr($node->nodeName, 1, 1);
 
             $result->headings[] = [
-                'id' => $headingId,
-                'index' => $headingIndex,
+                'id' => $id,
+                'index' => $index,
                 'label' => $label,
             ];
 
             if (!$dto->modify ||
-                in_array('h' . $headingIndex, $dto->skipLevels) ||
+                in_array('h' . $index, $dto->skipLevels) ||
                 ($skipRegex && preg_match($skipRegex, $label))
             ) {
-                return $m[0];
+                continue;
             }
 
-            return '<h' . $headingIndex . $m[2] . '>' . Html::tag('span', $m[3], ['id' => $headingId]) . '</h' . $headingIndex . '>';
-        }, $dto->content);
+            $span = $dom->createElement('span');
+            $span->setAttribute('id', $id);
+            while ($node->childNodes->length) {
+                $span->appendChild($node->firstChild);
+            }
+            $node->nodeValue = '';
+            $node->appendChild($span);
+        }
+
+        $result->content = Dom::getBody($dom);
 
         return $result;
     }
@@ -77,7 +101,16 @@ class ContentHandling
                 $id = $label;
                 if ($dto->hashFormat == 'asheadingwotransliterate') {
                     $id = htmlentities2($id);
-                    $id = str_replace(['&amp;', '&nbsp;', '#', "\n\r", "\r\n", "\r", "\n"], '_', $id);
+                    $id = str_replace([
+                        '&amp;',
+                        '&nbsp;',
+                        '#',
+                        "\n\r",
+                        "\r\n",
+                        "\r",
+                        "\n",
+                        ':',
+                    ], '_', $id);
                     $id = html_entity_decode($id, ENT_QUOTES, get_option('blog_charset'));
                 } else {
                     $id = html_entity_decode($id, ENT_QUOTES, get_option('blog_charset'));

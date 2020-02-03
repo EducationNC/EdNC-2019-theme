@@ -78,7 +78,7 @@ if (!class_exists('WP_Sheet_Editor_Data')) {
 			} elseif ($key === 'post_date') {
 				$out = $this->change_date_format_for_saving($item);
 			} elseif ($key === 'post_modified') {
-				$out = current_time('mysql');
+				$out = (!empty($item) ) ? $item : current_time('mysql');
 			} elseif ($key === 'post_author') {
 				$out = $this->get_author_id_from_username($item);
 			} elseif ($key === 'post_parent') {

@@ -299,6 +299,7 @@ class CtfOauthConnect
                     $this->json = $this->wpHttpRequest( $url );
                 }
         }
-        return $this;
+
+	    return $this;
     }
 }

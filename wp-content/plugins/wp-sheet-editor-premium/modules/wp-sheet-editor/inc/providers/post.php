@@ -15,6 +15,44 @@ class VGSE_Provider_Post {
 		return $this->get_provider_edit_capability($post_type_key);
 	}
 
+	function delete_meta_key($old_key, $post_type) {
+		global $wpdb;
+		$meta_table_name = $this->get_meta_table_name($post_type);
+
+		$wc_product_post_type = apply_filters('vg_sheet_editor/woocommerce/product_post_type_key', 'product');
+		if ($post_type === $wc_product_post_type && function_exists('WC')) {
+			$post_type = array($wc_product_post_type, 'product_variation');
+		}
+		if (is_string($post_type)) {
+			$post_type = array($post_type);
+		}
+
+		$sql = "DELETE pm FROM $meta_table_name pm INNER JOIN $wpdb->posts p ON 
+p.ID = pm.post_id 
+WHERE p.post_type IN ('" . implode("','", array_map('esc_sql', $post_type)) . "') 
+AND pm.meta_key = '" . esc_sql($old_key) . "' ";
+		$modified = $wpdb->query($sql);
+		return $modified;
+	}
+
+	function rename_meta_key($old_key, $new_key, $post_type) {
+		global $wpdb;
+		$meta_table_name = $this->get_meta_table_name($post_type);
+		$wc_product_post_type = apply_filters('vg_sheet_editor/woocommerce/product_post_type_key', 'product');
+		if ($post_type === $wc_product_post_type && function_exists('WC')) {
+			$post_type = array($wc_product_post_type, 'product_variation');
+		}
+		if (is_string($post_type)) {
+			$post_type = array($post_type);
+		}
+		$modified = $wpdb->query("UPDATE $meta_table_name pm LEFT JOIN $wpdb->posts p ON 
+p.ID = pm.post_id 
+SET pm.meta_key = '" . esc_sql($new_key) . "' 
+WHERE p.post_type IN ('" . implode("','", array_map('esc_sql', $post_type)) . "') 
+AND pm.meta_key = '" . esc_sql($old_key) . "' ");
+		return $modified;
+	}
+
 	function get_provider_edit_capability($post_type_key) {
 		if (!post_type_exists($post_type_key)) {
 			return false;
@@ -315,6 +353,16 @@ ORDER BY t.name ASC";
 			$values['edit_date'] = true;
 		}
 
+		if (!empty($values['post_modified'])) {
+			$mysql_time_format = "Y-m-d H:i:s";
+			$time = strtotime($values['post_modified']);
+			$post_modified = gmdate($mysql_time_format, $time);
+			$post_modified_gmt = gmdate($mysql_time_format, ( $time + get_option('gmt_offset') * HOUR_IN_SECONDS));
+			$post_id = $values['ID'];
+			$wpdb->query("UPDATE $wpdb->posts SET post_modified = '" . esc_sql($post_modified) . "', post_modified_gmt = '" . esc_sql($post_modified_gmt) . "'  WHERE ID = " . (int) $post_id);
+			unset($values['post_modified']);
+		}
+
 		$out = true;
 		if (isset($values['post_status']) && $values['post_status'] === 'delete') {
 			VGSE()->deleted_rows_ids[] = $values['ID'];
@@ -339,7 +387,11 @@ ORDER BY t.name ASC";
 
 			wp_delete_post($values['ID'], true);
 		} else {
-			$out = wp_update_post($values, $wp_error);
+			if (count($values) === 1 && isset($values['ID'])) {
+				$out = true;
+			} else {
+				$out = wp_update_post($values, $wp_error);
+			}
 		}
 
 		return $out;
@@ -429,7 +481,7 @@ ORDER BY t.name ASC";
 		}
 		$post_meta_table = $this->get_meta_table_name($post_type);
 		$post_meta_post_id_key = $this->get_meta_table_post_id_key($post_type);
-		$meta_keys_sql = "SELECT m.meta_key FROM $wpdb->posts p LEFT JOIN $post_meta_table m ON p.ID = m.$post_meta_post_id_key WHERE p.post_type = '" . esc_sql($post_type) . "' AND m.meta_value NOT LIKE 'field_%' GROUP BY m.meta_key";
+		$meta_keys_sql = "SELECT m.meta_key FROM $wpdb->posts p LEFT JOIN $post_meta_table m ON p.ID = m.$post_meta_post_id_key WHERE p.post_type = '" . esc_sql($post_type) . "' AND m.meta_key NOT LIKE '%oembed%' AND m.meta_value NOT LIKE 'field_%' GROUP BY m.meta_key LIMIT 2500";
 		$meta_keys = $wpdb->get_col($meta_keys_sql);
 		return apply_filters('vg_sheet_editor/provider/post/all_meta_fields', $meta_keys, $post_type);
 	}

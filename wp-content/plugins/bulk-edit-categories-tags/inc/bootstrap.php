@@ -122,14 +122,20 @@ if (!class_exists('WPSE_Taxonomy_Terms_Spreadsheet_Bootstrap')) {
 						)),
 				));
 
-				$this->columns->register_item('count', $post_type, array(
+
+				if (in_array($post_type, array('product_cat', 'product_tag'), true)) {
+					$count_key = 'product_count_' . $post_type;
+				} else {
+					$count_key = 'count';
+				}
+				$this->columns->register_item($count_key, $post_type, array(
 					'data_type' => 'post_data', //String (post_data,post_meta|meta_data)	
-					'unformatted' => array('data' => 'count', 'renderer' => 'html', 'readOnly' => true), //Array (Valores admitidos por el plugin de handsontable)
+					'unformatted' => array('renderer' => 'html', 'readOnly' => true), //Array (Valores admitidos por el plugin de handsontable)
 					'column_width' => 75,
 					'title' => __('Count', vgse_taxonomy_terms()->textname),
 					'supports_formulas' => false,
 					'allow_to_save' => false,
-					'formatted' => array('data' => 'count', 'renderer' => 'html', 'readOnly' => true),
+					'formatted' => array('renderer' => 'html', 'readOnly' => true),
 					'is_locked' => true,
 				));
 				$post_content_args = array(

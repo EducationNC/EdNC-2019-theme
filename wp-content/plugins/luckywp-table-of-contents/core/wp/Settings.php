@@ -7,6 +7,7 @@ use luckywp\tableOfContents\core\base\BaseObject;
 use luckywp\tableOfContents\core\Core;
 use luckywp\tableOfContents\core\helpers\ArrayHelper;
 use luckywp\tableOfContents\core\helpers\Html;
+use luckywp\tableOfContents\core\helpers\Json;
 
 class Settings extends BaseObject
 {
@@ -351,6 +352,20 @@ class Settings extends BaseObject
         $values = $this->getValues($groupId);
         $values[$fieldId] = $value;
         update_option($this->prefix . $groupId, $values);
+    }
+
+    /**
+     * @return string
+     */
+    public function toJson()
+    {
+        $data = [];
+        foreach ($this->fields as $configs) {
+            foreach ($configs as $config) {
+                $data[$config['group']][$config['id']] = $this->getValue($config['group'], $config['id'], null, false);
+            }
+        }
+        return Json::encode($data);
     }
 
 

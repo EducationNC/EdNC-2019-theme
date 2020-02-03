@@ -174,7 +174,7 @@ GROUP BY tr.object_id";
 
 		function exclude_by_keyword($clauses, $wp_query) {
 			if (!empty($wp_query->query['wpse_not_contains_keyword'])) {
-				$clauses = WP_Sheet_Editor_Filters::get_instance()->add_search_by_keyword_clause($clauses, $wp_query->query['wpse_not_contains_keyword'], 'NOT LIKE');
+				$clauses = WP_Sheet_Editor_Filters::get_instance()->add_search_by_keyword_clause($clauses, $wp_query->query['wpse_not_contains_keyword'], 'NOT LIKE', 'AND');
 			}
 			return $clauses;
 		}
@@ -303,9 +303,11 @@ GROUP BY tr.object_id";
 						if (is_array($meta_query['key'])) {
 							$meta_query['key'] = array_filter($meta_query['key']);
 						}
-						if (empty($meta_query['key']) || empty($meta_query['compare']) ||
-// Or the field is not a meta field
-								empty($meta_query['source']) || $meta_query['source'] !== 'meta') {
+						if (empty($meta_query['key']) || empty($meta_query['compare']) || empty($meta_query['source'])) {
+							unset($filters['meta_query'][$index]);
+							unset($query_args['wpse_original_filters']['meta_query'][$index]);
+						}
+						if ($meta_query['source'] !== 'meta') {
 							unset($filters['meta_query'][$index]);
 							continue;
 						}
@@ -390,7 +392,8 @@ GROUP BY tr.object_id";
 
 		function get_advanced_filters_fields($current_post_type, $filters) {
 			global $wpdb;
-			$all_meta_keys = apply_filters('vg_sheet_editor/advanced_filters/all_meta_keys', VGSE()->helpers->get_all_meta_keys($current_post_type), $current_post_type, $filters);
+			$all_meta_keys = apply_filters('vg_sheet_editor/advanced_filters/all_meta_keys', VGSE()->helpers->get_all_meta_keys($current_post_type, 1000), $current_post_type, $filters);
+
 			// post data and taxonomy advanced filters are available for post types only
 			if (VGSE()->helpers->get_current_provider()->is_post_type) {
 				$taxonomy_keys = VGSE()->helpers->get_post_type_taxonomies_single_data($current_post_type, 'name');

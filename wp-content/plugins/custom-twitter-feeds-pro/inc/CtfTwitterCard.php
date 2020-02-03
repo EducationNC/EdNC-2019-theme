@@ -160,9 +160,17 @@ class CtfTwitterCard
 
 		return $twitter_card_meta;
 	}
+
 	public function encodeHelper( $string ) {
-		return wp_strip_all_tags( str_replace( array( 'â','â', 'â', '“', '”', '’', '‘', 'â', 'Ã¼', 'â', 'â', 'Ã', 'Ã¤', 'Ã¶' ), array( '&#8220;', '&#8221;', '&#8221;', '&#8220;', '&#8221;', '&#8217;', '&#8216;', '&#8216;', '&#252;', '&#8220;', '&#8220;', '&#223;', '&#228;', '&#246;' ), $string ) );
+		$encoding_fixes_for_text = str_replace(
+			array( 'â','â', 'â', '“', '”', '’', '‘', 'â', 'Ã¼', 'â', 'â', 'Ã', 'Ã¤', 'Ã¶', 'Ãº', 'Ã¡', 'Ã©', 'Ã³', 'Ã', 'í±', 'Â¡', 'Â', 'Ã¥', 'í¥' ),
+			array( '&#8220;', '&#8221;', '&#8221;', '&#8220;', '&#8221;', '&#8217;', '&#8216;', '&#8216;', '&#252;', '&#8220;', '&#8220;', '&#223;', '&#228;', '&#246;', '&#250;', '&#225;', '&#233;', '&#243;', '&#237;', '&#241;', '&#161;', '', '&#229;' /*å*/, '&#229;' /*å*/ ), $string );
+
+		$final_text = apply_filters( 'ctf_tc_text', $encoding_fixes_for_text );
+
+		return wp_strip_all_tags( $final_text );
 	}
+
 	/**
 	 * connects with an external url and saves relevant meta data
 	 *
@@ -231,6 +239,7 @@ class CtfTwitterCard
             if ( $values['twitter:card'] === '' && ! empty( $values['twitter:image'] ) && ! empty( $values['twitter:title'] ) ) {
                 $values['twitter:card'] = 'summary_large_image';
             }
+
 		}
 
 		$this->twitter_card_meta = $values;
@@ -306,9 +315,23 @@ class CtfTwitterCard
 			$tc_data[$key] = ! empty( $tc_meta[$key] ) ? $tc_meta[$key] : ( isset( $og_meta[$key] ) ? $og_meta[$key] : '' );
 		}
 
+		// sometimes the card type is not one of the 4 accepted types but might still work
+		if ( isset( $tc_data['twitter:card'] ) ) {
+		     if ( $tc_data['twitter:card'] !== ''
+		          && $tc_data['twitter:card'] !== ''
+		          && $tc_data['twitter:card'] !== 'summary_large_image'
+		          && $tc_data['twitter:card'] !== 'summary'
+		          && $tc_data['twitter:card'] !== 'amplify'
+		          && $tc_data['twitter:card'] !== 'player' ) {
+			     $tc_data['twitter:card'] = 'summary_large_image';
+		     }
+		}
+
 		if ( $ssl_only && isset( $tc_data['twitter:image'] ) && strpos( $tc_data['twitter:image'], 'https' ) !== 0 ) {
 			$tc_data['twitter:image']  = '';
 		}
+
+		$tc_data = apply_filters( 'ctf_tc_data', $tc_data );
 
 		$this->twitter_card_data = $tc_data;
 	}

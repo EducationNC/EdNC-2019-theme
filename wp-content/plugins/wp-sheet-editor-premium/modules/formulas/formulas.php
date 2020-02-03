@@ -160,6 +160,24 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 			return $out;
 		}
 
+		function get_uuid() {
+			return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+					// 32 bits for "time_low"
+					mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+					// 16 bits for "time_mid"
+					mt_rand(0, 0xffff),
+					// 16 bits for "time_hi_and_version",
+					// four most significant bits holds version number 4
+					mt_rand(0, 0x0fff) | 0x4000,
+					// 16 bits, 8 bits for "clk_seq_hi_res",
+					// 8 bits for "clk_seq_low",
+					// two most significant bits holds zero and one for variant DCE1.1
+					mt_rand(0, 0x3fff) | 0x8000,
+					// 48 bits for "node"
+					mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+			);
+		}
+
 		function apply_formula_to_data($formula, $data, $post_id = null, $cell_args = array(), $post_type = null) {
 			require_once 'inc/math-calculator.php';
 
@@ -178,8 +196,12 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 			$regex_flag = WP_Sheet_Editor_Formulas::$regex_flag;
 			if (strpos($formula, $regex_flag) === false) {
 				$formula = str_replace('$current_value$', $data, $formula);
+				$formula = str_replace('$current_value_capitalize_each_word$', trim(ucwords($data)), $formula);
+				$formula = str_replace('$current_value_lowercase$', strtolower($data), $formula);
 				$formula = str_replace('$random_number$', mt_rand(10000, 999999), $formula);
 				$formula = str_replace('$random_letters$', wp_generate_password(6, false), $formula);
+				$formula = str_replace('$uuid$', $this->get_uuid(), $formula);
+				$formula = str_replace('$uniqid$', uniqid(wp_generate_password(4)), $formula);
 				$formula = str_replace('$current_timestamp$', time(), $formula);
 				$formula = str_replace('$current_time_friendly$', current_time('H:i:s', false), $formula);
 				$formula = str_replace('$current_date$', date('d-m-Y'), $formula);
@@ -249,7 +271,7 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 				}
 				// Execute math operation. It sanitizes the formula automatically.
 				$parser = new VG_Math_Calculator();
-				$data = $parser->calculate($formula);
+				$data = round($parser->calculate($formula), 2);
 
 				if ($data === $formula) {
 					return new WP_Error(VGSE()->options_key, __('Error. The math engine could not execute the math operation', VGSE()->textname));
@@ -819,7 +841,13 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 			$processed = (!$can_execute_formula_as_sql && $total > ( $per_page * $page ) ) ? $per_page * $page : $total;
 			VGSE()->helpers->increase_counter('processed', $processed);
 			$total_updated = ( is_array($updated_items)) ? count($updated_items) : $updated_items;
-			$message = sprintf(__('%d of %d items have been processed. %d items have been updated.', VGSE()->textname), $processed, $total, $total_updated);
+
+			// If the post has orphan meta data, it might update more rows than the posts total
+			// so make sure the total updated is not higher than the total of posts
+			if ($total_updated > $total) {
+				$total_updated = $total;
+			}
+			$message = sprintf(__('%d of %d items have been processed. %d items were updated in this batch.', VGSE()->textname), $processed, $total, $total_updated);
 
 			if ($can_execute_formula_as_sql) {
 				$message .= __('<p>Complete</p>.', VGSE()->textname);

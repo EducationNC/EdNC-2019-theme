@@ -20,11 +20,6 @@ abstract class BaseObject
     {
     }
 
-    public static function className()
-    {
-        return get_called_class();
-    }
-
     public function __get($name)
     {
         $getter = 'get' . $name;

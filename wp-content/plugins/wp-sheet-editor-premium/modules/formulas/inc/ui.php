@@ -236,7 +236,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 					'math' =>
 					array(
 						'label' => __('Math operation', VGSE()->textname),
-						'description' => __('Update existing value with the result of a math operation.', VGSE()->textname),
+						'description' => __('Update existing value with the result of a math operation.<br>The result is rounded to the 2 nearest decimals. I.e. 3.845602 becomes 3.85', VGSE()->textname),
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateMathFormula',
 						'allowed_column_keys' => null,
@@ -255,7 +255,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 					'decrease_by_percentage' =>
 					array(
 						'label' => __('Decrease by percentage', VGSE()->textname),
-						'description' => __('Decrease the existing value by a percentage.', VGSE()->textname),
+						'description' => __('Decrease the existing value by a percentage.<br>The result is rounded to the 2 nearest decimals. I.e. 3.845602 becomes 3.85', VGSE()->textname),
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateDecreasePercentageFormula',
 						'allowed_column_keys' => null,
@@ -274,7 +274,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 					'decrease_by_number' =>
 					array(
 						'label' => __('Decrease by number', VGSE()->textname),
-						'description' => __('Decrease the existing value by a number.', VGSE()->textname),
+						'description' => __('Decrease the existing value by a number.<br>The result is rounded to the 2 nearest decimals. I.e. 3.845602 becomes 3.85', VGSE()->textname),
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateDecreaseFormula',
 						'allowed_column_keys' => null,
@@ -293,7 +293,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 					'increase_by_percentage' =>
 					array(
 						'label' => __('Increase by percentage', VGSE()->textname),
-						'description' => __('Increase the existing value by a percentage.', VGSE()->textname),
+						'description' => __('Increase the existing value by a percentage.<br>The result is rounded to the 2 nearest decimals. I.e. 3.845602 becomes 3.85', VGSE()->textname),
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateIncreasePercentageFormula',
 						'allowed_column_keys' => null,
@@ -312,7 +312,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 					'increase_by_number' =>
 					array(
 						'label' => __('Increase by number', VGSE()->textname),
-						'description' => __('Increase the existing value by a number.', VGSE()->textname),
+						'description' => __('Increase the existing value by a number.<br>The result is rounded to the 2 nearest decimals. I.e. 3.845602 becomes 3.85', VGSE()->textname),
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateIncreaseFormula',
 						'allowed_column_keys' => null,
@@ -358,6 +358,25 @@ if (!class_exists('WPSE_Formulas_UI')) {
 							array(
 								'tag' => 'textarea',
 								'label' => __('With this', VGSE()->textname),
+							),
+						),
+					),
+					'capitalize_words' =>
+					array(
+						'label' => __('Capitalize words', VGSE()->textname),
+						'description' => sprintf(__('Capitalize the first letter of every word in the field. I.e. convert "my title" into "My Title".', VGSE()->textname), vgse_formulas_init()->documentation_url),
+						'fields_relationship' => 'AND',
+						'jsCallback' => 'vgseGenerateCapitalizeWordsFormula',
+						'allowed_column_keys' => null,
+						'input_fields' =>
+						array(
+							array(
+								'tag' => 'input',
+								'html_attrs' => array(
+									// We hide the input because we dont need user input
+									// and the JS requires at least one html input to generate the formula
+									'style' => 'display: none;',
+								),
 							),
 						),
 					),
@@ -490,6 +509,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'remove_duplicates' => 'default',
 						"append" => 'default',
 						"prepend" => 'default',
+						"capitalize_words" => 'default',
 						"merge_columns" => 'default',
 						'custom' => 'default',
 					),
@@ -499,6 +519,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'clear_value' => 'default',
 						"append" => 'default',
 						"prepend" => 'default',
+						"capitalize_words" => 'default',
 						"merge_columns" => 'default',
 						'custom' => 'default',
 					),
@@ -768,6 +789,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 							),
 						),
 						'clear_value' => 'default',
+						"capitalize_words" => 'default',
 						'custom' => 'default',
 					),
 				),

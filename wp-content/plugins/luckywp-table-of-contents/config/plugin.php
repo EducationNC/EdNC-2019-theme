@@ -1,6 +1,5 @@
 <?php
 return [
-    'textDomain' => 'luckywp-table-of-contents',
     'bootstrap' => [
         'activation',
         'admin',
@@ -13,19 +12,19 @@ return [
         'settings',
     ],
     'components' => [
-        'activation' => \luckywp\tableOfContents\plugin\Activation::className(),
-        'admin' => \luckywp\tableOfContents\admin\Admin::className(),
-        'front' => \luckywp\tableOfContents\front\Front::className(),
-        'mcePlugin' => \luckywp\tableOfContents\plugin\mcePlugin\McePlugin::className(),
-        'options' => \luckywp\tableOfContents\core\wp\Options::className(),
-        'rate' => \luckywp\tableOfContents\admin\Rate::className(),
-        'request' => \luckywp\tableOfContents\core\base\Request::className(),
+        'activation' => \luckywp\tableOfContents\plugin\Activation::class,
+        'admin' => \luckywp\tableOfContents\admin\Admin::class,
+        'front' => \luckywp\tableOfContents\front\Front::class,
+        'mcePlugin' => \luckywp\tableOfContents\plugin\mcePlugin\McePlugin::class,
+        'options' => \luckywp\tableOfContents\core\wp\Options::class,
+        'rate' => \luckywp\tableOfContents\admin\Rate::class,
+        'request' => \luckywp\tableOfContents\core\base\Request::class,
         'settings' => [
-            'class' => \luckywp\tableOfContents\plugin\Settings::className(),
+            'class' => \luckywp\tableOfContents\plugin\Settings::class,
             'initGroupsConfigFile' => __DIR__ . '/settings.php',
         ],
-        'editorBlock' => \luckywp\tableOfContents\plugin\editorBlock\EditorBlock::className(),
-        'shortcode' => \luckywp\tableOfContents\plugin\Shortcode::className(),
-        'view' => \luckywp\tableOfContents\core\base\View::className(),
+        'editorBlock' => \luckywp\tableOfContents\plugin\editorBlock\EditorBlock::class,
+        'shortcode' => \luckywp\tableOfContents\plugin\Shortcode::class,
+        'view' => \luckywp\tableOfContents\core\base\View::class,
     ],
 ];

@@ -1426,20 +1426,26 @@ input[type=checkbox]:checked:before {
 }
 
 /* featured image previews*/
-.vi-inline-preview-wrapper {
-    height: 25px;
+#vgse-wrapper .vi-inline-preview-wrapper {
+    height: 22px;
     width: 45px;
     float: left;
     overflow: hidden;
+	/* Fixes the cells alignment issue*/
+    position: relative;
 }
 
-img.vi-preview-img {
+#vgse-wrapper img.vi-preview-img {
     width: 100%;
     height: auto;
     /*position: absolute;
     top: 0;
     left: 0;*/
     max-width: 25px;
+	/* Fixes the cells alignment issue, otherwise the cells becomes a few pixels taller than it should*/
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #vgse-wrapper .handsontable .htDimmed {
@@ -1499,6 +1505,7 @@ img.vi-preview-img {
     border: 1px solid #999;
     color: #444;
     font-weight: normal;
+    margin: 0;
 }
 
 .vgse-tinymce-to-plain-indicator {
@@ -1537,7 +1544,6 @@ img.vi-preview-img {
     border-top: 0;
 }
 
-#vgse-wrapper .vg-toolbar .toolbar-submenu .button-container,
 #vgse-wrapper .vg-toolbar .toolbar-submenu .button-container {
     border: 0;
     margin-bottom: 5px;
@@ -1546,6 +1552,12 @@ img.vi-preview-img {
     width: 100%;
     padding-bottom: 5px;
     height: auto;
+}
+
+#vgse-wrapper .vg-toolbar .toolbar-submenu .button-container:last-child {
+    border: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .quick-setup-page-content .remodal {
@@ -1963,10 +1975,6 @@ fixed 42px below the sticky toolbar*/
     border: none;
 }
 
-.remodal-wrapper {
-    z-index: 999999;
-}
-
 .media-modal {
     z-index: 9999999;
 }
@@ -2012,6 +2020,18 @@ fixed 42px below the sticky toolbar*/
     color: black;
     display: inline-block;
     padding: 3px;
+}
+/*Fix compatibility issue with ACF Extended plugin*/
+.select2-container .select2-selection--multiple {
+    height: auto !important;
+}
+.import-csv-form .wp-field-requires-ignored-column {
+	display: none;
+}
+
+/* this fixes the cells alignment issue, the elements inside cells should be display: inline*/
+#wpwrap #vgse-wrapper .handsontable tr td .button {
+    display: inline;
 }
 .be-loading-anim {
     position: relative;

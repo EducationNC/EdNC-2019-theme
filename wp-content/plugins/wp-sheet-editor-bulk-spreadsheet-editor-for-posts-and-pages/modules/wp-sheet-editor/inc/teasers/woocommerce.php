@@ -10,6 +10,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 		static private $instance = false;
 		var $post_type = null;
 		var $allowed_columns = null;
+		var $wc_lookuptable_after_save_synced = array();
 
 		private function __construct() {
 			
@@ -53,6 +54,36 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 			add_filter('vg_sheet_editor/custom_columns/teaser/allow_to_lock_column', array($this, 'dont_lock_allowed_columns'), 10, 2);
 			add_action('woocommerce_variable_product_before_variations', array($this, 'render_variations_metabox_teaser'));
 			add_action('vg_sheet_editor/editor_page/after_console_text', array($this, 'notify_variations_arent_allowed'), 30, 1);
+			add_action('vg_sheet_editor/save_rows/after_saving_post', array($this, 'product_updated_on_spreadsheet'), 10, 6);
+		}
+
+		function product_updated_on_spreadsheet($product_id, $item, $data, $post_type, $spreadsheet_columns, $settings) {
+			if (!in_array($post_type, array($this->post_type))) {
+				return;
+			}
+			$this->_sync_product_lookup_table($product_id, array_keys($item));
+		}
+
+		/**
+		 * Sync with product lookup table
+		 * 
+		 * WC 3.6 introduces a new lookup table, we need to sync some fields after every change.
+		 * @see https://woocommerce.wordpress.com/2019/04/01/performance-improvements-in-3-6/
+		 */
+		function _sync_product_lookup_table($product_id, $modified_data = array()) {
+			$product_lookup_keys = array('_price', '_regular_price', '_sale_price', '_sale_price_dates_from', '_sale_price_dates_to', '_sku', '_stock', '_stock_status', '_manage_stock', '_downloadable', '_virtual', '_thumbnail_id');
+			if (array_intersect($modified_data, $product_lookup_keys) && !in_array($product_id, $this->wc_lookuptable_after_save_synced)) {
+
+				// We resave the regular price to force WC to execute the internal, protected method update_lookup_table()
+				$regular_price = get_post_meta($product_id, '_regular_price', true);
+
+				$product = wc_get_product($product_id);
+				$product->set_regular_price(999999);
+				$product->save();
+				$product->set_regular_price($regular_price);
+				$product->save();
+				$this->wc_lookuptable_after_save_synced[] = $product_id;
+			}
 		}
 
 		function notify_variations_arent_allowed($post_type) {

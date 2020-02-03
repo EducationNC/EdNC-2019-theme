@@ -103,14 +103,14 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 			}
 
 			$post_type = sanitize_text_field($_REQUEST['post_type']);
+			$editor = VGSE()->helpers->get_provider_editor($post_type);
 			$out = '';
 			// Columns visibility section
-			if (class_exists('WP_Sheet_Editor_Columns_Visibility')) {
+			if (class_exists('WP_Sheet_Editor_Columns_Visibility') && is_object($editor)) {
 				$columns_visibility_module = WP_Sheet_Editor_Columns_Visibility::get_instance();
 				ob_start();
 				$columns_visibility_module->render_settings_modal($post_type, false, null, admin_url('admin.php?page=vg_sheet_editor_post_type_setup'));
 				// Render the editor settings because some JS requires the texts and other info
-				$editor = VGSE()->helpers->get_provider_editor($post_type);
 				$editor_settings = $editor->get_editor_settings($post_type);
 				?>
 				<script>
@@ -191,6 +191,9 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 
 			$existing_post_types = get_option($this->custom_post_types_key, array());
 			$post_types = $existing_post_types;
+			if (empty($post_types) || !is_array($post_types)) {
+				$post_types = array();
+			}
 			$post_types[] = sanitize_title($_REQUEST['post_type']);
 
 			$post_types = array_unique($post_types);
@@ -206,13 +209,13 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 					'label' => $registered_post_type->label
 				);
 			} else {
-			if ($existing_post_types !== $post_types) {
-				update_option($this->custom_post_types_key, $post_types);
-			}
-			$out = array(
-				'slug' => sanitize_title($_REQUEST['post_type']),
-				'label' => sanitize_text_field($_REQUEST['post_type']),
-			);
+				if ($existing_post_types !== $post_types) {
+					update_option($this->custom_post_types_key, $post_types);
+				}
+				$out = array(
+					'slug' => sanitize_title($_REQUEST['post_type']),
+					'label' => sanitize_text_field($_REQUEST['post_type']),
+				);
 			}
 
 			wp_send_json_success($out);
@@ -280,6 +283,11 @@ if (!class_exists('WPSE_Post_Type_Setup_Wizard')) {
 				wp_die(__('You dont have enough permissions to view this page.', VGSE()->textname));
 			}
 
+			$custom_post_types_raw = get_option($this->custom_post_types_key);
+			if (empty($custom_post_types_raw) || !is_array($custom_post_types_raw)) {
+				$custom_post_types_raw = array();
+			}
+			$custom_post_types = implode(',', array_filter(array_map('sanitize_title', $custom_post_types_raw)));
 			require __DIR__ . '/views/page.php';
 		}
 

@@ -208,11 +208,11 @@ class CustomizeForm extends Model
             ['smoothScroll', 'boolean'],
             ['smoothScrollOffset', 'filter', 'filter' => 'intval'],
             ['position', 'in', 'range' => array_keys(Core::$plugin->positionsList)],
-            ['width', 'filter', 'filter' => [Settings::className(), 'sanitizeWidth']],
+            ['width', 'filter', 'filter' => [Settings::class, 'sanitizeWidth']],
             ['float', 'in', 'range' => array_keys(Core::$plugin->floatsList)],
-            ['titleFontSize', 'filter', 'filter' => [Settings::className(), 'sanitizeFontSize']],
+            ['titleFontSize', 'filter', 'filter' => [Settings::class, 'sanitizeFontSize']],
             ['titleFontWeight', 'in', 'range' => array_keys(Core::$plugin->fontWeightsList)],
-            ['itemsFontSize', 'filter', 'filter' => [Settings::className(), 'sanitizeFontSize']],
+            ['itemsFontSize', 'filter', 'filter' => [Settings::class, 'sanitizeFontSize']],
             ['colorScheme', 'in', 'range' => array_keys(Core::$plugin->colorSchemesList)],
             [
                 ['backgroundColor', 'borderColor', 'titleColor', 'linkColor', 'hoverLinkColor', 'visitedLinkColor'],
@@ -221,7 +221,7 @@ class CustomizeForm extends Model
             ],
             ['wrapNoindex', 'boolean'],
             ['useNofollow', 'boolean'],
-            ['skipHeadingLevel', 'filter', 'filter' => [Settings::className(), 'sanitizeSkipHeadingLevel']],
+            ['skipHeadingLevel', 'filter', 'filter' => [Settings::class, 'sanitizeSkipHeadingLevel']],
             [
                 'skipHeadingText',
                 'filter',

@@ -14,6 +14,25 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 		 * Controller for loading posts to the spreadsheet
 		 */
 
+		function delete_row_ids() {
+
+			$settings = VGSE()->helpers->clean_data($_REQUEST);
+			if (empty($settings['post_type']) || !VGSE()->helpers->user_can_edit_post_type($settings['post_type']) || empty($settings['nonce']) || !wp_verify_nonce($settings['nonce'], 'bep-nonce') || empty($settings['ids'])) {
+				$message = array('message' => __('You dont have enough permissions to do this action.', VGSE()->textname));
+				wp_send_json_error($message);
+			}
+
+			foreach ($settings['ids'] as $id) {
+				VGSE()->helpers->get_current_provider()->update_item_data(array(
+					'ID' => (int) $id,
+					'post_status' => 'delete',
+					'wpse_status' => 'delete',
+					'comment_approved' => 'delete',
+				));
+			}
+			wp_send_json_success(array('message' => __('Rows deleted successfully', VGSE()->textname)));
+		}
+
 		function get_taxonomy_terms() {
 
 			$settings = VGSE()->helpers->clean_data($_REQUEST);
@@ -134,6 +153,7 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 				$out[] = array(
 					'id' => $post->post_type . '--' . $post->ID,
 					'text' => $post->post_title . ' ( ID: ' . $post->ID . ', ' . $post->post_type . ' )',
+					'title' => $post->post_title
 				);
 			}
 			wp_send_json_success(array('data' => $out));
@@ -371,6 +391,7 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 		function init() {
 
 // Ajax actions
+			add_action('wp_ajax_vgse_delete_row_ids', array($this, 'delete_row_ids'));
 			add_action('wp_ajax_vgse_dismiss_review_tip', array($this, 'dismiss_review_tip'));
 			add_action('wp_ajax_vgse_notice_dismiss', array($this, 'notice_dismiss'));
 			add_action('wp_ajax_vgse_get_taxonomy_terms', array($this, 'get_taxonomy_terms'));

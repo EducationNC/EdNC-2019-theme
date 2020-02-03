@@ -41,7 +41,7 @@ $nonce = wp_create_nonce('bep-nonce');
 								<label><?php _e('Column key', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php _e('The key that will be used for saving the information in the database. This must be unique, only letters and underscores.', VGSE()->textname); ?>">( ? )</a></label>
 								<select name="key" class="key-field select2"><?php
 									$custom_columns = WP_Sheet_Editor_Custom_Columns::get_instance();
-									$all_keys = VGSE()->helpers->get_all_meta_keys();
+									$all_keys = VGSE()->helpers->get_all_meta_keys('', 1000);
 									$registered_columns = $custom_columns->get_all_registered_columns_keys();
 
 									if (!empty($column_settings['key']) && !in_array($column_settings['key'], $all_keys)) {

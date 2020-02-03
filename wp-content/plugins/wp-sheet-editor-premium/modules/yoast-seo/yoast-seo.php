@@ -67,7 +67,8 @@ if (!class_exists('WP_Sheet_Editor_YOAST_SEO')) {
 		 * @return boolean
 		 */
 		function is_yoast_seo_plugin_active() {
-			if (in_array('wordpress-seo/wp-seo.php', apply_filters('active_plugins', get_option('active_plugins')))) {
+			$plugins = apply_filters('active_plugins', get_option('active_plugins'));
+			if (in_array('wordpress-seo-premium/wp-seo-premium.php', $plugins) || in_array('wordpress-seo/wp-seo.php', $plugins)) {
 				return true;
 			} else {
 				return false;
@@ -124,7 +125,7 @@ if (!class_exists('WP_Sheet_Editor_YOAST_SEO')) {
 
 		function update_term_meta($post_id, $cell_key, $data_to_save, $post_type, $cell_args, $spreadsheet_columns) {
 			$old = WPSEO_Taxonomy_Meta::get_term_meta($post_id, $post_type);
-			if( empty($old)){
+			if (empty($old)) {
 				$old = array();
 			}
 			$new = array_merge($old, array(
