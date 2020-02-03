@@ -191,7 +191,7 @@ function tabor_gutenberg_color_palette() {
       array(
         'name'  => esc_html__( 'Black', '@@textdomain' ),
         'slug' => 'black',
-        'color' => '#12151',
+        'color' => '#121510',
       ),
       array(
         'name'  => esc_html__( 'Light-Purple', '@@textdomain' ),
