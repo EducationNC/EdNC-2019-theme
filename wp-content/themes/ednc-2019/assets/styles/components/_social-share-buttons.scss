@@ -309,16 +309,17 @@
   #ctf .ctf-header a {
       text-decoration: none;
       float: right;
+      min-width: auto;
   }
 
   p.ctf-tweet-text {
     font-family: $font-family-sans-serif;
     font-size: 15px;
   }
-  .ctf-header-text {
-    float: right !important;
-    width: auto !important;
-  }
+  // .ctf-header-text {
+  //   float: right !important;
+  //   width: auto !important;
+  // }
 
 }
 
