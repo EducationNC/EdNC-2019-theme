@@ -86,14 +86,12 @@ while (have_posts()) : the_post();
         <div class="left">
           <p class="large"><strong>Superintendant</strong></p>
           <p class="large"><?php if (get_field('superintendent')) { the_field('superintendent');  } ?></p>
-          </br>
-          </br>
-          <p class="large"><strong>Email</strong></p>
-          <p class="large"><?php if (get_field('superintendent_email')) { the_field('superintendent_email');  } ?></p>
         </div>
         <div class="right">
           <img src="<?php the_field('superintendent_picture'); ?>" alt="<?php the_field('superintendent'); ?>" class="super-pic" />
         </div>
+        <p class="large"><strong>Email</strong></p>
+        <p class="large"><?php if (get_field('superintendent_email')) { the_field('superintendent_email');  } ?></p>
       </div>
 
       <div class="section">
@@ -304,7 +302,7 @@ while (have_posts()) : the_post();
               <?php
               $source = get_sub_field('source');
               if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h4>Source</h4></a>
+                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source</h6></a>
               <?php endif; ?>
 
 
@@ -351,7 +349,7 @@ while (have_posts()) : the_post();
               <?php
               $source = get_sub_field('source');
               if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h4>Source</h4></a>
+                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source</h6></a>
               <?php endif; ?>
 
             </div>
@@ -496,7 +494,7 @@ while (have_posts()) : the_post();
               <?php
               $source = get_sub_field('source');
               if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h4>Source</h4></a>
+                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source</h6></a>
               <?php endif; ?>
 
             </div>
@@ -571,7 +569,7 @@ while (have_posts()) : the_post();
               <?php
               $source = get_sub_field('source');
               if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h4>Source</h4></a>
+                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source</h6></a>
               <?php endif; ?>
 
             </div>
