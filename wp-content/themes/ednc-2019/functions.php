@@ -300,9 +300,9 @@ function relationship_options_filter($options, $field, $the_post) {
 // 	return $match;
 // }
 
-// Increase search results per page
+// // Increase search results per page
 function pd_search_posts_per_page($query) {
-    if ($query->is_search) {
+    if (is_search() && $query->is_search) {
         $query->set( 'posts_per_page', '20');
     }
     return $query;
