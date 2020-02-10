@@ -47,31 +47,9 @@ while (have_posts()) : the_post();
 
   <div <?php post_class('container'); ?>>
 
-    <div class="row extra-bottom-margin">
-      <div class="col-md-12 flex">
-        <div class="image-district">
-          <?php the_post_thumbnail('large', array('class' => 'district-map')); ?>
-        </div>
-        <div class="content-district flex-horizontal">
-          <div class="section">
-            <h6>Schools</h6>
-            <h1 class="lato"><?php the_field('number_of_schools'); ?></h1>
-          </div>
-          <div class="section">
-            <h6>Teachers</h6>
-            <h1 class="lato"><?php the_field('number_of_teachers'); ?></h1>
-          </div>
-          <div class="section">
-            <h6>Students</h6>
-            <h1 class="lato"><?php the_field('number_of_students'); ?></h1>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <h1 class="lato">School District: <?php the_title(); ?></h1>
+    <h1 class="lato"><?php the_title(); ?></h1>
     <div class="district-body">
-      <?php the_field('description'); ?>
+      <?php the_field('about'); ?>
     </div>
 
     <div class="district-content">
@@ -80,19 +58,17 @@ while (have_posts()) : the_post();
         <p class="large"><strong>Fax:</strong> <?php if (get_field('fax')) { the_field('fax');  } ?></p>
         </br>
         <p class="large"><strong>Street Address</strong></p>
-        <p class="large"><?php the_field('address'); ?></p>
+        <p class="large"><?php the_field('street_address'); ?></p>
       </div>
       <div class="section-split">
         <div class="left">
-          <p class="large"><strong>Superintendant</strong></p>
-          <p class="large"><?php if (get_field('superintendent')) { the_field('superintendent');  } ?></p>
+          <p class="large"><strong>President</strong></p>
+          <p class="large"><?php if (get_field('president')) { the_field('president');  } ?></p>
           </br>
-          </br>
-          <p class="large"><strong>Email</strong></p>
-          <p class="large"><?php if (get_field('superintendent_email')) { the_field('superintendent_email');  } ?></p>
+          <!-- <p class="large"><?php //if (get_field('superintendent_email')) { the_field('superintendent_email');  } ?></p> -->
         </div>
         <div class="right">
-          <img src="<?php the_field('superintendent_picture'); ?>" alt="<?php the_field('superintendent'); ?>" class="super-pic" />
+          <img src="<?php the_field('president_photo'); ?>" alt="<?php the_field('president_photo'); ?>" class="super-pic" />
         </div>
       </div>
 
@@ -104,7 +80,7 @@ while (have_posts()) : the_post();
                 <?php
                 $website = get_sub_field('website-group');
                 if( $website ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $website ); ?>"><p class="large">District Website</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $website ); ?>"><p class="large">Website</p></a>
                 <?php endif; ?>
 
                 <?php
@@ -142,6 +118,8 @@ while (have_posts()) : the_post();
 
         ?>
       </div>
+
+
       <div class="section">
         <p class="large"><strong>Social Media</strong></p>
 
@@ -191,7 +169,7 @@ while (have_posts()) : the_post();
       $args = array(
         'tax_query' => array(
           array(
-            'taxonomy' => 'district-posts',
+            'taxonomy' => 'community-college-posts',
             'field' => 'slug',
             'terms' => $post->post_name
           )
@@ -209,7 +187,7 @@ while (have_posts()) : the_post();
             <div class="category-content-justify-left">
               <?php
               while ($related->have_posts()) : $related->the_post();
-              // $featured_image = Media\get_featured_image('featured-four-block'); ?>
+              $featured_image = Media\get_featured_image('featured-four-block'); ?>
               <article <?php post_class('block-news content-block-4 clearfix'); ?>>
                 <div class="flex">
                   <div class="block-content">
@@ -236,6 +214,8 @@ while (have_posts()) : the_post();
         </div>
       <?php endif;?>
     </div>
+
+
     <div class="related-maps">
       <h2 class="lato" style="margin-top: .5em;">Related Maps</h2>
       <?php
@@ -301,13 +281,8 @@ while (have_posts()) : the_post();
             <div class="col-md-12 callout">
 
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
-              
-              <?php
-              $source = get_sub_field('source');
-              if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h4>Source</h4>
-              <?php endif; ?>
 
+              <h4><?php the_sub_field('source') ?></h4>
 
             </div>
 
@@ -644,6 +619,39 @@ while (have_posts()) : the_post();
       <?php endwhile; ?>
 
     <?php endif; ?>
+
+    <h1 class="lato"><?php the_field('county_name'); ?> County Profile</h1>
+    <div class="district-body">
+      <?php the_field('county_profile'); ?>
+    </div>
+
+    <div class="row extra-bottom-margin">
+      <div class="col-md-12 flex">
+        <div class="image-district">
+          <?php the_post_thumbnail('large', array('class' => 'district-map')); ?>
+        </div>
+        <div class="content-district flex-horizontal">
+          <div class="section">
+            <h6>Bachelor's Degree</h6>
+            <h1 class="lato"><?php the_field('county_bachelors_degree_percentage'); ?>%</h1>
+          </div>
+          <div class="section">
+            <h6>High School Graduates</h6>
+            <h1 class="lato"><?php the_field('county_high_school_grad_percentage'); ?>%</h1>
+          </div>
+          <div class="section">
+            <h6>Students</h6>
+            <h1 class="lato"><?php the_field('number_of_students'); ?></h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h1 class="lato"><?php the_field('county_name'); ?> County History</h1>
+    <div class="district-body">
+      <?php the_field('county_profile'); ?>
+    </div>
+
 
 
 
