@@ -251,9 +251,7 @@ while (have_posts()) : the_post();
         'posts_per_page' => 1
       );
 
-      query_posts($args);
       $maps = new WP_Query($args);
-      $related_posts = false;
 
       if ($maps->have_posts()) : ?>
         <div class="row">
