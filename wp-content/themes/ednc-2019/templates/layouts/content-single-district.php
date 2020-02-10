@@ -252,15 +252,15 @@ while (have_posts()) : the_post();
       );
 
       query_posts($args);
-      $related = new WP_Query($args);
+      $maps = new WP_Query($args);
       $related_posts = false;
 
-      if ($related->have_posts()) : ?>
+      if ($maps->have_posts()) : ?>
         <div class="row">
           <div class="col-md-12">
             <div class="category-content-justify-left">
               <?php
-              while ($related->have_posts()) : $related->the_post(); ?>
+              while ($maps->have_posts()) : $maps->the_post(); ?>
               <article <?php post_class('block-news content-block-4 clearfix'); ?>>
                 <div class="flex">
                   <div class="block-content">
@@ -349,7 +349,11 @@ while (have_posts()) : the_post();
 
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
-              <h4><?php the_sub_field('source') ?></h4>
+              <?php
+              $source = get_sub_field('source');
+              if( $source ): ?>
+                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h4>Source</h4></a>
+              <?php endif; ?>
 
             </div>
 
@@ -565,7 +569,11 @@ while (have_posts()) : the_post();
 
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
-              <h4><?php the_sub_field('source') ?></h4>
+              <?php
+              $source = get_sub_field('source');
+              if( $source ): ?>
+                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h4>Source</h4></a>
+              <?php endif; ?>
 
             </div>
 
