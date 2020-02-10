@@ -209,7 +209,7 @@ while (have_posts()) : the_post();
             <div class="category-content-justify-left">
               <?php
               while ($related->have_posts()) : $related->the_post();
-              // $featured_image = Media\get_featured_image('featured-four-block'); ?>
+              $featured_image = Media\get_featured_image('featured-four-block'); ?>
               <article <?php post_class('block-news content-block-4 clearfix'); ?>>
                 <div class="flex">
                   <div class="block-content">
@@ -301,11 +301,11 @@ while (have_posts()) : the_post();
             <div class="col-md-12 callout">
 
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
-              
+
               <?php
               $source = get_sub_field('source');
               if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h4>Source</h4>
+                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h4>Source</h4></a>
               <?php endif; ?>
 
 
@@ -490,8 +490,11 @@ while (have_posts()) : the_post();
             <div class="col-md-12 callout">
 
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
-
-              <h4><?php the_sub_field('source') ?></h4>
+              <?php
+              $source = get_sub_field('source');
+              if( $source ): ?>
+                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h4>Source</h4></a>
+              <?php endif; ?>
 
             </div>
 
