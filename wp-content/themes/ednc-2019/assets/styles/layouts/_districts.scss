@@ -208,3 +208,11 @@
   }
 
 }
+
+.flex-rows {
+  display: flex;
+  flex-direction: row;
+  .flex {
+    width: 30%;
+  }
+}
