@@ -216,3 +216,24 @@
     width: 30%;
   }
 }
+//
+// .callout {
+//   border: 1px solid purple;
+//   position: relative;
+//
+// }
+
+.flex-districts {
+  border: 1px solid red;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: row;
+  flex-direction: row;
+  .box {
+    width: 25%;
+  }
+  .box-3 {
+    width: 33%;
+  }
+}

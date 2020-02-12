@@ -300,186 +300,193 @@ while (have_posts()) : the_post();
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
               <?php
-              $source = get_sub_field('source');
-              if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source: <?php echo esc_url( $source ); ?></h6></a>
+
+              if(get_sub_field('source')): ?>
+              	<?php while(has_sub_field('source')): ?>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              	<?php endwhile; ?>
               <?php endif; ?>
 
 
             </div>
 
-            <?php while (have_rows('chart')) : the_row(); ?>
-              <?php if (!get_sub_field('hide')): ?>
-                <div class="col-md-4">
+            <div class="col-md-12 flex-districts">
 
-                  <h6 style="color: #731454"><?php the_sub_field('chart_name'); ?></h6>
-                  <p><?php the_sub_field('subtitle'); ?></p>
+              <?php while (have_rows('chart')) : the_row(); ?>
+                <?php if (!get_sub_field('hide')): ?>
+                  <div class="box-3">
 
-                  <?php if (get_sub_field('chart_type') == 'number'): ?>
+                    <h6 style="color: #731454"><?php the_sub_field('chart_name'); ?></h6>
+                    <p><?php the_sub_field('subtitle'); ?></p>
 
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('number') ?></span>
-                    </p>
+                    <?php if (get_sub_field('chart_type') == 'number'): ?>
 
-                    <p><small><?php the_sub_field('number_description') ?></small></p>
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('number') ?></span>
+                      </p>
 
-                  <?php elseif (get_sub_field('chart_type') == 'image'): ?>
+                      <p><small><?php the_sub_field('number_description') ?></small></p>
 
-                    <?php $image = get_sub_field('image'); ?>
+                    <?php elseif (get_sub_field('chart_type') == 'image'): ?>
 
-                    <img src="<?php echo $image['url'] ?>">
+                      <?php $image = get_sub_field('image'); ?>
 
-                  <?php endif; ?>
+                      <img src="<?php echo $image['url'] ?>">
 
-                </div>
-              <?php endif; ?>
-            <?php endwhile; ?>
+                    <?php endif; ?>
+
+                  </div>
+                <?php endif; ?>
+              <?php endwhile; ?>
+
+            </div>
 
           </div>
         <?php endif; ?>
 
         <?php if( get_row_layout() == 'racial_breakdown' ): ?>
 
-          <div class="chart-section extra-bottom-margin clearfix">
+          <div class="chart-section extra-bottom-margin clearfix border">
 
             <div class="col-md-12 callout">
 
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
               <?php
-              $source = get_sub_field('source');
-              if( $source ): ?>
-                <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source: <?php echo esc_url( $source ); ?></h6></a>
+
+              if(get_sub_field('source')): ?>
+              	<?php while(has_sub_field('source')): ?>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              	<?php endwhile; ?>
+              <?php endif; ?>
+            </div>
+            <div class="col-md-12 flex-districts">
+              <?php if( have_rows('black') ): ?>
+                <?php while( have_rows('black') ): the_row();  ?>
+                  <div class="box">
+
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
+
+                      <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                  </div>
+
+                <?php endwhile; ?>
               <?php endif; ?>
 
+              <?php if( have_rows('american_indian') ): ?>
+                <?php while( have_rows('american_indian') ): the_row();  ?>
+                  <div class="box">
+
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
+
+                      <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                  </div>
+
+                <?php endwhile; ?>
+              <?php endif; ?>
+
+              <?php if( have_rows('asian') ): ?>
+                <?php while( have_rows('asian') ): the_row();  ?>
+                  <div class="box">
+
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
+
+                      <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                  </div>
+
+                <?php endwhile; ?>
+              <?php endif; ?>
+
+              <?php if( have_rows('white') ): ?>
+                <?php while( have_rows('white') ): the_row();  ?>
+                  <div class="box">
+
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
+
+                      <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                  </div>
+
+                <?php endwhile; ?>
+              <?php endif; ?>
+
+              <?php if( have_rows('hispanic') ): ?>
+                <?php while( have_rows('hispanic') ): the_row();  ?>
+                  <div class="box">
+
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
+
+                      <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                  </div>
+
+                <?php endwhile; ?>
+              <?php endif; ?>
+
+              <?php if( have_rows('pacific-islander') ): ?>
+                <?php while( have_rows('pacific-islander') ): the_row();  ?>
+                  <div class="box">
+
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
+
+                      <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                  </div>
+
+                <?php endwhile; ?>
+              <?php endif; ?>
+
+              <?php if( have_rows('two-or-more') ): ?>
+                <?php while( have_rows('two-or-more') ): the_row();  ?>
+                  <div class="box">
+
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
+
+                      <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
+
+                  </div>
+
+                <?php endwhile; ?>
+              <?php endif; ?>
             </div>
-
-            <?php if( have_rows('black') ): ?>
-              <?php while( have_rows('black') ): the_row();  ?>
-                <div class="col-md-3">
-
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
-
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
-
-                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
-
-                </div>
-
-              <?php endwhile; ?>
-            <?php endif; ?>
-
-            <?php if( have_rows('american_indian') ): ?>
-              <?php while( have_rows('american_indian') ): the_row();  ?>
-                <div class="col-md-3">
-
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
-
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
-
-                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
-
-                </div>
-
-              <?php endwhile; ?>
-            <?php endif; ?>
-
-            <?php if( have_rows('asian') ): ?>
-              <?php while( have_rows('asian') ): the_row();  ?>
-                <div class="col-md-3">
-
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
-
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
-
-                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
-
-                </div>
-
-              <?php endwhile; ?>
-            <?php endif; ?>
-
-            <?php if( have_rows('white') ): ?>
-              <?php while( have_rows('white') ): the_row();  ?>
-                <div class="col-md-3">
-
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
-
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
-
-                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
-
-                </div>
-
-              <?php endwhile; ?>
-            <?php endif; ?>
-
-            <?php if( have_rows('hispanic') ): ?>
-              <?php while( have_rows('hispanic') ): the_row();  ?>
-                <div class="col-md-3">
-
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
-
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
-
-                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
-
-                </div>
-
-              <?php endwhile; ?>
-            <?php endif; ?>
-
-            <?php if( have_rows('pacific-islander') ): ?>
-              <?php while( have_rows('pacific-islander') ): the_row();  ?>
-                <div class="col-md-3">
-
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
-
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
-
-                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
-
-                </div>
-
-              <?php endwhile; ?>
-            <?php endif; ?>
-
-            <?php if( have_rows('two-or-more') ): ?>
-              <?php while( have_rows('two-or-more') ): the_row();  ?>
-                <div class="col-md-3">
-
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
-
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
-
-                    <!-- <p><small><?php //the_sub_field('number_description') ?></small></p> -->
-
-                </div>
-
-              <?php endwhile; ?>
-            <?php endif; ?>
-
           </div>
 
           <?php endif; ?>
@@ -492,67 +499,72 @@ while (have_posts()) : the_post();
 
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
               <?php
-              $source = get_sub_field('source');
-              if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source: <?php echo esc_url( $source ); ?></h6></a>
+
+              if(get_sub_field('source')): ?>
+              	<?php while(has_sub_field('source')): ?>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              	<?php endwhile; ?>
               <?php endif; ?>
 
             </div>
 
-            <?php if( have_rows('local') ): ?>
-              <?php while( have_rows('local') ): the_row();  ?>
-                <div class="col-md-3">
+            <div class="col-md-12 flex-districts">
 
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <p><?php the_sub_field('subtitle'); ?></p>
+              <?php if( have_rows('local') ): ?>
+                <?php while( have_rows('local') ): the_row();  ?>
+                  <div class="box">
 
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <p><?php the_sub_field('subtitle'); ?></p>
 
-                    <p><small>Local Rank: <?php the_sub_field('number_description') ?></small></p>
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
 
-                </div>
+                      <p><small>Local Rank: <?php the_sub_field('number_description') ?></small></p>
 
-              <?php endwhile; ?>
-            <?php endif; ?>
+                  </div>
 
-            <?php if( have_rows('state') ): ?>
-              <?php while( have_rows('state') ): the_row();  ?>
-                <div class="col-md-3">
+                <?php endwhile; ?>
+              <?php endif; ?>
 
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <p><?php the_sub_field('subtitle'); ?></p>
+              <?php if( have_rows('state') ): ?>
+                <?php while( have_rows('state') ): the_row();  ?>
+                  <div class="box">
 
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <p><?php the_sub_field('subtitle'); ?></p>
 
-                    <p><small>State Rank: <?php the_sub_field('number_description') ?></small></p>
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
 
-                </div>
+                      <p><small>State Rank: <?php the_sub_field('number_description') ?></small></p>
 
-              <?php endwhile; ?>
-            <?php endif; ?>
+                  </div>
 
-            <?php if( have_rows('federal') ): ?>
-              <?php while( have_rows('federal') ): the_row();  ?>
-                <div class="col-md-3">
+                <?php endwhile; ?>
+              <?php endif; ?>
 
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <p><?php the_sub_field('subtitle'); ?></p>
+              <?php if( have_rows('federal') ): ?>
+                <?php while( have_rows('federal') ): the_row();  ?>
+                  <div class="box">
 
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <p><?php the_sub_field('subtitle'); ?></p>
 
-                    <p><small>Federal Rank: <?php the_sub_field('number_description') ?></small></p>
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
 
-                </div>
+                      <p><small>Federal Rank: <?php the_sub_field('number_description') ?></small></p>
 
-              <?php endwhile; ?>
-            <?php endif; ?>
+                  </div>
 
+                <?php endwhile; ?>
+              <?php endif; ?>
+
+            </div>
 
           </div>
 
@@ -567,83 +579,87 @@ while (have_posts()) : the_post();
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
               <?php
-              $source = get_sub_field('source');
-              if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source: <?php echo esc_url( $source ); ?></h6></a>
+
+              if(get_sub_field('source')): ?>
+              	<?php while(has_sub_field('source')): ?>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              	<?php endwhile; ?>
               <?php endif; ?>
 
             </div>
 
-            <?php if( have_rows('grad_rates') ): ?>
-              <?php while( have_rows('grad_rates') ): the_row();  ?>
-                <div class="col-md-3">
+            <div class="col-md-12 flex-districts">
 
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <p><?php the_sub_field('subtitle'); ?></p>
+              <?php if( have_rows('grad_rates') ): ?>
+                <?php while( have_rows('grad_rates') ): the_row();  ?>
+                  <div class="box">
 
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <p><?php the_sub_field('subtitle'); ?></p>
 
-                    <p><small><?php the_sub_field('number_description') ?></small></p>
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
 
-                </div>
+                      <p><small><?php the_sub_field('number_description') ?></small></p>
 
-              <?php endwhile; ?>
-            <?php endif; ?>
-            <?php if( have_rows('kinder') ): ?>
-              <?php while( have_rows('kinder') ): the_row();  ?>
-                <div class="col-md-3">
+                  </div>
 
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <p><?php the_sub_field('subtitle'); ?></p>
+                <?php endwhile; ?>
+              <?php endif; ?>
+              <?php if( have_rows('kinder') ): ?>
+                <?php while( have_rows('kinder') ): the_row();  ?>
+                  <div class="box">
 
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <p><?php the_sub_field('subtitle'); ?></p>
 
-                    <p><small><?php the_sub_field('number_description') ?></small></p>
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
 
-                </div>
+                      <p><small><?php the_sub_field('number_description') ?></small></p>
 
-              <?php endwhile; ?>
-            <?php endif; ?>
-            <?php if( have_rows('fourth') ): ?>
-              <?php while( have_rows('fourth') ): the_row();  ?>
-                <div class="col-md-3">
+                  </div>
 
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <p><?php the_sub_field('subtitle'); ?></p>
+                <?php endwhile; ?>
+              <?php endif; ?>
+              <?php if( have_rows('fourth') ): ?>
+                <?php while( have_rows('fourth') ): the_row();  ?>
+                  <div class="box">
 
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <p><?php the_sub_field('subtitle'); ?></p>
 
-                    <p><small><?php the_sub_field('number_description') ?></small></p>
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
 
-                </div>
+                      <p><small><?php the_sub_field('number_description') ?></small></p>
 
-              <?php endwhile; ?>
-            <?php endif; ?>
-            <?php if( have_rows('eighth') ): ?>
-              <?php while( have_rows('eighth') ): the_row();  ?>
-                <div class="col-md-3">
+                  </div>
 
-                  <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                  <p><?php the_sub_field('subtitle'); ?></p>
+                <?php endwhile; ?>
+              <?php endif; ?>
+              <?php if( have_rows('eighth') ): ?>
+                <?php while( have_rows('eighth') ): the_row();  ?>
+                  <div class="box">
 
-                    <p class="h1" style="margin-bottom: 1em;">
-                      <span class="big"><?php the_sub_field('percentage') ?></span>
-                    </p>
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <p><?php the_sub_field('subtitle'); ?></p>
 
-                    <p><small><?php the_sub_field('number_description') ?></small></p>
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
 
-                </div>
+                      <p><small><?php the_sub_field('number_description') ?></small></p>
 
-              <?php endwhile; ?>
-            <?php endif; ?>
+                  </div>
 
+                <?php endwhile; ?>
+              <?php endif; ?>
 
+            </div>
 
           </div>
 

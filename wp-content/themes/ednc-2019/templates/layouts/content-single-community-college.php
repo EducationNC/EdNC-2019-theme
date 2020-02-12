@@ -68,7 +68,12 @@ while (have_posts()) : the_post();
           <!-- <p class="large"><?php //if (get_field('superintendent_email')) { the_field('superintendent_email');  } ?></p> -->
         </div>
         <div class="right">
-          <img src="<?php the_field('president_photo'); ?>" alt="<?php the_field('president_photo'); ?>" class="super-pic" />
+          <?php
+          $image = get_field('president_photo');
+          $size = 'full'; // (thumbnail, medium, large, full or custom size)
+          if( $image ) {
+              echo wp_get_attachment_image( $image, $size );
+          }?>
         </div>
       </div>
 
@@ -402,11 +407,11 @@ while (have_posts()) : the_post();
         <div class="content-district flex-horizontal">
           <div class="section">
             <h6>Bachelor's Degree</h6>
-            <h1 class="lato"><?php the_field('county_bachelors_degree_percentage'); ?>%</h1>
+            <h1 class="lato"><?php the_field('county_bachelors_degree_percentage'); ?></h1>
           </div>
           <div class="section">
             <h6>High School Graduates</h6>
-            <h1 class="lato"><?php the_field('county_high_school_grad_percentage'); ?>%</h1>
+            <h1 class="lato"><?php the_field('county_high_school_grad_percentage'); ?></h1>
           </div>
           <div class="section">
             <h6>Industries</h6>

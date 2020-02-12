@@ -300,9 +300,11 @@ while (have_posts()) : the_post();
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
               <?php
-              $source = get_sub_field('source');
-              if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source: <?php echo esc_url( $source ); ?></h6></a>
+
+              if(get_sub_field('source')): ?>
+              	<?php while(has_sub_field('source')): ?>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              	<?php endwhile; ?>
               <?php endif; ?>
 
 
@@ -347,11 +349,12 @@ while (have_posts()) : the_post();
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
               <?php
-              $source = get_sub_field('source');
-              if( $source ): ?>
-                <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source: <?php echo esc_url( $source ); ?></h6></a>
-              <?php endif; ?>
 
+              if(get_sub_field('source')): ?>
+              	<?php while(has_sub_field('source')): ?>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              	<?php endwhile; ?>
+              <?php endif; ?>
             </div>
 
             <?php if( have_rows('black') ): ?>
@@ -492,9 +495,11 @@ while (have_posts()) : the_post();
 
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
               <?php
-              $source = get_sub_field('source');
-              if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source: <?php echo esc_url( $source ); ?></h6></a>
+
+              if(get_sub_field('source')): ?>
+              	<?php while(has_sub_field('source')): ?>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              	<?php endwhile; ?>
               <?php endif; ?>
 
             </div>
@@ -567,9 +572,11 @@ while (have_posts()) : the_post();
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
               <?php
-              $source = get_sub_field('source');
-              if( $source ): ?>
-                  <a class="" target="_blank"  href="<?php echo esc_url( $source ); ?>"><h6>Source: <?php echo esc_url( $source ); ?></h6></a>
+
+              if(get_sub_field('source')): ?>
+              	<?php while(has_sub_field('source')): ?>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              	<?php endwhile; ?>
               <?php endif; ?>
 
             </div>
