@@ -284,7 +284,13 @@ while (have_posts()) : the_post();
 
               <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
-              <h4><?php the_sub_field('source') ?></h4>
+              <?php
+
+              if(get_sub_field('source')): ?>
+                <?php while(has_sub_field('source')): ?>
+                  <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+                <?php endwhile; ?>
+              <?php endif; ?>
 
             </div>
 
