@@ -156,6 +156,7 @@
   padding: 30px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
 
   .section {
@@ -170,7 +171,7 @@
     }
     .left {
       display: inline-block;
-      width: 60%;
+      width: 50%;
       vertical-align: top;
     }
     .right {
@@ -196,35 +197,21 @@
   }
 }
 
-.flex {
+.header-district {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
   .image-district {
     width: 80%;
   }
   .content-district {
     width: 15%;
   }
-
 }
 
-.flex-rows {
-  display: flex;
-  flex-direction: row;
-  .flex {
-    width: 30%;
-  }
-}
-//
-// .callout {
-//   border: 1px solid purple;
-//   position: relative;
-//
-// }
 
 .flex-districts {
-  border: 1px solid red;
   position: relative;
   display: flex;
   flex-wrap: wrap;

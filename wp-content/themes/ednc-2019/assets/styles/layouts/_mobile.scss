@@ -256,6 +256,45 @@
     font-size: 32px;
   }
 
+  .flex-districts {
+    .box {
+      width: 50%;
+    }
+    .box-3 {
+      width: 100%;
+    }
+  }
+
+  .section, .section-split {
+    width: 50%;
+    margin-bottom: 40px;
+  }
+
+  .header-district .image-district {
+    width: 100%;
+  }
+
+  .flex-horizontal {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-around;
+    .section {
+      width: 100%;
+      margin-top: 20px;
+    }
+  }
+
+  .header-district .content-district {
+    width: 100%;
+  }
+
 
   .ntk-grid {
     margin-top: 10px;

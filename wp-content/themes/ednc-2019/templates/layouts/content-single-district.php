@@ -48,7 +48,7 @@ while (have_posts()) : the_post();
   <div <?php post_class('container'); ?>>
 
     <div class="row extra-bottom-margin">
-      <div class="col-md-12 flex">
+      <div class="col-md-12 header-district">
         <div class="image-district">
           <?php the_post_thumbnail('large', array('class' => 'district-map')); ?>
         </div>
@@ -346,7 +346,7 @@ while (have_posts()) : the_post();
 
         <?php if( get_row_layout() == 'racial_breakdown' ): ?>
 
-          <div class="chart-section extra-bottom-margin clearfix border">
+          <div class="chart-section extra-bottom-margin clearfix">
 
             <div class="col-md-12 callout">
 
