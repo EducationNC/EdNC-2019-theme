@@ -17,12 +17,17 @@ function custom_rss() {
   add_feed('wrapnotes', __NAMESPACE__ . '\\wrapnotes');
   add_feed('weekend', __NAMESPACE__ . '\\weekend');
   add_feed('digestspotlight', __NAMESPACE__ . '\\digestspotlight');
+  add_feed('ednewstest', __NAMESPACE__ . '\\ednewstest');
 }
 add_action('init', __NAMESPACE__ . '\\custom_rss');
 
 // Function for EdNews feed
 function ednews() {
   get_template_part('templates/feeds/ednews');
+}
+
+function ednewstest() {
+  get_template_part('templates/feeds/ednews-new-test');
 }
 
 // Function for Board Notes feed

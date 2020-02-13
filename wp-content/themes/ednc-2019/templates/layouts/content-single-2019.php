@@ -90,7 +90,7 @@ while (have_posts()) : the_post();
       <div class="container">
         <div class="row">
 
-          <div class="col-md-8 col-centered print-only article-section">
+          <div class="col-md-8 col-centered print-only">
             <h1 class="entry-title"><?php// the_title(); ?></h1>
             <?php// get_template_part('templates/components/author', 'meta'); ?>
             <?php if (has_post_thumbnail() && $featured_image_align != 'hero' && $featured_image_align != 'none') {
@@ -115,6 +115,21 @@ while (have_posts()) : the_post();
               }
               echo '</div>';
             } ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div id="chapters" class="col-md-2 col-md-pull-2 print-no chapters-report">
+            <div id="chapters-inside" class="disable-scrollbars">
+              <?php
+              if ( get_field('chapters') ) {
+                echo do_shortcode( get_field('chapters') );
+              }
+              ?>
+            </div>
+          </div>
+          <div class="col-md-8 col-centered print-only article-section">
+
 
               <?php the_content(); ?>
               <script>(function (c, i, t, y, z, e, n, x) { x = c.createElement(y), n = c.getElementsByTagName(y)[0]; x.async = 1; x.src = t; n.parentNode.insertBefore(x, n); i.czen = { pub: z, dom: e };})(document, window, 'https://publicinput.com/static/pub.js', 'script', 1114, 4);</script>

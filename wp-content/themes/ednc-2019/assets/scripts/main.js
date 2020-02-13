@@ -19,6 +19,55 @@
     clickortap = 'click';
   }
 
+  $(document).ready( function() {
+   /* Check width on page load*/
+   if ($(window).width() < 990) {
+     $('#chapters-inside').addClass('chapters-mobile');
+     $('#chapters-inside').removeClass('chapters-full');
+   }
+   else {
+     $('#chapters-inside').addClass('chapters-full');
+     $('#chapters-inside').removeClass('chapters-mobile');
+   }
+ });
+
+
+  $(window).on('resize', function() {
+    if ($(window).width() < 990) {
+      $('#chapters-inside').addClass('chapters-mobile');
+      $('#chapters-inside').removeClass('chapters-full');
+    }
+    else {
+      $('#chapters-inside').addClass('chapters-full');
+      $('#chapters-inside').removeClass('chapters-mobile');
+    }
+  });
+
+
+
+  $('.lwptoc_item').on(clickortap, function() {
+    if ($('#chapters-inside').hasClass('chapters-mobile')) {
+         console.log ("mobile");
+         $('.lwptoc_items').toggle();
+         // $('.lwptoc_toggle_label').toggle();
+         $('.lwptoc_toggle_label').text("show");
+         // var text = $('.lwptoc_toggle_label').text();
+         // $('.lwptoc_toggle_label').text(text == "show" ? "show" : "hide");
+    }
+  });
+
+  $(window).scroll(function(e){
+    var $el = $('.chapters-full');
+    var isPositionFixed = ($el.css('position') === 'fixed');
+    if ($(this).scrollTop() > 950 && !isPositionFixed){
+      $el.css({'position': 'fixed', 'top': '1%'});
+    }
+    if ($(this).scrollTop() < 950 && isPositionFixed){
+      $el.css({'position': 'static', 'top': '75%'});
+    }
+
+  });
+
 
   $('iframe').filter(function(){
     return this.src.match(/youtube\.com/i);
