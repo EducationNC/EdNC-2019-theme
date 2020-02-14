@@ -75,19 +75,24 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
       $items = get_field('news_item');
       echo '<table border="0" cellpadding="0" cellspacing="0" id="templateRows" width="100%">';
       	echo '<tbody>';
+        $i = 0;
+        foreach ($items as $item) {
       		echo '<tr>';
-            $i = 0;
-            foreach ($items as $item) {
-              echo '<td valign="top" style="color: #2B2E34;font-size: 14px;font-weight: normal;text-align: left;">';
-                echo '<h4 style="text-align: left;margin: 0 0 .5em;padding: 0;display: block;font-family: Helvetica;font-size: 16px;font-style: normal;font-weight: normal;line-height: 125%;color: #44474D !important; border-bottom: 1px solid #AAADB3;">What we\'re reading</h4>';
-                echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:normal;" href="' . $item['link'] . '" target="_blank">' . $item['title'] . '</a></h2>';
-                echo '<p style="margin: .5em 0;font-size:12px;">' . $item['source_name'] . ' | ' . $item['original_date'] . '</p>';
-                echo '<p style="margin: .5em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #666666;font-family: Georgia, Times, \'Times New Roman\', serif;font-size: 16px;line-height: 150%;text-align: left;">';
-                echo '</p>';
+              echo '<td align="center" class="templateColumnContainer" valign="top" width="100%">';
+                echo '<table border="0" cellpadding="10" cellspacing="0" width="100%">';
+          				echo '<tbody>';
+          					echo '<tr>';
+          						echo '<td class="columnContent" style="padding:9px 10px 9px 0;">';
+                        echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:normal;" href="' . $item['link'] . '" target="_blank">' . $item['title'] . '</a></h2>';
+                        echo '<p style="color:#999999;font-size:12px;border-bottom:2px solid #eaeaea;padding-bottom:1em;">' . $item['source_name'] . ' | ' . $item['original_date'] . '</p>';
+                      echo '</td>';
+          					echo '</tr>';
+          				echo '</tbody>';
+          			echo '</table>';
               echo '</td>';
               $i++;
-            }
       		echo '</tr>';
+                    }
       	echo '</tbody>';
       echo '</table>';
       ?>]]></content:encoded>
