@@ -1,6 +1,6 @@
 <?php
 /**
-* EdNews Test RSS2 Template
+* EdNews RSS2 Template
 */
 
 // check day of week
@@ -34,7 +34,7 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
 <?php do_action('rss2_ns'); ?>>
 
 <channel>
-  <title><?php bloginfo_rss('name'); ?> - EdNews Test Feed</title>
+  <title><?php bloginfo_rss('name'); ?> - EdNews Feed</title>
   <atom:link href="<?php self_link(); ?>" rel="self" type="application/rss+xml" />
   <link><?php bloginfo_rss('url') ?></link>
   <description><?php bloginfo_rss('description') ?></description>
@@ -76,18 +76,26 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
       echo '<table border="0" cellpadding="0" cellspacing="0" id="templateRows" width="100%">';
       	echo '<tbody>';
       		echo '<tr>';
-            echo '<td align="center" class="templateColumnContainer" valign="top" width="100%">';
-              echo '<table border="0" cellpadding="10" cellspacing="0" width="100%">';
-        				echo '<tbody>';
-        					echo '<tr>';
-        						echo '<td class="columnContent" style="padding:9px 10px 9px 0;">';
-                      echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:normal;" href="' . $item['link'] . '" target="_blank">' . $item['title'] . '</a></h2>';
-                      echo '<p style="color:#999999;font-size:12px;border-bottom:2px solid #eaeaea;padding-bottom:1em;">' . $item['source_name'] . ' | ' . $item['original_date'] . '</p>';
-                    echo '</td>';
-        					echo '</tr>';
-        				echo '</tbody>';
-        			echo '</table>';
-            echo '</td>';
+            $i = 0;
+            foreach ($items as $item) {
+              // end row after ever other item
+              if ($i % 2 == 0 && $i != 0) {
+                echo '</tr><tr>';
+              }
+              echo '<td align="center" class="templateColumnContainer" valign="top" width="50%">';
+                echo '<table border="0" cellpadding="10" cellspacing="0" width="100%">';
+          				echo '<tbody>';
+          					echo '<tr>';
+          						echo '<td class="columnContent" style="padding:9px 10px 9px 0;">';
+                        echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:normal;" href="' . $item['link'] . '" target="_blank">' . $item['title'] . '</a></h2>';
+                        echo '<p style="color:#999999;font-size:12px;border-bottom:2px solid #eaeaea;padding-bottom:1em;">' . $item['source_name'] . ' | ' . $item['original_date'] . '</p>';
+                      echo '</td>';
+          					echo '</tr>';
+          				echo '</tbody>';
+          			echo '</table>';
+              echo '</td>';
+              $i++;
+            }
       		echo '</tr>';
       	echo '</tbody>';
       echo '</table>';
