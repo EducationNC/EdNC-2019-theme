@@ -210,6 +210,29 @@
   }
 }
 
+.header-cc {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  .image-cc {
+    width: 35%;
+  }
+  .content-cc {
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    .section {
+      display: inline-block;
+      h1 {
+        margin: .5em 0 .25em !important;
+      }
+    }
+  }
+}
+
 
 .flex-districts {
   position: relative;

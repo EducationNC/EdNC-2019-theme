@@ -119,15 +119,15 @@ while (have_posts()) : the_post();
         </div>
 
         <div class="row">
-          <!-- <div id="chapters" class="col-md-2 col-md-pull-2 print-no chapters-report">
+          <div id="chapters" class="col-md-2 col-md-pull-2 print-no chapters-report">
             <div id="chapters-inside" class="disable-scrollbars">
-              <?php /*
+              <?php
               if ( get_field('chapters') ) {
                 echo do_shortcode( get_field('chapters') );
-              } */
+              } 
               ?>
             </div>
-          </div> -->
+          </div>
           <div class="col-md-8 col-centered print-only article-section">
 
 
