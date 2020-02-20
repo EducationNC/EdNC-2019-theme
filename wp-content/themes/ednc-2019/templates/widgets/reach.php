@@ -106,36 +106,39 @@ $title_overlay = get_field('title_overlay');
       </div>
 
       <script type="text/javascript">
-      var reach0 = "<?php echo $reach_id[0]; ?>";
-      var reach1 = "<?php echo $reach_id[1]; ?>";
-      var reach2 = "<?php echo $reach_id[2]; ?>";
-      var reach0Click = document.getElementById(reach0);
-      var reach1Click = document.getElementById(reach1);
-      var reach2Click = document.getElementById(reach2);
+      ;(function ($) {
 
-      document.getElementById(reach0).classList.add('active');
+        var reach0 = "<?php echo $reach_id[0]; ?>";
+        var reach1 = "<?php echo $reach_id[1]; ?>";
+        var reach2 = "<?php echo $reach_id[2]; ?>";
+        var reach0Click = document.getElementById(reach0);
+        var reach1Click = document.getElementById(reach1);
+        var reach2Click = document.getElementById(reach2);
+  
+        document.getElementById(reach0).classList.add('active');
+  
+        reach0Click.onclick = function() {
+            $('#box0').addClass('show').siblings('div').removeClass('show').addClass('hide');
+            $(reach1Click).removeClass('active');
+            $(reach2Click).removeClass('active');
+            $(reach0Click).addClass('active');
+            // $('#box0').toggleClass("show");
+            // e.preventDefault();
+        }
+        reach1Click.onclick = function() {
+            $('#box1').addClass('show').siblings('div').removeClass('show').addClass('hide');
+            $(reach0Click).removeClass('active');
+            $(reach2Click).removeClass('active');
+            $(reach1Click).addClass('active');
+        }
+        reach2Click.onclick = function() {
+            $('#box2').addClass('show').siblings('div').removeClass('show').addClass('hide');
+            $(reach1Click).removeClass('active');
+            $(reach0Click).removeClass('active');
+            $(reach2Click).addClass('active');
+        }
 
-      reach0Click.onclick = function() {
-          $('#box0').addClass('show').siblings('div').removeClass('show').addClass('hide');
-          $(reach1Click).removeClass('active');
-          $(reach2Click).removeClass('active');
-          $(reach0Click).addClass('active');
-          // $('#box0').toggleClass("show");
-          // e.preventDefault();
-      }
-      reach1Click.onclick = function() {
-          $('#box1').addClass('show').siblings('div').removeClass('show').addClass('hide');
-          $(reach0Click).removeClass('active');
-          $(reach2Click).removeClass('active');
-          $(reach1Click).addClass('active');
-      }
-      reach2Click.onclick = function() {
-          $('#box2').addClass('show').siblings('div').removeClass('show').addClass('hide');
-          $(reach1Click).removeClass('active');
-          $(reach0Click).removeClass('active');
-          $(reach2Click).addClass('active');
-      }
-
+      })(jQuery);
       </script>
 
     </div>
