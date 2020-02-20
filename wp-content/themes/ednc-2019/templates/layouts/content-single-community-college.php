@@ -237,7 +237,7 @@ while (have_posts()) : the_post();
       $maps = new WP_Query($args);
       $related_posts = false;
 
-      if ($related->have_posts()) : ?>
+      if ($maps->have_posts()) : ?>
         <div class="row">
           <div class="col-md-12">
             <div class="category-content-justify-left">
