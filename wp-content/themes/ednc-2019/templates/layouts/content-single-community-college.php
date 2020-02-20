@@ -233,9 +233,7 @@ while (have_posts()) : the_post();
         'posts_per_page' => 1
       );
 
-      query_posts($args);
       $maps = new WP_Query($args);
-      $related_posts = false;
 
       if ($maps->have_posts()) : ?>
         <div class="row">
@@ -243,6 +241,7 @@ while (have_posts()) : the_post();
             <div class="category-content-justify-left">
               <?php
               while ($maps->have_posts()) : $maps->the_post(); ?>
+              <?php $featured_image = Media\get_featured_image('featured-four-block'); ?>
               <article <?php post_class('block-news content-block-4 clearfix'); ?>>
                 <div class="flex">
                   <div class="block-content">
