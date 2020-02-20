@@ -68,7 +68,10 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 			$whitelist_variations = $this->get_variation_whitelisted_columns();
 			$columns_with_visibility = array_keys($spreadsheet_columns);
 
+			// Lock keys on variation rows for fields used in parent products that are not used in variations
 			$locked_keys_in_variations = array_intersect(array_diff($first_product_keys, $whitelist_variations), $columns_with_visibility);
+
+			// Lock keys on parent rows for fields used in variations that are not used by parent products
 			$locked_keys_in_general = array_intersect(array_diff($whitelist_variations, $first_product_keys), $columns_with_visibility);
 
 			$locked_keys_in_variations = apply_filters('vg_sheet_editor/woocommerce/locked_keys_in_variations', $locked_keys_in_variations, $whitelist_variations);
@@ -84,6 +87,16 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				}
 				if (isset($posts[$index]['_stock'])) {
 					$posts[$index]['_stock'] = (int) $posts[$index]['_stock'];
+				}
+				$product_type = !empty($post['product_type']) ? $post['product_type'] : VGSE()->WC->get_product_type($post['ID']);
+				// We are locking keys here because the automatic locking works with fields 
+				// used by all parent products or all variations, not fields used by some parents only.
+				// That's why in this case, we need to check the product type and disable them manually
+				if ($product_type === 'variable') {
+					$locked_keys[] = '_regular_price';
+					$locked_keys[] = '_sale_price';
+					$locked_keys[] = '_sale_price_dates_from';
+					$locked_keys[] = '_sale_price_dates_to';
 				}
 				$posts[$index] = array_merge($posts[$index], array_fill_keys(array_diff($locked_keys, array_keys($post)), ''));
 				foreach ($locked_keys as $locked_key) {

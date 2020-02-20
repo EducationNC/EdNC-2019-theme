@@ -240,6 +240,23 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 		 * Search taxonomy term
 		 * @global obj $wpdb
 		 */
+		function search_users() {
+			global $wpdb;
+			$data = VGSE()->helpers->clean_data($_REQUEST);
+
+			if (empty($data['nonce']) || !wp_verify_nonce($data['nonce'], 'bep-nonce') || empty($data['post_type']) || !VGSE()->helpers->user_can_view_post_type($data['post_type'])) {
+				wp_send_json_error(array('message' => __('You dont have enough permissions to search taxonomy terms.', VGSE()->textname)));
+			}
+			$search = (!empty($data['search']) ) ? sanitize_text_field($data['search']) : false;
+
+			if (empty($search)) {
+				wp_send_json_error(array('message' => __('Missing parameters.', VGSE()->textname)));
+			}
+
+			$out = $wpdb->get_col("SELECT user_login FROM $wpdb->users WHERE user_email LIKE '%" . esc_sql($search) . "%' OR user_nicename LIKE '%" . esc_sql($search) . "%' OR user_login LIKE '%" . esc_sql($search) . "%' OR display_name LIKE '%" . esc_sql($search) . "%' LIMIT 5");
+			wp_send_json_success(array('data' => $out));
+		}
+
 		function search_taxonomy_terms() {
 			$data = VGSE()->helpers->clean_data($_REQUEST);
 			$is_global_search = false;
@@ -270,6 +287,10 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 						), 'names');
 			} else {
 				$taxonomies = VGSE()->helpers->get_post_type_taxonomies_single_data($post_type, 'name');
+			}
+
+			if (!empty($data['taxonomies'])) {
+				$taxonomies = is_string($data['taxonomies']) ? explode(',', sanitize_text_field($data['taxonomies'])) : array_map('sanitize_text_field', $data['taxonomies']);
 			}
 
 			if (empty($taxonomies)) {
@@ -384,7 +405,12 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 			if (!current_user_can('manage_options')) {
 				wp_send_json_error();
 			}
-			update_option(sanitize_text_field($_REQUEST['key']), 1);
+			$key = sanitize_text_field($_REQUEST['key']);
+			// Only allow to dismiss notices with keys starting with wpse_hide_
+			if (strpos($key, 'wpse_hide_') !== 0) {
+				wp_send_json_error();
+			}
+			update_option($key, 1);
 			wp_send_json_success();
 		}
 
@@ -403,6 +429,7 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 			add_action('wp_ajax_vgse_insert_individual_post', array($this, 'insert_individual_post'));
 			add_action('wp_ajax_vgse_get_wp_post_single_data', array($this, 'get_wp_post_single_data'));
 			add_action('wp_ajax_vgse_search_taxonomy_terms', array($this, 'search_taxonomy_terms'));
+			add_action('wp_ajax_vgse_find_users_by_keyword', array($this, 'search_users'));
 			add_action('wp_ajax_vgse_save_post_types_setting', array($this, 'save_post_types_setting'));
 			add_action('wp_ajax_vgse_disable_quick_setup', array($this, 'disable_quick_setup'));
 		}

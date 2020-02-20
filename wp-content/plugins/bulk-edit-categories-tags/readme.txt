@@ -1,7 +1,7 @@
 === Bulk Edit Categories and Tags - Create Thousands Quickly on the Editor ===
 Contributors: wpsheeteditor,vegacorp,josevega
 Tags: posts, taxonomies, bulk edit, spreadsheet, spreadsheet editor
-Stable tag: 1.2.5
+Stable tag: 1.3.0
 Requires at least: 4.7
 Tested up to: 5.3
 License: GPLv2
@@ -130,7 +130,14 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 1. bulk editor
 
 == Changelog ==
-= V 1.2.5 - 2020-01-13 =
+= V 1.3.0 - 2020-02-19 =
+* NEW - TERMS - Add "merge" tool to combine one or more terms
+* CHANGE - TERMS - When we edit the taxonomy of terms from a hierarchical taxonomy to a non-hierarchical taxonomy, automatically clear the "parent" field of the term
+* CHANGE - TERMS - allow to save the parent using the slug (optionally)
+* FIX - TERMS - WPML. When we edit the taxonomy of a term, update the value in the translation tables
+
+
+= V 1.3.0 - 2020-01-13 =
 * FIX - TERMS - Product categories and tags - The count column doesn't show the real number because WC uses a meta field instead. So allow to view the meta field used by WC.
 
 

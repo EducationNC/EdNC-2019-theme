@@ -141,7 +141,7 @@ if (!class_exists('WP_Sheet_Editor_Post_Templates')) {
 					continue;
 				}
 				foreach ($values as $value) {
-					add_post_meta($new_post_id, $key, $value);
+					add_post_meta($new_post_id, $key, maybe_unserialize($value));
 				}
 			}
 			foreach ($taxonomies_terms as $taxonomy => $post_terms) {

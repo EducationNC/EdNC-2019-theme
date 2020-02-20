@@ -8,6 +8,7 @@ if (!class_exists('WP_Sheet_Editor_ACF')) {
 		static $checkbox_keys = array();
 		static $map_keys = array();
 		var $gallery_field_keys = array();
+		var $repeater_keys = array();
 
 		private function __construct() {
 			
@@ -49,6 +50,61 @@ if (!class_exists('WP_Sheet_Editor_ACF')) {
 			// Save ACF field key
 			add_action('vg_sheet_editor/save_rows/before_saving_cell', array($this, 'save_acf_field_key'), 10, 6);
 			add_action('vg_sheet_editor/formulas/execute_formula/after_sql_execution', array($this, 'save_acf_field_key_after_sql_formula'), 10, 5);
+
+			// Repeater fields
+			add_filter('vg_sheet_editor/provider/post/update_item_meta', array($this, 'sync_repeater_main_field_count'), 10, 3);
+			add_filter('vg_sheet_editor/provider/user/update_item_meta', array($this, 'sync_repeater_main_field_count'), 10, 3);
+		}
+
+		function sync_repeater_main_field_count($value, $id, $key) {
+			global $wpdb;
+
+			if (empty($this->repeater_keys)) {
+				return $value;
+			}
+			$repeater_key = null;
+			$regex = null;
+			foreach ($this->repeater_keys as $raw_repeater_key => $subfields) {
+				foreach ($subfields as $repeater_key_regex) {
+					if (preg_match($repeater_key_regex, $key)) {
+						$repeater_key = $raw_repeater_key;
+						$regex = $repeater_key_regex;
+						break;
+					}
+				}
+				if ($repeater_key) {
+					break;
+				}
+			}
+			if (empty($repeater_key)) {
+				return $value;
+			}
+
+			$mysql_regex = str_replace(array('/', '\d'), array('', '[0-9]'), $regex);
+			$highest_key = $wpdb->get_var("SELECT meta_key FROM $wpdb->postmeta WHERE meta_key RLIKE '" . $mysql_regex . "' ORDER BY meta_key DESC LIMIT 1");
+
+			if (empty($highest_key)) {
+				return $value;
+			}
+
+			$count_regex = str_replace('\d+', '(\d+)', $regex);
+			$repeater_count = (int) preg_replace($count_regex, '$1', $highest_key);
+
+			if (empty($repeater_count)) {
+				return $value;
+			}
+
+
+			remove_filter('vg_sheet_editor/provider/post/update_item_meta', array($this, 'sync_repeater_main_field_count'), 10);
+			remove_filter('vg_sheet_editor/provider/user/update_item_meta', array($this, 'sync_repeater_main_field_count'), 10);
+
+			VGSE()->helpers->get_current_provider()->update_item_meta($id, $repeater_key, $repeater_count);
+
+			add_filter('vg_sheet_editor/provider/post/update_item_meta', array($this, 'sync_repeater_main_field_count'), 10, 3);
+			add_filter('vg_sheet_editor/provider/user/update_item_meta', array($this, 'sync_repeater_main_field_count'), 10, 3);
+
+
+			return $value;
 		}
 
 		function filter_save_checkbox_from_serialized_class($post_criterias, $post_id, $settings, $item, $post_type, $column_settings, $key) {
@@ -538,6 +594,11 @@ if (!class_exists('WP_Sheet_Editor_ACF')) {
 								)
 							));
 							WP_Sheet_Editor_ACF::$map_keys[$acf_field['name']] = $acf_field;
+						} elseif (in_array($acf_field['type'], array('repeater'))) {
+							$this->repeater_keys[$acf_field['name']] = array();
+							foreach ($acf_field['sub_fields'] as $subfield) {
+								$this->repeater_keys[$acf_field['name']][] = '/' . $acf_field['name'] . '_\d+_' . $subfield['name'] . '/';
+							}
 						}
 					}
 				}

@@ -1,6 +1,14 @@
 <?php
 
-class VGSE_Provider_Term {
+// Fix. If they update one plugin and use an old version of another,
+// the Abstract class might not exist and they will get fatal errors.
+// So we make sure it loads the class from the current plugin if it's missing
+// This can be removed in a future update.
+if (!class_exists('VGSE_Provider_Abstract')) {
+	require_once vgse_taxonomy_terms()->plugin_dir . '/modules/wp-sheet-editor/inc/providers/abstract.php';
+}
+
+class VGSE_Provider_Term extends VGSE_Provider_Abstract {
 
 	static private $instance = false;
 	var $key = 'term';
@@ -119,6 +127,10 @@ WHERE tt.taxonomy = '" . esc_sql($post_type) . "' AND pm.meta_key = '" . esc_sql
 	}
 
 	function get_items($query_args) {
+
+		if (!empty($query_args['wpse_source']) && $query_args['wpse_source'] === 'formulas') {
+			$query_args['wpse_force_not_hierarchical'] = true;
+		}
 		$post_keys_to_remove = array(
 			'post_status',
 			'author',
@@ -152,11 +164,13 @@ WHERE tt.taxonomy = '" . esc_sql($post_type) . "' AND pm.meta_key = '" . esc_sql
 		if (!empty($query_args['s'])) {
 			$query_args['search'] = $query_args['s'];
 		}
-		if (!empty($query_args['post__in'])) {
+		if (!empty($query_args['post__in']) && empty($query_args['wpse_force_pagination'])) {
 			$per_page = count($query_args['post__in']);
 		}
 
-		if (is_taxonomy_hierarchical($query_args['taxonomy'])) {
+		$is_hierarchical = (!empty($query_args['wpse_force_not_hierarchical'])) ? false : is_taxonomy_hierarchical($query_args['taxonomy']);
+
+		if ($is_hierarchical) {
 			// We'll need the full set of terms then.
 			$query_args['number'] = $query_args['offset'] = 0;
 		}
@@ -165,7 +179,7 @@ WHERE tt.taxonomy = '" . esc_sql($post_type) . "' AND pm.meta_key = '" . esc_sql
 		$term_query = new WP_Term_Query();
 		$terms = $term_query->query($query_args);
 
-		if (is_taxonomy_hierarchical($query_args['taxonomy'])) {
+		if ($is_hierarchical) {
 			$total_terms = count($terms);
 		}
 
@@ -318,7 +332,7 @@ WHERE tt.taxonomy = '" . esc_sql($post_type) . "' AND pm.meta_key = '" . esc_sql
 		return apply_filters('vg_sheet_editor/provider/term/get_item', $term, $id, $format);
 	}
 
-	function get_item_meta($id, $key, $single = true, $context = 'save') {
+	function get_item_meta($id, $key, $single = true, $context = 'save', $bypass_cache = false) {
 		return apply_filters('vg_sheet_editor/provider/term/get_item_meta', get_term_meta($id, $key, $single), $id, $key, $single, $context);
 	}
 
@@ -343,11 +357,21 @@ WHERE tt.taxonomy = '" . esc_sql($post_type) . "' AND pm.meta_key = '" . esc_sql
 		}
 
 		if (!empty($values['parent']) && !is_numeric($values['parent'])) {
-			// We use prepare_post_terms_for_saving instead of get_term_by/wp_insert_term to allow to
-			// save hierarchical parents like cat > cat2 and it saves the child as parent
-			$parent_terms = VGSE()->data_helpers->prepare_post_terms_for_saving($values['parent'], $taxonomy);
-			if (!empty($parent_terms)) {
-				$values['parent'] = $parent_terms[0];
+			// Try to find the parent by slug, if not found, find by hierarchical name
+			$parent_term = get_term_by('slug', $values['parent'], $taxonomy);
+			if ($parent_term) {
+				$parent_term = $parent_term->term_id;
+			} else {
+				// We use prepare_post_terms_for_saving instead of get_term_by/wp_insert_term to allow to
+				// save hierarchical parents like cat > cat2 and it saves the child as parent
+				$parent_terms = VGSE()->data_helpers->prepare_post_terms_for_saving($values['parent'], $taxonomy);
+				if (!empty($parent_terms)) {
+					$parent_term = $parent_terms[0];
+				}
+			}
+
+			if (!empty($parent_term)) {
+				$values['parent'] = $parent_term;
 			} else {
 				unset($values['parent']);
 			}
@@ -368,9 +392,16 @@ WHERE tt.taxonomy = '" . esc_sql($post_type) . "' AND pm.meta_key = '" . esc_sql
 		$result = wp_update_term($term_id, $item['taxonomy'], $values);
 
 		if (!empty($values['taxonomy']) && $values['taxonomy'] !== $item['taxonomy']) {
+			$update_data = array('taxonomy' => $values['taxonomy']);
+			$parent_term_uses_new_taxonomy = (!empty($item['parent']) ) ? get_term_by('term_id', $item['parent'], $values['taxonomy']) : false;
+			if (!is_taxonomy_hierarchical($values['taxonomy']) || !$parent_term_uses_new_taxonomy) {
+				$update_data['parent'] = '';
+			}
+
 			$wpdb->update(
-					$wpdb->prefix . 'term_taxonomy', array('taxonomy' => $values['taxonomy']), array('term_id' => $term_id), array('%s'), array('%d')
+					$wpdb->prefix . 'term_taxonomy', $update_data, array('term_id' => $term_id), array('%s'), array('%d')
 			);
+			do_action('vg_sheet_editor/terms/taxonomy_edited', $term_id, $item['taxonomy'], $values['taxonomy'], $item);
 		}
 
 		if (!empty($values['wpse_status']) && $values['wpse_status'] === 'delete') {
@@ -471,7 +502,7 @@ ORDER BY t.name ASC ";
 		return $table_name;
 	}
 
-	function get_meta_field_unique_values($meta_key, $post_type) {
+	function get_meta_field_unique_values($meta_key, $post_type = null) {
 		global $wpdb;
 		$meta_table = $this->get_meta_table_name($post_type);
 		$sql = "SELECT tm.meta_value

@@ -32,7 +32,7 @@ if (!class_exists('WP_Sheet_Editor')) {
 	class WP_Sheet_Editor {
 
 		private $post_type;
-		var $version = '2.16.0';
+		var $version = '2.17.0';
 		var $textname = 'vg_sheet_editor';
 		var $options_key = 'vg_sheet_editor';
 		var $plugin_url = null;
@@ -398,7 +398,7 @@ if (!class_exists('WP_Sheet_Editor')) {
 //					'bundle' => array('custom_post_types'),
 					'class_function_name' => 'WP_Sheet_Editor_Dist',
 					'wp_org_slug' => 'wp-sheet-editor-bulk-spreadsheet-editor-for-posts-and-pages',
-					'post_types' => array(),
+					'post_types' => array(), // We can't add post types here, they are added in $this->bundles.
 					'extension_id' => 20
 				),
 				'wc_lite' => array(
@@ -474,7 +474,7 @@ if (!class_exists('WP_Sheet_Editor')) {
 					'inactive_action_label' => __('Buy bundle', VGSE()->textname),
 					'freemius_function' => 'vgse_freemius',
 					'wp_org_slug' => 'wp-sheet-editor-bulk-spreadsheet-editor-for-posts-and-pages',
-					'post_types' => array(),
+					'post_types' => array()
 				),
 				'users' => array(
 					'name' => __('Everything you need for Users and Customers', VGSE()->textname),
@@ -490,6 +490,9 @@ if (!class_exists('WP_Sheet_Editor')) {
 					'post_types' => array('user'),
 				),
 			));
+			// We define the post types of the bundle here because all the other extensions 
+			// and bundles are needed by get_post_types_without_own_sheet()
+			$this->bundles['custom_post_types']['post_types'] = array_merge(array('post', 'page'), array_keys(VGSE()->helpers->get_post_types_without_own_sheet()));
 
 			// Check if the extension is active
 			foreach ($this->bundles as $index => $bundle) {
@@ -501,6 +504,10 @@ if (!class_exists('WP_Sheet_Editor')) {
 			foreach ($this->extensions as $index => $extension) {
 				$this->extensions[$index]['is_active'] = !empty($extension['class_function_name']) && ( class_exists($extension['class_function_name']) || function_exists($extension['class_function_name']) || defined($extension['class_function_name']) );
 
+				if (!empty($extension['freemius_function']) && function_exists($extension['freemius_function'])) {
+					$this->extensions[$index]['active_action_url'] = $extension['freemius_function']()->checkout_url();
+					$this->extensions[$index]['is_any_mode_active'] = true;
+				}
 
 				$this->extensions[$index]['has_paid_offering'] = !empty($extension['bundle']) || !empty($extension['freemius_function']);
 
@@ -517,6 +524,7 @@ if (!class_exists('WP_Sheet_Editor')) {
 					}
 				}
 			}
+			do_action('vg_sheet_editor/after_extensions_registered');
 
 
 			// Init wp hooks
@@ -1034,12 +1042,19 @@ if (!class_exists('WP_Sheet_Editor')) {
 			return add_query_arg('vgseup_t', $id, $url);
 		}
 
-		function get_buy_link($id = '', $url = null, $append_page_slug = false) {
+		function get_buy_link($id = '', $url = null, $append_page_slug = false, $post_type = null) {
 			if (!$url) {
 				$url = $this->buy_link;
 			}
+			if (!$post_type) {
+				$post_type = VGSE()->helpers->get_provider_from_query_string(false);
+			}
+			$extension = VGSE()->helpers->get_extension_by_post_type($post_type);
+			if ($extension && !empty($extension['inactive_action_url'])) {
+				$url = (!empty($extension['is_any_mode_active']) ) ? $extension['active_action_url'] : $extension['inactive_action_url'];
+			}
 
-			return $this->get_trigger_link('buy', $url, $id, $append_page_slug);
+			return str_replace('{post_type}', $post_type, $this->get_trigger_link('buy', $url, $id, $append_page_slug));
 		}
 
 		/**

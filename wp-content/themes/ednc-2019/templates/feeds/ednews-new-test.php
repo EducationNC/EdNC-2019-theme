@@ -75,9 +75,9 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
       $items = get_field('news_item');
       echo '<table border="0" cellpadding="0" cellspacing="0" id="templateRows" width="100%">';
       	echo '<tbody>';
+        $i = 0;
+        foreach ($items as $item) {
       		echo '<tr>';
-            $i = 0;
-            foreach ($items as $item) {
               echo '<td align="center" class="templateColumnContainer" valign="top" width="100%">';
                 echo '<table border="0" cellpadding="10" cellspacing="0" width="100%">';
           				echo '<tbody>';
@@ -90,9 +90,9 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
           				echo '</tbody>';
           			echo '</table>';
               echo '</td>';
-              $i++;
-            }
       		echo '</tr>';
+          $i++;
+        }
       	echo '</tbody>';
       echo '</table>';
       ?>]]></content:encoded>

@@ -49,9 +49,10 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'import_data_issue_correct_restart' => __('Please correct the error in the file and start a new import. You can use the "Advanced options" in the step 1 of the import to start from this specific row.', VGSE()->textname),
 				'product_without_variations' => __('The selected product does not have variations', VGSE()->textname),
 				'empty' => __('empty', VGSE()->textname),
-				'column_for_variations_only' => __('This column is only for variation rows, parent products don\'t use this field', VGSE()->textname),
+				'column_for_variations_only' => ( empty(VGSE()->options['hide_cell_comments']) ) ? __('This column is only for variation rows, parent products don\'t use this field', VGSE()->textname) : '',
+				'formulas_starting_edit_single_field' => __('<b>Editing the field: {field_label}</b>', VGSE()->textname),
 				'column_not_found' => __('Column not found. Try with another search criteria.', VGSE()->textname),
-				'column_for_parent_products_only' => __('This column is for parent products only, variations don\'t use this field', VGSE()->textname),
+				'column_for_parent_products_only' => ( empty(VGSE()->options['hide_cell_comments']) ) ? __('This column is for parent products only, variations don\'t use this field', VGSE()->textname) : '',
 				'how_to_paste' => __('Paste using keyboard: Ctrl+V', VGSE()->textname),
 				'realign_cells' => __('Realign cells', VGSE()->textname),
 				'remove_all_filters' => __('Remove all filters', VGSE()->textname),
@@ -69,10 +70,10 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'new_value_empty_or_equal' => __('Error: The new value is empty or is equal to the old value', VGSE()->textname),
 				'last_session_filters_notice' => __('Showing rows from your last session.', VGSE()->textname),
 				'export_column' => __('Export column', VGSE()->textname),
-				'formula_execution_failed' => __('<p>The formula was not applied completely. The process was canceled due to an error.</p><p>You can close this window.</p>', VGSE()->textname),
+				'formula_execution_failed' => __('<p>The bulk edit was not applied completely. The process was canceled due to an error.</p><p>You can close this window.</p>', VGSE()->textname),
 				'process_execution_failed' => __('<p>The process did not finish. The process was canceled due to an error.</p><p>You can close this window.</p>', VGSE()->textname),
 				'formula_retry_batch' => __('Your server was not able to process this batch. Do you want to try again?', VGSE()->textname),
-				'formula_execution_complete' => __('The formula has been applied completely. You can close this window', VGSE()->textname),
+				'formula_execution_complete' => __('The bulk edit was executed successfully. You can close this window', VGSE()->textname),
 				'open_columns_visibility' => __('Add new column', VGSE()->textname),
 				'confirm_column_reload_page' => __('ENABLE COLUMNS. These columns require a page reload: {columns}. ¿Do you want to reload now? We will reload automatically', VGSE()->textname),
 				'column_removed' => __('Column removed. Go to "settings > hide/display columns" to enable it again', VGSE()->textname),
@@ -89,7 +90,7 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'no_options_available' => __('No options available', VGSE()->textname),
 				'posts_loaded' => __('Items loaded in the spreadsheet', VGSE()->textname),
 				'new_rows_added' => __('New rows added', VGSE()->textname),
-				'formula_applied' => __('The formula has been executed. ¿Do you want to reload the page to see the changes?', VGSE()->textname),
+				'formula_applied' => __('The bulk edit has been executed. ¿Do you want to reload the page to see the changes?', VGSE()->textname),
 				'saving_stop_error' => __('<p>The changes were not saved completely. The process was canceled due to an error .</p><p>You can close this popup.</p>', VGSE()->textname),
 				'paged_batch_saved' => __('{updated} items saved of {total} items that need saving.', VGSE()->textname),
 				'everything_saved' => __('All items have been saved.', VGSE()->textname),
@@ -171,6 +172,7 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'ced_wovpe_js',
 				'ced-wovpr-custom-script',
 				'datepicker-style',
+				'iccategoryjs'
 			);
 
 
@@ -213,6 +215,17 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 			}
 			$unfiltered_original_columns = $this->args['columns']->get_items(true);
 			$unfiltered_original_columns[$current_provider_in_page] = $this->args['columns']->_remove_callbacks_on_items($unfiltered_original_columns[$current_provider_in_page]);
+
+			// We need to reduce the size of this array, so we remove all empty elements and internal objects
+			$all_spreadsheet_columns_settings = VGSE()->helpers->array_remove_empty(wp_parse_args($spreadsheet_columns, $unfiltered_original_columns[$current_provider_in_page]));
+			foreach ($all_spreadsheet_columns_settings as $column_key => $column_settings) {
+				foreach ($column_settings as $setting_key => $setting_value) {
+					if (is_object($setting_value) || in_array($setting_key, array('get_value_callback', 'save_value_callback'))) {
+						unset($all_spreadsheet_columns_settings[$column_key][$setting_key]);
+					}
+				}
+			}
+
 			$settings = array(
 				'user_has_saved_sheet' => (int) get_user_meta(get_current_user_id(), 'wpse_has_saved_sheet', true),
 				'tinymce_cell_template' => VGSE()->helpers->get_tinymce_cell_content(),
@@ -232,13 +245,13 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'debug' => (!empty(VGSE()->options['be_disable_cells_lazy_loading'])) ? true : null,
 				'disable_automatic_loading_rows' => (!empty(VGSE()->options['be_disable_automatic_loading_rows'])) ? true : false,
 				'watch_cells_to_lock' => false,
-				'unfiltered_spreadsheet_columns_settings' => $unfiltered_original_columns[$current_provider_in_page],
-				'final_spreadsheet_columns_settings' => $spreadsheet_columns,
+				'final_spreadsheet_columns_settings' => $all_spreadsheet_columns_settings,
 				'post_type' => $current_provider_in_page,
 				'woocommerce_product_post_type_key' => apply_filters('vg_sheet_editor/woocommerce/product_post_type_key', 'product'),
 				'rest_nonce' => wp_create_nonce('wp_rest'),
 				'rest_base_url' => rest_url(),
 				'taxonomy_terms_separator' => (!empty(VGSE()->options['be_taxonomy_terms_separator']) ) ? VGSE()->options['be_taxonomy_terms_separator'] : ',',
+				'export_page_size' => (!empty(VGSE()->options['export_page_size']) ) ? (int) VGSE()->options['export_page_size'] : 100,
 				'is_editor_page' => VGSE()->helpers->is_editor_page(),
 				'is_premium' => VGSE()->helpers->get_plugin_mode() === 'pro-plugin',
 				'is_post_type' => $this->provider->is_post_type,

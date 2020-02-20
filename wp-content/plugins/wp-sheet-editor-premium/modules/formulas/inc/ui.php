@@ -13,6 +13,36 @@ if (!class_exists('WPSE_Formulas_UI')) {
 
 			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_toolbar_items'));
 			add_action('vg_sheet_editor/after_enqueue_assets', array($this, 'register_assets'));
+			add_filter('vg_sheet_editor/js_data', array($this, 'add_bulk_selector_column'));
+		}
+
+		function add_bulk_selector_column($args) {
+			if (!apply_filters('vg_sheet_editor/formulas/is_bulk_selector_column_allowed', true, $args)) {
+				return $args;
+			}
+			$new_columns = array(
+				'wpseBulkSelector' => array(
+					'type' => 'checkbox',
+					'columnSorting' => false
+				)
+			);
+
+			$args['columnsUnformat'] = array_merge($new_columns, $args['columnsUnformat']);
+			$args['columnsFormat'] = array_merge($new_columns, $args['columnsFormat']);
+			$args['startCols'] ++;
+			$args['colWidths'] = array_merge(array(40), $args['colWidths']);
+			$args['colHeaders'] = array_merge(array('<input type="checkbox" class="bulk-selector" data-row="0" data-col="0" />'), $args['colHeaders']);
+			if (!empty($args['custom_handsontable_args'])) {
+				$args['custom_handsontable_args'] = json_decode($args['custom_handsontable_args'], true);
+			}
+			if (is_array($args['custom_handsontable_args'])) {
+				if (!empty($args['custom_handsontable_args']['fixedColumnsLeft'])) {
+					$args['custom_handsontable_args']['fixedColumnsLeft'] ++;
+				}
+				$args['custom_handsontable_args'] = json_encode($args['custom_handsontable_args']);
+			}
+
+			return $args;
 		}
 
 		/**
@@ -50,8 +80,9 @@ if (!class_exists('WPSE_Formulas_UI')) {
 								<p><?php _e('1. Select the rows that you want to update.', VGSE()->textname); ?> 
 									<select class="wpse-select-rows-options" required>
 										<option value="">--</option>
-										<option value="current_search"><?php _e('Edit all the rows from my current search (even non-visible rows).', VGSE()->textname); ?></option>
-										<option value="new_search"><?php _e('I want to search rows to update', VGSE()->textname); ?></option>
+										<option value="current_search"><?php _e('Edit all the rows from my current search (including non-visible rows).', VGSE()->textname); ?></option>
+										<option value="new_search"><?php _e('I want to search rows to update and edit all the search results', VGSE()->textname); ?></option>
+										<option value="selected"><?php _e('Edit the rows that I selected manually in the spreadsheet.', VGSE()->textname); ?></option>
 									</select>		
 									<button class="wpse-formula-post-query button"><?php _e('Make another search', VGSE()->textname); ?></button>
 								</p>
@@ -60,9 +91,9 @@ if (!class_exists('WPSE_Formulas_UI')) {
 									<input type="hidden" name="filters_found_rows">
 								</label>	 
 							</li>
-							<li class="column-selector">
+							<li class="multiple-column-selector">
 								<label><?php _e('What field do you want to edit?', VGSE()->textname); ?></label>
-								<select name="column" required data-placeholder="<?php _e('Select column...', VGSE()->textname); ?>" class="select2">
+								<select name="columns[]" required data-placeholder="<?php _e('Select column...', VGSE()->textname); ?>" class="select2" multiple>
 									<option></option>
 									<?php
 									echo implode(apply_filters('vg_sheet_editor/formulas/available_columns_options', VGSE()->helpers->get_post_type_columns_options($current_post_type, array(
@@ -75,6 +106,18 @@ if (!class_exists('WPSE_Formulas_UI')) {
 								<?php if (is_admin() && current_user_can('manage_options')) { ?>
 									<br/><span class="formula-tool-missing-column-tip"><small><?php _e('A column is missing? <a href="#" data-remodal-target="modal-columns-visibility">Enable it</a>', VGSE()->textname); ?></small></span>
 								<?php } ?>
+								<div class="column-selector hidden">
+									<select name="column" required data-placeholder="<?php _e('Select column...', VGSE()->textname); ?>">
+										<option></option>
+										<?php
+										echo implode(apply_filters('vg_sheet_editor/formulas/available_columns_options', VGSE()->helpers->get_post_type_columns_options($current_post_type, array(
+															'conditions' => array(
+																'supports_formulas' => true
+															),
+																), false, false)), $current_post_type);
+										?>
+									</select>
+								</div>
 							</li>
 							<li class="formula-builder">
 							</li>
@@ -116,9 +159,9 @@ if (!class_exists('WPSE_Formulas_UI')) {
 					</form>
 
 					<div class="vgse-execute-formula" style="display: none">
-						<p><?php _e('The bulk edit is running. Please dont close this window until the process has finished.', VGSE()->textname); ?></p>
+						<p class="edit-running"><?php _e('The bulk edit is running. Please dont close this window until the process has finished.', VGSE()->textname); ?></p>
 						<?php if (is_admin() && current_user_can('manage_options')) { ?>
-							<p><?php printf(__('<b>Tip:</b> The formula execution is too slow? <a href="%s" target="_blank">Save <b>more posts</b> per batch</a><br/>Are you getting errors when executing the formula? <a href="%s" target="_blank">Save <b>less posts</b> per batch</a>', VGSE()->textname), VGSE()->helpers->get_settings_page_url(), VGSE()->helpers->get_settings_page_url()); ?></p>
+							<p class="speed-tip hidden"><?php printf(__('<b>Tip:</b> The formula execution is too slow? <a href="%s" target="_blank">Save <b>more posts</b> per batch</a><br/>Are you getting errors when executing the formula? <a href="%s" target="_blank">Save <b>less posts</b> per batch</a>', VGSE()->textname), VGSE()->helpers->get_settings_page_url(), VGSE()->helpers->get_settings_page_url()); ?></p>
 						<?php } ?>
 
 						<p><a href="#" class="button pause-formula-execution button-secondary" data-action="pause"><i class="fa fa-pause"></i> <?php _e('Pause', VGSE()->textname); ?></a> - <button class="button go-back-formula-execution button-secondary" data-action="go-back"><i class="fa fa-angle-left"></i> <?php _e('Go back', VGSE()->textname); ?></button></p>
@@ -647,7 +690,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 								array(
 									'tag' => 'input',
 									'html_attrs' => array(
-										'type' => 'url',
+										'type' => 'text', // we don't use type=url to allow saving using filenames too
 									),
 									'label' => __('File URL', VGSE()->textname),
 									'description' => __('Enter the URL. It can be an URL from your own site (Example http://site.com/wp-content/uploads/2016/01/file.jpg) or an external URL.', VGSE()->textname),

@@ -14,6 +14,7 @@
 
 		<?php } else {
 			?>
+			<?php do_action('vg_sheet_editor/export/before_form', $post_type); ?>
 			<form class="export-csv-form vgse-modal-form " action="<?php echo admin_url('admin-ajax.php'); ?>" method="POST">
 				<h3><?php _e('Export to CSV', VGSE()->textname); ?></h3>
 
@@ -43,6 +44,7 @@
 					<?php } ?>
 				</div>
 
+				<?php do_action('vg_sheet_editor/export/before_response', $post_type); ?>
 				<div class="export-response">
 
 				</div>

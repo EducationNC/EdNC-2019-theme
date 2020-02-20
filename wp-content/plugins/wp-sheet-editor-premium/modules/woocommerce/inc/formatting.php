@@ -128,12 +128,20 @@ if (!class_exists('WPSE_WC_Products_Data_Formatting')) {
 			wc_delete_product_transients($product->get_id());
 			if ($product->get_parent_id('edit')) {
 				wc_delete_product_transients($product->get_parent_id('edit'));
-				WC_Cache_Helper::incr_cache_prefix('product_' . $product->get_parent_id('edit'));
+				if (version_compare(WC()->version, '3.9.0') >= 0) {
+					WC_Cache_Helper::invalidate_cache_group('product_' . $product->get_parent_id('edit'));
+				} else {
+					WC_Cache_Helper::incr_cache_prefix('product_' . $product->get_parent_id('edit'));
+				}
 			}
 			if (version_compare(WC()->version, '3.6.0') >= 0) {
 				WC_Cache_Helper::invalidate_attribute_count(array_keys($product->get_attributes()));
 			}
-			WC_Cache_Helper::incr_cache_prefix('product_' . $product->get_id());
+			if (version_compare(WC()->version, '3.9.0') >= 0) {
+				WC_Cache_Helper::invalidate_cache_group('product_' . $product->get_id());
+			} else {
+				WC_Cache_Helper::incr_cache_prefix('product_' . $product->get_id());
+			}
 		}
 
 		/**
@@ -709,12 +717,16 @@ if (!class_exists('WPSE_WC_Products_Data_Formatting')) {
 					}
 				}
 
-				// Add attribute association only if it doesn´t exist.
-				$attributes[$attribute_key] = array_merge(array(
+				$current_attribute_settings = isset($attributes[$attribute_key]) ? $attributes[$attribute_key] : array(
 					'name' => wc_clean($key),
 					'value' => '',
 					'is_taxonomy' => 1,
-						), $new_attribute_settings);
+					'position' => count($attributes),
+					'is_visible' => 1
+				);
+
+				// Add attribute association only if it doesn´t exist.
+				$attributes[$attribute_key] = array_merge($current_attribute_settings, $new_attribute_settings);
 				update_post_meta($product_id, '_product_attributes', $attributes);
 			}
 		}
@@ -754,6 +766,9 @@ if (!class_exists('WPSE_WC_Products_Data_Formatting')) {
 			// We set the type as simple early because it has product_variation type and wc_get_product causes errors
 			wp_set_object_terms($product_id, 'simple', 'product_type');
 			$product = wc_get_product($product_id);
+			if (!$product) {
+				return;
+			}
 
 			$product->set_description($parent->post_content);
 

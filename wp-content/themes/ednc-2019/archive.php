@@ -68,8 +68,36 @@ $post_object = get_field('featured_article_category_pages', $term);
           </div>
 
 
-         <?php endif; ?>
+        <?php endif; ?>
 
+        <?php
+
+        // Check value exists.
+        if( have_rows('flex_content') ):
+
+            // Loop through rows.
+            while ( have_rows('flex_content') ) : the_row();
+
+                // Case: Paragraph layout.
+                if( get_row_layout() == 'header_text' ):
+                    $header_text = get_sub_field('header_text');
+                    echo $header_text;
+
+                // Case: Download layout.
+                elseif( get_row_layout() == 'download' ):
+                    $file = get_sub_field('file');
+                    // Do something...
+
+                endif;
+
+            // End loop.
+            endwhile;
+
+        // No value.
+        else :
+            // Do something...
+
+          endif; ?>
 
 
         <div class="row hentry">

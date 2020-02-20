@@ -830,7 +830,7 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 
 					return new WP_Error('vgse', __('Bulk edit not executed. No items found matching the criteria.', VGSE()->textname));
 				} else {
-					return array('force_complete' => true, 'message' => __('<p>Complete. You can close this popup</p>.', VGSE()->textname));
+					return array('force_complete' => true, 'message' => __('<p>Complete</p>.', VGSE()->textname));
 				}
 			}
 			wp_reset_postdata();
@@ -847,13 +847,10 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 			if ($total_updated > $total) {
 				$total_updated = $total;
 			}
-			$message = sprintf(__('%d of %d items have been processed. %d items were updated in this batch.', VGSE()->textname), $processed, $total, $total_updated);
+			$message = sprintf(__('<p class="success-message%s"><b>Editing the field: {column_label}</b>. Items to process: {total}, Progress: {progress_percentage}%%, We have updated {edited} items.</p>', VGSE()->textname), $column, $processed, $total, $total_updated);
 
-			if ($can_execute_formula_as_sql) {
-				$message .= __('<p>Complete</p>.', VGSE()->textname);
-			}
 			return array(
-				'message' => '<p>' . $message . '</p>',
+				'message' => $message,
 				'total' => (int) $total,
 				'processed' => (int) $processed,
 				'updated' => $total_updated,

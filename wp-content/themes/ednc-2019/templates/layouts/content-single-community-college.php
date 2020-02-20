@@ -234,7 +234,7 @@ while (have_posts()) : the_post();
       );
 
       query_posts($args);
-      $related = new WP_Query($args);
+      $maps = new WP_Query($args);
       $related_posts = false;
 
       if ($related->have_posts()) : ?>
@@ -242,7 +242,7 @@ while (have_posts()) : the_post();
           <div class="col-md-12">
             <div class="category-content-justify-left">
               <?php
-              while ($related->have_posts()) : $related->the_post(); ?>
+              while ($maps->have_posts()) : $maps->the_post(); ?>
               <article <?php post_class('block-news content-block-4 clearfix'); ?>>
                 <div class="flex">
                   <div class="block-content">
@@ -300,7 +300,7 @@ while (have_posts()) : the_post();
 
               <?php if( have_rows('first-year') ): ?>
                 <?php while( have_rows('first-year') ): the_row();  ?>
-                  <div class="box">
+                  <div class="box-3">
 
                     <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
 
@@ -317,7 +317,7 @@ while (have_posts()) : the_post();
 
               <?php if( have_rows('college-transfer') ): ?>
                 <?php while( have_rows('college-transfer') ): the_row();  ?>
-                  <div class="box">
+                  <div class="box-3">
 
                     <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
                     <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
@@ -335,7 +335,7 @@ while (have_posts()) : the_post();
 
               <?php if( have_rows('curriculum') ): ?>
                 <?php while( have_rows('curriculum') ): the_row();  ?>
-                  <div class="box">
+                  <div class="box-3">
 
                     <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
                     <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->

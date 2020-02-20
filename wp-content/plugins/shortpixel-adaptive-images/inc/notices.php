@@ -61,7 +61,9 @@ class ShortPixelAINotice {
                             }
                             echo('<br>');
                             if ($data['HasAccount']) {
-                                _e('Please <a href="https://shortpixel.com/plans2">login to your account</a> to purchase more credits.', 'shortpixel-adaptive-images');
+                                _e('Please <a href="https://shortpixel.com/plans2">login to your account</a> to purchase more credits.', 'shortpixel-adaptive-images');echo('&nbsp;');
+                                _e('Please also make sure that your domain is associated to your account.></a>.', 'shortpixel-adaptive-images');echo('&nbsp;');
+                                _e('<a href="https://docs.shortpixel.com/article/94-how-to-associate-a-domain-to-my-account">How do I do this?</a>.', 'shortpixel-adaptive-images');
                             } else {
                                 _e('If you  <a href="https://shortpixel.com/otp/af/MNCMIUS28044"><strong>sign-up now</strong></a> with ShortPixel you will receive 1,000 more free credits and also you\'ll get 50% bonus credits to any purchase that you\'ll choose to make. Image optimization credits can be purchased with as little as $4.99 for 7,500 credits (including the 50% bonus).', 'shortpixel-adaptive-images');
                             }

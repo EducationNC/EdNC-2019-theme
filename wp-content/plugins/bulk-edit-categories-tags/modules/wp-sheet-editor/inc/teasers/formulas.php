@@ -14,11 +14,15 @@ if (!class_exists('WP_Sheet_Editor_Formulas_Teaser')) {
 		}
 
 		function init() {
+			if (!is_admin()) {
+				return;
+			}
 
 			if (class_exists('WP_Sheet_Editor_Formulas')) {
 				return;
 			}
-			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_toolbar_items'));
+//			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_toolbar_items'));
+			add_action('vg_sheet_editor/editor_page/after_content', array($this, 'render_formulas_form'), 30, 1);
 		}
 
 		function register_toolbar_items($editor) {

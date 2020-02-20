@@ -3,9 +3,9 @@ Contributors: shazahm1@hotmail.com
 Donate link: http://connections-pro.com/
 Tags: table of contents, toc
 Requires at least: 4.4
-Tested up to: 5.1
+Tested up to: 5.3
 Requires PHP: 5.3
-Stable tag: 1.7
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,9 @@ Easy Table Contents is a fork of the excellent [Table of Contents Plus](https://
 4. Activate the plugin on the Plugins admin page.
 
 == Changelog ==
+
+= 1.7.1 02/18/2020 =
+* BUG: Sanitize the excluded heading string before saving post meta.
 
 = 1.7 05/09/2018 =
 * NEW: Introduce the `ez_toc_shortcode` filter.

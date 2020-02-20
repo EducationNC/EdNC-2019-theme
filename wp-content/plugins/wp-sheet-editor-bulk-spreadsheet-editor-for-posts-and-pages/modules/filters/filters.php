@@ -228,7 +228,7 @@ if (!class_exists('WP_Sheet_Editor_Filters')) {
 			}
 			if (!empty($filters['meta_query']) && is_array($filters['meta_query'])) {
 				foreach ($filters['meta_query'] as $index => $meta_query) {
-					if (is_array($meta_query['key'])) {
+					if (isset($meta_query['key']) && is_array($meta_query['key'])) {
 						$meta_query['key'] = array_filter($meta_query['key']);
 					}
 					if (empty($meta_query['key']) || empty($meta_query['compare']) || empty($meta_query['source'])) {

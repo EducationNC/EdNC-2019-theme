@@ -17,8 +17,51 @@ if (!class_exists('WP_Sheet_Editor_Popup_Teaser')) {
 			if (!is_admin()) {
 				return;
 			}
+			// All the premium plugins include the custom-columns module, 
+			// so we wont show the upgrade message when this module exists
+			if (class_exists('WP_Sheet_Editor_Custom_Columns')) {
+				return;
+			}
+			add_action('vg_sheet_editor/editor_page/after_console_text', array($this, 'notify_free_limitations_above_table'), 30, 1);
+			add_action('vg_sheet_editor/editor_page/after_content', array($this, 'move_console_bar_to_header'), 30, 1);
+//			add_action('vg_sheet_editor/editor_page/before_toolbars', array($this, 'render_teaser'));
+		}
 
-			add_action('vg_sheet_editor/editor_page/before_toolbars', array($this, 'render_teaser'));
+		function post_type_allowed($post_type) {
+
+			$products_post_type = apply_filters('vg_sheet_editor/woocommerce/product_post_type_key', 'product');
+			if (in_array($post_type, array('user', $products_post_type), true)) {
+				return false;
+			}
+			return true;
+		}
+
+		function move_console_bar_to_header($post_type) {
+			if (!$this->post_type_allowed($post_type)) {
+				return;
+			}
+			$this->auto_open_extensions_popup_once();
+			?>
+			<style>
+				#vgse-wrapper div#responseConsole {
+					margin: 0 10px;
+					border-bottom: 1px solid #d4d4d4;
+				}
+			</style>
+			<script>
+				jQuery(document).ready(function () {
+					jQuery('.sheet-logo-wrapper').after(jQuery('#responseConsole'));
+				});
+			</script>
+			<?php
+		}
+
+		function notify_free_limitations_above_table($post_type) {
+			if (!$this->post_type_allowed($post_type)) {
+				return;
+			}
+
+			printf(__('. <b>Upgrade:</b> Export, import, edit in Excel or Google Sheets; <a href="" data-remodal-target="modal-formula">bulk edit thousands of rows</a> at once, edit all the fields from other plugins, and more. <a href="%s" target="_blank" class="upgrade-link">Upgrade and Save Days of Work</a>', VGSE()->textname), VGSE()->get_buy_link('sheet-console-upgrade-{post_type}'));
 		}
 
 		function render_teaser($post_type) {
@@ -39,7 +82,12 @@ if (!class_exists('WP_Sheet_Editor_Popup_Teaser')) {
 						_e($message, VGSE()->textname);
 						?> </b> . <a href="#" class="button button-primary button-primary" data-remodal-target="modal-extensions"><?php _e('View Extensions', VGSE()->textname); ?></a></div>
 						<?php
+						$this->auto_open_extensions_popup_once();
 					}
+				}
+
+				function auto_open_extensions_popup_once() {
+
 					$flag_key = 'vgse_hide_extensions_popup';
 					if (!get_option($flag_key)) {
 						update_option($flag_key, 1);

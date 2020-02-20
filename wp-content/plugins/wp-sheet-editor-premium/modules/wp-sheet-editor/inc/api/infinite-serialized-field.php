@@ -70,6 +70,7 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 					$column_key = str_replace('.', '=', $field_key);
 					$title = vgse_custom_columns_init()->_convert_key_to_label(str_replace(array($this->settings['prefix'], '='), array($this->settings['prefix'] . ': ', ' : '), $column_key));
 					$editor->args['columns']->register_item($column_key, $post_type, apply_filters('vg_sheet_editor/infinite_serialized_column/column_settings', array(
+						'key' => $column_key,
 						'data_type' => 'meta_data',
 						'column_width' => 300,
 						'title' => $title,
@@ -145,6 +146,7 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 			if (empty($existing)) {
 				$existing = array();
 			}
+			$data_to_save = apply_filters('vg_sheet_editor/infinite_serialized_column/save_value', $data_to_save, $post_id, $cell_key, $post_type, $cell_args, $spreadsheet_columns, $this);
 			$dot_notation = $this->get_dot_notation_key(str_replace('=', '.', $cell_key));
 			$this->set($existing, $dot_notation, $data_to_save);
 			$this->update_value($post_id, $this->settings['sample_field_key'], $existing);
@@ -156,7 +158,7 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 				$existing = array();
 			}
 			$dot_notation = $this->get_dot_notation_key(str_replace('=', '.', $cell_key));
-			$value = $this->get($existing, $dot_notation, '');
+			$value = apply_filters('vg_sheet_editor/infinite_serialized_column/value', $this->get($existing, $dot_notation, ''), $post, $cell_key, $cell_args, $this);
 			return $value;
 		}
 

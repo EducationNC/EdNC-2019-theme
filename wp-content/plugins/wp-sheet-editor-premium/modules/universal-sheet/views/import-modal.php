@@ -2,6 +2,7 @@
 <div class="remodal import-csv-modal" data-remodal-id="import-csv-modal" data-remodal-options="closeOnOutsideClick: false, hashTracking: false">
 
 	<div class="modal-content">
+		<?php do_action('vg_sheet_editor/import/before_form', $post_type); ?>
 		<?php
 		$is_not_supported = apply_filters('vg_sheet_editor/import/is_not_supported', null, $post_type);
 		if (!is_null($is_not_supported)) {
@@ -14,6 +15,7 @@
 
 		<?php } else {
 			?>
+			<?php do_action('vg_sheet_editor/import/before_form', $post_type); ?>
 			<form class="import-csv-form vgse-modal-form " action="<?php echo admin_url('admin.php?page=vgse_import_page'); ?>" method="POST">
 				<ul class="unstyled-list">
 					<li class="step current">
@@ -163,6 +165,8 @@
 			<div class="import-step">
 				<h3><?php _e('Importing', VGSE()->textname); ?></h3>
 
+
+				<?php do_action('vg_sheet_editor/import/before_response', $post_type); ?>
 				<div class="import-response">
 
 				</div>

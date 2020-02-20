@@ -31,6 +31,10 @@ class ShortPixelRegexParser {
     public function parse($content) {
         $this->logger->log("******** REGEX PARSER *********");
 
+        //add the preconnect header for faster loading of the images
+        $apiUrl = parse_url($this->ctrl->settings['api_url']);
+        $content = str_replace('</head>', '<link href="' . (isset($apiUrl['scheme'])?$apiUrl['scheme']: 'https') . '://' . $apiUrl['host'] . '" rel="preconnect" crossorigin></head>',
+            $content);
         // EXTRACT all CDATA and inline script to be reinserted after the replaces
         // -----------------------------------------------------------------------
 
@@ -50,12 +54,13 @@ class ShortPixelRegexParser {
         $content = $this->extract_blocks($content, '__sp_noscript', '<noscript>', '</noscript>', $this->noscripts);
 
         $this->scripts = array();
-        $content = preg_replace_callback(
-        //     this part matches the scripts of the page, we don't replace inside JS
-            '/\<script(.*)\<\/script\>/sU', // U flag - UNGREEDY
-            array($this, 'replace_scripts'),
-            $content
-        );
+        $content = $this->extract_blocks($content, '__sp_script', '<script.', '</script>', $this->scripts);
+        //$content = preg_replace_callback(
+        ////     this part matches the scripts of the page, we don't replace inside JS
+        //    '/\<script(.*)\<\/script\>/sU', // U flag - UNGREEDY
+        //    array($this, 'replace_scripts'),
+        //    $content
+        //);
         $this->styles = array();
         $content = $this->extract_blocks($content, '__sp_style', '<style.', '</style>', $this->styles);
 /*        $content = preg_replace_callback(
@@ -79,7 +84,7 @@ class ShortPixelRegexParser {
         ); */
 
         $regexMaster = '/\<({{TAG}})(?:\s|\s[^\<\>]*?\s)({{ATTR}})\=(?:(\"|\')([^\>\'\"]+)(?:\'|\")|([^\>\'\"\s]+))(?:.*?)\>/s';
-        $regexMasterSrcset = '/\<({{TAG}})(?:\s|\s[^\<\>]*?\s)({{ATTR}})\=(\"|\')([^\>]+?)(?:\3)(?:.*?)\>/s';
+        $regexMasterSrcset = '/\<({{TAG}})(?:\s|\s[^\<\>]*?\s)({{ATTR}})\=(?:(\")([^\"\>]+?)\"|(\')([^\'\>]+?)\')(?:.*?)\>/s';
         $regexItems = $this->ctrl->getTagRules();
 
         foreach ($regexItems as $regexItem) {
@@ -102,7 +107,7 @@ class ShortPixelRegexParser {
         $this->logger->log("******** REGEX PARSER replace_wc_gallery_thumbs *********");
 
         $content = preg_replace_callback(
-            '/\<div[^\<\>]*?\sdata-thumb\=(?:\"|\')(.+?)(?:\"|\')(?:.+?)\>\<\/div\>/s',
+            '/\<div[^\<\>]*?\sdata-thumb(?:nail|)\=(?:\"|\')(.+?)(?:\"|\')(?:.+?)\>/s',
             array($this, 'replace_wc_gallery_thumbs'),
             $content
         );
@@ -117,8 +122,8 @@ class ShortPixelRegexParser {
 
         $integrations = $this->ctrl->getActiveIntegrations();
 
-        if($integrations['theme'] == 'CROWD 2') {
-            $regex = str_replace(array('{{TAG}}', '{{ATTR}}'), array('div|a', 'style'), $regexMasterSrcset);
+        if($integrations['theme'] == 'CROWD 2' || $integrations['theme'] == 'Lovely 2') {
+            $regex = str_replace(array('{{TAG}}', '{{ATTR}}'), array('div|a|span', 'style'), $regexMasterSrcset);
             $this->logger->log("CROWD 2 theme - regex $regex");
             $content = preg_replace_callback($regex,
                 array($this, 'replace_crowd2_img_styles'),
@@ -139,7 +144,7 @@ class ShortPixelRegexParser {
 
         if($this->ctrl->settings['type'] !== 1) { //srcset has to be checked too, in some cases the srcset wp hook isn't called...
             $regex = str_replace(array('{{TAG}}', '{{ATTR}}'), array('img', 'srcset'), $regexMasterSrcset);
-            $this->logger->log("REGEX: $regex");
+            $this->logger->log("SRCSET REGEX: $regex");
             $content = preg_replace_callback($regex,
                 array($this, 'replace_custom_srcset'),
                 $content
@@ -148,7 +153,7 @@ class ShortPixelRegexParser {
 
         if ($integrations['envira']) {
             $regex = str_replace(array('{{TAG}}', '{{ATTR}}'), array('img', 'data-envira-srcset'), $regexMasterSrcset);
-            $this->logger->log("REGEX: $regex");
+            $this->logger->log("ENVIRA REGEX: $regex");
             $content = preg_replace_callback($regex,
                 array($this, 'replace_custom_srcset'),
                 $content
@@ -174,8 +179,8 @@ class ShortPixelRegexParser {
         }
 
         if($integrations['elementor']) {
-            //Elementor can pass image URLs in sections' data-settings
-            $regex = str_replace(array('{{TAG}}', '{{ATTR}}'), array('section', 'data-settings'), $regexMasterSrcset);
+            //Elementor can pass image URLs in sections' or divs' data-settings
+            $regex = str_replace(array('{{TAG}}', '{{ATTR}}'), array('section|div', 'data-settings|data-options'), $regexMasterSrcset);
             $content = preg_replace_callback($regex,
                 array($this, 'replace_custom_json_attr'),
                 $content
@@ -268,10 +273,25 @@ class ShortPixelRegexParser {
             $this->logger->log("SCRIPT $i");
             $script = $this->scripts[$i];
             if($this->ctrl->settings['parse_json']) {
-                $script = preg_replace_callback('/(\<script[^>]*(?:\btype=(?:"|\')application\/(?:ld\+|)json(?:"|\'))[^>]*\>)(.*)\<\/script\>/sU',
-                    array($this, 'replace_application_json_script'),
-                    $script
-                );
+                if(preg_match('/^(\<script[^>]*(?:\btype=(?:"|\')application\/(?:ld\+|)json(?:"|\'))[^>]*\>)/sU', $script)) {
+                    $script = preg_replace_callback('/^(\<script[^>]*(?:\btype=(?:"|\')application\/(?:ld\+|)json(?:"|\'))[^>]*\>)(.*)\<\/script\>/sU',
+                        array($this, 'replace_application_json_script'),
+                        $script
+                    );
+                } elseif( false && strpos($script, '__sp_cdata_plAc3h0ldR_')) {
+                    require_once(__DIR__ . '/js-parser.class.php');
+                    //TODO test with cdata inside script
+                    $script = preg_replace_callback('/__sp_cdata_plAc3h0ldR_([0-9]+)/s',
+                        array($this, 'replace_cdata_js'),
+                        $script
+                    );
+                }elseif(false) {
+                    require_once(__DIR__ . '/js-parser.class.php');
+                    //try if there are any JSON variables
+                    //TODO for Rohit
+                    $jsParser = new ShortPixelJsParser($this->ctrl);
+                    $script = $jsParser->parseJsonBlocks($script);
+                }
             }
             $content = str_replace("<script>__sp_script_plAc3h0ldR_$i</script>", $script, $content);
         }
@@ -292,8 +312,22 @@ class ShortPixelRegexParser {
         return $content;
     }
 
+    protected function replace_cdata_js($matches) {
+        $jsParser = new ShortPixelJsParser($this->ctrl);
+        $key = '__sp_cdata_plAc3h0ldR_' . $matches[1];
+        $script = $this->CDATAs[$key];
+        if(strpos($script, 'var spai_settings') === false) { //don't parse our own JS block...
+            $this->CDATAs[$key] = $jsParser->parseJsonBlocks($script, 'cdata');
+        }
+        return $matches[0];
+    }
+
     public function replace_crowd2_img_styles($matches) {
         $text = $matches[0];
+        if(isset($matches[5]) && $matches[5] == '\'') {
+            $matches[3] = $matches[5];
+            $matches[4] = $matches[6];
+        }
         $style = $matches[4];
         if(strpos($style, '--img-') === false) return $text;
         $qm = strlen($matches[3]) ? $matches[3] : '"';
@@ -378,7 +412,7 @@ class ShortPixelRegexParser {
 
     public function replace_images($matches)
     {
-        if (count($matches) < 5 || strpos($matches[0], $matches[2] . '=' . $matches[3] . 'data:image/svg+xml;' . ($this->extMeta ? 'base64' : 'u='))) {
+        if (count($matches) < 5 ||  preg_match('/\s' . $matches[2] . '=["\']{0,1}data\:image\/svg\+xml;/s', $matches[0])) {
             //avoid duplicated replaces due to filters interference
             return $matches[0];
         }
@@ -440,9 +474,12 @@ class ShortPixelRegexParser {
         }
         //prevent cases when html code including data-spai attributes gets copied into new articles
         if(strpos($text, 'data-spai') > 0) {
-            if(strpos($text, 'data:image/svg+xml;' . ($extMeta ? 'base64' : 'u=')) > 0) {
+            //if(strpos($text, 'data:image/svg+xml;' . ($extMeta ? 'base64' : 'u=')) > 0) {
+            //  this way it works if we have two rules for the same tag, eg: img:src and img:data-src etc. - fix for
+            if(preg_match('/\s' . $attr . '=["\']{0,1}data\:image\/svg\+xml;/s', $text)) {
                 //for cases when the src is pseudo
                 //Seems that Thrive Architect is doing something like this under the hood? (see https://secure.helpscout.net/conversation/862862953/16430/)
+                $this->logger->log("Ignoring $tag - $attr because it's already data:img: " . $url);
                 return $text;
             }
             //for cases when it's normal URL, just get rid of data-spai's
@@ -529,10 +566,15 @@ class ShortPixelRegexParser {
      */
     public function replace_custom_srcset($matches)
     {
+        $this->logger->log("REPLACE CUSTOM SRCSET ", $matches);
+        if(isset($matches[5]) && $matches[5] == '\'') {
+            $matches[3] = $matches[5];
+            $matches[4] = $matches[6];
+        }
         $qm = strlen($matches[3]) ? $matches[3] : '"';
         $text = $matches[0];
         $pattern = $matches[2] . '=' . $matches[3] . $matches[4] . $matches[3];
-        $replacement = ' ' . $matches[2] . '=' . $qm . $this->replace_srcset($matches[4]) . $qm;
+        $replacement = ' ' . $matches[2] . '=' . $qm . $this->replace_srcset($matches[4]) . $qm . ($this->ctrl->settings['type'] === 1 ? '' : ' loading="lazy"');
         $pos = strpos($text, $pattern);
         if($pos === false) return $text;
         $str = substr($text, 0, $pos) . $replacement . substr($text, $pos + strlen($pattern));
@@ -566,6 +608,10 @@ class ShortPixelRegexParser {
         $text = $matches[0];
         $tag = $matches[1];
         $attr = $matches[2];
+        if(isset($matches[5]) && $matches[5] == '\'') {
+            $matches[3] = $matches[5];
+            $matches[4] = $matches[6];
+        }
         $jsonParser = new ShortPixelJsonParser($this->ctrl);
         $parsed = json_decode(str_replace('&quot;', '"', $matches[4]));
         if(json_last_error() === JSON_ERROR_SYNTAX) return $text;
@@ -590,6 +636,10 @@ class ShortPixelRegexParser {
     public function replace_product_variations($matches)
     {
         $this->logger->log("PRODUCT VARIATION", $matches);
+        if(isset($matches[5]) && $matches[5] == '\'') {
+            $matches[3] = $matches[5];
+            $matches[4] = $matches[6];
+        }
         $qm = strlen($matches[3]) ? $matches[3] : '"';
         $parsed = json_decode(str_replace('&quot;', '"', $matches[4]));
         $text = $matches[0];

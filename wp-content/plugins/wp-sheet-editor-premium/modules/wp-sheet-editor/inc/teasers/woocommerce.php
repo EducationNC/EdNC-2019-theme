@@ -11,6 +11,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 		var $post_type = null;
 		var $allowed_columns = null;
 		var $wc_lookuptable_after_save_synced = array();
+		var $variation_post_type = 'product_variation';
 
 		private function __construct() {
 			
@@ -45,16 +46,269 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'_width',
 				'_weight',
 			));
+			$this->variation_only_columns = array(
+			);
+			$this->variation_columns = array(
+				'ID',
+				'_sku',
+				'_regular_price',
+				'_sale_price',
+				'_manage_stock',
+				'_stock_status',
+				'_stock',
+				'_length',
+				'_height',
+				'_width',
+				'_weight',
+			);
 
 
 			add_filter('vg_sheet_editor/allowed_post_types', array($this, 'allow_product_post_type'));
 			add_filter('vg_sheet_editor/add_new_posts/create_new_posts', array($this, 'create_new_products'), 10, 3);
-			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_columns'));
+			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_columns'), 15);
 			add_action('vg_sheet_editor/editor/before_init', array($this, 'filter_columns_settings'), 60);
 			add_filter('vg_sheet_editor/custom_columns/teaser/allow_to_lock_column', array($this, 'dont_lock_allowed_columns'), 10, 2);
 			add_action('woocommerce_variable_product_before_variations', array($this, 'render_variations_metabox_teaser'));
 			add_action('vg_sheet_editor/editor_page/after_console_text', array($this, 'notify_variations_arent_allowed'), 30, 1);
 			add_action('vg_sheet_editor/save_rows/after_saving_post', array($this, 'product_updated_on_spreadsheet'), 10, 6);
+			add_filter('vg_sheet_editor/js_data', array($this, 'watch_cells_to_lock'), 10, 2);
+
+			add_action('vg_sheet_editor/load_rows/found_posts', array(
+				$this,
+				'maybe_include_variations_posts'
+					), 10, 3);
+
+
+			// Filter load_rows to include variations if toolbar item is enabled.
+			// The general fields will contain the same info as the parent post.
+			add_action('vg_sheet_editor/load_rows/output', array(
+				$this,
+				'maybe_modify_variations_output'
+					), 10, 4);
+
+
+
+			// When loading posts, disable product columns in variations
+			add_action('vg_sheet_editor/load_rows/allowed_post_columns', array(
+				$this,
+				'disable_general_columns_for_variations'
+					), 10, 2);
+			// Filter load_rows output to remove data in general columns and display a lock icon instead, also modify some columns values
+			add_action('vg_sheet_editor/load_rows/output', array(
+				$this,
+				'maybe_lock_general_columns_in_variations'
+					), 10, 4);
+			// Force WC to generate variation titles with all attributes, even when having a lot of attributes
+			// because the spreadsheet needs it for "delete duplicates" based on title and some search functionality
+			add_filter('woocommerce_product_variation_title_include_attributes', '__return_true', 99999);
+		}
+
+		function watch_cells_to_lock($data, $post_type) {
+			if ($post_type === $this->post_type) {
+				$data['watch_cells_to_lock'] = true;
+			}
+			return $data;
+		}
+
+		/**
+		 * Modify variations fields before returning the spreadsheet rows.
+		 * @param type $rows
+		 * @param array $wp_query
+		 * @param array $spreadsheet_columns
+		 * @return array
+		 */
+		function maybe_modify_variations_output($rows, $wp_query, $spreadsheet_columns) {
+
+			if (empty($rows) || !is_array($rows) || VGSE()->helpers->get_provider_from_query_string() !== $this->post_type) {
+				return $rows;
+			}
+
+			$args = apply_filters('vg_sheet_editor/woocommerce/variations/modify_variation_output_args', array(
+				'add_variation_title_prefix' => true,
+					), $rows, $wp_query, $spreadsheet_columns);
+
+			foreach ($rows as $row_index => $post) {
+				if ($post['post_type'] !== $this->variation_post_type) {
+					continue;
+				}
+				$post_obj = get_post($post['ID']);
+				$rows[$row_index]['post_status'] = 'publish';
+
+				// Set variation titles
+				if ($args['add_variation_title_prefix']) {
+					$rows[$row_index]['post_title'] = sprintf(__('Variation: %s', VGSE()->textname), $post_obj->post_title);
+				} else {
+					$rows[$row_index]['post_title'] = $post_obj->post_title;
+				}
+			}
+
+			return $rows;
+		}
+
+		function get_variation_whitelisted_columns() {
+			return $this->variation_columns;
+		}
+
+		function get_product_type($product_id) {
+			return VGSE()->helpers->get_current_provider()->get_item_terms($product_id, 'product_type');
+		}
+
+		/**
+		 * Add a lock icon to the cells enabled for variations or products.
+		 * 
+		 * @param array $posts Rows for display in spreadsheet
+		 * @param array $wp_query Arguments used to query the posts.
+		 * @param array $spreadsheet_columns
+		 * @param array $request_data Data received in the ajax request
+		 * @return array
+		 */
+		function maybe_lock_general_columns_in_variations($posts, $wp_query, $spreadsheet_columns, $request_data) {
+			if (VGSE()->helpers->get_provider_from_query_string() !== $this->post_type || empty($posts) || !is_array($posts) || VGSE()->helpers->is_plain_text_request()) {
+				return $posts;
+			}
+			VGSE()->helpers->profile_record('Before ' . __FUNCTION__);
+
+			$products = wp_list_filter($posts, array(
+				'post_type' => $this->post_type
+			));
+			// We need at least one parent product to detect the parent vs variations columns and lock them
+			if (empty($products)) {
+				return $posts;
+			}
+			$first_product_keys = array_keys(current($products));
+
+			$whitelist_variations = $this->get_variation_whitelisted_columns();
+			$columns_with_visibility = array_keys($spreadsheet_columns);
+
+			// Lock keys on variation rows for fields used in parent products that are not used in variations
+			$locked_keys_in_variations = array_intersect(array_diff($first_product_keys, $whitelist_variations), $columns_with_visibility);
+
+			// Lock keys on parent rows for fields used in variations that are not used by parent products
+			$locked_keys_in_general = array_intersect(array_diff($whitelist_variations, $first_product_keys), $columns_with_visibility);
+
+			$locked_keys_in_variations = apply_filters('vg_sheet_editor/woocommerce/locked_keys_in_variations', $locked_keys_in_variations, $whitelist_variations);
+			$lock_icon = '<i class="fa fa-lock vg-cell-blocked vg-variation-lock"></i>';
+
+			foreach ($posts as $index => $post) {
+
+
+				if ($post['post_type'] === $this->post_type) {
+					$locked_keys = $locked_keys_in_general;
+				} else {
+					$locked_keys = $locked_keys_in_variations;
+				}
+				if (isset($posts[$index]['_stock'])) {
+					$posts[$index]['_stock'] = (int) $posts[$index]['_stock'];
+				}
+				$product_type = !empty($post['product_type']) ? $post['product_type'] : $this->get_product_type($post['ID']);
+				// We are locking keys here because the automatic locking works with fields 
+				// used by all parent products or all variations, not fields used by some parents only.
+				// That's why in this case, we need to check the product type and disable them manually
+				if ($product_type === 'variable') {
+					$locked_keys[] = '_regular_price';
+					$locked_keys[] = '_sale_price';
+					$locked_keys[] = '_sale_price_dates_from';
+					$locked_keys[] = '_sale_price_dates_to';
+				}
+				$posts[$index] = array_merge($posts[$index], array_fill_keys(array_diff($locked_keys, array_keys($post)), ''));
+				foreach ($locked_keys as $locked_key) {
+
+					if (strpos($posts[$index][$locked_key], 'vg-cell-blocked') !== false) {
+						continue;
+					}
+					if (in_array($locked_key, array('title', 'post_title'))) {
+						$posts[$index][$locked_key] = $lock_icon . ' ' . $posts[$index][$locked_key];
+					} else {
+						$posts[$index][$locked_key] = $lock_icon;
+					}
+				}
+			}
+
+			VGSE()->helpers->profile_record('After ' . __FUNCTION__);
+			return $posts;
+		}
+
+		function get_variation_only_columns() {
+			return $this->variation_only_columns;
+		}
+
+		/**
+		 * Make sure that product variations dont have the columns exclusive to general products.
+		 * @param array $columns
+		 * @param obj $post
+		 * @return array
+		 */
+		function disable_general_columns_for_variations($columns, $post) {
+
+			if ($post->post_type !== $this->variation_post_type && $post->post_type !== $this->post_type) {
+				return $columns;
+			}
+
+			if ($post->post_type === $this->variation_post_type) {
+				$disallowed = array_diff(array_keys($columns), $this->get_variation_whitelisted_columns());
+			} else {
+				$disallowed = $this->get_variation_only_columns();
+			}
+
+			$new_columns = array();
+
+			foreach ($columns as $key => $column) {
+				if (!in_array($key, $disallowed)) {
+					$new_columns[$key] = $column;
+				}
+			}
+
+			return $new_columns;
+		}
+
+		/**
+		 * Include variations posts to the posts list before processing.
+		 * 
+		 * Note. The search variations logic is very good because it allows pagination by variations
+		 * but we can't use it without searching because it would exclude the non-variable products.
+		 * 
+		 * @param type $posts
+		 * @param type $wp_query
+		 * @param array $request_data Data received in the ajax request
+		 * @return array
+		 */
+		function maybe_include_variations_posts($posts, $wp_query, $request_data) {
+
+			if ($wp_query['post_type'] !== $this->post_type || empty($posts) || !is_array($posts)) {
+				return $posts;
+			}
+
+			$posts_to_inject_query = new WP_Query(array(
+				'post_type' => 'product_variation',
+				'nopaging' => true,
+				'post_parent__in' => wp_list_pluck($posts, 'ID'),
+				'orderby' => array('menu_order' => 'ASC', 'ID' => 'ASC'),
+			));
+
+			if (!$posts_to_inject_query->have_posts()) {
+				return $posts;
+			}
+
+			// Cache list of variations for future use
+			$this->posts_to_inject_query = $posts_to_inject_query;
+
+			$new_posts = array();
+			$wc_default_non_variable_types = array('simple', 'grouped', 'external');
+
+			foreach ($posts as $post) {
+				$new_posts[] = $post;
+
+				if (in_array($this->get_product_type($post->ID), $wc_default_non_variable_types, true)) {
+					continue;
+				}
+
+				$product_variations = wp_list_filter($posts_to_inject_query->posts, array(
+					'post_parent' => $post->ID
+				));
+
+				$new_posts = array_merge($new_posts, $product_variations);
+			}
+			return $new_posts;
 		}
 
 		function product_updated_on_spreadsheet($product_id, $item, $data, $post_type, $spreadsheet_columns, $settings) {
@@ -88,7 +342,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 
 		function notify_variations_arent_allowed($post_type) {
 			if ($post_type === $this->post_type) {
-				_e('. <b>Lite version.</b> Showing all products and all fields as columns, 15 columns are editable and the rest are read only, individual variations are excluded.', VGSE()->textname);
+				_e('. <b>Lite version.</b> Showing all products and all fields as columns, 15 columns are editable and the rest are read only. <br><b>Upgrade:</b> Edit in Excel/Google Sheets, export, import, bulk edit thousands of products at once.', VGSE()->textname);
 			}
 		}
 
@@ -106,7 +360,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 		}
 
 		function dont_lock_allowed_columns($allowed_to_lock, $column_key) {
-			if (in_array($column_key, $this->allowed_columns)) {
+			if (in_array($column_key, $this->allowed_columns, true)) {
 				$allowed_to_lock = false;
 			}
 

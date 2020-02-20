@@ -2,7 +2,7 @@
 Contributors: wpsheeteditor,vegacorp,josevega
 Tags: woocommerce, easy digital downloads, events, bulk edit, spreadsheet
 Tested up to: 5.3
-Stable tag: 2.16.0
+Stable tag: 2.17.0
 Requires at least: 3.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -230,7 +230,50 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 2. settings page
 
 == Changelog ==
-= V 2.16.0 - 2020-01-13 =
+= V 2.17.0 - 2020-02-19 =
+* NEW - FORMULAS - Allow to apply same bulk edit to multiple fields at once
+* NEW - FORMULAS - Allow to select individual rows with a checkbox and apply the bulk edit to those rows
+* NEW - CORE - Add support for custom post statuses
+* NEW - WC Products - Free - Allow to edit variation rows
+* NEW - GIVEWP - Added spreadsheet for editing/viewing donations
+* CHANGE - WC Coupons - FILTERS - When using the expiration date field, show a calendar to select dates easily without having to worry about the format
+* CHANGE - WC Coupons - Allow to save "allow products" as IDs separated by commas
+* CHANGE - WC Coupons - Allow to save "excluded products" as IDs separated by commas
+* CHANGE - WC Coupons - FORMULAS - When using the expiration date field, show a calendar to select dates easily without having to worry about the format
+* CHANGE - CORE - Allow to disable the cell comments
+* CHANGE - CORE - Allow to save taxonomy columns using a term slug
+* CHANGE - CORE - Load author cells with ajax
+* CHANGE - CORE - Reduce the memory usage when loading the spreadsheet page by reducing all the unnecessary output
+* CHANGE - FORMULAS - Show one text progress instead of one per batch to avoid crashing the browser when executing bulk edits with thousands of batches
+* CHANGE - UNIVERSAL SHEET - Export - Prevent errors if they are using a high batch size
+* CHANGE - UNIVERSAL SHEET - Export - Allow to control the export speed in the advanced settings
+* CHANGE - WC Products - Lock the price columns for parent product rows to prevent confusion because the prices are stored in the variations
+* CHANGE - CORE - Add cell comment to hierarchical taxonomy columns to indicate the format for child categories
+* CHANGE - CORE - When we save images on any field while editing a post type, automatically attach the image to the post if the image is unattached
+* CHANGE - FORMULAS - Don't show the tip about increasing speed if the bulk edit is applied on one batch
+* CHANGE - CORE - Allow to save a file name in the image columns and automatically save the first image from the media library matching the name
+* CHANGE - CORE - External button cells - Don't show a button when the value is empty
+* CHANGE - CORE - FREE - Allow to edit custom post types with limited fields
+* CHANGE - CORE - FREE - Remove formulas teaser from the toolbar and just link to it from the paragraph teaser
+* CHANGE - CORE - FREE - Disable the post types teaser from the toolbar because the post types can be edited in the free version now
+* CHANGE - CORE - FREE - Add a global teaser as paragraph in the header to better indicate the limitations and what's premium
+* CHANGE - YOAST FREE - Add a welcome page
+* CHANGE - CORE - Sort the list of spreadsheets in the form to display the available first, free extension second, and paid extensions finally
+* FIX - WC Products - When we edit global attributes in separate columns, it removes the attribute position
+* FIX - CUSTOM POST TYPES - Some post types added by other plugins appear locked
+* FIX - CORE - When changing the post type of a post, from page to another, clear the page template meta key to prevent the "invalid page template" error thrown by wp core
+* FIX - WC Products - Import - The auto mapping of csv columns is mapping only the first 9 download files and the rest are not being imported
+* FIX - WC Products - Import - The auto mapping of csv columns is mapping only the first 9 attributes and the rest are not being imported
+* FIX - CORE - When using multiple free plugins, sometimes the upgrade links get mixed up and one plugin shows the upgrade url of the other causing incorrect purchases
+* FIX - FILTERS - The "clear all filters" option removes the display variations filter, but the button in the toolbar appears as activated
+* FIX - FILTERS - When we make a search with an advanced filter, remove the filter, and make a search using the same input field, it doesn't apply the new search
+* FIX - POSTS TEMPLATES - When we duplicate a serialized field, it is saved as a literal string incorrectly
+* FIX - WC Products - Sometimes the "search on variations" filter wasn't added or removed when it should
+* FIX - FILTERS - When we unchecked a checkbox and submit the form, it didn't remove the filter
+* FIX - ACF - Repeater fields are saved correctly but the values are ignored by ACF
+
+
+= V 2.17.0 - 2020-01-13 =
 * NEW - CORE - Add option to "settings" menu to reset all settings
 * NEW - FORMULAS - Add variable $current_value_capitalize_each_word$ and option "Capitalize each word" to the "type of edit" list
 * NEW - FORMULAS - Added variable tags: $uuid$, $uniqid$, $current_value_lowercase$

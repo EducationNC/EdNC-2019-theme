@@ -456,7 +456,7 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 						'title' => __('Author', VGSE()->textname),
 						'type' => '',
 						'supports_formulas' => true,
-						'formatted' => array('data' => 'post_author', 'editor' => 'select', 'selectOptions' => array(VGSE()->data_helpers, 'get_authors_list')),
+						'formatted' => array('type' => 'autocomplete', 'source' => 'searchUsers'),
 						'allow_to_hide' => true,
 						'allow_to_rename' => true,
 					));
@@ -575,11 +575,16 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 										'data' => array())
 								);
 							} else {
+								$hierarchy_tip = is_taxonomy_hierarchical($taxonomy->name) ? __('. Add child categories using this format: Parent > child1 > child2', VGSE()->textname) : '';
 								$formatted = array(
 									'data' => $taxonomy->name,
 									'type' => 'autocomplete',
 									'source' => 'loadTaxonomyTerms'
 								);
+
+								if (empty(VGSE()->options['hide_cell_comments'])) {
+									$formatted['comment'] = array('value' => __('Enter multiple terms separated by commas', VGSE()->textname) . $hierarchy_tip);
+								}
 							}
 
 							$this->columns->register_item($taxonomy->name, $post_type, array(

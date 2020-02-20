@@ -82,6 +82,24 @@ SPAI.prototype.handleBody = function(){
     }
 }
 
+SPAI.prototype.handleUpdatedImageUrlsWithRetry = function(initial, theParent, hasMutationObserver, fromIntersection) {
+    try {
+        ShortPixelAI.handleUpdatedImageUrls(initial, theParent, hasMutationObserver, fromIntersection);
+        //console.log("body handled " + ShortPixelAI.bodyCount);
+    } catch(error) {
+        if(error == 'defer_all' && ShortPixelAI.bodyCount < 30) {
+            //console.log("body deferred " + ShortPixelAI.bodyCount);
+            setTimeout( function() {
+                ShortPixelAI.handleUpdatedImageUrls(initial, theParent, hasMutationObserver, fromIntersection);
+            }, 20 * ShortPixelAI.bodyCount );
+            ShortPixelAI.bodyCount++;
+        } else {
+            throw error;
+        }
+    }
+
+}
+
 SPAI.prototype.handleUpdatedImageUrls = function(initial, theParent, hasMutationObserver, fromIntersection){
     /*DEBUG*/ShortPixelAI.record('count', 'observedMutations', 1);
     /*DEBUG*/if(ShortPixelAI.observedMutations > ShortPixelAI.stop) return;
@@ -159,6 +177,21 @@ SPAI.prototype.handleUpdatedImageUrls = function(initial, theParent, hasMutation
 //        jQuery('div[data-ultimate-bg]', theParent).each(function(){
 //            ShortPixelAI.updateWpBakeryTestimonial(jQuery(this));
 //        });
+    }
+    if(spai_settings.active_integrations['social-pug']) {
+        //Pinterest buttons are created from pseudo-src's (or api URLs with WebP) by Mediavine Grow, restore the original URL
+        jQuery('a.dpsp-pin-it-button', theParent).each(function(){
+            var elm = jQuery(this);
+            var match = false;
+            elm.attr('href', elm.attr('href').replace(/media=(data:image\/svg\+xml;.*)&url=/, function(matched, pseudoSrc, pos){
+                match = true;
+                return 'media=' + ShortPixelAI.parsePseudoSrc(pseudoSrc).src + '&url=';
+            }));
+            if(!match) {
+                var regex = spai_settings.api_url.substr(0, spai_settings.api_url.lastIndexOf('/') + 1).replace('/', '\\/') + '[^\\/]+\\/';
+                elm.attr('href', elm.attr('href').replace(new RegExp(regex), ''));
+            }
+        });
     }
     //Foo gallery
     ShortPixelAI.updateAHrefForIntegration('foo', theParent, 'div.fg-item a.fg-thumb');
@@ -383,7 +416,15 @@ SPAI.prototype.setupDOMChangeObserver = function() {
                 //*DEBUG*/ console.log(mutation.addedNodes[0]);
                 for(var i = 0; i < mutation.addedNodes.length; i++) {
                     //TODO if practice proves necessary: window.requestIdleCallback()?
-                    ShortPixelAI.handleUpdatedImageUrls(false, jQuery(mutation.addedNodes[i]), true, false);
+                    try {
+                        ShortPixelAI.handleUpdatedImageUrls(false, jQuery(mutation.addedNodes[i]), true, false);
+                    }catch(error) {
+                        if (error == 'defer_all') { //defer_all means the images are not ready.
+                            setTimeout(ShortPixelAI.handleBody, 20 * ShortPixelAI.bodyCount);
+                        } else {
+                            throw error; //not ours
+                        }
+                    }
                 }
             }
 
@@ -437,7 +478,7 @@ SPAI.prototype.processMutations = function() {
             //console.log(" PROCESS MUTATIONS " + mutationTarget);
             //Changed fromIntersection to false to load the modifications images lazily too.
             //TODO TEST well (ref.: HS 986527864)
-            ShortPixelAI.handleUpdatedImageUrls(false, mutationTargetJQ, true, false);
+            ShortPixelAI.handleUpdatedImageUrlsWithRetry(false, mutationTargetJQ, true, false);
             if (outerHTML.indexOf('background') > 0) {
                 ShortPixelAI.updateInlineStyle(mutationTargetJQ, false, false, true);
             }
@@ -459,7 +500,7 @@ SPAI.prototype.setupIntersectionObserverAndParse = function() {
         entries.forEach(function(entry) {
             if(entry.isIntersecting) {
                 var elm = jQuery(entry.target);
-                ShortPixelAI.handleUpdatedImageUrls(false, elm, true, true);
+                ShortPixelAI.handleUpdatedImageUrlsWithRetry(false, elm, true, true);
                 if (entry.target.outerHTML.indexOf('background') > 0) {
                     ShortPixelAI.updateInlineStyle(elm, false, false, true);
                 }
@@ -468,28 +509,32 @@ SPAI.prototype.setupIntersectionObserverAndParse = function() {
         });
     }, options);
 
+    jQuery("style").each(function () {
+        var e = jQuery(this);
+        try  {
+            var t = ShortPixelAI.replaceBackgroundPseudoSrc(e.html());
+            if(t.replaced) {
+                e.html(t.text);
+            }
+        } catch (e) {
+            console.log('error');
+        }
+    });
     //initial parse of the document
     //style blocks, wherever they might be
     jQuery('style').each(function(){
 //      jQuery('style:not([data-spai-upd])').each(function(){
         var elm = jQuery(this);
         //var css = elm.html();
-        var result = ShortPixelAI.replaceBackgroundPseudoSrc(elm.html());
-
-        /*var replaced = false;
-        //regexps are identical, need to duplicate them because the first will use is internal pointer to replace all
-        css.replace(         /background(-image|)\s*:([^;]*[,\s]|\s*)url\(['"]?(data:image\/svg\+xml;u=[^'"\)]*?)(['"]?)\)/gm, function(item){
-            var oneMatcher = /background(-image|)\s*:([^;]*[,\s]|\s*)url\(['"]?(data:image\/svg\+xml;u=[^'"\)]*?)(['"]?)\)/m;
-            var match = oneMatcher.exec(item);
-            var parsed = ShortPixelAI.parsePseudoSrc(match[3]);
-            var newSrc = ShortPixelAI.composeApiUrl(parsed.src, parsed.origWidth);
-            css = css.replace(match[3], newSrc);
-            replaced = true;
-        });*/
-        if(result.replaced) {
-            elm.html(result.text);
+        try  {
+            var result = ShortPixelAI.replaceBackgroundPseudoSrc(elm.html());
+            if(result.replaced) {
+                elm.html(result.text);
+            }
+        } catch (ierror) {
+            //on Internet Explorer jQuery throws undefined function 'replace' for some style tags.
+            console.log('Error parsing styles: ' + ierror.description + ' (STYLE TAG: ' + elm.html() + ')');
         }
-        //ShortPixelAI.elementUpdated(elm, 1);
     });
 
     //check the stylesheets, some optimizers (for example Swift Performance) extracts the inline CSS into .css files
@@ -594,6 +639,7 @@ SPAI.prototype.composeApiUrl = function(doRegister, src, w, h) {
             l.href = spai_settings.site_url;
             src = l.protocol + "//" + l.hostname + src;
         } else {
+            var href = window.location.href.split('#')[0].split('?')[0]; //get rid of hash and query string
             src = window.location.href + (window.location.href.endsWith('/') ? '' : '/') + src;
             if(src.indexOf('..') > 0) {
                 //normalize the URL
@@ -756,15 +802,17 @@ SPAI.prototype.parsePseudoSrcSet = function(srcSet, sizes, w, origData) {
     var newSrcSet = '';
     var newSizes = '';
     if(srcSet) {
-        var srcList = srcSet.split(", ");
+        var srcList = srcSet.match(/[^\s,][^\s]+(\s+[0-9wpx]+\s*,?|\s*,|\s*$)/g); //split(", ");
         for(var i = 0; i < srcList.length; i++) {
-            var item = srcList[i].trim();
+            var item = srcList[i].replace(/,$/, '').trim();
             var newItem = '';
             if(ShortPixelAI.isFullPseudoSrc(item)) {
                 var itemParts = item.split(/\s+/);
                 if(itemParts.length >= 2) {
                     var itemData = ShortPixelAI.parsePseudoSrc(itemParts[0]);
-                    newItem = ShortPixelAI.composeApiUrl(false, itemData.src, false, false) + " " + itemParts[1];
+                    if(itemData.src) {
+                        newItem = ShortPixelAI.composeApiUrl(false, itemData.src, false, false) + " " + itemParts[1];
+                    }
                     if(w == parseInt(itemParts[1])) {
                         origData = false; //no need to add the original as it's already in the srcset
                     }
@@ -814,13 +862,28 @@ SPAI.prototype.updateInlineStyle = function(elm, w, h, isApi) {
     } else {
         return false;
     }
+
     //devicePixelRatio is applied in composeApiUrl
     var screenWidth = window.screen.width;
     var setMaxWidth = spai_settings.backgrounds_max_width ? spai_settings.backgrounds_max_width : 99999;
     var origWidth = data.origWidth > 0 ? data.origWidth : 99999;
     var cappedWidth = Math.min(origWidth , screenWidth, w ? w : 99999, setMaxWidth);
-    var newSrc = isApi ? ShortPixelAI.composeApiUrl(false, src, cappedWidth < 99999 ? cappedWidth: false) : src;
+    var screenHeight = window.screen.height;
+    var origHeight = data.origHeight > 0 ? data.origHeight : 99999;
+    //if no original height, then it doesn't make sense to calculate the capped height as we can't determine the aspect ratio
+    var cappedHeight = origHeight < 99999 ? Math.min(origHeight , screenHeight, w ? w : 99999) : 99999;
 
+    //background-size si background-position
+/*    var sizeCss = elm.css('background-size');
+    if(sizeCss !== 'auto') {
+        //we need to determine the scaling introduced by CSS
+    }
+    var posCss = elm.css('background-position');
+    if(posCss !== '0% 0%' && false) { //TODO
+
+    }
+*/
+    var newSrc = isApi ? ShortPixelAI.composeApiUrl(false, src, cappedWidth < 99999 ? cappedWidth: false, cappedHeight < 99999 ? cappedHeight: false) : src;
     elm.attr('style', style.replace(pseudoSrc, newSrc));
 
     return data;

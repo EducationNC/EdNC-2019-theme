@@ -30,7 +30,7 @@ img.spai-snip-menu-image-overlay_v1 {
 #spai-snip-menu-popup-multiple, #spai-snip-menu-popup-single {
     right: 0;
     position: fixed;
-    top: 1vh;
+    top: 8vh;
     background-color: black;
     color: white;
     padding: 10px;
@@ -45,15 +45,24 @@ img.spai-snip-menu-image-overlay_v1 {
 .spai-snip-menu-popup-single-options, .spai-snip-menu-popup-multiple-list-item-container {
     margin-top: 25px;
 }
+.spai-snip-menu-popup-single-item-container {
+    float:left;
+    padding: 15px;
+    text-align:center;
+}
 .spai-snip-menu-popup-multiple-list-item-container-image, .spai-snip-menu-popup-single-item-container-image {
-    max-width: 20vw;       /* for most modern browsers (not IE < 8) */
+    max-width: 40vw;       /* for most modern browsers (not IE < 8) */
     width: auto !important; /* IE max-width hack */
-    width: 20vw;           /* width value for IE */
-    max-height: 20vh;       /* for most modern browsers (not IE < 8) */
+    width: 40vw;           /* width value for IE */
+    max-height: 40vh;       /* for most modern browsers (not IE < 8) */
     height: auto !important; /* IE max-width hack */
-    height: 20vh;           /* width value for IE */
+    height: 40vh;           /* width value for IE */
     margin-right: 15px;
     vertical-align: middle;
+}
+.spai-snip-menu-popup-single-item-container-basename, .spai-snip-menu-popup-single-title {
+    font-weight: bold;
+    color:#94d6e2;
 }
 .spai-snip-menu-popup a, .spai-snip-menu-popup a:link, .spai-snip-menu-popup a:visited, .spai-snip-menu-popup a:hover, .spai-snip-menu-popup a:active {
     color: white;

@@ -1,6 +1,14 @@
 <?php
 
-class VGSE_Provider_User {
+// Fix. If they update one plugin and use an old version of another,
+// the Abstract class might not exist and they will get fatal errors.
+// So we make sure it loads the class from the current plugin if it's missing
+// This can be removed in a future update.
+if (!class_exists('VGSE_Provider_Abstract')) {
+	require_once 'abstract.php';
+}
+
+class VGSE_Provider_User extends VGSE_Provider_Abstract {
 
 	static private $instance = false;
 	var $key = 'user';
@@ -198,7 +206,7 @@ WHERE pm.meta_key = '" . esc_sql($old_key) . "' ");
 		return apply_filters('vg_sheet_editor/provider/user/get_item', $user, $id, $format);
 	}
 
-	function get_item_meta($id, $key, $single = true, $context = 'save') {
+	function get_item_meta($id, $key, $single = true, $context = 'save', $bypass_cache = false) {
 		return apply_filters('vg_sheet_editor/provider/user/get_item_meta', get_user_meta($id, $key, $single), $id, $key, $single, $context);
 	}
 

@@ -27,7 +27,7 @@ class ShortPixelAI_Settings{
 			 */
 			function custom_admin_menu() {
 				add_options_page(
-					__('ShortPixel AI Settings','shortpixel-adaptive-images'),
+					__('ShortPixel AI','shortpixel-adaptive-images'),
 					'ShortPixel AI',
 					'manage_options',
 					'shortpixel_ai_settings_page',

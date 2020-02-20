@@ -13,6 +13,10 @@ class ShortPixelAI
     const SEP = '+'; //can be + or ,
     const LOG_NAME = 'shortpixel_ai_log';
     public static $SHOW_STOPPERS = array('ao', 'avadalazy', 'ginger');
+    //                                          Add Media popup      Image to editor              Woo product variations         avia layout builder AJAX call
+    public static $excludedAjaxActions = array('query-attachments', 'send-attachment-to-editor', 'woocommerce_load_variations', 'avia_ajax_text_to_interface', 'avia_ajax_text_to_preview',
+        //My Listing theme
+          'mylisting_upload_file');
 
     public $settings;
     public $cssCacheVer;
@@ -90,7 +94,7 @@ class ShortPixelAI
     public function init_ob()
     {
         if ($this->isWelcome()) {
-            $this->logger->log("WILL PARSE " . $_SERVER['REQUEST_URI']);
+            SHORTPIXEL_AI_DEBUG && $this->logger->log('WILL PARSE ' . $_SERVER['REQUEST_URI'] . ' CALLED BY ' . $_SERVER['HTTP_REFERER']);
             //remove srcset and sizes param
             add_filter('wp_calculate_image_srcset', array($this, 'replace_image_srcset'), 10, 5);
 
@@ -273,10 +277,12 @@ class ShortPixelAI
     }
 
     function parse_cached_css($content, $source, $target) {
-        $this->logger->log("PARSE WP-ROCKET CSS from $source into $target");
-        $this->cssParser->cssFilePath = $target;
-        return $this->cssParser->replace_inline_style_backgrounds($content);
+        $this->logger->log("PARSE WP-ROCKET CSS from $source into $target, length " . strlen($content));
+        $this->cssParser->cssFilePath = trailingslashit(dirname($target));
+        $ret = $this->cssParser->replace_inline_style_backgrounds($content);
         $this->cssParser->cssFilePath = false;
+        $this->logger->log("PARSE WP-ROCKET CSS return " . strlen($ret));
+        return $ret;
     }
 
     public function enqueue_script()
@@ -327,6 +333,7 @@ class ShortPixelAI
             'ajax_url' => admin_url('admin-ajax.php')
         ));
         wp_enqueue_script('spai-scripts');
+        //wp_enqueue_script('spai-bg', $this->plugin_url . 'js/calculate-bg-size.js', array('jquery'), SHORTPIXEL_AI_VERSION, true);
     }
 
     public function splitSelectors($selectors) {
@@ -361,7 +368,7 @@ class ShortPixelAI
             if(empty($_POST['selector']) || !is_string($_POST['selector'])) {
                 $result['message'] = 'Invalid selector has been provided.';
             }
-            else if(empty($_POST['which_list']) || !is_string($_POST['which_list']) || !in_array($_POST['which_list'], array('noresize_selectors', 'excluded_selectors', 'eager_selectors'))) {
+            else if(empty($_POST['which_list']) || !is_string($_POST['which_list']) || !in_array($_POST['which_list'], array('noresize_selectors', 'excluded_selectors', 'excluded_paths', 'eager_selectors'))) {
                 $result['message'] = 'Invalid list has been provided.';
             }
             else {
@@ -370,12 +377,23 @@ class ShortPixelAI
                 $selectors_now = get_option($wp_option_name, '');
                 $list = $this->splitSelectors($selectors_now);
                 $result['status'] = 'ok';
+                if($_POST['which_list'] === 'excluded_paths') {
+                    $delimiter = "\n";
+                    $selector = explode('/http', $selector);
+                    if(count($selector) > 1) {
+                        array_shift($selector);
+                        $selector = 'http' . implode('/http', $selector);
+                    }
+                }
+                else {
+                    $delimiter = ',';
+                }
                 if(in_array($selector, $list)) {
                     $result['message'] = 'Selector already exists in the list.';
                 }
                 else {
                     $list[] = $selector;
-                    if(update_option($wp_option_name, implode(',', $list))) {
+                    if(update_option($wp_option_name, implode($delimiter, $list))) {
                         $result['message'] = 'Selector has been added to the list.';
                     }
                     else {
@@ -399,7 +417,7 @@ class ShortPixelAI
             if(empty($_POST['selector']) || !is_string($_POST['selector'])) {
                 $result['message'] = 'Invalid selector has been provided.';
             }
-            else if(empty($_POST['which_list']) || !is_string($_POST['which_list']) || !in_array($_POST['which_list'], array('noresize_selectors', 'excluded_selectors', 'eager_selectors'))) {
+            else if(empty($_POST['which_list']) || !is_string($_POST['which_list']) || !in_array($_POST['which_list'], array('noresize_selectors', 'excluded_selectors', 'excluded_paths', 'eager_selectors'))) {
                 $result['message'] = 'Invalid list has been provided.';
             }
             else {
@@ -408,6 +426,9 @@ class ShortPixelAI
                 $selectors_now = get_option($wp_option_name, '');
                 $list = $this->splitSelectors($selectors_now);
                 $result['status'] = 'ok';
+                if($_POST['which_list'] === 'excluded_paths' && strpos($selector, 'regex') >= 0 && in_array(str_replace('\\\\', '\\', $selector), $list)) {
+                    $selector = str_replace('\\\\', '\\', $selector);
+                }
                 if(!in_array($selector, $list)) {
                     $result['message'] = 'Selector does not exist in the list.';
                 }
@@ -572,7 +593,7 @@ class ShortPixelAI
             $path = dirname(dirname(__DIR__)) . '/divi-toolbox/divi-toolbox.php';
             $pluginInfo = get_plugin_data($path);
             if(is_array($pluginInfo) && version_compare($pluginInfo['Version'], '1.4.2') < 0) {//older versions than 1.4.2 produce the conflict
-                $diviToolboxOptions = unserialize(get_option('dtb_toolbox', '{}'));
+                $diviToolboxOptions = unserialize(get_option('dtb_toolbox', 'a:0:{}'));
                 if(is_array($diviToolboxOptions) && isset($diviToolboxOptions['dtb_post_meta'])) {
                     $this->conflict = 'divitoolbox';
                     return $this->conflict;
@@ -782,7 +803,7 @@ class ShortPixelAI
         }
 
         $contentObj = json_decode($content);
-        $isJson = !(json_last_error() === JSON_ERROR_SYNTAX);
+        $isJson = !($jsonErr = json_last_error() === JSON_ERROR_SYNTAX) && ($contentObj !== null);
         if ($isJson) {
             $this->logger->log("JSON CONTENT: " . $content);
             if ($this->settings['parse_json']) {
@@ -889,12 +910,12 @@ class ShortPixelAI
         if ( is_multisite() ) {
             $activePlugins = array_merge($activePlugins, array_keys(get_site_option( 'active_sitewide_plugins')));
         }
-            //test WPRocket
-        if (false && in_array('wp-rocket/wp-rocket.php', $activePlugins)) {
+        //test WPRocket
+        if (in_array('wp-rocket/wp-rocket.php', $activePlugins)) {
             $path = dirname(dirname(__DIR__)) . '/wp-rocket/wp-rocket.php';
             $pluginVersion = $this->readPluginVersion($path);
             $wpRocketSettings = get_option('wp_rocket_settings', array());
-            $hasCssFilter = (version_compare($pluginVersion, '3.4') >= 0);
+            $hasCssFilter = (version_compare($pluginVersion, '3.4.3') >= 0);
             $rocket = array( 'lazyload' => (isset($wpRocketSettings['lazyload']) && $wpRocketSettings['lazyload'] == 1),
                              'css-filter' => $hasCssFilter,
                              'minify-css' => isset($wpRocketSettings['minify_css']) && $wpRocketSettings['minify_css'] == 1
@@ -918,6 +939,7 @@ class ShortPixelAI
             'slider-revolution' => in_array('revslider/revslider.php', $activePlugins),
             'smart-slider' => in_array('smart-slider-3/smart-slider-3.php', $activePlugins) || in_array('nextend-smart-slider3-pro/nextend-smart-slider3-pro.php', $activePlugins),
             'wp-grid-builder' => in_array('wp-grid-builder/wp-grid-builder.php', $activePlugins),
+            'social-pug' => in_array('social-pug/index.php', $activePlugins), //Mediavine Grow
             'wp-rocket' => $rocket
         );
         //test theme. 'Jupiter' 'CROWD 2'
@@ -1089,8 +1111,16 @@ class ShortPixelAI
     }
 
     public function urlIsExcluded($url) {
+        //exclude generated images like JetPack's admin bar hours stats
+        if(strpos($url, '?page=')) {
+            $admin = parse_url(admin_url());
+            if(strpos($url, $admin['path'])) {
+                return true;
+            }
+        }
         //$this->logger->log("IS EXCLUDED? $url");
         if( isset($this->settings['excluded_paths']) && strlen($this->settings['excluded_paths'])) {
+            $urlParsed = parse_url($url);
             foreach (explode("\n", $this->settings['excluded_paths']) as $rule) {
 
                 $rule = explode(':', $rule);
@@ -1109,9 +1139,25 @@ class ShortPixelAI
                         case 'path':
                         case 'http': //being so kind to accept urls as they are. :)
                         case 'https':
+                            if(!isset($urlParsed['host'])) {
+                                $valueParsed = parse_url($value);
+                                $value = isset($valueParsed['path']) ? $valueParsed['path'] : false;
+                            }
                             if(strpos($url, $value) !== false) {
                                 $this->logger->log("EXCLUDED by $type : $value");
                                 return true;
+                            }
+                            if(isset($urlParsed['path'])) {
+                                preg_match("/(-[0-9]+x[0-9]+)\.([a-zA-Z0-9]+)$/", $urlParsed['path'], $matches);
+                                //$this->logger->log("MATCHED THUMBNAIL for $url: ", $matches);
+                                if(isset($matches[1]) && isset($matches[2])) {
+                                    //try again without the resolution part, in order to exclude all thumbnails if main image is excluded
+                                    $urlMain = str_replace($matches[1] . '.' . $matches[2], '.' . $matches[2], $url);
+                                    //$this->logger->log("WILL REPLACE : {$matches[1]}.{$matches[2]} with .{$matches[2]} results: ", $urlMain);
+                                    if($urlMain !== $url) {
+                                        return $this->urlIsExcluded($urlMain);
+                                    }
+                                }
                             }
                             break;
                     }
@@ -1137,15 +1183,16 @@ class ShortPixelAI
                 return false;
             }
         }
+        $referrerPath = (isset($referrer['path']) ? $referrer['path'] : '');
         return !(is_feed()
              || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
              || (defined('DOING_CRON') && DOING_CRON)
              || (defined('WP_CLI') && WP_CLI)
-             || (isset($_GET['PageSpeed']) && $_GET['PageSpeed'] == 'off')
+             || (isset($_GET['PageSpeed']) && $_GET['PageSpeed'] == 'off') || strpos($referrerPath, 'PageSpeed=off')
+             ||  isset($_GET['fl_builder']) || strpos($referrerPath, '/?fl_builder') //sssh.... Beaver Builder is editing :)
              || (isset($_GET['tve']) && $_GET['tve'] == 'true') //Thrive Architect editor (thrive-visual-editor/thrive-visual-editor.php)
              || (isset($_GET['ct_builder']) && $_GET['ct_builder'] == 'true' && isset($_GET['oxygen_iframe']) && $_GET['oxygen_iframe'] == 'true') //Oxygen Builder
-            //                                                                  Woo product variations       avia layout builder AJAX call
-             || (isset($_POST['action']) && in_array($_POST['action'], array('woocommerce_load_variations', 'avia_ajax_text_to_interface', 'avia_ajax_text_to_preview')) )
+             || (isset($_REQUEST['action']) && in_array($_REQUEST['action'], self::$excludedAjaxActions) )
              || (is_admin() && function_exists("is_user_logged_in") && is_user_logged_in()
                 && !$this->doingAjax)
             );

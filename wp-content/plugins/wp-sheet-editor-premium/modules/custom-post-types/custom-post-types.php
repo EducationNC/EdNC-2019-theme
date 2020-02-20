@@ -39,7 +39,7 @@ if (!class_exists('WP_Sheet_Editor_CPTs')) {
 				return $field_html;
 			}
 
-			$all_post_types = apply_filters('vg_sheet_editor/custom_post_types/get_all_post_types_names', VGSE()->helpers->get_all_post_types_names());
+			$all_post_types = apply_filters('vg_sheet_editor/custom_post_types/get_all_post_types', VGSE()->helpers->get_all_post_types());
 
 			$current_post_types = VGSE()->options['be_post_types'];
 
@@ -49,31 +49,26 @@ if (!class_exists('WP_Sheet_Editor_CPTs')) {
 
 			$field_html = '<select  multiple="multiple" id="be_post_types-select" data-placeholder="Select an item" name="vg_sheet_editor[be_post_types][]" class="redux-select-item " style="width: 40%;" rows="6"><option></option>';
 
-			$excluded = $this->get_post_types_with_own_sheet();
+			// We used to exclude post types with own sheet here but we stopped
+			// because the bundle already has the list of post types without own sheet
+			$allowed = VGSE()->bundles['custom_post_types']['post_types'];
 			foreach ($all_post_types as $post_type) {
-				if (in_array($post_type, $excluded)) {
+				if (!in_array($post_type->name, $allowed, true)) {
 					continue;
 				}
-				$field_html .= '<option value="' . $post_type . '" ';
+				$field_html .= '<option value="' . $post_type->name . '" ';
 
-				if (in_array($post_type, $current_post_types) || isset($current_post_types[$post_type])) {
+				if (in_array($post_type->name, $current_post_types) || isset($current_post_types[$post_type->name])) {
 					$field_html .= ' selected';
 				}
 
-				$field_html .= '>' . $post_type . '</option>';
+				$field_html .= '>' . $post_type->label . '</option>';
 			}
 
 			$field_html .= '</select>';
 
 
 			return $field_html;
-		}
-
-		function get_post_types_with_own_sheet() {
-			$post_types_included_in_core = array('product');
-			$exclude = array_unique(array_values(array_merge(VGSE()->helpers->array_flatten(wp_list_pluck(VGSE()->bundles, 'post_types')), VGSE()->helpers->array_flatten(wp_list_pluck(VGSE()->extensions, 'post_types')))));
-
-			return apply_filters('vg_sheet_editor/custom_post_types/get_post_types_with_own_sheet', array_diff($exclude, $post_types_included_in_core));
 		}
 
 		/**
@@ -94,9 +89,11 @@ if (!class_exists('WP_Sheet_Editor_CPTs')) {
 				$new_current_post_types[$current_post_type] = $current_post_type;
 			}
 			$all_post_types = apply_filters('vg_sheet_editor/custom_post_types/get_all_post_types', VGSE()->helpers->get_all_post_types());
-			$excluded = $this->get_post_types_with_own_sheet();
+			// We used to exclude post types with own sheet here but we stopped
+			// because the bundle already has the list of post types without own sheet
+			$allowed = (!empty(VGSE()->bundles['custom_post_types']) ) ? VGSE()->bundles['custom_post_types']['post_types'] : array();
 			foreach ($all_post_types as $post_type) {
-				if (in_array($post_type->name, $excluded)) {
+				if (!in_array($post_type->name, $allowed, true)) {
 					continue;
 				}
 				$allowed_post_types[$post_type->name] = $post_type->label;

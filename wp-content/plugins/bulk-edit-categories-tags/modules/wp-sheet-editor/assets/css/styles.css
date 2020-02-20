@@ -242,7 +242,10 @@ Notifications oh-snap
     right: 10px;
     height: 100px;
     /*z-index: 1100000;*/
-    width: 100%;
+    /*width: 100%;*/
+	/*We want the notification width based on the message to not cover text or content near it */
+    width: auto;
+    min-width: 285px;
     max-width: 400px;
 }
 
@@ -399,6 +402,7 @@ a.tipso.tipso_style {
     height: 10px;
     float: none;
     width: 100%;
+    max-width: 100%;
 }
 
 .remodal .nanobar {
@@ -815,7 +819,7 @@ body.wp-admin {
 
 /* Center checkboxes in cells */
 
-#vgse-wrapper .handsontable tr td input[type="checkbox"] {
+#vgse-wrapper .handsontable tr input[type="checkbox"] {
     float: none;
     margin: 0 auto;
     display: block;
@@ -1586,7 +1590,9 @@ input[type=checkbox]:checked:before {
 .remodal .vgse-variations-tool,
 .remodal .vgse-variations-tool .advanced-options,
 .remodal .vgse-variations-tool .use-search-query-container,
-.remodal .vgse-variations-tool .individual-product-selector {
+.remodal .vgse-variations-tool .individual-product-selector,
+.merge-terms-modal .use-search-query-container,
+.merge-terms-modal .individual-term-selector {
     display: none;
 }
 
@@ -2030,8 +2036,22 @@ fixed 42px below the sticky toolbar*/
 }
 
 /* this fixes the cells alignment issue, the elements inside cells should be display: inline*/
-#wpwrap #vgse-wrapper .handsontable tr td .button {
+#wpwrap #vgse-wrapper .handsontable tr td .button,
+#wpwrap #vgse-wrapper .handsontable tr td button,
+#wpwrap #vgse-wrapper .handsontable tr td a {
     display: inline;
+}
+/*Fix frontend style issues caused by theme's overriding our css'*/
+#vgse-wrapper .button-container {
+    width: auto;
+}
+.remodal-wrapper .modal-content {
+	margin: 0;
+	padding: 0;
+}
+
+.remodal {
+    padding: 10px 35px;
 }
 .be-loading-anim {
     position: relative;

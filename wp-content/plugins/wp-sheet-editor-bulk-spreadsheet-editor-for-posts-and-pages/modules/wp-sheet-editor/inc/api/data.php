@@ -41,9 +41,19 @@ if (!class_exists('WP_Sheet_Editor_Data')) {
 				$out = ( $author ) ? $author->user_login : '';
 			} elseif ($item === 'post_status') {
 
+				// We include the custom statuses added by other plugins
+				// The provider get_statuses() is used for the internal capability checks
+				$all_statuses = get_post_stati(array('show_in_admin_status_list' => true), 'objects');
+				$custom_statuses = array();
+				foreach ($all_statuses as $status_key => $status) {
+					if (!empty($status->label_count['domain'])) {
+						$custom_statuses[$status_key] = $status->label;
+					}
+				}
+
 				// If the post status is found in the public post statuses we return it directly,
 				// otherwise we return it with a lock icon because the cell will be read-only
-				$statuses = VGSE()->helpers->get_current_provider()->get_statuses();
+				$statuses = array_merge(VGSE()->helpers->get_current_provider()->get_statuses(), $custom_statuses);
 				if (!isset($statuses['trash'])) {
 					$statuses['trash'] = 'Trash';
 				}
@@ -479,6 +489,15 @@ ORDER BY user_login ASC", OBJECT);
 		 */
 		function prepare_post_terms_for_saving($categories, $taxonomy) {
 			$separator = (!empty(VGSE()->options['be_taxonomy_terms_separator']) ) ? VGSE()->options['be_taxonomy_terms_separator'] : ',';
+
+			// If this is one term, try to find by slug first
+			if (!empty($categories) && strpos($categories, $separator) === false) {
+				$term = get_term_by('slug', $categories, $taxonomy);
+				if ($term) {
+					return array($term->term_id);
+				}
+			}
+
 			$parsed_data = $this->parse_terms_string_for_saving(html_entity_decode(sanitize_text_field($categories)), $taxonomy);
 			if (!empty($parsed_data['created'])) {
 				VGSE()->helpers->increase_counter('editions', $parsed_data['created']);

@@ -1,6 +1,14 @@
 <?php
 
-class VGSE_Provider_Post {
+// Fix. If they update one plugin and use an old version of another,
+// the Abstract class might not exist and they will get fatal errors.
+// So we make sure it loads the class from the current plugin if it's missing
+// This can be removed in a future update.
+if (!class_exists('VGSE_Provider_Abstract')) {
+	require_once 'abstract.php';
+}
+
+class VGSE_Provider_Post extends VGSE_Provider_Abstract {
 
 	static private $instance = false;
 	var $key = 'post';
@@ -249,10 +257,14 @@ ORDER BY t.name ASC";
 	}
 
 	function get_statuses() {
-		$post_statuses = get_post_statuses();
 		$post_type = VGSE()->helpers->get_provider_from_query_string();
-		if (!isset($post_statuses['trash'])) {
-			$post_statuses['trash'] = 'Trash';
+		$all_statuses = get_post_stati(array('show_in_admin_status_list' => true), 'objects');
+		$post_statuses = array();
+		foreach ($all_statuses as $status_key => $status) {
+			if (empty(VGSE()->options['show_all_custom_statuses']) && !empty($status->label_count['domain'])) {
+				continue;
+			}
+			$post_statuses[$status_key] = $status->label;
 		}
 		if (( $post_type === 'page' && !current_user_can('publish_pages') ) || ( $post_type !== 'page' && !current_user_can('publish_posts'))) {
 			unset($post_statuses['publish']);
@@ -261,7 +273,6 @@ ORDER BY t.name ASC";
 			unset($post_statuses['trash']);
 		}
 
-		$post_statuses['future'] = __('Scheduled');
 		return apply_filters('vg_sheet_editor/provider/post/statuses', $post_statuses, $post_type);
 	}
 
@@ -349,6 +360,7 @@ ORDER BY t.name ASC";
 	function update_item_data($values, $wp_error = false) {
 		global $wpdb;
 
+		$post_id = $values['ID'];
 		if (isset($values['post_date'])) {
 			$values['edit_date'] = true;
 		}
@@ -358,19 +370,34 @@ ORDER BY t.name ASC";
 			$time = strtotime($values['post_modified']);
 			$post_modified = gmdate($mysql_time_format, $time);
 			$post_modified_gmt = gmdate($mysql_time_format, ( $time + get_option('gmt_offset') * HOUR_IN_SECONDS));
-			$post_id = $values['ID'];
 			$wpdb->query("UPDATE $wpdb->posts SET post_modified = '" . esc_sql($post_modified) . "', post_modified_gmt = '" . esc_sql($post_modified_gmt) . "'  WHERE ID = " . (int) $post_id);
 			unset($values['post_modified']);
 		}
 
+		// FIX - When changing the post type of a post, from page to another, clear the 
+		// page template meta key to prevent the "invalid page template" error thrown by wp core
+		if (isset($values['post_type'])) {
+			$old_post_type = get_post_type($post_id);
+			$new_post_type = $values['post_type'];
+			// Don't allow to save empty post type
+			if (empty($new_post_type)) {
+				$new_post_type = $old_post_type;
+				unset($values['post_type']);
+			}
+
+			if ($old_post_type !== $new_post_type && post_type_supports($old_post_type, 'page-attributes') && !post_type_supports($new_post_type, 'page-attributes')) {
+				update_post_meta($post_id, '_wp_page_template', '');
+			}
+		}
+
 		$out = true;
 		if (isset($values['post_status']) && $values['post_status'] === 'delete') {
-			VGSE()->deleted_rows_ids[] = $values['ID'];
-			VGSE()->deleted_rows_ids = array_map('intval', array_merge($wpdb->get_col("SELECT ID FROM $wpdb->posts WHERE post_parent = " . (int) $values['ID']), VGSE()->deleted_rows_ids));
+			VGSE()->deleted_rows_ids[] = $post_id;
+			VGSE()->deleted_rows_ids = array_map('intval', array_merge($wpdb->get_col("SELECT ID FROM $wpdb->posts WHERE post_parent = " . (int) $post_id), VGSE()->deleted_rows_ids));
 
 			if (!empty(VGSE()->options['delete_attached_images_when_post_delete'])) {
-				$gallery = get_post_meta($values['ID'], '_product_image_gallery', true);
-				$featured_image = get_post_meta($values['ID'], '_thumbnail_id', true);
+				$gallery = get_post_meta($post_id, '_product_image_gallery', true);
+				$featured_image = get_post_meta($post_id, '_thumbnail_id', true);
 				$post_images = array();
 
 				if (is_string($gallery) && !empty($gallery)) {
@@ -385,9 +412,9 @@ ORDER BY t.name ASC";
 				}
 			}
 
-			wp_delete_post($values['ID'], true);
+			wp_delete_post($post_id, true);
 		} else {
-			if (count($values) === 1 && isset($values['ID'])) {
+			if (count($values) === 1 && isset($post_id)) {
 				$out = true;
 			} else {
 				$out = wp_update_post($values, $wp_error);
@@ -431,7 +458,7 @@ ORDER BY t.name ASC";
 		return wp_insert_post($values);
 	}
 
-	function get_item_ids_by_keyword($keyword, $post_type = null, $operator = 'LIKE') {
+	function get_item_ids_by_keyword($keyword, $post_type, $operator = 'LIKE') {
 		global $wpdb;
 		$operator = ( $operator === 'LIKE') ? 'LIKE' : 'NOT LIKE';
 

@@ -382,10 +382,12 @@ if (!class_exists('WP_Sheet_Editor_Columns_Visibility')) {
 				// Show columns that were added after the 
 				// columns visibility was saved, we hide columns that were
 				// hidden explicitely only
-				$columns_sorted = (count($settings) > 1 ) ? array_merge($settings['enabled'], $settings['disabled']) : current($settings);
-				foreach ($post_type as $key => $column) {
-					if (!isset($columns_sorted[$key])) {
-						$sorted_columns[$post_type_key][$key] = $column;
+				if (!defined('WPSE_ONLY_EXPLICITLY_ENABLED_COLUMNS') || !WPSE_ONLY_EXPLICITLY_ENABLED_COLUMNS) {
+					$columns_sorted = (count($settings) > 1 ) ? array_merge($settings['enabled'], $settings['disabled']) : current($settings);
+					foreach ($post_type as $key => $column) {
+						if (!isset($columns_sorted[$key])) {
+							$sorted_columns[$post_type_key][$key] = $column;
+						}
 					}
 				}
 			}

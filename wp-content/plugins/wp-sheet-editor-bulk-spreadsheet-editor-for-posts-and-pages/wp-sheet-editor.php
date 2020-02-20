@@ -3,7 +3,7 @@
 /*
   Plugin Name: WP Sheet Editor
   Description: Bulk edit posts and pages easily using a beautiful spreadsheet inside WordPress.
-  Version: 2.16.0
+  Version: 2.17.0
   Author: WP Sheet Editor
   Author URI: https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts
   Plugin URI: https://wpsheeteditor.com/extensions/posts-pages-post-types-spreadsheet/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts
@@ -25,6 +25,10 @@ if ( !defined( 'VGSE_DIST_DIR' ) ) {
     define( 'VGSE_DIST_DIR', __DIR__ );
 }
 require_once 'inc/freemius-init.php';
+$post_types_path = __DIR__ . '/inc/custom-post-types.php';
+if ( file_exists( $post_types_path ) ) {
+    require_once $post_types_path;
+}
 if ( !class_exists( 'WP_Sheet_Editor_Dist' ) ) {
     class WP_Sheet_Editor_Dist
     {
@@ -56,7 +60,7 @@ if ( !class_exists( 'WP_Sheet_Editor_Dist' ) ) {
             ?>
 			<div class="notice notice-error">
 				<p><?php 
-            _e( 'Please update the WP Sheet Editor plugin and all its extensions to the latest version, the CORE plugin should be version 2.5.2 or higher. The plugin "' . $plugin_data['Name'] . '" requires that version.', WP_Sheet_Editor_Dist::get_instance()->textname );
+            _e( 'Please update the WP Sheet Editor plugin and all its extensions to the latest version. The features of the plugin "' . $plugin_data['Name'] . '" will be disabled to prevent errors and they will be enabled automatically after you install the updates.', WP_Sheet_Editor_Dist::get_instance()->textname );
             ?></p>
 			</div>
 			<?php 
@@ -106,7 +110,7 @@ if ( !class_exists( 'WP_Sheet_Editor_Dist' ) ) {
         {
             
             if ( version_compare( VGSE()->version, '2.5.2' ) < 0 ) {
-                $this->notify_wrong_core_version();
+                add_action( 'admin_notices', array( $this, 'notify_wrong_core_version' ) );
                 return;
             }
             

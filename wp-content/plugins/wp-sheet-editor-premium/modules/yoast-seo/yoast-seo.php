@@ -13,7 +13,7 @@ if (!class_exists('WP_Sheet_Editor_YOAST_SEO')) {
 			$plugin_data = get_plugin_data(__FILE__, false, false);
 			?>
 			<div class="notice notice-error">
-				<p><?php _e('Please update the WP Sheet Editor plugin to the version 2.0.0 or higher. The plugin "' . $plugin_data['Name'] . '" requires that version.', VGSE()->textname); ?></p>
+				<p><?php _e('Please update the WP Sheet Editor plugin and all its extensions to the latest version. The features of the plugin "' . $plugin_data['Name'] . '" will be disabled to prevent errors and they will be enabled automatically after you install the updates.', VGSE()->textname); ?></p>
 			</div>
 			<?php
 		}
@@ -21,7 +21,7 @@ if (!class_exists('WP_Sheet_Editor_YOAST_SEO')) {
 		function init() {
 
 			if (version_compare(VGSE()->version, '2.0.0') < 0) {
-				$this->notify_wrong_core_version();
+				add_action('admin_notices', array($this, 'notify_wrong_core_version'));
 				return;
 			}
 			// exit if yoast seo plugin is not active

@@ -9,7 +9,7 @@ if (empty($current_post_type)) {
 }
 $editor = VGSE()->helpers->get_provider_editor($current_post_type);
 
-if (!empty($_GET['wpse_load_rows_main_page']) && VGSE_DEBUG) {
+if (!empty($_GET['wpse_load_rows_main_page']) && VGSE_DEBUG && current_user_can('manage_options')) {
 	if (!defined('WPSE_PROFILE') && !empty($_GET['wpse_profile'])) {
 		define('WPSE_PROFILE', true);
 	}
@@ -55,21 +55,25 @@ $subtle_lock = in_array(date('Y-m-d'), array('2019-10-22', '2019-10-24', '2019-1
 			<!--Primary toolbar placeholder, used to keep its height when the toolbar is fixed when scrolling-->
 			<div id="vg-header-toolbar-placeholder" class="vg-toolbar-placeholder"></div>
 			<div id="vg-header-toolbar" class="vg-toolbar">
-				<!--Secondary toolbar-->
-				<div class="vg-secondary-toolbar">
-					<div class="vg-header-toolbar-inner">
 
-						<?php
-						if ($editor->args['toolbars']) {
-							echo $editor->args['toolbars']->get_rendered_provider_items($current_post_type, 'secondary');
-						}
-						do_action('vg_sheet_editor/toolbar/after_buttons', $current_post_type, 'secondary');
-						?>
+				<?php
+				$secondary_toolbar_items_html = ($editor->args['toolbars']) ? $editor->args['toolbars']->get_rendered_provider_items($current_post_type, 'secondary') : '';
+				if ($secondary_toolbar_items_html) {
+					?>
+					<!--Secondary toolbar-->
+					<div class="vg-secondary-toolbar">
+						<div class="vg-header-toolbar-inner">
 
+							<?php
+							echo $secondary_toolbar_items_html;
+							do_action('vg_sheet_editor/toolbar/after_buttons', $current_post_type, 'secondary');
+							?>
+
+							<div class="clear"></div>
+						</div>
 						<div class="clear"></div>
 					</div>
-					<div class="clear"></div>
-				</div>
+				<?php } ?>
 				<!--Primary toolbar-->
 				<div class="vg-header-toolbar-inner">
 
@@ -101,7 +105,9 @@ $subtle_lock = in_array(date('Y-m-d'), array('2019-10-22', '2019-10-24', '2019-1
 			<div id="vg-footer-toolbar" class="vg-toolbar">
 				<button name="mas" class="button"><i class="fa fa-chevron-down"></i> <?php _e('Load More Rows', VGSE()->textname); ?></button>  
 				<button id="go-top" class="button"><i class="fa fa-chevron-up"></i> <?php _e('Go to the top', VGSE()->textname); ?></button>		
-				<a class="increase-rows-per-page" href="<?php echo esc_url(VGSE()->helpers->get_settings_page_url()); ?>" target="_blank"><?php _e('Increase rows per page', VGSE()->textname); ?></a> <a class="tipso tipso_style" data-tipso="<?php _e('We use pagination. By default we load 20 rows per page (every time you scroll down). You can increase the number to load more rows every time you scroll down.', VGSE()->textname); ?>" href="#">(?)</a>
+				<?php if (current_user_can('manage_options')) { ?>
+					<a class="increase-rows-per-page" href="<?php echo esc_url(VGSE()->helpers->get_settings_page_url()); ?>" target="_blank"><?php _e('Increase rows per page', VGSE()->textname); ?></a> <a class="tipso tipso_style" data-tipso="<?php _e('We use pagination. By default we load 20 rows per page (every time you scroll down). You can increase the number to load more rows every time you scroll down.', VGSE()->textname); ?>" href="#">(?)</a>
+				<?php } ?>
 				<?php do_action('vg_sheet_editor/editor_page/after_footer_actions', $current_post_type); ?>
 			</div>
 		</div>

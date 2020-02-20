@@ -4,7 +4,7 @@ Tags: adaptive images, responsive images, resize images, scale images, cdn, opti
 Requires at least: 3.2.0
 Tested up to: 5.3
 Requires PHP: 5.2
-Stable tag: 1.7.5
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -119,6 +119,19 @@ If you need to do a post-processing in JavaScript after the image/tag gets updat
 6. Advanced settings page
 
 == Changelog ==
+
+= 1.8.0 =
+Release date: 11th February 2020
+* Integrate with WP Rocket's CSS cache in order to replace the image URLs there.
+* Add preconnect header.
+* Integrate with Lovely 2 theme.
+* Integrate with My Listing theme.
+* Parse divs data-thumbnail and data-options too.
+* Fixed: 'path' not defined notice when validating some URLs
+* Fixed: parsing encoded HTML inside JSON blocks inside HTML.
+* Fixed: warning meta['file'] undefined in some circumstances.
+* Fixed: replacing the generated stats graph of JetPack.
+* Language – 2 new strings added, 1 updated, 0 fuzzied, and 0 obsoleted
 
 = 1.7.5 =
 Release date: 2nd January 2020

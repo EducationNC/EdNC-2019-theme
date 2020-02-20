@@ -110,6 +110,14 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 				'title' => __('Advanced', VGSE()->textname),
 				'fields' => array(
 					array(
+						'id' => 'export_page_size',
+						'type' => 'text',
+						'validate' => 'numeric',
+						'title' => __('Export batch size', VGSE()->textname),
+						'desc' => __('Here you can control the batch size for the exports. If you use a high number the exports will finish faster. You can use a high number safely because we automatically fall back to a lower number if the server is overloaded during one export. For example, export 100 rows per batch and complete the exports super fast and if we detect slowness in one export we will automatically restart the export with 10 rows per batch', VGSE()->textname),
+						'default' => 100,
+					),
+					array(
 						'id' => 'be_posts_per_page_save',
 						'type' => 'text',
 						'validate' => 'numeric',
@@ -266,6 +274,20 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 						'type' => 'text',
 						'title' => __('Meta keys that should use the infinite serialized fields handler', VGSE()->textname),
 						'desc' => __('This is only for advanced users or if our support team asks you to use this option. We have 2 ways to handle serialized fields: the old handler (used by default, which has limitations) and the infinite serialization handler (better, it is not active by default to not break previous integrations). Use this option if you have serialized fields that save incorrectly or dont appear in the spreadsheet.', VGSE()->textname),
+					),
+					array(
+						'id' => 'show_all_custom_statuses',
+						'type' => 'switch',
+						'title' => __('Show all the custom post statuses?', VGSE()->textname),
+						'desc' => __('By default we show the CORE statuses: published, draft, private, scheduled, trash. However, some plugins register custom statuses: job managers, woocommerce. Enable this option to show all the custom statuses in the "status" column. CAREFUL. We will show all the statuses from all the post types in the dropdown because it is impossible to know the post type of each status to we can not separate them. Do this only if you are a developer.', VGSE()->textname),
+						'default' => false,
+					),
+					array(
+						'id' => 'hide_cell_comments',
+						'type' => 'switch',
+						'title' => __('Hide cell comments?', VGSE()->textname),
+						'desc' => __('By default we show comments in some columns indicating the value format or why they are locked. for example, the category column shows a tip indicating to separate terms with a comma and how to add child categories, variation columns have a tip indicating why they are locked for parent products. You can activate this option to disable those tips.', VGSE()->textname),
+						'default' => false,
 					),
 				)
 			);

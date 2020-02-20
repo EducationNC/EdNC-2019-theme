@@ -138,12 +138,14 @@ class ShortPixelCssParser {
 
 //        $this->logger->log("REPLACE REGEX: " . '/' . $type . '\s*:' . preg_quote($extra, '/') . 'url\(\s*' . preg_quote($q . $pristineUrl . $q, '/') . '/'
 //              . " WITH: " . ' '. $type . ':' . $extra . 'url(' . $q . $inlinePlaceholder . $q);
+        $replacement = ' '. $type . $extra . 'url(' . $q . $inlinePlaceholder . $q;
         $str = preg_replace('/' . $type . preg_quote($extra, '/') . 'url\(\s*' . preg_quote($q . $pristineUrl . $q, '/') . '/',
-            ' '. $type . $extra . 'url(' . $q . $inlinePlaceholder . $q, $text);
+            $replacement, $text);
 
         if($lazy && ctype_alnum($tag)) {
             $this->ctrl->affectedTags[$tag] = 2 | (isset($this->ctrl->affectedTags[$tag]) ? $this->ctrl->affectedTags[$tag] : 0);
         }
+        $this->logger->log('******** WITH ', $replacement);
         return (object)array('text' => $str, 'replaced' => true);// . "<!-- original url: $url -->";
     }
 

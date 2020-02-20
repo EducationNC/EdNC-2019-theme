@@ -2,7 +2,7 @@
 /*
   Plugin Name: WP Sheet Editor (Premium)
   Description: Bulk edit posts and pages easily using a beautiful spreadsheet inside WordPress.
-  Version: 2.16.0
+  Version: 2.17.0
   Author: WP Sheet Editor
   Author URI: https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts
   Plugin URI: https://wpsheeteditor.com/extensions/posts-pages-post-types-spreadsheet/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts
@@ -10,7 +10,8 @@
   License URI: https://www.gnu.org/licenses/gpl-2.0.html
   Text Domain: vg_sheet_editor_posts
   Domain Path: /lang
-  @fs_premium_only /modules/user-path/send-user-path.php, /modules/acf/, /modules/advanced-filters/, /modules/columns-renaming/, /modules/custom-post-types/, /modules/formulas/, /modules/custom-columns/, /modules/spreadsheet-setup/, /modules/woocommerce/, /modules/universal-sheet/, /modules/yoast-seo/, /modules/posts-templates/, /whats-new/
+  @fs_premium_only /modules/user-path/send-user-path.php, /modules/acf/, /modules/advanced-filters/, /modules/columns-renaming/, /modules/custom-post-types/, /modules/formulas/, /modules/custom-columns/, /modules/spreadsheet-setup/, /modules/woocommerce/, /modules/universal-sheet/, /modules/yoast-seo/, /modules/posts-templates/,  /whats-new/
+  @fs_free_only /inc/custom-post-types.php
  */
 
 if (!defined('ABSPATH')) {
@@ -28,6 +29,12 @@ if (!defined('VGSE_DIST_DIR')) {
 	define('VGSE_DIST_DIR', __DIR__);
 }
 require_once 'inc/freemius-init.php';
+if (!vgse_freemius()->can_use_premium_code__premium_only()) {
+	$post_types_path = __DIR__ . '/inc/custom-post-types.php';
+	if (file_exists($post_types_path)) {
+		require_once $post_types_path;
+	}
+}
 
 if (!class_exists('WP_Sheet_Editor_Dist')) {
 
@@ -57,7 +64,7 @@ if (!class_exists('WP_Sheet_Editor_Dist')) {
 			$plugin_data = get_plugin_data(__FILE__, false, false);
 			?>
 			<div class="notice notice-error">
-				<p><?php _e('Please update the WP Sheet Editor plugin and all its extensions to the latest version, the CORE plugin should be version 2.5.2 or higher. The plugin "' . $plugin_data['Name'] . '" requires that version.', WP_Sheet_Editor_Dist::get_instance()->textname); ?></p>
+				<p><?php _e('Please update the WP Sheet Editor plugin and all its extensions to the latest version. The features of the plugin "' . $plugin_data['Name'] . '" will be disabled to prevent errors and they will be enabled automatically after you install the updates.', WP_Sheet_Editor_Dist::get_instance()->textname); ?></p>
 			</div>
 			<?php
 		}
@@ -103,13 +110,13 @@ if (!class_exists('WP_Sheet_Editor_Dist')) {
 
 		function after_core_init() {
 			if (version_compare(VGSE()->version, '2.5.2') < 0) {
-				$this->notify_wrong_core_version();
+				add_action('admin_notices', array($this, 'notify_wrong_core_version'));
 				return;
 			}
 			add_action('admin_init', array($this, 'redirect_to_welcome_page'));
 			// Enable admin pages in case "frontend sheets" addon disabled them
 			add_filter('vg_sheet_editor/register_admin_pages', '__return_true', 11);
-			
+
 			// We register early. So plugins for specific post types can overwrite the toolbar item.
 			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_toolbar_items'), 9);
 

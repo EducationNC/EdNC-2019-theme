@@ -3,7 +3,7 @@
 /*
   Plugin Name: WP Sheet Editor - Taxonomy Terms
   Description: Edit categories and tags in a spreadsheet.
-  Version: 1.2.5
+  Version: 1.3.0
   Author:      WP Sheet Editor
   Author URI:  https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=taxonomy-terms
   Plugin URI: https://wpsheeteditor.com/go/taxonomy-terms-addon?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=taxonomy-terms
@@ -32,7 +32,7 @@ if ( !class_exists( 'WP_Sheet_Editor_Taxonomy_Terms' ) ) {
         var  $plugin_dir = null ;
         var  $textname = 'vg_sheet_editor_taxonomy_terms' ;
         var  $buy_link = null ;
-        var  $version = '1.2.5' ;
+        var  $version = '1.3.0' ;
         var  $settings = null ;
         var  $args = null ;
         var  $vg_plugin_sdk = null ;
@@ -64,7 +64,7 @@ if ( !class_exists( 'WP_Sheet_Editor_Taxonomy_Terms' ) ) {
             ?>
 			<div class="notice notice-error">
 				<p><?php 
-            _e( 'Please update the WP Sheet Editor plugin and all its extensions to the latest version, the CORE plugin should be version 2.8.3 or higher. The plugin "' . $plugin_data['Name'] . '" requires that version.', vgse_taxonomy_terms()->textname );
+            _e( 'Please update the WP Sheet Editor plugin and all its extensions to the latest version. The features of the plugin "' . $plugin_data['Name'] . '" will be disabled to prevent errors and they will be enabled automatically after you install the updates.', vgse_taxonomy_terms()->textname );
             ?></p>
 			</div>
 			<?php 
@@ -78,6 +78,12 @@ if ( !class_exists( 'WP_Sheet_Editor_Taxonomy_Terms' ) ) {
             $this->plugin_dir = __DIR__;
             $this->buy_link = wpsett_fs()->checkout_url();
             $this->init_plugin_sdk();
+            
+            if ( !class_exists( 'VGSE_Provider_Abstract' ) ) {
+                add_action( 'admin_notices', array( $this, 'notify_wrong_core_version' ) );
+                return;
+            }
+            
             $integrations = array_merge( glob( __DIR__ . '/inc/providers/*.php' ), glob( __DIR__ . '/inc/*.php' ), glob( __DIR__ . '/inc/integrations/*.php' ) );
             foreach ( $integrations as $integration_file ) {
                 require_once $integration_file;
@@ -110,7 +116,7 @@ if ( !class_exists( 'WP_Sheet_Editor_Taxonomy_Terms' ) ) {
         {
             
             if ( version_compare( VGSE()->version, '2.8.3' ) < 0 ) {
-                $this->notify_wrong_core_version();
+                add_action( 'admin_notices', array( $this, 'notify_wrong_core_version' ) );
                 return;
             }
             

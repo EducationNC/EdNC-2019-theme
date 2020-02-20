@@ -418,7 +418,7 @@ GROUP BY tr.object_id";
 			<p><label><input type="checkbox" class="advanced-filters-toggle"> <?php _e('Enable advanced filters', VGSE()->textname); ?></label></p>
 			<div class="advanced-filters"  style="display: none;">
 				<h3><?php _e('Advanced search', VGSE()->textname); ?></h3>
-				<p class="advanced-filters-message"><?php _e('For example, to get all products with price higher than 100, use: _regular_price > 100', VGSE()->textname); ?></p>
+				<p class="advanced-filters-message"><?php _e('You can search by any field using operators. I.e. price > 100, image != (empty)', VGSE()->textname); ?></p>
 				<ul class="unstyled-list advanced-filters-list">
 					<li class="base advanced-field" style="display: none;">
 						<div class="fields-wrap">

@@ -15,13 +15,14 @@ if (!class_exists('WP_Sheet_Editor_Post_Types_Teaser')) {
 		}
 
 		function init() {
+			// Disabled
+			return;
 			if (!is_admin()) {
 				return;
 			}
 			if (class_exists('WP_Sheet_Editor_CPTs')) {
 				return;
 			}
-
 			$post_types = VGSE()->helpers->get_all_post_types_names(false);
 
 			if (isset($post_types['post'])) {
@@ -38,14 +39,14 @@ if (!class_exists('WP_Sheet_Editor_Post_Types_Teaser')) {
 
 		function register_toolbar_items($editor) {
 
-			$post_types = $editor->args['enabled_post_types'];
+			$allowed_post_types = VGSE()->helpers->get_allowed_post_types();
 
 			foreach ($post_types as $post_type) {
 
 				foreach ($this->post_types as $post_type_tease) {
 
 					// Skip if the post type tease is found on the enabled post types
-					if (in_array($post_type_tease, $post_types)) {
+					if (isset($allowed_post_types[$post_type_tease])) {
 						continue;
 					}
 
@@ -128,7 +129,7 @@ if (!class_exists('WP_Sheet_Editor_Post_Types_Teaser')) {
 
 					</div>
 					<br>
-					<a href="<?php echo VGSE()->get_buy_link('post-types-teaser', VGSE()->bundles['custom_post_types']['inactive_action_url']); ?>" class="remodal-confirm" target="_blank"><?php _e('Buy extension now!', VGSE()->textname); ?></a>
+					<a href="<?php echo VGSE()->get_buy_link('post-types-teaser', null, false, $post_type_tease); ?>" class="remodal-confirm" target="_blank"><?php _e('Buy extension now!', VGSE()->textname); ?></a>
 					<button data-remodal-action="confirm" class="remodal-cancel"><?php _e('Close', VGSE()->textname); ?></button>
 				</div>
 				<?php

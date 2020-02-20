@@ -45,7 +45,7 @@ class ShortPixelJsonParser {
                 if(preg_match('/^([\s↵]*(<!--[^>]+-->)*)*<\w*(\s[^>]*|)>/s', $content)) {
                     //that's HTML, use the regex parser
                     $this->logger->log("LEAF IS HTML: " . $content);
-                    $parser = $this->ctrl->getRegexParser();
+                    $parser = new ShortPixelRegexParser($this->ctrl);
                     $ret = $parser->parse($content);
                     $this->logger->log("LEAF PARSED BY REGEX: " . $ret);
                     return $ret;

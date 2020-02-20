@@ -13,6 +13,25 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 			
 		}
 
+		/**
+		 * Remove all empty elements from an array recursively
+		 * @param array $haystack
+		 * @return array
+		 */
+		function array_remove_empty($haystack) {
+			foreach ($haystack as $key => $value) {
+				if (is_array($value)) {
+					$haystack[$key] = $this->array_remove_empty($haystack[$key]);
+				}
+
+				if (empty($haystack[$key])) {
+					unset($haystack[$key]);
+				}
+			}
+
+			return $haystack;
+		}
+
 		function get_random_date_in_range($start, $end) {
 			$int = mt_rand($start, $end);
 			return date("Y-m-d H:i:s", $int);
@@ -84,6 +103,9 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 		function user_can_view_post_type($post_type_key) {
 
 			$out = false;
+			if (empty($post_type_key)) {
+				return $out;
+			}
 			$provider = VGSE()->helpers->get_data_provider($post_type_key);
 			$capability = $provider->get_provider_read_capability($post_type_key);
 			if ($capability && current_user_can($capability)) {
@@ -96,6 +118,9 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 		function user_can_edit_post_type($post_type_key) {
 
 			$out = false;
+			if (empty($post_type_key)) {
+				return $out;
+			}
 			$provider = VGSE()->helpers->get_data_provider($post_type_key);
 			$capability = $provider->get_provider_edit_capability($post_type_key);
 			if ($capability && current_user_can($capability)) {
@@ -202,7 +227,22 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 				}
 			}
 
-			return apply_filters('vg_sheet_editor/prepared_post_types', $sheets, $allowed_post_types, $post_types);
+			$final_sheets = apply_filters('vg_sheet_editor/prepared_post_types', $sheets, $allowed_post_types, $post_types);
+			$sorted = array(
+				'available' => array(),
+				'free' => array(),
+				'premium' => array(),
+			);
+			foreach ($final_sheets as $sheet) {
+				if (empty($sheet['is_disabled'])) {
+					$sorted['available'][] = $sheet;
+				} elseif (strpos($sheet['description'], 'free') !== false) {
+					$sorted['free'][] = $sheet;
+				} else {
+					$sorted['premium'][] = $sheet;
+				}
+			}
+			return array_merge($sorted['available'], $sorted['free'], $sorted['premium']);
 		}
 
 		function get_data_provider($provider) {
@@ -464,18 +504,30 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 
 		function prepare_query_params_for_retrieving_rows($clean_data, $settings) {
 
-			$post_statuses = VGSE()->helpers->get_current_provider()->get_statuses();
+			if (current_user_can('manage_options') && !empty($clean_data['posts_per_page'])) {
+				$posts_per_page = (int) $clean_data['posts_per_page'];
+			} elseif (!empty(VGSE()->options) && !empty(VGSE()->options['be_posts_per_page'])) {
+				$posts_per_page = (int) VGSE()->options['be_posts_per_page'];
+			} else {
+				$posts_per_page = 20;
+			}
+
+			// We use this instead of the provider->get_post_statuses() because the list of rows
+			// should always support custom statuses added by other plugins. The provider function
+			// is used for other places like the search, column dropdown, etc.
+			$post_statuses = get_post_stati(array('show_in_admin_status_list' => true), 'names');
 
 			$qry = array(
 				'wpse_source' => $clean_data['wpse_source'],
 				'post_type' => $clean_data['post_type'],
-				'posts_per_page' => (!empty(VGSE()->options) && !empty(VGSE()->options['be_posts_per_page']) ) ? (int) VGSE()->options['be_posts_per_page'] : 20,
+				'posts_per_page' => $posts_per_page,
 				'paged' => isset($clean_data['paged']) ? (int) $clean_data['paged'] : 1,
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
 			);
 
 			if (!empty($post_statuses)) {
+				// Ignore trash posts by default, they need to use the search form to see trashed posts
 				if (isset($post_statuses['trash'])) {
 					unset($post_statuses['trash']);
 				}
@@ -643,14 +695,18 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 									'{post_content}',
 									'{post_type}',
 									'{post_status}',
-									'{post_url}'
+									'{post_url}',
+									'{parent_post_url}',
+									'{post_parent}',
 										), array(
 									$post->ID,
 									$post->post_title,
 									$post->post_content,
 									$post->post_type,
 									$post->post_status,
-									get_permalink($post->ID)
+									get_permalink($post->ID),
+									get_permalink($post->post_parent),
+									$post->post_parent,
 										), $column_settings['external_button_template']);
 							}
 							if ($column_settings['type'] === 'inline_image') {
@@ -865,6 +921,7 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 		 * @return array
 		 */
 		function maybe_replace_urls_with_file_ids($ids = array(), $post_id = null) {
+			global $wpdb;
 			if (!is_array($ids)) {
 				$ids = array($ids);
 			}
@@ -904,10 +961,31 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 						$out[] = (int) $media_file_id;
 					}
 					$this->urls_to_file_ids_cache[$cache_id] = (int) $media_file_id;
+				} elseif (strpos($id, '.') !== false && strpos($id, '[') === false) {
+					// If the $id contains a file name, use the first image from the media library matching the file name
+					$sql = "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wp_attached_file' AND meta_value LIKE '%/" . esc_sql($id) . "' LIMIT 1";
+					$new_id = (int) $wpdb->get_var($sql);
+					if ($new_id) {
+						$out[] = $new_id;
+					}
 				} else {
 					$out[] = $id;
 				}
 			}
+
+			// Automatically attach images to the post
+			if (is_int($post_id) && VGSE()->helpers->get_current_provider()->is_post_type) {
+				foreach ($out as $image_id) {
+					$image = get_post($image_id);
+					if (empty((int) $image->post_parent)) {
+						wp_update_post(array(
+							'ID' => $image_id,
+							'post_parent' => $post_id
+						));
+					}
+				}
+			}
+
 
 			return $out;
 		}
@@ -1634,20 +1712,41 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 			return $happy;
 		}
 
+		function get_post_types_with_own_sheet() {
+			$post_types_included_in_core = array('product');
+			$exclude = array_unique(array_values(array_merge(VGSE()->helpers->array_flatten(wp_list_pluck(VGSE()->bundles, 'post_types')), VGSE()->helpers->array_flatten(wp_list_pluck(VGSE()->extensions, 'post_types')))));
+
+			return apply_filters('vg_sheet_editor/custom_post_types/get_post_types_with_own_sheet', array_diff($exclude, $post_types_included_in_core));
+		}
+
+		function get_post_types_without_own_sheet() {
+
+			$all_post_types = apply_filters('vg_sheet_editor/custom_post_types/get_all_post_types', VGSE()->helpers->get_all_post_types());
+			$excluded = $this->get_post_types_with_own_sheet();
+			$out = array();
+			foreach ($all_post_types as $post_type) {
+				if (in_array($post_type->name, $excluded)) {
+					continue;
+				}
+				$out[$post_type->name] = $post_type->label;
+			}
+			return $out;
+		}
+
 		function get_extension_by_post_type($post_type) {
 			$out = array();
 			if (empty($post_type)) {
 				return $out;
 			}
 			foreach (VGSE()->extensions as $extension) {
-				if (!empty($extension['post_types']) && in_array($post_type, $extension['post_types'])) {
+				if (!empty($extension['post_types']) && in_array($post_type, $extension['post_types'], true)) {
 					$out = $extension;
 					break;
 				}
 			}
 			if (empty($out)) {
 				foreach (VGSE()->bundles as $extension) {
-					if (!empty($extension['post_types']) && in_array($post_type, $extension['post_types'])) {
+					if (!empty($extension['post_types']) && in_array($post_type, $extension['post_types'], true)) {
 						$out = $extension;
 						break;
 					}

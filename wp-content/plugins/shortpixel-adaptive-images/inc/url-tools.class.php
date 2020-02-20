@@ -17,7 +17,8 @@ class ShortPixelUrlTools {
 
         //handle URLs that contain unencoded UTF8 characters like: https://onlinefox.xyz/wp-content/uploads/2018/10/Kragerup-gods-go-high-klatrepar-åbningstider.jpg"
         $parsed = parse_url($url);
-        $path = (isset($parsed['host']) ? $parsed['host'] : '') . implode('/', array_map('urlencode', explode('/', $parsed['path'])));
+        $path = (isset($parsed['host']) ? $parsed['host'] : '')
+            . (isset($parsed['path']) ? implode('/', array_map('urlencode', explode('/', $parsed['path']))) : '');
 
         if (isset($parsed['host']) && $parsed['host'] != '') {
             // URL has http/https/...
@@ -30,7 +31,7 @@ class ShortPixelUrlTools {
             $url = $path . substr($url, strlen($path)); //make sure we keep query or hashtags
             $isValid = !(filter_var('http://www.example.com/'.ltrim($url,'/'), FILTER_VALIDATE_URL) === false);
         }
-        if($isValid) { //lastly check if is processable by ShortPixel
+        if($isValid && isset($parsed['path'])) { //lastly check if is processable by ShortPixel
             $ext = strtolower(pathinfo($parsed['path'], PATHINFO_EXTENSION));
             //treat the .css case separately, only for local CSS files
             if($ext == 'css') {
@@ -250,10 +251,10 @@ class ShortPixelUrlTools {
 
         if(!empty($meta)) { //get the sizes from meta
             $meta = unserialize($meta);
-            if(preg_match("/".preg_quote($meta['file'], '/') . "$/", $original_image_url)) {
+            if(strlen(@$meta['file']) && preg_match("/".preg_quote($meta['file'], '/') . "$/", $original_image_url)) {
                 return array($meta['width'], $meta['height']);
             }
-            foreach($meta['sizes'] as $size) {
+            foreach(@$meta['sizes'] as $size) {
                 if($size['file'] == wp_basename($original_image_url)) {
                     return array($size['width'], $size['height']);
                 }

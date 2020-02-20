@@ -33,6 +33,9 @@
 								if (isset($options[$post_type]['disabled']) && isset($options[$post_type]['disabled'][$column_key])) {
 									continue;
 								}
+								if (!isset($column['title'])) {
+									continue;
+								}
 								$title = $column['title'];
 								?>
 								<li><span class="handle">::</span> <span class="column-title" title="<?php echo esc_attr($title); ?>"><?php echo $title; ?></span>
