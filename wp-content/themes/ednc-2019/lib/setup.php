@@ -175,7 +175,7 @@ function printfriendly_script() {
 /**
 * Extend Public Post Preview configuration to 14 days
  */
-// add_filter( 'ppp_nonce_life', 'my_nonce_life' );
-// function my_nonce_life() {
-//     return 60 * 60 * 24 * 14; // 14 days
-// }
+add_filter( 'ppp_nonce_life', 'my_nonce_life' );
+function my_nonce_life() {
+    return 60 * 60 * 24 * 14; // 14 days
+}
