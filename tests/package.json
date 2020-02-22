@@ -9,6 +9,9 @@
   },
   "author": "",
   "license": "ISC",
+  "jest": {
+    "preset": "jest-puppeteer"
+  },
   "devDependencies": {
     "jest": "^25.1.0",
     "jest-puppeteer": "^4.4.0",
