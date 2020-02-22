@@ -1,204 +1,131 @@
 <?php
-
+use Roots\Sage\Titles;
+// use Roots\Sage\Extras;
 use Roots\Sage\Media;
-
-$term = get_queried_object();
-// $taxonomy = $term->taxonomy;
-// $term_id = $term->term_id;
-
-$desc = category_description();
-$cat_id = $term->term_id;
-$object = get_queried_object();
-$post_id = $object->taxonomy.'_'.$object->term_id;
-$category_featured = get_field('featured_article_category_pages', $term);
-$post_object = get_field('featured_article_category_pages', $term);
 ?>
 
-<?php if (!empty($cat_id)) { ?>
+<section id="author" class="block green">
+  <div class="site-wrapper">
+    <div class="container">
 
-  <section id="archive" class="block-small search-results dark-blue">
-    <div class="site-wrapper">
-      <div class="container">
+      <div class="row">
+         <div class="col-md-12 header-big">
+           <?php
+           $author = get_user_by( 'slug', get_query_var( 'author_name' ) );
+           $author_id = $author->ID;
+           $args = array(
+             'post_type' => 'bio',
+             'meta_query' => array(
+               array(
+                 'key' => 'user',
+                 'value' => $author_id
+               )
+             )
+           );
 
-        <?php get_template_part('templates/components/category', 'header-2019'); ?>
+           $bio = new WP_Query($args);
 
-        <?php if( !empty($category_featured) ): ?>
+           if ($bio->have_posts()) : while ($bio->have_posts()) : $bio->the_post(); ?>
+           <?php
+           $twitter = get_field('twitter');
+           $email = get_field('email');
+           $website = get_field('website');
+           $bio_posts = get_field('recommended_articles_bio_pages');
 
-          <div class="row">
-            <div class="col-md-7 category-padding">
-              <?php if ($desc && !isset($_GET['date'])) { ?>
-                  <?php echo $desc; ?>
-              <?php } ?>
+             ?>
+            <div class="circle-image">
+              <?php the_post_thumbnail('bio-headshot'); ?>
+
+              <h1 class="rd entry-title"><?= Titles\title(); ?></h1>
+               <?php
+               if ($twitter) {
+                 echo '<div class="nowrap overflow-ellipsis inline-block"><span class="icon-twitter"></span> <a href="http://twitter.com/' . $twitter . '" target="_blank">@' . $twitter . '</a></div>';
+               }
+               if ($email) {
+                 echo '<div class="nowrap overflow-ellipsis inline-block"><span class="icon-email"></span><a href="mailto:' . antispambot($email) . '" target="_blank">' . antispambot($email) . '</a></div>';
+               }
+               if ($website) {
+                 echo '<div class="nowrap overflow-ellipsis inline-block"><span class="icon-website"></span> <a href="' . $website . '" target="_blank">Website</a></div>';
+               }
+
+              ?>
             </div>
-            <div class="col-md-5 category-padding">
-              <h3>Featured Article</h3>
-              <?php
-              $post_objects = get_field('featured_article_category_pages', $term);
+            <div class="author-tagline">
+              <h3 class="rd"><?php the_field('tagline'); ?></h3>
+              </hr>
+            </div>
 
+             <div class="author-desc">
+               <?php the_content(); ?>
+             </div>
 
-              if( $post_objects ): ?>
-                  <?php foreach( $post_objects as $post): ?>
-                     <?php $featured_image = Media\get_featured_image('medium'); ?>
-                    <?php setup_postdata($post); ?>
-                      <div class="category-featured-article">
-                          <a href="<?php the_permalink(); ?>">
+             <?php if( $bio_posts ): ?>
+
+             <div class="row grey-background">
+               <h3 class="bio-header">Featured Articles</h3>
+               <div class="recommended-blocks-bio">
+                 <?php
+                    foreach( $bio_posts as $post): // variable must be called $post (IMPORTANT) ?>
+                       <?php setup_postdata($post); ?>
+                       <?php $featured_image = Media\get_featured_image('featured-four-block');
+                       $column = wp_get_post_terms(get_the_id(), 'column');
+                       if ($column) {
+                         $post_type = $column[0]->name;
+                       }
+                       elseif ( has_term( 'press-release', 'appearance' ) ) {
+                         $post_type = "Press Release";
+                       }
+                       elseif ( has_term ( 'issues', 'appearance' ) ) {
+                         $post_type = "Issues";
+                       }
+                       else {
+                         $post_type = "News";
+                       }
+                       ?>
+                       <div class="block-recommended-bio">
+                         <a href="<?php the_permalink(); ?>">
                             <?php if (!empty($featured_image)) {
-                             echo '<img class="" src="' . $featured_image . '" />';
-                            } ?>
-                            <h3 class="post-title"><?php echo the_title(); ?></h3>
-                            <?php get_template_part('templates/components/entry-meta'); ?>
-                          </a>
-                      </div>
-                    <?php endforeach; ?>
-                    <?php wp_reset_postdata(); ?>
-              <?php endif; ?>
-            </div>
+                             echo '<img class="no-lazy" src="' . $featured_image . '" />';
+                           } ?>
+                           <p class="small"><?php echo $post_type ?></p>
+                           <h3 class="post-title"><?php the_title(); ?></h3>
+                           <?php get_template_part('templates/components/entry-meta'); ?>
+                           <!-- <a class="mega-link" href="<?php the_permalink(); ?>"></a> -->
+                         </a>
+                       </div>
+                   <?php endforeach; ?>
+                   <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
+               </div>
+             </div>
+
+             <?php endif; ?>
+
+           <?php endwhile; endif; wp_reset_query(); ?>
+         </div>
+       </div>
+
+
+
+     <div class="row other-content">
+        <div class="col-md-12">
+          <?php $bio_header = get_field('bio-page-other-content', 'options'); ?>
+          <h3 class=""><?php echo $bio_header ?></h3>
+          <div class="category-content-justify-left">
+            <?php get_template_part('templates/layouts/archive', 'loop-2019'); ?>
           </div>
-
-        <?php else: ?>
-
-          <div class="row">
-            <div class="col-md-8 col-centered">
-              <div class="extra-margin">
-              <?php if ($desc && !isset($_GET['date'])) { ?>
-                  <?php echo $desc; ?>
-              <?php } ?>
+          <div class="category-content">
+            <?php
+             if ($wp_query->max_num_pages > 1) : ?>
+              <div class="row hentry">
+                <nav class="post-nav">
+                  <?php wp_pagenavi(); ?>
+                </nav>
               </div>
-            </div>
+            <?php endif; ?>
           </div>
-
-
-        <?php endif; ?>
-
-        <?php
-
-        // Check value exists.
-        if( have_rows('flex_content') ):
-
-            // Loop through rows.
-            while ( have_rows('flex_content') ) : the_row();
-
-                // Case: Paragraph layout.
-                if( get_row_layout() == 'header_text' ):
-                    $header_text = get_sub_field('header_text');
-                    echo $header_text;
-
-                // Case: Download layout.
-                elseif( get_row_layout() == 'download' ):
-                    $file = get_sub_field('file');
-                    // Do something...
-
-                endif;
-
-            // End loop.
-            endwhile;
-
-        // No value.
-        else :
-            // Do something...
-
-          endif; ?>
-
-
-        <div class="row hentry">
-          <?php
-            $args = array(
-              'post_type' => 'flash-cards',
-              'posts_per_page' => -1,
-              'cat' => $cat_id
-            );
-
-            $fc = new WP_Query($args);
-
-            if ($fc->have_posts()) : while ($fc->have_posts()): $fc->the_post(); ?>
-
-              <div class="col-sm-6">
-                <div class="paperclip"></div>
-                  <?php get_template_part('templates/layouts/block', 'post'); ?>
-              </div>
-
-            <?php endwhile; endif; wp_reset_query();?>
-
-            <div class="col-md-12">
-
-              <div class="category-content-justify-left">
-                <?php get_template_part('templates/layouts/archive', 'loop-2019'); ?>
-              </div>
-
-              <div class="category-content">
-                <?php if ($wp_query->max_num_pages > 1) : ?>
-                  <div class="row hentry">
-                    <nav class="post-nav">
-                      <?php wp_pagenavi(); ?>
-                    </nav>
-                  </div>
-                <?php endif; ?>
-              </div>
-            </div>
-
         </div>
-      </div>
+     </div>
+
     </div>
-  </section>
-
-
-<?php } else { ?>
-
-  <section id="archive" class="block search-results blue">
-    <div class="site-wrapper">
-      <div class="container">
-        <?php get_template_part('templates/components/category', 'header'); ?>
-        <div class="row">
-          <div class="col-md-12">
-
-            <?php if ($desc && !isset($_GET['date'])) { ?>
-              <div class="extra-margin">
-                <?php echo $desc; ?>
-              </div>
-            <?php } ?>
-
-            <div class="row hentry">
-              <?php
-
-              if (! empty($cat_id)) {
-                $args = array(
-                  'post_type' => 'flash-cards',
-                  'posts_per_page' => -1,
-                  'cat' => $cat_id
-                );
-
-                $fc = new WP_Query($args);
-
-                if ($fc->have_posts()) : while ($fc->have_posts()): $fc->the_post(); ?>
-
-                  <div class="col-sm-6">
-                    <div class="paperclip"></div>
-                      <?php get_template_part('templates/layouts/block', 'post'); ?>
-                  </div>
-
-                <?php endwhile; endif; wp_reset_query();
-              } ?>
-
-            </div>
-
-            <div class="category-content">
-              <?php get_template_part('templates/layouts/archive', 'loop-2019'); ?>
-            </div>
-            <div class="category-content">
-              <?php if ($wp_query->max_num_pages > 1) : ?>
-                <div class="row hentry">
-                  <nav class="post-nav">
-                    <?php wp_pagenavi(); ?>
-                  </nav>
-                </div>
-              <?php endif; ?>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-<?php } ?>
+  </div>
+</section>

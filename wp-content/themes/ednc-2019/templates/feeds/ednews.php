@@ -1,6 +1,6 @@
 <?php
 /**
-* EdNews RSS2 Template
+* EdNews Test RSS2 Template
 */
 
 // check day of week
@@ -34,7 +34,7 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
 <?php do_action('rss2_ns'); ?>>
 
 <channel>
-  <title><?php bloginfo_rss('name'); ?> - EdNews Feed</title>
+  <title><?php bloginfo_rss('name'); ?> - EdNews Test Feed</title>
   <atom:link href="<?php self_link(); ?>" rel="self" type="application/rss+xml" />
   <link><?php bloginfo_rss('url') ?></link>
   <description><?php bloginfo_rss('description') ?></description>
@@ -75,14 +75,10 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
       $items = get_field('news_item');
       echo '<table border="0" cellpadding="0" cellspacing="0" id="templateRows" width="100%">';
       	echo '<tbody>';
+        $i = 0;
+        foreach ($items as $item) {
       		echo '<tr>';
-            $i = 0;
-            foreach ($items as $item) {
-              // end row after ever other item
-              if ($i % 2 == 0 && $i != 0) {
-                echo '</tr><tr>';
-              }
-              echo '<td align="center" class="templateColumnContainer" valign="top" width="50%">';
+              echo '<td align="center" class="templateColumnContainer" valign="top" width="100%">';
                 echo '<table border="0" cellpadding="10" cellspacing="0" width="100%">';
           				echo '<tbody>';
           					echo '<tr>';
@@ -94,9 +90,9 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
           				echo '</tbody>';
           			echo '</table>';
               echo '</td>';
-              $i++;
-            }
       		echo '</tr>';
+          $i++;
+        }
       	echo '</tbody>';
       echo '</table>';
       ?>]]></content:encoded>
