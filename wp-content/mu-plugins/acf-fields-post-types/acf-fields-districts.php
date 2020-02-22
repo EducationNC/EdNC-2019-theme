@@ -72,6 +72,23 @@ acf_add_local_field_group(array(
 			'max_size' => 0,
 			'mime_types' => '',
 		),
+		array (
+			'key' => 'field_545920e552e64',
+			'label' => 'Website',
+			'name' => 'website',
+			'prefix' => '',
+			'type' => 'url',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array (
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+		),
 		array(
 			'key' => 'field_5459211a52e66',
 			'label' => 'Street Address',
