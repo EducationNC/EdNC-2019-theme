@@ -1,0 +1,26 @@
+{
+  "name": "ednc-tests",
+  "version": "0.1.0",
+  "description": "Jest & Puppeteer integration tests for EdNC.org",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --runInBand --silent",
+    "init": "jest --init"
+  },
+  "author": "",
+  "license": "ISC",
+  "jest": {
+    "preset": "jest-puppeteer",
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "babel-jest": "^25.1.0",
+    "jest": "^25.1.0",
+    "jest-puppeteer": "^4.4.0",
+    "puppeteer": "^2.1.1"
+  }
+}
