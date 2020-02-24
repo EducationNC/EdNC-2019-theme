@@ -4,7 +4,7 @@
   "description": "Jest & Puppeteer integration tests for EdNC.org",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand",
+    "test": "jest --runInBand --silent",
     "init": "jest --init"
   },
   "author": "",
