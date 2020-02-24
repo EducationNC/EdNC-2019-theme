@@ -85,14 +85,14 @@ img.favicon {
   @include block-3(20px);
 }
 
-@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
   // IE 11 hacks
   .content-block-3,
   .content-block-4 {
     width: 100%;
-    
+
     > .flex {
-      display: block !important; 
+      display: block !important;
     }
   }
 }
@@ -485,7 +485,7 @@ button.btn {
 }
 
 .carousel-popular__featured-article {
-  max-width: 100%; 
+  max-width: 100%;
 }
 
 
@@ -497,7 +497,7 @@ img.SL-featured {
 }
 
 #carousel-latest > .post {
-  max-width: 100%; 
+  max-width: 100%;
 }
 
 #carousel-latest > article > p.small {
