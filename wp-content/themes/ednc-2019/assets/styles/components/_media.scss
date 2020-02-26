@@ -17,6 +17,14 @@ img {
    @include clearfix(); 
 }
 
+.entry-content .alignwide {
+  @media (max-width: $screen-md-max) {
+    margin-left: -($grid-gutter-width);
+    margin-right: -($grid-gutter-width);
+  }
+}
+
+
 // Gallery shortcode
 .gallery-row {
   padding: ($line-height-computed / 2) 0;
@@ -89,6 +97,7 @@ img {
       &.landscape {
         flex-basis: 50%;
       }
+      
 
       .gallery-icon {
         border: 5px solid $white;
