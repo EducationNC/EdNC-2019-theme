@@ -181,7 +181,7 @@ $post_object = get_field('featured_article_category_pages', $term);
                           <?php $post_objects = get_sub_field('highlighted_article_left');
                           if( $post_objects ): ?>
                               <?php foreach( $post_objects as $post): ?>
-                                 <?php $featured_image = Media\get_featured_image('medium'); ?>
+                                 <?php $featured_image = Media\get_featured_image('featured-four-block'); ?>
                                 <?php setup_postdata($post); ?>
                                   <div class="category-featured-article">
                                       <a href="<?php the_permalink(); ?>">
@@ -212,7 +212,7 @@ $post_object = get_field('featured_article_category_pages', $term);
                           <?php $post_objects = get_sub_field('highlighted_article_right');
                           if( $post_objects ): ?>
                               <?php foreach( $post_objects as $post): ?>
-                                 <?php $featured_image = Media\get_featured_image('medium'); ?>
+                                 <?php $featured_image = Media\get_featured_image('featured-four-block'); ?>
                                 <?php setup_postdata($post); ?>
                                   <div class="category-featured-article">
                                       <a href="<?php the_permalink(); ?>">
