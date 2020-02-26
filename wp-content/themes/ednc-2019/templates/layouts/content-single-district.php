@@ -182,108 +182,7 @@ while (have_posts()) : the_post();
       </div>
     </div>
 
-    <div class="related-posts">
-      <h2 class="lato" style="margin-top: .5em;">Related Posts</h2>
-      <?php
 
-      $args = array(
-        'tax_query' => array(
-          array(
-            'taxonomy' => 'district-posts',
-            'field' => 'slug',
-            'terms' => $post->post_name
-          )
-        ),
-        'posts_per_page' => 4
-      );
-
-      query_posts($args);
-      $related = new WP_Query($args);
-      $related_posts = false;
-
-      if ($related->have_posts()) : ?>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="category-content-justify-left">
-              <?php
-              while ($related->have_posts()) : $related->the_post();
-              $featured_image = Media\get_featured_image('featured-four-block'); ?>
-              <article <?php post_class('block-news content-block-4 clearfix'); ?>>
-                <div class="flex">
-                  <div class="block-content">
-                    <?php if (!empty($featured_image)) { ?>
-                      <img src="<?php echo $featured_image; ?>" />
-                    <?php } else { ?>
-                      <div class="circle-image">
-                        <?php// echo $author_pic; ?>
-                      </div>
-                    <?php } ?>
-                    <p class="small"><?php echo $post_type; ?></p>
-                    <h3 class="post-title"><?php the_title(); ?></h3>
-                    <?php get_template_part('templates/components/entry-meta'); ?>
-                    <a class="mega-link" href="<?php the_permalink(); ?>"></a>
-                    <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
-                  </div>
-                </div>
-              </article>
-              <?php
-              endwhile;
-              wp_reset_query(); ?>
-            </div>
-          </div>
-        </div>
-      <?php endif;?>
-    </div>
-    <div class="related-maps">
-      <h2 class="lato" style="margin-top: .5em;">Related Maps</h2>
-      <?php
-
-      $args = array(
-        'post_type' => 'map',
-        'meta_query' => array(
-          array(
-            'key' => 'district-level',
-            'value' => true
-          )
-        ),
-        'posts_per_page' => 1
-      );
-
-      $maps = new WP_Query($args);
-
-      if ($maps->have_posts()) : ?>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="category-content-justify-left">
-              <?php
-              while ($maps->have_posts()) : $maps->the_post();
-              $featured_image = Media\get_featured_image('featured-four-block'); ?>
-              <article <?php post_class('block-news content-block-4 clearfix'); ?>>
-                <div class="flex">
-                  <div class="block-content">
-                    <?php if (!empty($featured_image)) { ?>
-                      <img src="<?php echo $featured_image; ?>" />
-                    <?php } else { ?>
-                      <div class="circle-image">
-                        <?php// echo $author_pic; ?>
-                      </div>
-                    <?php } ?>
-                    <p class="small"><?php echo $post_type; ?></p>
-                    <h3 class="post-title"><?php the_title(); ?></h3>
-                    <?php get_template_part('templates/components/entry-meta'); ?>
-                    <a class="mega-link" href="<?php the_permalink(); ?>"></a>
-                    <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
-                  </div>
-                </div>
-              </article>
-              <?php
-              endwhile;
-              wp_reset_query(); ?>
-            </div>
-          </div>
-        </div>
-      <?php endif;?>
-    </div>
 
 
 
@@ -668,6 +567,109 @@ while (have_posts()) : the_post();
       <?php endwhile; ?>
 
     <?php endif; ?>
+
+    <div class="related-posts">
+      <h2 class="lato" style="margin-top: .5em;">Related Posts</h2>
+      <?php
+
+      $args = array(
+        'tax_query' => array(
+          array(
+            'taxonomy' => 'district-posts',
+            'field' => 'slug',
+            'terms' => $post->post_name
+          )
+        ),
+        'posts_per_page' => 4
+      );
+
+      query_posts($args);
+      $related = new WP_Query($args);
+      $related_posts = false;
+
+      if ($related->have_posts()) : ?>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="category-content-justify-left">
+              <?php
+              while ($related->have_posts()) : $related->the_post();
+              $featured_image = Media\get_featured_image('featured-four-block'); ?>
+              <article <?php post_class('block-news content-block-4 clearfix'); ?>>
+                <div class="flex">
+                  <div class="block-content">
+                    <?php if (!empty($featured_image)) { ?>
+                      <img src="<?php echo $featured_image; ?>" />
+                    <?php } else { ?>
+                      <div class="circle-image">
+                        <?php// echo $author_pic; ?>
+                      </div>
+                    <?php } ?>
+                    <p class="small"><?php echo $post_type; ?></p>
+                    <h3 class="post-title"><?php the_title(); ?></h3>
+                    <?php get_template_part('templates/components/entry-meta'); ?>
+                    <a class="mega-link" href="<?php the_permalink(); ?>"></a>
+                    <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
+                  </div>
+                </div>
+              </article>
+              <?php
+              endwhile;
+              wp_reset_query(); ?>
+            </div>
+          </div>
+        </div>
+      <?php endif;?>
+    </div>
+    <div class="related-maps">
+      <h2 class="lato" style="margin-top: .5em;">Related Maps</h2>
+      <?php
+
+      $args = array(
+        'post_type' => 'map',
+        'meta_query' => array(
+          array(
+            'key' => 'district-level',
+            'value' => true
+          )
+        ),
+        'posts_per_page' => 1
+      );
+
+      $maps = new WP_Query($args);
+
+      if ($maps->have_posts()) : ?>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="category-content-justify-left">
+              <?php
+              while ($maps->have_posts()) : $maps->the_post();
+              $featured_image = Media\get_featured_image('featured-four-block'); ?>
+              <article <?php post_class('block-news content-block-4 clearfix'); ?>>
+                <div class="flex">
+                  <div class="block-content">
+                    <?php if (!empty($featured_image)) { ?>
+                      <img src="<?php echo $featured_image; ?>" />
+                    <?php } else { ?>
+                      <div class="circle-image">
+                        <?php// echo $author_pic; ?>
+                      </div>
+                    <?php } ?>
+                    <p class="small"><?php echo $post_type; ?></p>
+                    <h3 class="post-title"><?php the_title(); ?></h3>
+                    <?php get_template_part('templates/components/entry-meta'); ?>
+                    <a class="mega-link" href="<?php the_permalink(); ?>"></a>
+                    <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
+                  </div>
+                </div>
+              </article>
+              <?php
+              endwhile;
+              wp_reset_query(); ?>
+            </div>
+          </div>
+        </div>
+      <?php endif;?>
+    </div>
 
 
 

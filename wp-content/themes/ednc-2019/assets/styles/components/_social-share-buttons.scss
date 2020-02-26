@@ -294,6 +294,13 @@
   #ctf .ctf-item:nth-child(1) {
      border-top: initial;
   }
+  #ctf .ctf-tweet-media {
+    width: 100%;
+    max-width: 200px;
+    float: left;
+    clear: both;
+    margin: 4px 0 2px 0;
+  }
 
   #ctf .ctf-item:nth-child(2) {
      border-top: initial;
