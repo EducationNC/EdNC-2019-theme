@@ -44,3 +44,32 @@ describe('Board of Directors page', () => {
     await expect(page).toMatchElement('h3', {text: "Tom Bradshaw"})
   })
 })
+
+describe('Voices page', () => {
+  beforeAll(async () => {
+    await page.goto(baseURL + '/voices')
+  })
+  
+  it('should display "Team" section on page', async () => {
+    await expect(page).toMatchElement('h2', {text: "Team"})
+  })
+  
+  it('should display "Mebane Rash" on page', async () => {
+    await expect(page).toMatchElement('h4', {text: "Mebane Rash"})
+  })
+})
+
+describe('EdTalk page', () => {
+  beforeAll(async () => {
+    await page.goto(baseURL + '/edtalk')
+  })
+  
+  it('should display "podcast" text on page', async () => {
+    await expect(page).toMatch('podcast')
+  })
+  
+  it('should display article block on page', async () => {
+    await expect(page).toMatchElement('.block-news')
+  })
+  
+})
