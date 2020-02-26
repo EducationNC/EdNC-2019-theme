@@ -87,10 +87,12 @@ $post_object = get_field('featured_article_category_pages', $term);
 
                   <?php
                   elseif( get_row_layout() == 'body_text' ):
-                      $body_text_content = get_sub_field('body_text_content');
-                      echo $body_text_content;
+                      $body_text_content = get_sub_field('body_text_content');  ?>
+                      <div class="body-text-flex">
+                        <?php echo $body_text_content; ?>
+                      </div>
 
-
+                  <?php
                   elseif( get_row_layout() == 'video' ):
                     $video = get_sub_field('video');  ?>
                     <div class="embed-container video-flex">
@@ -105,8 +107,8 @@ $post_object = get_field('featured_article_category_pages', $term);
                     </div>
 
                   <?php
-                  elseif( get_row_layout() == 'gallery' ):
-                      $images = get_sub_field('gallery-flex');
+                  elseif( get_row_layout() == 'gallery-flex-box' ):
+                      $images = get_sub_field('gallery-content');
                       if( $images ): ?>
                           <div class="gallery-flex">
                               <?php foreach( $images as $image ): ?>

@@ -1,7 +1,5 @@
 <?php
 
-
-
 acf_add_local_field_group(array(
 	'key' => 'group_5cd0a11fc8422',
 	'title' => 'Flex Content',
@@ -84,40 +82,6 @@ acf_add_local_field_group(array(
 					'min' => '',
 					'max' => '',
 				),
-				'layout_5cd0a4c7c27d8' => array(
-					'key' => 'layout_5cd0a4c7c27d8',
-					'name' => 'full_hero_flex',
-					'label' => 'Full Width Hero Image',
-					'display' => 'block',
-					'sub_fields' => array(
-						array(
-							'key' => 'field_5cd0a4c7c27d9',
-							'label' => 'Full Width Hero Image',
-							'name' => 'full-width-hero',
-							'type' => 'image',
-							'instructions' => '',
-							'required' => 0,
-							'conditional_logic' => 0,
-							'wrapper' => array(
-								'width' => '',
-								'class' => '',
-								'id' => '',
-							),
-							'return_format' => 'array',
-							'preview_size' => 'thumbnail',
-							'library' => 'all',
-							'min_width' => '',
-							'min_height' => '',
-							'min_size' => '',
-							'max_width' => '',
-							'max_height' => '',
-							'max_size' => '',
-							'mime_types' => '',
-						),
-					),
-					'min' => '',
-					'max' => '',
-				),
 				'layout_5cd0a4716fe04' => array(
 					'key' => 'layout_5cd0a4716fe04',
 					'name' => 'body_text',
@@ -173,53 +137,16 @@ acf_add_local_field_group(array(
 					'min' => '',
 					'max' => '',
 				),
-				'layout_5e56937e5c637' => array(
-					'key' => 'layout_5e56937e5c637',
-					'name' => 'gallery',
+				'layout_5e56cde830280' => array(
+					'key' => 'layout_5e56cde830280',
+					'name' => 'gallery-flex-box',
 					'label' => 'Gallery',
 					'display' => 'block',
 					'sub_fields' => array(
 						array(
-							'key' => 'field_5e5693845c638',
+							'key' => 'field_5e56cdf330281',
 							'label' => 'Gallery',
-							'name' => 'gallery-flex',
-							'type' => 'gallery',
-							'instructions' => '',
-							'required' => 0,
-							'conditional_logic' => 0,
-							'wrapper' => array(
-								'width' => '',
-								'class' => '',
-								'id' => '',
-							),
-							'return_format' => 'array',
-							'preview_size' => 'medium',
-							'insert' => 'append',
-							'library' => 'all',
-							'min' => '',
-							'max' => '',
-							'min_width' => '',
-							'min_height' => '',
-							'min_size' => '',
-							'max_width' => '',
-							'max_height' => '',
-							'max_size' => '',
-							'mime_types' => '',
-						),
-					),
-					'min' => '',
-					'max' => '',
-				),
-				'layout_5e56b4ae1cc72' => array(
-					'key' => 'layout_5e56b4ae1cc72',
-					'name' => 'gallery',
-					'label' => 'Gallery',
-					'display' => 'block',
-					'sub_fields' => array(
-						array(
-							'key' => 'field_5e56b4ae1cc73',
-							'label' => 'Gallery',
-							'name' => 'gallery-flex',
+							'name' => 'gallery-content',
 							'type' => 'gallery',
 							'instructions' => '',
 							'required' => 0,
