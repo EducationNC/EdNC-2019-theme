@@ -94,7 +94,7 @@ body:not(.page-template):not(.single-bio):not(.single-flash-cards) {
 
 .text_wrap_caption {
   line-height: 1.4em;
-  span {
+  span.caption {
     padding: .5em 0;
     font-family: $font-family-sans-serif;
     font-weight: 300;
