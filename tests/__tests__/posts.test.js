@@ -66,3 +66,30 @@ describe('Post: Annual Report 2019-2020', () => {
   }, 10000)
 
 })
+
+describe('Post: AttendaNCe Counts: Personalized early outreach improves regular attendance', () => {
+  beforeAll(async () => {
+    await page.goto(baseURL + '/perspective-attendance-counts-personalized-early-outreach-improves-regular-attendance/');
+  })
+  
+  it('should display "Perspective | AttendaNCe Counts: Personalized early outreach improves regular attendance', async () => {
+    await expect(page).toMatch('Perspective | AttendaNCe Counts: Personalized early outreach improves regular attendance')
+  }, 10000)
+  
+  
+  it('should have table element on page', async () => {
+    await expect(page).toMatchElement('.wp-block-table table')
+  }, 10000)
+
+})
+
+describe('Bridge post', () => {
+  beforeAll(async () => {
+    await page.goto(baseURL + '/bridge')
+  })
+  
+  it('should display registration button', async () => {
+    await expect(page).toMatchElement('button', {'text': 'Register Here'})
+  })
+  
+})
