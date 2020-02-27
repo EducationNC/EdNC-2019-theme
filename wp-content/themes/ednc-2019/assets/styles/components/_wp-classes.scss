@@ -84,3 +84,16 @@ body:not(.page-template):not(.single-bio):not(.single-flash-cards) {
   @extend .sr-only;
   @extend .sr-only-focusable;
 }
+
+.text_wrap_caption span {
+  padding: .5em 0;
+  font-family: $font-family-sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.4em;
+}
+
+.gt3-photo-gallery-pro--isotope_gallery {
+    text-align: left !important;
+    position: relative;
+}
