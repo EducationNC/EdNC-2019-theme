@@ -66,7 +66,7 @@ while (have_posts()) : the_post();
           <p class="large"><?php if (get_field('president')) { the_field('president');  } ?></p>
           </br>
           <p class="large"><?php if (get_field('presidents_term')) ?>
-            Term: </br>
+            <strong>Term:</strong></br>
             <?php { the_field('presidents_term');  } ?>
           </p>
         </div>
@@ -164,113 +164,6 @@ while (have_posts()) : the_post();
       </div>
     </div>
 
-    <div class="related-posts">
-      <h2 class="lato" style="margin-top: .5em;">Related Posts</h2>
-      <?php
-
-      $args = array(
-        'tax_query' => array(
-          array(
-            'taxonomy' => 'community-college-posts',
-            'field' => 'slug',
-            'terms' => $post->post_name
-          )
-        ),
-        'posts_per_page' => 4
-      );
-
-      query_posts($args);
-      $related = new WP_Query($args);
-      $related_posts = false;
-
-      if ($related->have_posts()) : ?>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="category-content-justify-left">
-              <?php
-              while ($related->have_posts()) : $related->the_post();
-              $featured_image = Media\get_featured_image('featured-four-block'); ?>
-              <article <?php post_class('block-news content-block-4 clearfix'); ?>>
-                <div class="flex">
-                  <div class="block-content">
-                    <?php if (!empty($featured_image)) { ?>
-                      <img src="<?php echo $featured_image; ?>" />
-                    <?php } else { ?>
-                      <div class="circle-image">
-                        <?php// echo $author_pic; ?>
-                      </div>
-                    <?php } ?>
-                    <p class="small"><?php echo $post_type; ?></p>
-                    <h3 class="post-title"><?php the_title(); ?></h3>
-                    <?php get_template_part('templates/components/entry-meta'); ?>
-                    <a class="mega-link" href="<?php the_permalink(); ?>"></a>
-                    <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
-                  </div>
-                </div>
-              </article>
-              <?php
-              endwhile;
-              wp_reset_query(); ?>
-            </div>
-          </div>
-        </div>
-      <?php endif;?>
-    </div>
-
-
-    <div class="related-maps">
-      <h2 class="lato" style="margin-top: .5em;">Related Maps</h2>
-      <?php
-
-      $args = array(
-        'post_type' => 'map',
-        'meta_query' => array(
-          array(
-            'key' => 'district-level',
-            'value' => true
-          )
-        ),
-        'posts_per_page' => 1
-      );
-
-      $maps = new WP_Query($args);
-
-      if ($maps->have_posts()) : ?>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="category-content-justify-left">
-              <?php
-              while ($maps->have_posts()) : $maps->the_post(); ?>
-              <?php $featured_image = Media\get_featured_image('featured-four-block'); ?>
-              <article <?php post_class('block-news content-block-4 clearfix'); ?>>
-                <div class="flex">
-                  <div class="block-content">
-                    <?php if (!empty($featured_image)) { ?>
-                      <img src="<?php echo $featured_image; ?>" />
-                    <?php } else { ?>
-                      <div class="circle-image">
-                        <?php// echo $author_pic; ?>
-                      </div>
-                    <?php } ?>
-                    <p class="small"><?php echo $post_type; ?></p>
-                    <h3 class="post-title"><?php the_title(); ?></h3>
-                    <?php get_template_part('templates/components/entry-meta'); ?>
-                    <a class="mega-link" href="<?php the_permalink(); ?>"></a>
-                    <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
-                  </div>
-                </div>
-              </article>
-              <?php
-              endwhile;
-              wp_reset_query(); ?>
-            </div>
-          </div>
-        </div>
-      <?php endif;?>
-    </div>
-
-
-
     <?php if (have_rows('chart_section_cc')): ?>
 
       <?php while (have_rows('chart_section_cc')) : the_row(); ?>
@@ -307,7 +200,7 @@ while (have_posts()) : the_post();
                         <span class="big"><?php the_sub_field('percentage') ?></span>
                       </p>
 
-                      <p class="lato" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
+                      <p class="medium" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
 
                   </div>
 
@@ -325,7 +218,7 @@ while (have_posts()) : the_post();
                         <span class="big"><?php the_sub_field('percentage') ?></span>
                       </p>
 
-                      <p class="lato" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
+                      <p class="medium" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
 
                   </div>
 
@@ -343,7 +236,7 @@ while (have_posts()) : the_post();
                         <span class="big"><?php the_sub_field('percentage') ?></span>
                       </p>
 
-                      <p class="lato" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
+                      <p class="medium" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
 
                   </div>
 
@@ -382,8 +275,8 @@ while (have_posts()) : the_post();
                     <?php if (!get_sub_field('hide')): ?>
                       <div class="box-3">
 
-                        <h6 style="color: #731454"><?php the_sub_field('chart_name'); ?></h6>
-                        <p class="lato"><?php the_sub_field('subtitle'); ?></p>
+                        <h6 style="color: #731454; padding: 0px 0px 0px 25px;"><?php the_sub_field('chart_name'); ?></h6>
+                        <p class="lato" style="padding: 0px 0px 0px 25px;"><?php the_sub_field('subtitle'); ?></p>
                         <?php
 
                         if(get_sub_field('source')): ?>
@@ -404,7 +297,11 @@ while (have_posts()) : the_post();
 
                           <?php $image = get_sub_field('image'); ?>
 
-                          <img src="<?php echo $image['url'] ?>">
+                          <img class="" src="<?php echo $image['url'] ?>">
+
+                          <div class="line-cc"><div class="square-green"></div><p class="medium">25 and over</p></div>
+                          <div class="line-cc"><div class="square-blue"></div><p class="medium">24 and under</p></div>
+                          <div class="line-cc"><div class="square-purple"></div><p class="medium">Unknown</p></div>
 
                         <?php endif; ?>
 
@@ -418,8 +315,8 @@ while (have_posts()) : the_post();
                     <?php if (!get_sub_field('hide')): ?>
                       <div class="box-3">
 
-                        <h6 style="color: #731454"><?php the_sub_field('chart_name'); ?></h6>
-                        <p class="lato"><?php the_sub_field('subtitle'); ?></p>
+                        <h6 style="color: #731454; padding: 0px 0px 0px 25px;"><?php the_sub_field('chart_name'); ?></h6>
+                        <p class="lato" style="padding: 0px 0px 0px 25px;"><?php the_sub_field('subtitle'); ?></p>
                         <?php
 
                         if(get_sub_field('source')): ?>
@@ -442,6 +339,10 @@ while (have_posts()) : the_post();
 
                           <img src="<?php echo $image['url'] ?>">
 
+                          <div class="line-cc"><div class="square-green"></div><p class="medium">Curriculum programs</p></div>
+                          <div class="line-cc"><div class="square-blue"></div><p class="medium">Continuing eduation</p></div>
+                          <div class="line-cc"><div class="square-purple"></div><p class="medium">Basic skills</p></div>
+
                         <?php endif; ?>
 
                       </div>
@@ -454,8 +355,8 @@ while (have_posts()) : the_post();
                     <?php if (!get_sub_field('hide')): ?>
                       <div class="box-3">
 
-                        <h6 style="color: #731454"><?php the_sub_field('chart_name'); ?></h6>
-                        <p class="lato"><?php the_sub_field('subtitle'); ?></p>
+                        <h6 style="color: #731454; padding: 0px 0px 0px 25px;"><?php the_sub_field('chart_name'); ?></h6>
+                        <p class="lato" style="padding: 0px 0px 0px 25px;"><?php the_sub_field('subtitle'); ?></p>
                         <?php
 
                         if(get_sub_field('source')): ?>
@@ -589,7 +490,7 @@ while (have_posts()) : the_post();
             if( have_rows('county_industries') ):
              	// loop through the rows of data
                 while ( have_rows('county_industries') ) : the_row(); ?>
-                    <p class="lato"><?php the_sub_field('industry_name'); ?> | <?php the_sub_field('percentage'); ?></p>
+                    <p class="medium"><strong><?php the_sub_field('industry_name'); ?></strong> | <?php the_sub_field('percentage'); ?></p>
                 <?php endwhile;
             else :
             endif;
@@ -599,7 +500,58 @@ while (have_posts()) : the_post();
       </div>
     </div>
 
+    <div class="related-posts">
+      <h2 class="lato" style="margin-top: .5em;">Related Posts</h2>
+      <?php
 
+      $args = array(
+        'tax_query' => array(
+          array(
+            'taxonomy' => 'community-college-posts',
+            'field' => 'slug',
+            'terms' => $post->post_name
+          )
+        ),
+        'posts_per_page' => 4
+      );
+
+      query_posts($args);
+      $related = new WP_Query($args);
+      $related_posts = false;
+
+      if ($related->have_posts()) : ?>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="category-content-justify-left">
+              <?php
+              while ($related->have_posts()) : $related->the_post();
+              $featured_image = Media\get_featured_image('featured-four-block'); ?>
+              <article <?php post_class('block-news content-block-4 clearfix'); ?>>
+                <div class="flex">
+                  <div class="block-content">
+                    <?php if (!empty($featured_image)) { ?>
+                      <img src="<?php echo $featured_image; ?>" />
+                    <?php } else { ?>
+                      <div class="circle-image">
+                        <?php// echo $author_pic; ?>
+                      </div>
+                    <?php } ?>
+                    <p class="small"><?php echo $post_type; ?></p>
+                    <h3 class="post-title"><?php the_title(); ?></h3>
+                    <?php get_template_part('templates/components/entry-meta'); ?>
+                    <a class="mega-link" href="<?php the_permalink(); ?>"></a>
+                    <p class="lato"><?php echo wp_trim_excerpt(); ?></p>
+                  </div>
+                </div>
+              </article>
+              <?php
+              endwhile;
+              wp_reset_query(); ?>
+            </div>
+          </div>
+        </div>
+      <?php endif;?>
+    </div>
 
 
   </div>

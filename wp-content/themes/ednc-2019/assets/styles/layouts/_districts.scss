@@ -248,3 +248,35 @@
     width: 33%;
   }
 }
+
+.square-green {
+  height: 10px;
+  width: 10px;
+  background-color: green;
+}
+
+.line-cc {
+  margin: 0px 0px 0px 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .square-green {
+    height: 10px;
+    width: 10px;
+    background-color: #98A942;
+  }
+  .square-blue {
+    height: 10px;
+    width: 10px;
+    background-color: #384E77;
+  }
+  .square-purple {
+    height: 10px;
+    width: 10px;
+    background-color: #731454;
+  }
+  p.medium {
+    margin-bottom: 0;
+    margin-left:  10px;
+  }
+}
