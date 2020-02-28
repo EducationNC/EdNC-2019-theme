@@ -433,7 +433,7 @@ function register_post_types() {
 			'menu_position' => 8,
 			'capability_type' => 'post',
 			'hierarchical' => false,
-			'supports' => array( 'title', 'author', 'revisions', 'editor', 'comments'),
+			'supports' => array( 'title', 'author', 'revisions', 'editor', 'comments', 'thumbnail'),
 			// 'show_in_rest' => true,
 			'has_archive' => true,
 			'rewrite' => true,
