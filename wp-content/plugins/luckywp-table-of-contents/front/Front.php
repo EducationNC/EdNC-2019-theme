@@ -101,7 +101,7 @@ class Front extends BaseFront
             return $content;
         }
 
-        if (has_shortcode($content, Core::$plugin->shortcode->getTag())) {
+        if (Core::$plugin->shortcode->hasShorcode($content)) {
             return $content;
         }
 
@@ -144,7 +144,7 @@ class Front extends BaseFront
         $attrs['skipHeadingLevel'] = $settings->skipHeadingLevel;
         $attrs['skipHeadingText'] = $settings->skipHeadingText;
 
-        $shortcode = Core::$plugin->shortcode->make($attrs);
+        $shortcode = Core::$plugin->shortcode->make($attrs, true);
 
         $position = $settings->position ? $settings->position : Core::$plugin->settings->autoInsertPosition;
         switch ($position) {
@@ -163,9 +163,9 @@ class Front extends BaseFront
                 }
 
                 if ($position == 'afterfirstheading') {
-                    Dom::afterNodeInsertHtml($nodes->item(0), $shortcode);
+                    Dom::afterNodeInsertShortcode($nodes->item(0), $shortcode);
                 } else {
-                    Dom::beforeNodeInsertHtml($nodes->item(0), $shortcode);
+                    Dom::beforeNodeInsertShortcode($nodes->item(0), $shortcode);
                 }
 
                 return Dom::getBody($dom);
@@ -182,7 +182,7 @@ class Front extends BaseFront
                     return $shortcode . $content;
                 }
 
-                Dom::afterNodeInsertHtml($nodes->item(0), $shortcode);
+                Dom::afterNodeInsertShortcode($nodes->item(0), $shortcode);
 
                 return Dom::getBody($dom);
 

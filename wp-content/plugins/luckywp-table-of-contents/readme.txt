@@ -4,7 +4,7 @@ Donate link: https://theluckywp.com/product/table-of-contents/
 Tags: table of contents, toc, navigation, links, seo
 Requires at least: 4.7
 Tested up to: 5.3.2
-Stable tag: 2.0.7
+Stable tag: 2.0.8
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -159,6 +159,15 @@ For non-English websites it is recommended to enable the `Intl` PHP extension.
 
 == Changelog ==
 
+= 2.0.8 — 2020-02-23 =
++ Added hook filter `lwptoc_active`.
++ Added tab "LuckyWP Plugins" to settings.
+* Improvement work option "Skip headings by text".
+* Fixed: in some cases shortcode incorrectly processed.
+* Fixed: in some cases auto insert work incorrectly.
+* Fixed: headings in table of contents not escaping.
+* Minor fixes in customize window.
+
 = 2.0.7 — 2020-01-31 =
 + Added support child themes of "Twenty Twenty".
 * Fixed: incorrect smooth scroll behavior when on page use CSS `html {scroll-behavior: smooth;}`.
@@ -269,7 +278,7 @@ For non-English websites it is recommended to enable the `Intl` PHP extension.
 * Improved Beaver Builder plugin support.
 
 = 1.5.7 — 2019-07-10 =
-* Imporvement smooth scroll implementation for support lazy loading images in content.
+* Improvement smooth scroll implementation for support lazy loading images in content.
 * Fix: in some cases, incorrectly worked smooth scroll to headings.
 
 = 1.5.6 — 2019-07-06 =

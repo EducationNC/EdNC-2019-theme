@@ -83,7 +83,7 @@ class Plugin extends BasePlugin
 
         // Интеграция с темами
         add_action('init', function () {
-             if (get_template() == 'twentytwenty') {
+            if (get_template() == 'twentytwenty') {
                 Core::createObject(TwentyTwentyTheme::class);
             }
         });
@@ -448,8 +448,12 @@ class Plugin extends BasePlugin
         }
         $regex = [];
         foreach ($src as $t) {
+            $t = trim(preg_replace('/\s+/u', ' ', $t));
+            if ($t == '') {
+                continue;
+            }
             $t = strtr($t, [
-                '\\\\' => '%%lwptocslash%%',
+                '\\' => '%%lwptocslash%%',
                 '\*' => '%%lwptocstar%%',
             ]);
             $t = str_replace('*', '___lwptocany___', $t);

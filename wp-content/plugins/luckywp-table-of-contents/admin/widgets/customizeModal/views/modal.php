@@ -569,7 +569,7 @@ echo $onlyBody ? '' : '<div class="lwptocCustomize lwptocCustomize-metabox">';
                     if ('' == $defaultValue) {
                         echo '<i>' . esc_html__('empty', 'luckywp-table-of-contents') . '</i>';
                     } else {
-                        echo $defaultValue;
+                        echo esc_html($defaultValue);
                     }
                     ?>
                 </div>

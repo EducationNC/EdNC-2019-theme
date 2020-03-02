@@ -29,14 +29,10 @@ class ShortcodeController extends AdminController
     {
         Core::$plugin->admin->checkAjaxReferer();
         $post = get_post((int)Core::$plugin->request->get('postId'));
-        $attrs = Core::$plugin->request->get('attrs');
-        if (!is_array($attrs)) {
-            $attrs = [];
-        }
         $onlyBody = false;
 
         $postSettings = new PostSettings($post->ID);
-        $model = new CustomizeForm($postSettings, $attrs);
+        $model = new CustomizeForm($postSettings, $this->getAttrsFromRequest());
         if ($model->load(Core::$plugin->request->post())) {
             if ($model->validate()) {
                 echo CustomizeSuccess::widget([
@@ -59,11 +55,7 @@ class ShortcodeController extends AdminController
     public function ajaxView()
     {
         Core::$plugin->admin->checkAjaxReferer();
-        $attrs = Core::$plugin->request->get('attrs');
-        if (!is_array($attrs)) {
-            $attrs = [];
-        }
-        $rows = Core::$plugin->admin->overrideSettingsToRows($attrs);
+        $rows = Core::$plugin->admin->overrideSettingsToRows($this->getAttrsFromRequest());
         echo '<div class="lwptocShortcode">';
         echo '<div class="lwptocShortcode_title">' . esc_html__('Table of Contents', 'luckywp-table-of-contents') . '</div>';
         if ($rows) {
@@ -78,5 +70,17 @@ class ShortcodeController extends AdminController
         }
         echo '</div>';
         wp_die();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAttrsFromRequest()
+    {
+        $attrs = Core::$plugin->request->get('attrs');
+        if (!is_array($attrs)) {
+            $attrs = [];
+        }
+        return wp_unslash($attrs);
     }
 }

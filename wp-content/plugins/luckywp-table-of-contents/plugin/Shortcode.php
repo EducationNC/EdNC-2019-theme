@@ -59,7 +59,8 @@ class Shortcode extends BaseObject
     public function shortcode($attrs)
     {
         global $post;
-        if (($this->theContentApplied && $this->headingsCache === null) ||
+        if ($this->isDiactivated() ||
+            ($this->theContentApplied && $this->headingsCache === null) ||
             (!is_single($post) && !is_page($post)) ||
             !$this->isMainQueryPost()
         ) {
@@ -110,7 +111,7 @@ class Shortcode extends BaseObject
         }
 
         if (Core::$plugin->isTheContent) {
-            return $this->make($attrs);
+            return $this->make($attrs, true);
         }
 
         if (!$this->theContentApplied) {
@@ -138,7 +139,9 @@ class Shortcode extends BaseObject
      */
     public function theContent($content)
     {
-        if (!apply_filters('lwptoc_need_processing_headings', $this->needProcessHeadings($content), $content)) {
+        if ($this->isDiactivated() ||
+            !apply_filters('lwptoc_need_processing_headings', $this->needProcessHeadings($content), $content)
+        ) {
             return $content;
         }
 
@@ -147,7 +150,7 @@ class Shortcode extends BaseObject
         $dto->modify = true;
 
         $shortcodesAttrs = [];
-        preg_match_all($this->getShortcodeRegex(), $content, $matches);
+        preg_match_all($this->getShortcodeRegex(), $this->decodeShorcode($content), $matches);
         foreach ($matches[3] as $match) {
             $shortcodesAttrs[] = ValueHelper::assertArray(shortcode_parse_atts($match));
         }
@@ -193,7 +196,7 @@ class Shortcode extends BaseObject
 
         return preg_replace_callback($this->getShortcodeRegex(), function ($m) use ($result) {
             return Toc::render($result->headings, shortcode_parse_atts($m[3]));
-        }, $result->content);
+        }, $this->decodeShorcode($result->content));
     }
 
     /**
@@ -230,7 +233,7 @@ class Shortcode extends BaseObject
             return false;
         }
 
-        if (has_shortcode($content, $this->getTag())) {
+        if ($this->hasShorcode($content)) {
             return true;
         }
 
@@ -262,9 +265,10 @@ class Shortcode extends BaseObject
 
     /**
      * @param array $attrs
+     * @param bool $encode
      * @return string
      */
-    public function make($attrs)
+    public function make($attrs, $encode = false)
     {
         $shortcode = '[' . $this->getTag();
         foreach ($attrs as $k => $v) {
@@ -278,7 +282,28 @@ class Shortcode extends BaseObject
             }
         }
         $shortcode .= ']';
-        return $shortcode;
+        return $encode ? '<!-- lwptocEncodedToc ' . base64_encode($shortcode) . ' -->' : $shortcode;
+    }
+
+    /**
+     * @param string $content
+     * @return string
+     */
+    protected function decodeShorcode($content)
+    {
+        return preg_replace_callback('#<!-- lwptocEncodedToc (.*?) -->#imsu', function ($matches) {
+            return base64_decode($matches[1]);
+        }, $content);
+    }
+
+    /**
+     * @param string $content
+     * @return bool
+     */
+    public function hasShorcode($content)
+    {
+        return has_shortcode($content, $this->getTag()) ||
+            preg_match('#<!-- lwptocEncodedToc (.*?) -->#imsu', $content) === 1;
     }
 
     /**
@@ -296,5 +321,13 @@ class Shortcode extends BaseObject
     public static function attrsFromJson($json)
     {
         return ValueHelper::assertArray(Json::decode($json));
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isDiactivated()
+    {
+        return !apply_filters('lwptoc_active', true);
     }
 }

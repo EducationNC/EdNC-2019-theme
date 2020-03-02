@@ -36,11 +36,12 @@ class ContentHandling
             /** @var $node \DOMElement */
 
             $label = Dom::getNodeValue($node);
+            $label = html_entity_decode($label, ENT_HTML5, 'UTF-8');
+            $label = preg_replace('/\s+/u', ' ', $label);
             $label = trim($label);
             if ($label == '') {
                 continue;
             }
-            $label = html_entity_decode($label, ENT_HTML5, 'UTF-8');
 
             $id = static::makeHeadingId($label, $dto);
 

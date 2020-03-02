@@ -129,9 +129,19 @@ h4.is-style-default {
   font-weight: 400px;
 }
 
-
-
-
-// .print-only {
-//   max-width: 740px;
+// .wp-block-table {
+// display: block;
+// max-width: 100vw;
+// width: 100%;
+// overflow:hidden;
+// overflow-x: auto;
+// }
+//
+// .wp-block-table td {
+// word-break: normal;
+// }
+//
+// .wp-block-table tbody {
+// display: table;
+// width: 100%;
 // }

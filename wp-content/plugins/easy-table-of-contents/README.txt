@@ -2,10 +2,10 @@
 Contributors: shazahm1@hotmail.com
 Donate link: http://connections-pro.com/
 Tags: table of contents, toc
-Requires at least: 4.4
+Requires at least: 5.2
 Tested up to: 5.3
-Requires PHP: 5.3
-Stable tag: 1.7.1
+Requires PHP: 5.6.20
+Stable tag: 2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,6 +17,9 @@ A user friendly, featured focused plugin which allows you to insert a table of c
 
 = Features =
 * Automatically generate a table of contents for your posts, pages and custom post types by parsing its contents for headers.
+* Supports the `<!--nextpage-->` tag.
+* Supports the Rank Math plugin.
+* Works with the Classic Editor, Gutenberg, Divi, Elementor, WPBakery Page Builder and Visual Composer page editors.
 * Optionally enable for pages and/or posts. Custom post types are supported, as long as their content is output with the `the_content()` template tag.
 * Optionally auto insert the table of contents into the page, selectable by enabled post type.
 * Provides many easy to understand options to configure when and where to insert the table of contents.
@@ -43,13 +46,9 @@ Here are links to documentation pages for several of the premium templates for t
 
 = Roadmap =
 * Fragment caching for improved performance.
-* Support for `<!--nextpage-->`.
-* Customizer support.
-
-= Requirements =
-
-* **WordPress version:** >= 3.2
-* **PHP version:** >= 5.2.4
+* Improve SEO by adding options to add nofollow to TOC link and wrap TOC nav in noindex tag.
+* Improve accessibility.
+* Add Bullet and Arrow options for list counter style.
 
 = Credit =
 
@@ -90,8 +89,45 @@ Easy Table Contents is a fork of the excellent [Table of Contents Plus](https://
 
 == Changelog ==
 
-= 1.7.1 02/18/2020 =
+= 2.0 02/01/2020 =
+* NEW: Major rewrite of all code and processing logic to make it faster and more reliable.
+* NEW: Support for the <!--nextpage--> tag.
+* NEW: Introduce helper functions for devs.
+* NEW: Support WPML.
+* NEW: Support Polylang.
+* NEW: Add filter to support the Rank Math plugin.
+* NEW: Introduce the `ez_toc_maybe_apply_the_content_filter` filter.
+* TWEAK: Improve translation compatibility.
+* TWEAK: Rework widget logic to allow multi-line TOC items, improve active item highlighting while removing the use of the jQuery Waypoints library.
+* TWEAK Add additional classes to TOC list items.
+* TWEAK: Add WOFF2 format for icon format and change font references in CSS.
+* TWEAK: Add font-display: swap for toggle icon.
+* TWEAK: Update JS Cookie to 2.2.1.
+* TWEAK: Update jQuery Smooth Scroll to 2.2.0.
+* TWEAK: Allow forward slash and angle brackets in headings and alternate headings.
+* TWEAK: Allow forward slash in  excluded headings.
+* TWEAK: Remove new line/returns when matching excluded headings.
+* TWEAK: Simple transient cache to ensure a post is only processed once per request for a TOC.
+* TWEAK: Improve sanitization of alternate headings field value.
+* TWEAK: Deal with non-breaking-spaces in alternate headings.
+* TWEAK: Add the ability to exclude by selector content eligible to be included in the TOC.
+* TWEAK: Change the shortcode priority to a higher value.
+* TWEAK: Add filter to remove shortcodes from the content prior to the `the_content` filter being run to exclude shortcode content from being eligible as TOC items.
+* TWEAK: Add compatibility filters to remove shortcodes for Connections and Striking theme to remove them from eligible TOC item content.
+* TWEAK: Do not execute if root current filter is the `wp_head` or `get_the_excerpt` filters.
+* TWEAK: Add filter to exclude content by selector.
+* TWEAK: Move in-page anchor to after the heading instead of wrapping the heading to prevent conflicts with theme styling.
+* TWEAK: Utilize the `ez_toc_exclude_by_selector` filter the exclude the JetPack share buttons from eligible headings.
+* TWEAK: Remove the Elegant Themes Bloom plugin node from the post content before extracting headings.
+* TWEAK: Add compatibility filter for the Visual Composer plugin.
+* TWEAK: Utilize the `ez_toc_exclude_by_selector` filter the exclude the Starbox author heading from eligible headings.
+* I18N: Add wpml-config.xml file.
+* BUG: Correct option misspelling.
+* BUG: Do not need to run values for alternate and exclude headings thru `wp_unslash()` because `update_post_meta()` already does.
+* BUG: Do not need to run `stripslashes()` when escaping the alternate heading value.
 * BUG: Sanitize the excluded heading string before saving post meta.
+* DEV: Change PHP keywords to comply with PSR2.
+* DEV:Bump minimum PHP version to 5.6.20 which matches WP core.
 
 = 1.7 05/09/2018 =
 * NEW: Introduce the `ez_toc_shortcode` filter.
@@ -272,3 +308,6 @@ Requires WordPress >= 4.4 and PHP >= 5.3. PHP version >= 7.1 recommended.
 
 = 1.7 =
 Requires WordPress >= 4.4 and PHP >= 5.3. PHP version >= 7.1 recommended.
+
+= 2.0-rc4 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).

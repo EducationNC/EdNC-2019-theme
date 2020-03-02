@@ -1,5 +1,6 @@
 <?php
 
+use luckywp\tableOfContents\admin\controllers\SettingsController;
 use luckywp\tableOfContents\admin\widgets\fontSizeField\FontSizeField;
 use luckywp\tableOfContents\admin\widgets\skipHeadingLevelField\SkipHeadingLevelField;
 use luckywp\tableOfContents\admin\widgets\widthField\WidthField;
@@ -80,7 +81,6 @@ return [
                     ],
                 ],
             ],
-
             'header' => [
                 'title' => esc_html__('Header', 'luckywp-table-of-contents'),
                 'fields' => [
@@ -491,5 +491,10 @@ return [
                 ],
             ],
         ],
+    ],
+
+    'plugins' => [
+        'label' => esc_html__('LuckyWP Plugins', 'luckywp-table-of-contents'),
+        'callback' => [SettingsController::getInstance(), 'plugins'],
     ],
 ];

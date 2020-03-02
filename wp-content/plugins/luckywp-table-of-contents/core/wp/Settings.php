@@ -165,7 +165,13 @@ class Settings extends BaseObject
             'id' => $this->prefix . $groupId,
             'name' => $groupId,
             'label' => ArrayHelper::getValue($config, 'label', $groupId),
+            'callback' => ArrayHelper::getValue($config, 'callback'),
         ];
+
+        if (!is_callable($group['callback'])) {
+            $group['callback'] = [$this, 'showForm'];
+        }
+
         $this->groups[$group['id']] = $group;
         $this->addSections($groupId, ArrayHelper::getValue($config, 'sections', []));
         return $this;
@@ -398,8 +404,7 @@ class Settings extends BaseObject
         }
 
         reset($this->groups);
-        $group = current($this->groups);
-        return $group;
+        return current($this->groups);
     }
 
     /**
@@ -456,7 +461,7 @@ class Settings extends BaseObject
         if (count($this->groups) > 1) {
             $this->showTabs();
         }
-        $this->showForm();
+        call_user_func($this->getCurrentGroup()['callback']);
     }
 
 
