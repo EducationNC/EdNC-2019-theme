@@ -10,7 +10,13 @@
   $month_prev = null;
 
   // Get unique dates of each post in the database
-  $days = $wpdb->get_results("SELECT DISTINCT DAY (post_date) AS day, MONTH( post_date ) AS month ,	YEAR( post_date ) AS year, COUNT( id ) as post_count FROM $wpdb->posts WHERE post_status = 'publish' and post_date <= now( ) and post_type = 'ednews' GROUP BY day, month , year ORDER BY post_date DESC");
+  
+  // Get any existing copy of our transient data
+  if ( false === ( $days = get_transient( 'ed_picks_days' ) ) ) {
+      // It wasn't there, so regenerate the data and save the transient
+      $days = $wpdb->get_results("SELECT DISTINCT DAY (post_date) AS day, MONTH( post_date ) AS month ,	YEAR( post_date ) AS year, COUNT( id ) as post_count FROM $wpdb->posts WHERE post_status = 'publish' and post_date <= now( ) and post_type = 'ednews' GROUP BY day, month , year ORDER BY post_date DESC");
+      set_transient( 'ed_picks_days', $days, 12 * HOUR_IN_SECONDS );
+  }
 
   // Determine which years and months need to be expanded on page load
   if (is_archive()) {
@@ -66,14 +72,21 @@
 
     <li class="archive-day-ednews">
       <?php
-      $ednews = new WP_Query([
-        'post_type' => 'ednews',
-        'date_query' => [
-          'year' => $day->year,
-          'month' => $day->month,
-          'day' => $day->day
-        ]
-      ]);
+      
+      // Get any existing copy of our transient data
+      if ( false === ( $ednews = get_transient( 'ed_picks_day'.$day->year.$day->month.$day->day ) ) ) {
+          // It wasn't there, so regenerate the data and save the transient
+          $ednews = new WP_Query([
+            'post_type' => 'ednews',
+            'date_query' => [
+              'year' => $day->year,
+              'month' => $day->month,
+              'day' => $day->day
+            ]
+          ]);
+          set_transient( 'ed_picks_day'.$day->year.$day->month.$day->day, $ednews, 12 * HOUR_IN_SECONDS );
+      }
+    
       if ($ednews->have_posts()) : while ($ednews->have_posts()) : $ednews->the_post(); ?>
         <a href="<?php the_permalink(); ?>">
           <?php echo date_i18n("F j", mktime(0, 0, 0, $day->month, $day->day, $day->year)); ?>
