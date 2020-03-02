@@ -11,10 +11,10 @@
 
   // Get unique dates of each post in the database
   // Get any existing copy of our transient data
-  if ( false === ( $days = get_transient( 'ed_picks_days' ) ) ) {
+  if (false === ( $days = get_transient( 'ed_picks_days' ) )) {
       // It wasn't there, so regenerate the data and save the transient
       $days = $wpdb->get_results("SELECT DISTINCT DAY (post_date) AS day, MONTH( post_date ) AS month ,	YEAR( post_date ) AS year, COUNT( id ) as post_count FROM $wpdb->posts WHERE post_status = 'publish' and post_date <= now( ) and post_type = 'ednews' GROUP BY day, month , year ORDER BY post_date DESC");
-      set_transient( 'ed_picks_days', $days, 5 * MINUTE_IN_SECONDS );
+      set_transient('ed_picks_days', $days, 5 * MINUTE_IN_SECONDS);
   }
 
   // Determine which years and months need to be expanded on page load
@@ -28,7 +28,7 @@
 
   // Get any existing copy of our transient data
   $ed_picks_output_key = 'ed_picks_output'.$expanded_year.$expanded_month;
-  if ($ednews_output = get_transient( $ed_picks_output_key ) ):
+  if ($ednews_output = get_transient( $ed_picks_output_key )):
       // It wasn't there, so regenerate the data and save the transient
       echo '<!--transient output-->';
       echo $ednews_output;
@@ -122,7 +122,7 @@
     ob_end_clean();
     echo $ednews_output;
     
-    set_transient( $ed_picks_output_key, $ednews_output,  12 * HOUR_IN_SECONDS);
+    set_transient($ed_picks_output_key, $ednews_output,  12 * HOUR_IN_SECONDS);
     ?>
   
   <?php endif; // end transient ?>
