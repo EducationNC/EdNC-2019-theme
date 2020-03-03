@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-01-07 22:29+0300\n"
-"PO-Revision-Date: 2020-01-07 22:29+0300\n"
+"POT-Creation-Date: 2020-02-23 18:48+0300\n"
+"PO-Revision-Date: 2020-02-23 18:48+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -17,13 +17,13 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: plugin/editorBlock/src\n"
 
-#: admin/Admin.php:34 admin/SiteHealth.php:34
+#: admin/Admin.php:34 admin/SiteHealth.php:42
 msgid "Settings"
 msgstr ""
 
 #: admin/Admin.php:54 admin/Admin.php:55 admin/Admin.php:75 admin/Admin.php:113
 #: admin/controllers/EditorBlockController.php:65
-#: admin/controllers/ShortcodeController.php:68 plugin/Plugin.php:464
+#: admin/controllers/ShortcodeController.php:60 plugin/Plugin.php:476
 #: plugin/WpWidget.php:22
 msgid "Table of Contents"
 msgstr ""
@@ -38,17 +38,17 @@ msgid "Position"
 msgstr ""
 
 #: admin/Admin.php:145 admin/widgets/customizeModal/views/modal.php:76
-#: config/settings.php:22
+#: config/settings.php:23
 msgid "Minimal Count of Headings"
 msgstr ""
 
 #: admin/Admin.php:148 admin/forms/CustomizeForm.php:241
-#: admin/widgets/customizeModal/views/modal.php:99 config/settings.php:34
+#: admin/widgets/customizeModal/views/modal.php:99 config/settings.php:35
 msgid "Depth"
 msgstr ""
 
 #: admin/Admin.php:151 admin/widgets/customizeModal/views/modal.php:121
-#: config/settings.php:43
+#: config/settings.php:44
 msgid "Hierarchical View"
 msgstr ""
 
@@ -75,12 +75,12 @@ msgid "Disabled"
 msgstr ""
 
 #: admin/Admin.php:154 admin/forms/CustomizeForm.php:242
-#: admin/widgets/customizeModal/views/modal.php:144 config/settings.php:54
+#: admin/widgets/customizeModal/views/modal.php:144 config/settings.php:55
 msgid "Numeration"
 msgstr ""
 
 #: admin/Admin.php:157 admin/forms/CustomizeForm.php:243
-#: admin/widgets/customizeModal/views/modal.php:166 config/settings.php:66
+#: admin/widgets/customizeModal/views/modal.php:166 config/settings.php:67
 msgid "Numeration Suffix"
 msgstr ""
 
@@ -167,7 +167,8 @@ msgstr ""
 msgid "DOM/XML Version"
 msgstr ""
 
-#: admin/SiteHealth.php:27 admin/SiteHealth.php:31
+#: admin/SiteHealth.php:27 admin/SiteHealth.php:31 admin/SiteHealth.php:35
+#: admin/SiteHealth.php:39
 msgid "not loaded"
 msgstr ""
 
@@ -175,12 +176,20 @@ msgstr ""
 msgid "libXML Version"
 msgstr ""
 
-#: admin/SiteHealth.php:35
+#: admin/SiteHealth.php:34
+msgid "intl Version"
+msgstr ""
+
+#: admin/SiteHealth.php:38
+msgid "ICU Version"
+msgstr ""
+
+#: admin/SiteHealth.php:43
 msgid "encoded data to copy"
 msgstr ""
 
 #: admin/controllers/EditorBlockController.php:71
-#: admin/controllers/ShortcodeController.php:74
+#: admin/controllers/ShortcodeController.php:66
 #: admin/widgets/customizeModal/views/modal.php:570
 #: admin/widgets/metabox/views/box.php:33
 #: admin/widgets/widget/views/_override.php:18
@@ -243,7 +252,7 @@ msgstr ""
 msgid "Customize Table of Contents"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:43 config/settings.php:16
+#: admin/widgets/customizeModal/views/modal.php:43 config/settings.php:17
 msgid "General"
 msgstr ""
 
@@ -282,7 +291,7 @@ msgstr ""
 msgid "default"
 msgstr ""
 
-#: admin/widgets/customizeModal/views/modal.php:89 config/settings.php:30
+#: admin/widgets/customizeModal/views/modal.php:89 config/settings.php:31
 msgid ""
 "If the count of headings in the post is less, then table of contents is not "
 "displayed."
@@ -293,7 +302,7 @@ msgstr ""
 #: admin/widgets/customizeModal/views/modal.php:286
 #: admin/widgets/customizeModal/views/modal.php:309
 #: admin/widgets/customizeModal/views/modal.php:594
-#: admin/widgets/customizeModal/views/modal.php:621 config/settings.php:47
+#: admin/widgets/customizeModal/views/modal.php:621 config/settings.php:48
 #: config/settings.php:99 config/settings.php:150 config/settings.php:297
 msgid "Enable"
 msgstr ""
@@ -332,11 +341,11 @@ msgstr ""
 msgid "Saved!"
 msgstr ""
 
-#: admin/widgets/fontSizeField/views/widget.php:16 plugin/Plugin.php:323
+#: admin/widgets/fontSizeField/views/widget.php:16 plugin/Plugin.php:331
 msgid "Default"
 msgstr ""
 
-#: admin/widgets/fontSizeField/views/widget.php:17 plugin/Plugin.php:288
+#: admin/widgets/fontSizeField/views/widget.php:17 plugin/Plugin.php:296
 msgid "Custom Value"
 msgstr ""
 
@@ -384,7 +393,7 @@ msgstr ""
 msgid "Enable TOC"
 msgstr ""
 
-#: config/settings.php:77
+#: config/settings.php:78
 #, php-format
 msgid "The symbol will be added after numeration. For example, %s"
 msgstr ""
@@ -506,6 +515,10 @@ msgstr ""
 msgid "List Markup Tags"
 msgstr ""
 
+#: config/settings.php:497
+msgid "LuckyWP Plugins"
+msgstr ""
+
 #: core/admin/AdminController.php:46
 msgid "Sorry, you are not allowed to access this page."
 msgstr ""
@@ -530,144 +543,144 @@ msgstr ""
 msgid "%1$s plugin require PHP extension %2$s to work."
 msgstr ""
 
-#: plugin/Plugin.php:140
+#: plugin/Plugin.php:148
 msgid "Without numeration"
 msgstr ""
 
-#: plugin/Plugin.php:141
+#: plugin/Plugin.php:149
 msgid "Decimal numbers (nested)"
 msgstr ""
 
-#: plugin/Plugin.php:142
+#: plugin/Plugin.php:150
 msgid "Decimal numbers"
 msgstr ""
 
-#: plugin/Plugin.php:143
+#: plugin/Plugin.php:151
 msgid "Roman numbers (nested)"
 msgstr ""
 
-#: plugin/Plugin.php:144
+#: plugin/Plugin.php:152
 msgid "Roman numbers"
 msgstr ""
 
-#: plugin/Plugin.php:154 plugin/Plugin.php:241 plugin/Plugin.php:385
+#: plugin/Plugin.php:162 plugin/Plugin.php:249 plugin/Plugin.php:393
 msgid "None"
 msgstr ""
 
-#: plugin/Plugin.php:166
+#: plugin/Plugin.php:174
 msgid "Before first heading"
 msgstr ""
 
-#: plugin/Plugin.php:167
+#: plugin/Plugin.php:175
 msgid "After first heading"
 msgstr ""
 
-#: plugin/Plugin.php:168
+#: plugin/Plugin.php:176
 msgid "After first block (paragraph or heading)"
 msgstr ""
 
-#: plugin/Plugin.php:169
+#: plugin/Plugin.php:177
 msgid "Top"
 msgstr ""
 
-#: plugin/Plugin.php:170
+#: plugin/Plugin.php:178
 msgid "Bottom"
 msgstr ""
 
-#: plugin/Plugin.php:204
+#: plugin/Plugin.php:212
 msgid "Thin"
 msgstr ""
 
-#: plugin/Plugin.php:205
+#: plugin/Plugin.php:213
 msgid "Extra Light"
 msgstr ""
 
-#: plugin/Plugin.php:206
+#: plugin/Plugin.php:214
 msgid "Light"
 msgstr ""
 
-#: plugin/Plugin.php:207
+#: plugin/Plugin.php:215
 msgid "Normal"
 msgstr ""
 
-#: plugin/Plugin.php:208
+#: plugin/Plugin.php:216
 msgid "Medium"
 msgstr ""
 
-#: plugin/Plugin.php:209
+#: plugin/Plugin.php:217
 msgid "Semi Bold"
 msgstr ""
 
-#: plugin/Plugin.php:210
+#: plugin/Plugin.php:218
 msgid "Bold"
 msgstr ""
 
-#: plugin/Plugin.php:211
+#: plugin/Plugin.php:219
 msgid "Extra Bold"
 msgstr ""
 
-#: plugin/Plugin.php:212
+#: plugin/Plugin.php:220
 msgid "Heavy"
 msgstr ""
 
-#: plugin/Plugin.php:242
+#: plugin/Plugin.php:250
 msgid "Left"
 msgstr ""
 
-#: plugin/Plugin.php:243
+#: plugin/Plugin.php:251
 msgid "Right"
 msgstr ""
 
-#: plugin/Plugin.php:244
+#: plugin/Plugin.php:252
 msgid "Right without flow"
 msgstr ""
 
-#: plugin/Plugin.php:245
+#: plugin/Plugin.php:253
 msgid "Center"
 msgstr ""
 
-#: plugin/Plugin.php:255
+#: plugin/Plugin.php:263
 msgid "Light Colors"
 msgstr ""
 
-#: plugin/Plugin.php:256
+#: plugin/Plugin.php:264
 msgid "Dark Colors"
 msgstr ""
 
-#: plugin/Plugin.php:257
+#: plugin/Plugin.php:265
 msgid "White"
 msgstr ""
 
-#: plugin/Plugin.php:258
+#: plugin/Plugin.php:266
 msgid "Transparent"
 msgstr ""
 
-#: plugin/Plugin.php:259
+#: plugin/Plugin.php:267
 msgid "Inherit from theme"
 msgstr ""
 
-#: plugin/Plugin.php:269
+#: plugin/Plugin.php:277
 msgid "As heading (#Example_Heading_Text)"
 msgstr ""
 
-#: plugin/Plugin.php:270
+#: plugin/Plugin.php:278
 msgid "As heading without transliterate (#Example_Heading_Text)"
 msgstr ""
 
-#: plugin/Plugin.php:273
+#: plugin/Plugin.php:281
 #, php-format
 msgid "Counter %s"
 msgstr ""
 
-#: plugin/Plugin.php:286
+#: plugin/Plugin.php:294
 msgid "Auto"
 msgstr ""
 
-#: plugin/Plugin.php:287
+#: plugin/Plugin.php:295
 msgid "Full Width"
 msgstr ""
 
-#: plugin/Plugin.php:469
+#: plugin/Plugin.php:481
 msgid ""
 "Creates a table of contents for your posts/pages. Works automatically or "
 "manually (via shortcode, Gutenberg block or widget)."

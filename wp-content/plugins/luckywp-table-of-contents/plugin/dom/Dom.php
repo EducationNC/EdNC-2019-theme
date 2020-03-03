@@ -39,30 +39,30 @@ class Dom
 
     /**
      * @param \DOMNode $node
-     * @param string $html
+     * @param string $shortcode
      */
-    public static function beforeNodeInsertHtml($node, $html)
+    public static function beforeNodeInsertShortcode($node, $shortcode)
     {
-        static::nodeInsertHtml($node, $html, true);
+        static::nodeInsertShortcode($node, $shortcode, true);
     }
 
     /**
      * @param \DOMNode $node
-     * @param string $html
+     * @param string $shortcode
      */
-    public static function afterNodeInsertHtml($node, $html)
+    public static function afterNodeInsertShortcode($node, $shortcode)
     {
-        static::nodeInsertHtml($node, $html, false);
+        static::nodeInsertShortcode($node, $shortcode, false);
     }
 
     /**
      * @param \DOMNode $node
-     * @param string $html
+     * @param string $shortcode
      * @param bool $before
      */
-    protected static function nodeInsertHtml($node, $html, $before)
+    protected static function nodeInsertShortcode($node, $shortcode, $before)
     {
-        $dom = static::make($html);
+        $dom = static::make(static::makeEncodedComment($shortcode));
         if ($dom !== false) {
             foreach ($dom->getElementById(static::BODY_ID)->childNodes as $newNode) {
                 $node->parentNode->insertBefore($node->ownerDocument->importNode($newNode, true), $before ? $node : $node->nextSibling);
@@ -111,8 +111,17 @@ class Dom
     protected static function encode($pattern, $content)
     {
         return preg_replace_callback($pattern, function ($matches) {
-            return '<!-- lwptocEncodedData ' . base64_encode($matches[0]) . ' -->';
+            return static::makeEncodedComment($matches[0]);
         }, $content);
+    }
+
+    /**
+     * @param string $s
+     * @return string
+     */
+    protected static function makeEncodedComment($s)
+    {
+        return '<!-- lwptocEncodedData ' . base64_encode($s) . ' -->';
     }
 
     /**

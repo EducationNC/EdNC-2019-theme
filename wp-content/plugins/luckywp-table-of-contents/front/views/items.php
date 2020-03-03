@@ -16,7 +16,7 @@ foreach ($items as $item) {
         <?php if ($item['number']) { ?>
             <span class="lwptoc_item_number"><?= $item['number'] . $item['numberSuffix'] ?></span>
         <?php } ?>
-        <span class="lwptoc_item_label"><?= $item['label'] ?></span>
+        <span class="lwptoc_item_label"><?= esc_html($item['label']) ?></span>
     </a>
     <?php
     lwptoc_items($item['childrens']);

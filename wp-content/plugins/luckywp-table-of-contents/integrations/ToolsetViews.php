@@ -30,7 +30,7 @@ class ToolsetViews extends BaseObject
 
     public function theContent($content)
     {
-        $this->hasShortcode = has_shortcode($content, Core::$plugin->shortcode->getTag());
+        $this->hasShortcode = Core::$plugin->shortcode->hasShorcode($content);
         return $content;
     }
 }
