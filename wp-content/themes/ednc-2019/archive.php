@@ -101,6 +101,47 @@ $post_object = get_field('featured_article_category_pages', $term);
 
                   <?php
 
+                  elseif( get_row_layout() == 'single_article' ):
+                    $article = get_sub_field('article');
+                    if( $article ): ?>
+                      <div class="recommended-blocks-center">
+                        <?php
+                           foreach( $article as $post): // variable must be called $post (IMPORTANT) ?>
+                              <?php setup_postdata($post); ?>
+                              <?php $featured_image = Media\get_featured_image('featured-four-block');
+                              $column = wp_get_post_terms(get_the_id(), 'column');
+                              if ($column) {
+                                $post_type = $column[0]->name;
+                              }
+                              elseif ( has_term( 'press-release', 'appearance' ) ) {
+                                $post_type = "Press Release";
+                              }
+                              elseif ( has_term ( 'issues', 'appearance' ) ) {
+                                $post_type = "Issues";
+                              }
+                              else {
+                                $post_type = "News";
+                              }
+                              ?>
+                              <div class="">
+                                <h3>Featured Article</h3>
+                                <a href="<?php the_permalink(); ?>">
+                                   <?php if (!empty($featured_image)) {
+                                    echo '<img class="no-lazy" src="' . $featured_image . '" />';
+                                  } ?>
+                                  <p class="small"><?php echo $post_type ?></p>
+                                  <h3 class="post-title"><?php the_title(); ?></h3>
+                                  <?php get_template_part('templates/components/entry-meta'); ?>
+                                  <!-- <a class="mega-link" href="<?php the_permalink(); ?>"></a> -->
+                                </a>
+                              </div>
+                          <?php endforeach; ?>
+                          <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
+                      </div>
+                    <?php
+                    endif;
+
+
                   elseif( get_row_layout() == 'twitter' ):  ?>
                     <div class="twitter">
                       <?php echo do_shortcode( get_sub_field('twitter-flex') ); ?>

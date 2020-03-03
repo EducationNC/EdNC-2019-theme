@@ -52,3 +52,17 @@
 .twitter, .body-text-flex {
   padding: 50px 0px;
 }
+
+
+.recommended-blocks-center {
+  margin: 0 auto;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: -webkit-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+}
