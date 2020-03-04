@@ -233,6 +233,10 @@
   .search-intro small.white {
     visibility: hidden;
   }
+  .recommended-blocks-center {
+    margin: 0 auto;
+    width: 75%;
+  }
 }
 
 
@@ -248,6 +252,10 @@
   .row .authors {
     margin-left: 15px;
     margin-right: 15px;
+  }
+  .recommended-blocks-center {
+    margin: 0 auto;
+    width: 100%;
   }
 
   .ml-responsive-table dl:nth-of-type(odd) {

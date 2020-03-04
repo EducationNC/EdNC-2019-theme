@@ -16,13 +16,7 @@
             <?php
              $args = array(
                'post_type' => 'bio',
-               'tax_query' => array(
-                   array (
-                       'taxonomy' => 'author-type',
-                       'field' => 'slug',
-                       'terms' => 'staff',
-                   )
-               ),
+               'post__in' => array(1647, 1663, 13081, 26641, 32468, 26684, 41796, 49249, 65207, 91561, 91283, 84979, 94690),   // Mebane, Alex, Nation, Liz, Nancy, Molly, Analisa, Robert, Rupen, Carol, Taylor, Mary
                'posts_per_page' => -1,
                'orderby' => 'post__in',
                'order' => 'ASC'

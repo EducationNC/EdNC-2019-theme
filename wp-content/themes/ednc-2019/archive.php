@@ -124,7 +124,7 @@ $post_object = get_field('featured_article_category_pages', $term);
                               }
                               ?>
                               <div class="">
-                                <h3>Featured Article</h3>
+                                <h3>Featured Read</h3>
                                 <a href="<?php the_permalink(); ?>">
                                    <?php if (!empty($featured_image)) {
                                     echo '<img class="no-lazy" src="' . $featured_image . '" />';
