@@ -64,7 +64,7 @@ use Roots\Sage\Assets;
 								<p class="small"><?php echo $description; ?></p>
 
 								<?php if( !empty($example_link) ): ?>
-									<a class="newsletter-link" href="<?php echo $example_link; ?>" target="_blank"><p class="lato small">View the archive.</p></a>
+									<p class="lato small">View the archive <a class="newsletter-link" href="<?php echo $example_link; ?>" target="_blank">here</a></p>
 								<?php endif; ?>
 
 							</div>
