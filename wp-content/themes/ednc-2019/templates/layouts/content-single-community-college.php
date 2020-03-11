@@ -379,6 +379,9 @@ while (have_posts()) : the_post();
 
                           <img src="<?php echo $image['url'] ?>">
 
+                          <?php $student_ethnicity_disclaimer = get_field('student_ethnicity_disclaimer', 'options'); ?>
+                          <p class="medium"><?php echo $student_ethnicity_disclaimer ?></p>
+
                         <?php endif; ?>
 
                       </div>
