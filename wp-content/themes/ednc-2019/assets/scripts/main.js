@@ -19,6 +19,15 @@
     clickortap = 'click';
   }
 
+  jQuery(document).ready(function($){
+
+    $('.tabs').tabslet({
+     active :1,
+     animation : true
+     });
+
+  });
+
   $(document).ready( function() {
    /* Check width on page load*/
    if ($(window).width() < 990) {

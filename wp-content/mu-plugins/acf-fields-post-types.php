@@ -19,6 +19,7 @@ function load_custom_fields() {
     require('acf-fields-post-types/acf-fields-categories.php');
     require('acf-fields-post-types/acf-fields-gutenberg.php');
     require('acf-fields-post-types/acf-flex-content.php');
+    require('acf-fields-post-types/acf-pages.php');
     require('acf-fields-post-types/acf-fields.php');
   }
 

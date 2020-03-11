@@ -16,7 +16,13 @@
             <?php
              $args = array(
                'post_type' => 'bio',
-               'post__in' => array(1647, 1663, 13081, 26641, 32468, 26684, 41796, 49249, 65207, 91561, 91283, 84979, 94690),   // Mebane, Alex, Nation, Liz, Nancy, Molly, Analisa, Robert, Rupen, Carol, Taylor, Mary
+               'tax_query' => array(
+                   array (
+                       'taxonomy' => 'author-type',
+                       'field' => 'slug',
+                       'terms' => 'staff',
+                   )
+               ),
                'posts_per_page' => -1,
                'orderby' => 'post__in',
                'order' => 'ASC'
@@ -57,6 +63,7 @@
          <div class="col-md-12">
            <div class="specialists">
              <?php
+              $specialists_acf = get_field('specialists');
               $args = array(
                 'post_type' => 'bio',
                 'posts_per_page' => -1,
@@ -72,7 +79,7 @@
                   array(
                     'taxonomy' => 'author-year',
                     'field' => 'slug',
-                    'terms' => '2020'
+                    'terms' => $specialists_acf
                   )
                 )
               );
@@ -111,6 +118,7 @@
          <div class="col-md-12">
            <div class="correspondents">
              <?php
+              $correspondants_acf = get_field('correspondants');
               $args = array(
                 'post_type' => 'bio',
                 'posts_per_page' => -1,
@@ -126,7 +134,7 @@
                   array(
                     'taxonomy' => 'author-year',
                     'field' => 'slug',
-                    'terms' => '2020'
+                    'terms' => $correspondants_acf
                   )
                 )
               );
@@ -165,6 +173,7 @@
           <div class="col-md-12">
              <div class="edambassadors">
                <?php
+                  $edambassadors_acf = get_field('edambassadors');
                   $args = array(
                     'post_type' => 'bio',
                     'posts_per_page' => -1,
@@ -180,7 +189,7 @@
                       array(
                         'taxonomy' => 'author-year',
                         'field' => 'slug',
-                        'terms' => '2020'
+                        'terms' => $edambassadors_acf
                       )
                     )
                   );

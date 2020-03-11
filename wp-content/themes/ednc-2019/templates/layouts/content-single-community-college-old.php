@@ -39,6 +39,13 @@ if ( function_exists( 'coauthors_posts_links' ) ) {
 $featured_image = Media\get_featured_image('featured-four-block');
 // $featured_image = Media\get_featured_image('featured-four-block');
 $title_overlay = get_field('title_overlay');
+$source_cc = get_field('source_cc', 'options');
+$county_profile_cc = get_field('county_profile_cc', 'options');
+$source_cc = get_field('source_cc', 'options');
+$service_cc = get_field('service_cc', 'options');
+$first_cc = get_field('first_cc', 'options');
+$second_cc = get_field('second_cc', 'options');
+$third_cc = get_field('third_cc', 'options');
 
 while (have_posts()) : the_post();
   $links = get_field('links');
@@ -54,19 +61,19 @@ while (have_posts()) : the_post();
 
     <div class="district-content">
       <div class="section">
-        <p class="large"><strong>Phone:</strong> <?php if (get_field('phone')) { the_field('phone');  } ?></p>
-        <p class="large"><strong>Fax:</strong> <?php if (get_field('fax')) { the_field('fax');  } ?></p>
+        <p class="large"><strong><?php the_field('phone_cc', 'option'); ?></strong> <?php if (get_field('phone')) { the_field('phone');  } ?></p>
+        <p class="large"><strong><?php the_field('fax_cc', 'option'); ?></strong> <?php if (get_field('fax')) { the_field('fax');  } ?></p>
         </br>
-        <p class="large"><strong>Street Address</strong></p>
+        <p class="large"><strong><?php the_field('street_cc', 'option'); ?></strong></p>
         <p class="large"><?php the_field('street_address'); ?></p>
       </div>
       <div class="section-split">
         <div class="left">
-          <p class="large"><strong>President</strong></p>
+          <p class="large"><strong><?php the_field('pres_cc', 'option'); ?></strong></p>
           <p class="large"><?php if (get_field('president')) { the_field('president');  } ?></p>
           </br>
           <p class="large"><?php if (get_field('presidents_term')) ?>
-            <strong>Term:</strong></br>
+            <strong><?php the_field('term_cc', 'option'); ?></strong></br>
             <?php { the_field('presidents_term');  } ?>
           </p>
         </div>
@@ -81,7 +88,7 @@ while (have_posts()) : the_post();
       </div>
 
       <div class="section">
-        <p class="large"><strong>Links</strong></p>
+        <p class="large"><strong><?php the_field('links_cc', 'option'); ?></strong></p>
         <?php
         if( have_rows('group_links_cc') ):
             while ( have_rows('group_links_cc') ) : the_row(); ?>
@@ -94,7 +101,7 @@ while (have_posts()) : the_post();
                 <?php
                 $school_board = get_sub_field('school_board');
                 if( $school_board ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $school_board ); ?>"><p class="large">Board Members</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $school_board ); ?>"><p class="large"><?php the_field('board_cc', 'option'); ?></p></a>
                 <?php endif; ?>
 
                 <?php
@@ -123,7 +130,7 @@ while (have_posts()) : the_post();
 
 
       <div class="section">
-        <p class="large"><strong>Social Media</strong></p>
+        <p class="large"><strong><?php the_field('social_cc', 'option'); ?></strong></p>
 
         <?php
         if( have_rows('social_media_section_cc') ):
@@ -131,13 +138,13 @@ while (have_posts()) : the_post();
                 <?php
                 $facebook_group = get_sub_field('facebook-group');
                 if( $facebook_group ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $facebook_group ); ?>"><p class="large">Facebook</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $facebook_group ); ?>"><p class="large"><?php the_field('fb_cc', 'option'); ?></p></a>
                 <?php endif; ?>
 
                 <?php
                 $twitter_group = get_sub_field('twitter-group');
                 if( $twitter_group ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $twitter_group ); ?>"><p class="large">Twitter</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $twitter_group ); ?>"><p class="large"><?php the_field('twitter_cc', 'option'); ?></p></a>
                 <?php endif;
 
                 if(get_sub_field('group_links_extra')): ?>
@@ -182,7 +189,7 @@ while (have_posts()) : the_post();
 
               if(get_sub_field('source')): ?>
                 <?php while(has_sub_field('source')): ?>
-                  <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+                  <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
                 <?php endwhile; ?>
               <?php endif; ?>
 
@@ -262,7 +269,7 @@ while (have_posts()) : the_post();
 
                 if(get_sub_field('source')): ?>
                   <?php while(has_sub_field('source')): ?>
-                    <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+                    <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
                   <?php endwhile; ?>
                 <?php endif; ?>
 
@@ -281,7 +288,7 @@ while (have_posts()) : the_post();
 
                         if(get_sub_field('source')): ?>
                           <?php while(has_sub_field('source')): ?>
-                            <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+                            <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
                           <?php endwhile; ?>
                         <?php endif; ?>
 
@@ -299,7 +306,9 @@ while (have_posts()) : the_post();
 
                           <img class="" src="<?php echo $image['url'] ?>">
 
-                          <div class="line-cc"><div class="square-green"></div><p class="medium">25 and over</p></div>
+                          <?php $green = get_field('green_cc', 'option'); ?>
+
+                          <div class="line-cc"><div class="square-green"></div><p class="medium"><?php if( $green ) { echo $green } ?></p></div>
                           <div class="line-cc"><div class="square-blue"></div><p class="medium">24 and under</p></div>
                           <div class="line-cc"><div class="square-purple"></div><p class="medium">Unknown</p></div>
 
@@ -321,7 +330,7 @@ while (have_posts()) : the_post();
 
                         if(get_sub_field('source')): ?>
                           <?php while(has_sub_field('source')): ?>
-                            <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+                            <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
                           <?php endwhile; ?>
                         <?php endif; ?>
 
@@ -361,7 +370,7 @@ while (have_posts()) : the_post();
 
                         if(get_sub_field('source')): ?>
                           <?php while(has_sub_field('source')): ?>
-                            <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+                            <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
                           <?php endwhile; ?>
                         <?php endif; ?>
 
@@ -410,7 +419,7 @@ while (have_posts()) : the_post();
 
                 if(get_sub_field('source')): ?>
                   <?php while(has_sub_field('source')): ?>
-                    <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+                    <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
                   <?php endwhile; ?>
                 <?php endif; ?>
 
@@ -427,7 +436,7 @@ while (have_posts()) : the_post();
 
                       if(get_sub_field('source')): ?>
                         <?php while(has_sub_field('source')): ?>
-                          <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+                          <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
                         <?php endwhile; ?>
                       <?php endif; ?>
 
@@ -460,7 +469,7 @@ while (have_posts()) : the_post();
 
     <?php endif; ?>
 
-    <h1 class="lato"><?php the_field('county_name'); ?> County Profile</h1>
+    <h1 class="lato"><?php the_field('county_name'); ?> <?php echo $county_profile_cc ?></h1>
     <?php
     $history = get_field('history_url');
     if( $history ): ?>
@@ -473,20 +482,20 @@ while (have_posts()) : the_post();
     <div class="row extra-bottom-margin">
       <div class="col-md-12 header-cc">
         <div class="image-cc">
-          <h6>Community college service area</h6>
+          <h6><?php echo $service_cc ?></h6>
           <?php the_post_thumbnail('large', array('class' => 'district-map')); ?>
         </div>
         <div class="content-cc">
           <div class="section">
-            <h6>Bachelor's Degree</h6>
+            <h6><?php echo $first_cc ?></h6>
             <h1 class="lato"><?php the_field('county_bachelors_degree_percentage'); ?></h1>
           </div>
           <div class="section">
-            <h6>High School Graduates</h6>
+            <h6><?php echo $second_cc ?></h6>
             <h1 class="lato"><?php the_field('county_high_school_grad_percentage'); ?></h1>
           </div>
           <div class="section">
-            <h6 style="margin-bottom: .5em;">Industries</h6>
+            <h6 style="margin-bottom: .5em;"><?php echo $third_cc ?></h6>
             </br>
             <?php
             // check if the repeater field has rows of data
