@@ -1,0 +1,23 @@
+.advanced-search {
+    
+    .facetwp-search {
+        width: 100%;
+        border-radius: 5px;
+        font-family: $font-family-serif;
+        font-size: 24px;
+        padding-left: .5em;
+        padding-top: .25em;
+        padding-bottom: .25em;
+        border: 1px solid #bbb;
+    }
+    
+    .facetwp-btn {
+        right: 10px;
+    }
+    
+    .facetwp-pager {
+         text-align: center;
+         padding: 1rem 0 4rem;
+    }
+
+}
