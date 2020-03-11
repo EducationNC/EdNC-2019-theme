@@ -88,7 +88,7 @@ while (have_posts()) : the_post();
                 <?php
                 $website = get_sub_field('website-group');
                 if( $website ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $website ); ?>"><p class="large">Website</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $website ); ?>"><p class="large"><?php the_field('web_cc', 'option'); ?></p></a>
                 <?php endif; ?>
 
                 <?php
