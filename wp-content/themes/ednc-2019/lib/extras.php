@@ -302,14 +302,14 @@ add_filter('instant_articles_content', function($content) {
 // Filter out unwanted appearances
 add_filter( 'facetwp_index_row', function( $params, $class ) {
     if ('type' == $params['facet_name']) {
-        $excluded_terms = array( 'hide-from-archives' );
+        $excluded_terms = array( 'Hide from archives' );
         if ( in_array( $params['facet_display_value'], $excluded_terms ) ) {
             return false;
         }
     }
     
     if ('category' == $params['facet_name']) {
-        $excluded_terms = array( 'uncategorized' );
+        $excluded_terms = array( 'Uncategorized' );
         if ( in_array( $params['facet_display_value'], $excluded_terms ) ) {
             return false;
         }
