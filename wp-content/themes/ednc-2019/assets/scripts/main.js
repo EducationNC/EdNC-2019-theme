@@ -343,7 +343,19 @@
   });
 
 
-
+  // Advanced Search with FacetWP
+  
+  // hide empty facets
+  $(document).on('facetwp-loaded', function() {
+      $.each(window.FWP.settings.num_choices, function(key, val) {
+          var $parent = $('.facetwp-facet-' + key).closest('.search__filters__facet');
+          if (0 === val) {
+            $parent.hide();
+          } else {
+            $parent.show();
+          }
+      });
+  });
 
 
   // document.getElementById("searchbox-input").keyup = function() {

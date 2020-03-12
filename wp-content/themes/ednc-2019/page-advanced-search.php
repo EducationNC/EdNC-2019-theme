@@ -11,23 +11,31 @@
         <div class="row">
         
           <div class="col-md-12">
-            <label class="search__filters__label">Date</label>
-            <?php echo facetwp_display( 'facet', 'date' ) ?>
+            <div class="search__filters__facet">
+              <label class="search__filters__facet__label">Date</label>
+              <?php echo facetwp_display( 'facet', 'date' ) ?>
+            </div>
           </div>
         
           <div class="col-md-4">
-            <label class="search__filters__label">Topic</label>
-            <?php echo facetwp_display( 'facet', 'category' ) ?>
+            <div class="search__filters__facet">
+              <label class="search__filters__facet__label">Topic</label>
+              <?php echo facetwp_display( 'facet', 'category' ) ?>
+            </div>
           </div>
           
           <div class="col-md-4">
-          <label class="search__filters__label">Category</label>
-            <?php echo facetwp_display( 'facet', 'type' ) ?>
+            <div class="search__filters__facet">
+            <label class="search__filters__facet__label">Category</label>
+              <?php echo facetwp_display( 'facet', 'type' ) ?>
+            </div>
           </div>
           
           <div class="col-md-4">
-            <label class="search__filters__label">Author</label>
-            <?php echo facetwp_display( 'facet', 'author' ) ?>
+            <div class="search__filters__facet">
+              <label class="search__filters__facet__label">Author</label>
+              <?php echo facetwp_display( 'facet', 'author' ) ?>
+            </div>
           </div>
         
         </div>
