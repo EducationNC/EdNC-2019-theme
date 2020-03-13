@@ -88,7 +88,7 @@ while (have_posts()) : the_post();
       </div>
 
       <div class="section">
-        <p class="large"><strong>Links</strong></p>
+        <p class="large"><strong><?php the_field('links_cc', 'option'); ?></strong></p>
         <?php
         if( have_rows('group_links_cc') ):
             while ( have_rows('group_links_cc') ) : the_row(); ?>
@@ -101,7 +101,7 @@ while (have_posts()) : the_post();
                 <?php
                 $school_board = get_sub_field('school_board');
                 if( $school_board ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $school_board ); ?>"><p class="large">Board Members</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $school_board ); ?>"><p class="large"><?php the_field('board_cc', 'option'); ?></p></a>
                 <?php endif; ?>
 
                 <?php
