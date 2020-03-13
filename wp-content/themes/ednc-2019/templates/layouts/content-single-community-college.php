@@ -39,6 +39,13 @@ if ( function_exists( 'coauthors_posts_links' ) ) {
 $featured_image = Media\get_featured_image('featured-four-block');
 // $featured_image = Media\get_featured_image('featured-four-block');
 $title_overlay = get_field('title_overlay');
+$source_cc = get_field('source_cc', 'options');
+$county_profile_cc = get_field('county_profile_cc', 'options');
+$source_cc = get_field('source_cc', 'options');
+$service_cc = get_field('service_cc', 'options');
+$first_cc = get_field('first_cc', 'options');
+$second_cc = get_field('second_cc', 'options');
+$third_cc = get_field('third_cc', 'options');
 
 while (have_posts()) : the_post();
   $links = get_field('links');
