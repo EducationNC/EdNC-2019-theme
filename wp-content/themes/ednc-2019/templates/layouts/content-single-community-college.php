@@ -288,7 +288,7 @@ while (have_posts()) : the_post();
 
                            if(get_sub_field('source')): ?>
                              <?php while(has_sub_field('source')): ?>
-                               <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+                               <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
                              <?php endwhile; ?>
                            <?php endif; ?>
 
@@ -306,7 +306,9 @@ while (have_posts()) : the_post();
 
                              <img class="" src="<?php echo $image['url'] ?>">
 
-                             <div class="line-cc"><div class="square-green"></div><p class="medium">25 and over</p></div>
+                             <?php $green = get_field('green_cc', 'option'); ?>
+
+                             <div class="line-cc"><div class="square-green"></div><p class="medium"><?php if( $green ) { echo $green } ?></p></div>
                              <div class="line-cc"><div class="square-blue"></div><p class="medium">24 and under</p></div>
                              <div class="line-cc"><div class="square-purple"></div><p class="medium">Unknown</p></div>
 
