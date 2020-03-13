@@ -61,19 +61,19 @@ while (have_posts()) : the_post();
 
     <div class="district-content">
       <div class="section">
-        <p class="large"><strong>Phone:</strong> <?php if (get_field('phone')) { the_field('phone');  } ?></p>
-        <p class="large"><strong>Fax:</strong> <?php if (get_field('fax')) { the_field('fax');  } ?></p>
+        <p class="large"><strong><?php the_field('phone_cc', 'option'); ?></strong> <?php if (get_field('phone')) { the_field('phone');  } ?></p>
+        <p class="large"><strong><?php the_field('fax_cc', 'option'); ?></strong> <?php if (get_field('fax')) { the_field('fax');  } ?></p>
         </br>
-        <p class="large"><strong>Street Address</strong></p>
+        <p class="large"><strong><?php the_field('street_cc', 'option'); ?></strong></p>
         <p class="large"><?php the_field('street_address'); ?></p>
       </div>
       <div class="section-split">
         <div class="left">
-          <p class="large"><strong>President</strong></p>
+          <p class="large"><strong><?php the_field('pres_cc', 'option'); ?></strong></p>
           <p class="large"><?php if (get_field('president')) { the_field('president');  } ?></p>
           </br>
           <p class="large"><?php if (get_field('presidents_term')) ?>
-            <strong>Term:</strong></br>
+            <strong><?php the_field('term_cc', 'option'); ?></strong></br>
             <?php { the_field('presidents_term');  } ?>
           </p>
         </div>
