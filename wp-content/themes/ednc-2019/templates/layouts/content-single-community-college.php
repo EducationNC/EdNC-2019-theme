@@ -173,298 +173,303 @@ while (have_posts()) : the_post();
 
     <?php if (have_rows('chart_section_cc')): ?>
 
-         <?php while (have_rows('chart_section_cc')) : the_row(); ?>
+      <?php while (have_rows('chart_section_cc')) : the_row(); ?>
 
 
 
-           <?php if( get_row_layout() == 'stats' ): ?>
+        <?php if( get_row_layout() == 'stats' ): ?>
 
-             <div class="chart-section extra-bottom-margin clearfix">
+          <div class="chart-section extra-bottom-margin clearfix">
 
-               <div class="col-md-12 callout">
+            <div class="col-md-12 callout">
 
-                 <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
+              <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
-                 <?php
+              <?php
 
-                 if(get_sub_field('source')): ?>
-                   <?php while(has_sub_field('source')): ?>
-                     <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
-                   <?php endwhile; ?>
-                 <?php endif; ?>
+              if(get_sub_field('source')): ?>
+                <?php while(has_sub_field('source')): ?>
+                  <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
+                <?php endwhile; ?>
+              <?php endif; ?>
 
-               </div>
+            </div>
 
-               <div class="col-md-12 flex-districts">
+            <div class="col-md-12 flex-districts">
 
-                 <?php if( have_rows('first-year') ): ?>
-                   <?php while( have_rows('first-year') ): the_row();  ?>
-                     <div class="box-3">
+              <?php if( have_rows('first-year') ): ?>
+                <?php while( have_rows('first-year') ): the_row();  ?>
+                  <div class="box-3">
 
-                       <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
 
-                         <p class="h1" style="margin-bottom: 1em;">
-                           <span class="big"><?php the_sub_field('percentage') ?></span>
-                         </p>
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
 
-                         <p class="medium" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
+                      <p class="medium" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
 
-                     </div>
+                  </div>
 
-                   <?php endwhile; ?>
-                 <?php endif; ?>
+                <?php endwhile; ?>
+              <?php endif; ?>
 
-                 <?php if( have_rows('college-transfer') ): ?>
-                   <?php while( have_rows('college-transfer') ): the_row();  ?>
-                     <div class="box-3">
+              <?php if( have_rows('college-transfer') ): ?>
+                <?php while( have_rows('college-transfer') ): the_row();  ?>
+                  <div class="box-3">
 
-                       <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                       <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
 
-                         <p class="h1" style="margin-bottom: 1em;">
-                           <span class="big"><?php the_sub_field('percentage') ?></span>
-                         </p>
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
 
-                         <p class="medium" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
+                      <p class="medium" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
 
-                     </div>
+                  </div>
 
-                   <?php endwhile; ?>
-                 <?php endif; ?>
+                <?php endwhile; ?>
+              <?php endif; ?>
 
-                 <?php if( have_rows('curriculum') ): ?>
-                   <?php while( have_rows('curriculum') ): the_row();  ?>
-                     <div class="box-3">
+              <?php if( have_rows('curriculum') ): ?>
+                <?php while( have_rows('curriculum') ): the_row();  ?>
+                  <div class="box-3">
 
-                       <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
-                       <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
+                    <h6 style="color: #731454"><?php the_sub_field('label'); ?></h6>
+                    <!-- <p><?php// the_sub_field('subtitle'); ?></p> -->
 
-                         <p class="h1" style="margin-bottom: 1em;">
-                           <span class="big"><?php the_sub_field('percentage') ?></span>
-                         </p>
+                      <p class="h1" style="margin-bottom: 1em;">
+                        <span class="big"><?php the_sub_field('percentage') ?></span>
+                      </p>
 
-                         <p class="medium" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
+                      <p class="medium" style="padding-right: 50px;"><?php the_sub_field('number_description') ?></p>
 
-                     </div>
+                  </div>
 
-                   <?php endwhile; ?>
-                 <?php endif; ?>
+                <?php endwhile; ?>
+              <?php endif; ?>
 
-               </div>
+            </div>
 
-             </div>
+          </div>
 
-             <?php endif; ?>
+          <?php endif; ?>
 
 
-           <?php if( get_row_layout() == 'demographics' ): ?>
+        <?php if( get_row_layout() == 'demographics' ): ?>
 
-               <div class="chart-section extra-bottom-margin clearfix">
+            <div class="chart-section extra-bottom-margin clearfix">
 
-                 <div class="col-md-12 callout">
+              <div class="col-md-12 callout">
 
-                   <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
+                <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
-                   <?php
+                <?php
 
-                   if(get_sub_field('source')): ?>
-                     <?php while(has_sub_field('source')): ?>
-                       <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
-                     <?php endwhile; ?>
-                   <?php endif; ?>
+                if(get_sub_field('source')): ?>
+                  <?php while(has_sub_field('source')): ?>
+                    <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
+                  <?php endwhile; ?>
+                <?php endif; ?>
 
-                 </div>
+              </div>
 
-                 <div class="col-md-12 flex-districts">
+              <div class="col-md-12 flex-districts">
 
-                   <?php if( have_rows('age-chart') ): ?>
-                     <?php while( have_rows('age-chart') ): the_row();  ?>
-                       <?php if (!get_sub_field('hide')): ?>
-                         <div class="box-3">
+                <?php if( have_rows('age-chart') ): ?>
+                  <?php while( have_rows('age-chart') ): the_row();  ?>
+                    <?php if (!get_sub_field('hide')): ?>
+                      <div class="box-3">
 
-                           <h6 style="color: #731454; padding: 0px 0px 0px 25px;"><?php the_sub_field('chart_name'); ?></h6>
-                           <p class="lato" style="padding: 0px 0px 0px 25px;"><?php the_sub_field('subtitle'); ?></p>
-                           <?php
+                        <h6 style="color: #731454; padding: 0px 0px 0px 25px;"><?php the_sub_field('chart_name'); ?></h6>
+                        <p class="lato" style="padding: 0px 0px 0px 25px;"><?php the_sub_field('subtitle'); ?></p>
+                        <?php
 
-                           if(get_sub_field('source')): ?>
-                             <?php while(has_sub_field('source')): ?>
-                               <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
-                             <?php endwhile; ?>
-                           <?php endif; ?>
+                        if(get_sub_field('source')): ?>
+                          <?php while(has_sub_field('source')): ?>
+                            <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
+                          <?php endwhile; ?>
+                        <?php endif; ?>
 
-                           <?php if (get_sub_field('chart_type') == 'number'): ?>
+                        <?php if (get_sub_field('chart_type') == 'number'): ?>
 
-                             <p class="h1" style="margin-bottom: 1em;">
-                               <span class="big"><?php the_sub_field('number') ?></span>
-                             </p>
+                          <p class="h1" style="margin-bottom: 1em;">
+                            <span class="big"><?php the_sub_field('number') ?></span>
+                          </p>
 
-                             <p><small><?php the_sub_field('number_description') ?></small></p>
+                          <p><small><?php the_sub_field('number_description') ?></small></p>
 
-                           <?php elseif (get_sub_field('chart_type') == 'image'): ?>
+                        <?php elseif (get_sub_field('chart_type') == 'image'): ?>
 
-                             <?php $image = get_sub_field('image'); ?>
+                          <?php $image = get_sub_field('image'); ?>
 
-                             <img class="" src="<?php echo $image['url'] ?>">
+                          <img class="" src="<?php echo $image['url'] ?>">
 
-                             <div class="line-cc"><div class="square-green"></div><p class="medium"><?php if( $green ) { echo $green } ?></p></div>
-                             <div class="line-cc"><div class="square-blue"></div><p class="medium">24 and under</p></div>
-                             <div class="line-cc"><div class="square-purple"></div><p class="medium">Unknown</p></div>
+                          <?php $green = get_field('green_cc', 'option'); ?>
 
-                           <?php endif; ?>
+                          <div class="line-cc"><div class="square-green"></div><p class="medium"><?php //if( $green ) { echo $green } ?></p></div>
+                          <div class="line-cc"><div class="square-blue"></div><p class="medium">24 and under</p></div>
+                          <div class="line-cc"><div class="square-purple"></div><p class="medium">Unknown</p></div>
 
-                         </div>
-                         <?php endif; ?>
-                     <?php endwhile; ?>
-                   <?php endif; ?>
+                        <?php endif; ?>
 
-                   <?php if( have_rows('race-chart_copy') ): ?>
-                     <?php while( have_rows('race-chart_copy') ): the_row();  ?>
-                       <?php if (!get_sub_field('hide')): ?>
-                         <div class="box-3">
+                      </div>
+                      <?php endif; ?>
+                  <?php endwhile; ?>
+                <?php endif; ?>
 
-                           <h6 style="color: #731454; padding: 0px 0px 0px 25px;"><?php the_sub_field('chart_name'); ?></h6>
-                           <p class="lato" style="padding: 0px 0px 0px 25px;"><?php the_sub_field('subtitle'); ?></p>
-                           <?php
+                <?php if( have_rows('race-chart_copy') ): ?>
+                  <?php while( have_rows('race-chart_copy') ): the_row();  ?>
+                    <?php if (!get_sub_field('hide')): ?>
+                      <div class="box-3">
 
-                           if(get_sub_field('source')): ?>
-                             <?php while(has_sub_field('source')): ?>
-                               <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
-                             <?php endwhile; ?>
-                           <?php endif; ?>
+                        <h6 style="color: #731454; padding: 0px 0px 0px 25px;"><?php the_sub_field('chart_name'); ?></h6>
+                        <p class="lato" style="padding: 0px 0px 0px 25px;"><?php the_sub_field('subtitle'); ?></p>
+                        <?php
 
-                           <?php if (get_sub_field('chart_type') == 'number'): ?>
+                        if(get_sub_field('source')): ?>
+                          <?php while(has_sub_field('source')): ?>
+                            <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
+                          <?php endwhile; ?>
+                        <?php endif; ?>
 
-                             <p class="h1" style="margin-bottom: 1em;">
-                               <span class="big"><?php the_sub_field('number') ?></span>
-                             </p>
+                        <?php if (get_sub_field('chart_type') == 'number'): ?>
 
-                             <p><small><?php the_sub_field('number_description') ?></small></p>
+                          <p class="h1" style="margin-bottom: 1em;">
+                            <span class="big"><?php the_sub_field('number') ?></span>
+                          </p>
 
-                           <?php elseif (get_sub_field('chart_type') == 'image'): ?>
+                          <p><small><?php the_sub_field('number_description') ?></small></p>
 
-                             <?php $image = get_sub_field('image'); ?>
+                        <?php elseif (get_sub_field('chart_type') == 'image'): ?>
 
-                             <img src="<?php echo $image['url'] ?>">
+                          <?php $image = get_sub_field('image'); ?>
 
-                             <div class="line-cc"><div class="square-green"></div><p class="medium">Curriculum programs</p></div>
-                             <div class="line-cc"><div class="square-blue"></div><p class="medium">Continuing eduation</p></div>
-                             <div class="line-cc"><div class="square-purple"></div><p class="medium">Basic skills</p></div>
+                          <img src="<?php echo $image['url'] ?>">
 
-                           <?php endif; ?>
+                          <div class="line-cc"><div class="square-green"></div><p class="medium">Curriculum programs</p></div>
+                          <div class="line-cc"><div class="square-blue"></div><p class="medium">Continuing eduation</p></div>
+                          <div class="line-cc"><div class="square-purple"></div><p class="medium">Basic skills</p></div>
 
-                         </div>
-                         <?php endif; ?>
-                     <?php endwhile; ?>
-                   <?php endif; ?>
+                        <?php endif; ?>
 
-                   <?php if( have_rows('race-chart') ): ?>
-                     <?php while( have_rows('race-chart') ): the_row();  ?>
-                       <?php if (!get_sub_field('hide')): ?>
-                         <div class="box-3">
+                      </div>
+                      <?php endif; ?>
+                  <?php endwhile; ?>
+                <?php endif; ?>
 
-                           <h6 style="color: #731454; padding: 0px 0px 0px 25px;"><?php the_sub_field('chart_name'); ?></h6>
-                           <p class="lato" style="padding: 0px 0px 0px 25px;"><?php the_sub_field('subtitle'); ?></p>
-                           <?php
+                <?php if( have_rows('race-chart') ): ?>
+                  <?php while( have_rows('race-chart') ): the_row();  ?>
+                    <?php if (!get_sub_field('hide')): ?>
+                      <div class="box-3">
 
-                           if(get_sub_field('source')): ?>
-                             <?php while(has_sub_field('source')): ?>
-                               <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
-                             <?php endwhile; ?>
-                           <?php endif; ?>
+                        <h6 style="color: #731454; padding: 0px 0px 0px 25px;"><?php the_sub_field('chart_name'); ?></h6>
+                        <p class="lato" style="padding: 0px 0px 0px 25px;"><?php the_sub_field('subtitle'); ?></p>
+                        <?php
 
-                           <?php if (get_sub_field('chart_type') == 'number'): ?>
+                        if(get_sub_field('source')): ?>
+                          <?php while(has_sub_field('source')): ?>
+                            <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
+                          <?php endwhile; ?>
+                        <?php endif; ?>
 
-                             <p class="h1" style="margin-bottom: 1em;">
-                               <span class="big"><?php the_sub_field('number') ?></span>
-                             </p>
+                        <?php if (get_sub_field('chart_type') == 'number'): ?>
 
-                             <p><small><?php the_sub_field('number_description') ?></small></p>
+                          <p class="h1" style="margin-bottom: 1em;">
+                            <span class="big"><?php the_sub_field('number') ?></span>
+                          </p>
 
-                           <?php elseif (get_sub_field('chart_type') == 'image'): ?>
+                          <p><small><?php the_sub_field('number_description') ?></small></p>
 
-                             <?php $image = get_sub_field('image'); ?>
+                        <?php elseif (get_sub_field('chart_type') == 'image'): ?>
 
-                             <img src="<?php echo $image['url'] ?>">
+                          <?php $image = get_sub_field('image'); ?>
 
-                           <?php endif; ?>
+                          <img src="<?php echo $image['url'] ?>">
 
-                         </div>
-                         <?php endif; ?>
-                     <?php endwhile; ?>
-                   <?php endif; ?>
+                          <?php $student_ethnicity_disclaimer = get_field('student_ethnicity_disclaimer', 'options'); ?>
+                          <p class="medium"><?php echo $student_ethnicity_disclaimer ?></p>
 
+                        <?php endif; ?>
 
+                      </div>
+                      <?php endif; ?>
+                  <?php endwhile; ?>
+                <?php endif; ?>
 
-                 </div>
 
-               </div>
-             <?php endif; ?>
 
+              </div>
 
+            </div>
+          <?php endif; ?>
 
-           <?php if( get_row_layout() == 'charts' ): ?>
 
-               <div class="chart-section extra-bottom-margin clearfix">
 
-                 <div class="col-md-12 callout">
+        <?php if( get_row_layout() == 'charts' ): ?>
 
-                   <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
+            <div class="chart-section extra-bottom-margin clearfix">
 
-                   <?php
+              <div class="col-md-12 callout">
 
-                   if(get_sub_field('source')): ?>
-                     <?php while(has_sub_field('source')): ?>
-                       <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
-                     <?php endwhile; ?>
-                   <?php endif; ?>
+                <h3 style="margin-top: .5em;"><?php the_sub_field('section_title') ?></h3>
 
-                 </div>
+                <?php
 
-                 <div class="col-md-12 flex-districts">
+                if(get_sub_field('source')): ?>
+                  <?php while(has_sub_field('source')): ?>
+                    <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
+                  <?php endwhile; ?>
+                <?php endif; ?>
 
-                   <?php while (have_rows('chart')) : the_row(); ?>
-                     <?php if (!get_sub_field('hide')): ?>
-                       <div class="box-3">
+              </div>
 
-                         <h6 style="color: #731454"><?php the_sub_field('chart_name'); ?></h6>
-                         <?php
+              <div class="col-md-12 flex-districts">
 
-                         if(get_sub_field('source')): ?>
-                           <?php while(has_sub_field('source')): ?>
-                             <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
-                           <?php endwhile; ?>
-                         <?php endif; ?>
+                <?php while (have_rows('chart')) : the_row(); ?>
+                  <?php if (!get_sub_field('hide')): ?>
+                    <div class="box-3">
 
-                         <?php if (get_sub_field('chart_type') == 'number'): ?>
+                      <h6 style="color: #731454"><?php the_sub_field('chart_name'); ?></h6>
+                      <?php
 
-                           <p class="h1" style="margin-bottom: 1em;">
-                             <span class="big"><?php the_sub_field('number') ?></span>
-                           </p>
+                      if(get_sub_field('source')): ?>
+                        <?php while(has_sub_field('source')): ?>
+                          <a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_cc ?> <?php the_sub_field('source_name'); ?></h6></a>
+                        <?php endwhile; ?>
+                      <?php endif; ?>
 
-                           <p><small><?php the_sub_field('number_description') ?></small></p>
+                      <?php if (get_sub_field('chart_type') == 'number'): ?>
 
-                         <?php elseif (get_sub_field('chart_type') == 'image'): ?>
+                        <p class="h1" style="margin-bottom: 1em;">
+                          <span class="big"><?php the_sub_field('number') ?></span>
+                        </p>
 
-                           <?php $image = get_sub_field('image'); ?>
+                        <p><small><?php the_sub_field('number_description') ?></small></p>
 
-                           <img src="<?php echo $image['url'] ?>">
+                      <?php elseif (get_sub_field('chart_type') == 'image'): ?>
 
-                         <?php endif; ?>
+                        <?php $image = get_sub_field('image'); ?>
 
-                       </div>
-                     <?php endif; ?>
-                   <?php endwhile; ?>
+                        <img src="<?php echo $image['url'] ?>">
 
-                 </div>
+                      <?php endif; ?>
 
-               </div>
-             <?php endif; ?>
+                    </div>
+                  <?php endif; ?>
+                <?php endwhile; ?>
 
-         <?php endwhile; ?>
+              </div>
 
-       <?php endif; ?>
+            </div>
+          <?php endif; ?>
 
-    <h1 class="lato"><?php the_field('county_name'); ?> County Profile</h1>
+      <?php endwhile; ?>
+
+    <?php endif; ?>
+
+    <h1 class="lato"><?php the_field('county_name'); ?> <?php echo $county_profile_cc ?></h1>
     <?php
     $history = get_field('history_url');
     if( $history ): ?>
@@ -477,20 +482,20 @@ while (have_posts()) : the_post();
     <div class="row extra-bottom-margin">
       <div class="col-md-12 header-cc">
         <div class="image-cc">
-          <h6>Community college service area</h6>
+          <h6><?php echo $service_cc ?></h6>
           <?php the_post_thumbnail('large', array('class' => 'district-map')); ?>
         </div>
         <div class="content-cc">
           <div class="section">
-            <h6>Bachelor's Degree</h6>
+            <h6><?php echo $first_cc ?></h6>
             <h1 class="lato"><?php the_field('county_bachelors_degree_percentage'); ?></h1>
           </div>
           <div class="section">
-            <h6>High School Graduates</h6>
+            <h6><?php echo $second_cc ?></h6>
             <h1 class="lato"><?php the_field('county_high_school_grad_percentage'); ?></h1>
           </div>
           <div class="section">
-            <h6 style="margin-bottom: .5em;">Industries</h6>
+            <h6 style="margin-bottom: .5em;"><?php echo $third_cc ?></h6>
             </br>
             <?php
             // check if the repeater field has rows of data
