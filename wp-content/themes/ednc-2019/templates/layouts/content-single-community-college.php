@@ -306,7 +306,7 @@ while (have_posts()) : the_post();
 
                              <img class="" src="<?php echo $image['url'] ?>">
 
-                             <div class="line-cc"><div class="square-green"></div><p class="medium">25 and over</p></div>
+                             <div class="line-cc"><div class="square-green"></div><p class="medium"><?php if( $green ) { echo $green } ?></p></div>
                              <div class="line-cc"><div class="square-blue"></div><p class="medium">24 and under</p></div>
                              <div class="line-cc"><div class="square-purple"></div><p class="medium">Unknown</p></div>
 
