@@ -130,7 +130,7 @@ while (have_posts()) : the_post();
 
 
       <div class="section">
-        <p class="large"><strong>Social Media</strong></p>
+        <p class="large"><strong><?php the_field('social_cc', 'option'); ?></strong></p>
 
         <?php
         if( have_rows('social_media_section_cc') ):
@@ -138,13 +138,13 @@ while (have_posts()) : the_post();
                 <?php
                 $facebook_group = get_sub_field('facebook-group');
                 if( $facebook_group ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $facebook_group ); ?>"><p class="large">Facebook</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $facebook_group ); ?>"><p class="large"><?php the_field('fb_cc', 'option'); ?></p></a>
                 <?php endif; ?>
 
                 <?php
                 $twitter_group = get_sub_field('twitter-group');
                 if( $twitter_group ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $twitter_group ); ?>"><p class="large">Twitter</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $twitter_group ); ?>"><p class="large"><?php the_field('twitter_cc', 'option'); ?></p></a>
                 <?php endif;
 
                 if(get_sub_field('group_links_extra')): ?>
