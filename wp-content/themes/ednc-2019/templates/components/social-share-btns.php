@@ -19,6 +19,12 @@ $facebookURL = 'https://www.facebook.com/sharer/sharer.php?u='.$crunchifyURL;
 $linkedinURL = 'https://www.linkedin.com/shareArticle?mini=true&amp;url='.$crunchifyURL.'&title='.$crunchifyTitle.'&source=EducationNC';
 $emailURL = 'mailto:?subject='.$crunchifyTitle.'&amp;body='.$crunchifyURL;
 
+
+// echo $twitterURL;
+$twitterURL = str_replace("|","&amp;vert;",$twitterURL);
+echo $twitterURL;
+
+
 // Pint button loads annual report PDF if on that page
 if (is_page('story-2015-16')) {
   $printLink = "href=\"https://www.ednc.org/wp-content/uploads/2016/06/annual-report-2016-print.pdf\"";
