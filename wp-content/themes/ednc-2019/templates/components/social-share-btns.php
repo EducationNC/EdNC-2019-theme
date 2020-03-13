@@ -21,8 +21,8 @@ $emailURL = 'mailto:?subject='.$crunchifyTitle.'&amp;body='.$crunchifyURL;
 
 
 // echo $twitterURL;
-$twitterURL = str_replace("|","&amp;vert;",$twitterURL);
-echo $twitterURL;
+$twitterURL = str_replace("|","-",$twitterURL);
+// echo $twitterURL;
 
 
 // Pint button loads annual report PDF if on that page
