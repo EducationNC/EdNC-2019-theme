@@ -46,6 +46,7 @@ $service_cc = get_field('service_cc', 'options');
 $first_cc = get_field('first_cc', 'options');
 $second_cc = get_field('second_cc', 'options');
 $third_cc = get_field('third_cc', 'options');
+$green = get_field('green_cc', 'option');
 
 while (have_posts()) : the_post();
   $links = get_field('links');
@@ -306,9 +307,7 @@ while (have_posts()) : the_post();
 
                           <img class="" src="<?php echo $image['url'] ?>">
 
-                          <?php $green = get_field('green_cc', 'option'); ?>
-
-                          <div class="line-cc"><div class="square-green"></div><p class="medium"><?php //if( $green ) { echo $green } ?></p></div>
+                          <div class="line-cc"><div class="square-green"></div><p class="medium"><?php if( $green ) { echo $green } ?></p></div>
                           <div class="line-cc"><div class="square-blue"></div><p class="medium">24 and under</p></div>
                           <div class="line-cc"><div class="square-purple"></div><p class="medium">Unknown</p></div>
 
