@@ -437,7 +437,7 @@ acf_add_local_field_group(array(
 		array(
 			'key' => 'field_5e69300b67b7a',
 			'label' => 'Chart Descriptions',
-			'name' => '',
+			'name' => 'chart_descriptions',
 			'type' => 'group',
 			'instructions' => '',
 			'required' => 0,

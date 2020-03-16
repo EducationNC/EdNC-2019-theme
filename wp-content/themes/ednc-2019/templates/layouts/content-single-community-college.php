@@ -47,6 +47,7 @@ $first_cc = get_field('first_cc', 'options');
 $second_cc = get_field('second_cc', 'options');
 $third_cc = get_field('third_cc', 'options');
 $green = get_field('green_cc', 'option');
+$chart_descriptions = get_field('chart_descriptions', 'option');
 
 while (have_posts()) : the_post();
   $links = get_field('links');
@@ -308,8 +309,8 @@ while (have_posts()) : the_post();
                           <img class="" src="<?php echo $image['url'] ?>">
 
                           <div class="line-cc"><div class="square-green"></div><p class="medium"><?php
-                          if( $green ) {
-                              echo $green;
+                          if( $chart_descriptions ) {
+                              echo $chart_descriptions['green_cc'];
                           } else {
                               echo 'empty';
                           }
