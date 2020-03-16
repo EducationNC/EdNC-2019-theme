@@ -47,7 +47,8 @@ $first_cc = get_field('first_cc', 'options');
 $second_cc = get_field('second_cc', 'options');
 $third_cc = get_field('third_cc', 'options');
 $green = get_field('green_cc', 'option');
-$chart_descriptions = get_field('chart_descriptions', 'option');
+$student_age = get_field('student_age', 'option');
+$student_enrollment = get_field('student_enrollment', 'option');
 
 while (have_posts()) : the_post();
   $links = get_field('links');
@@ -308,17 +309,36 @@ while (have_posts()) : the_post();
 
                           <img class="" src="<?php echo $image['url'] ?>">
 
-                          <div class="line-cc"><div class="square-green"></div><p class="medium"><?php
-                          if( $chart_descriptions ) {
-                              echo $chart_descriptions['green_cc'];
-                          } else {
-                              echo 'empty';
-                          }
-                           ?>
+                          <div class="line-cc"><div class="square-green"></div>
+                            <p class="medium">
+                              <?php
+                              if( $student_age  ) {
+                                  echo $student_age['green_cc'];
+                              } else {
+                                  echo 'empty';
+                              }
+                              ?>
 
-                        </p></div>
-                          <div class="line-cc"><div class="square-blue"></div><p class="medium">24 and under</p></div>
-                          <div class="line-cc"><div class="square-purple"></div><p class="medium">Unknown</p></div>
+                            </p>
+                          </div>
+                          <div class="line-cc"><div class="square-blue"></div><p class="medium">
+                            <?php
+                            if( $student_age ) {
+                                echo $student_age['blue_cc'];
+                            } else {
+                                echo 'empty';
+                            }
+                            ?>
+                           </p></div>
+                          <div class="line-cc"><div class="square-purple"></div><p class="medium">
+                            <?php
+                            if( $student_age ) {
+                                echo $student_age['purple_cc'];
+                            } else {
+                                echo 'empty';
+                            }
+                            ?>
+                          </p></div>
 
                         <?php endif; ?>
 
@@ -356,9 +376,34 @@ while (have_posts()) : the_post();
 
                           <img src="<?php echo $image['url'] ?>">
 
-                          <div class="line-cc"><div class="square-green"></div><p class="medium">Curriculum programs</p></div>
-                          <div class="line-cc"><div class="square-blue"></div><p class="medium">Continuing eduation</p></div>
-                          <div class="line-cc"><div class="square-purple"></div><p class="medium">Basic skills</p></div>
+                          <div class="line-cc"><div class="square-green"></div><p class="medium">
+                            <?php
+                            if( $student_enrollment  ) {
+                                echo $student_enrollment['green_cc'];
+                            } else {
+                                echo 'empty';
+                            }
+                            ?>
+
+                          </p></div>
+                          <div class="line-cc"><div class="square-blue"></div><p class="medium">
+                            <?php
+                            if( $student_enrollment  ) {
+                                echo $student_enrollment['blue_cc'];
+                            } else {
+                                echo 'empty';
+                            }
+                            ?>
+                          </p></div>
+                          <div class="line-cc"><div class="square-purple"></div><p class="medium">
+                            <?php
+                            if( $student_enrollment  ) {
+                                echo $student_enrollment['purple_cc'];
+                            } else {
+                                echo 'empty';
+                            }
+                            ?>
+                            </p></div>
 
                         <?php endif; ?>
 
