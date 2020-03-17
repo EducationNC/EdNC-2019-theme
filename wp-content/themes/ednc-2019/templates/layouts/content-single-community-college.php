@@ -315,7 +315,7 @@ while (have_posts()) : the_post();
                               if( $student_age  ) {
                                   echo $student_age['green_cc'];
                               } else {
-                                  echo 'empty';
+                                  echo '';
                               }
                               ?>
 
@@ -326,7 +326,7 @@ while (have_posts()) : the_post();
                             if( $student_age ) {
                                 echo $student_age['blue_cc'];
                             } else {
-                                echo 'empty';
+                                echo '';
                             }
                             ?>
                            </p></div>
@@ -335,7 +335,7 @@ while (have_posts()) : the_post();
                             if( $student_age ) {
                                 echo $student_age['purple_cc'];
                             } else {
-                                echo 'empty';
+                                echo '';
                             }
                             ?>
                           </p></div>
@@ -381,7 +381,7 @@ while (have_posts()) : the_post();
                             if( $student_enrollment  ) {
                                 echo $student_enrollment['green_cc'];
                             } else {
-                                echo 'empty';
+                                echo '';
                             }
                             ?>
 
@@ -391,7 +391,7 @@ while (have_posts()) : the_post();
                             if( $student_enrollment  ) {
                                 echo $student_enrollment['blue_cc'];
                             } else {
-                                echo 'empty';
+                                echo '';
                             }
                             ?>
                           </p></div>
@@ -400,7 +400,7 @@ while (have_posts()) : the_post();
                             if( $student_enrollment  ) {
                                 echo $student_enrollment['purple_cc'];
                             } else {
-                                echo 'empty';
+                                echo '';
                             }
                             ?>
                             </p></div>
@@ -566,7 +566,7 @@ while (have_posts()) : the_post();
     </div>
 
     <div class="related-posts">
-      <h2 class="lato" style="margin-top: .5em;">Related Posts</h2>
+      <h2 class="lato" style="margin-top: .5em;"><?php the_field('related_cc'); ?></h2>
       <?php
 
       $args = array(
