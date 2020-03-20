@@ -251,7 +251,7 @@ acf_add_local_field_group(array(
 					'endpoint' => 0,
 				),
 				array(
-					'key' => 'field_5e7110c4e32df',
+					'key' => 'field_545920e552e64',
 					'label' => 'Website Label',
 					'name' => 'website_label',
 					'type' => 'text',
@@ -272,7 +272,7 @@ acf_add_local_field_group(array(
 				array(
 					'key' => 'field_5e2f1aa4fa08b',
 					'label' => 'Website',
-					'name' => 'website-group',
+					'name' => 'website',
 					'type' => 'url',
 					'instructions' => '',
 					'required' => 0,
