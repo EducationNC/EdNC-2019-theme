@@ -246,7 +246,7 @@ if( function_exists('acf_add_options_page') ) {
 
 	acf_add_options_sub_page(array(
 		'page_title' 	=> 'Theme Footer Settings',
-		'menu_title'	=> 'Footer',
+		'menu_title'	=> 'Header and Footer',
 		'parent_slug'	=> 'theme-general-settings',
 	));
 
@@ -275,7 +275,7 @@ function wpb_change_search_url() {
 }
 add_action( 'template_redirect', 'wpb_change_search_url' );
 
-// keep drafts out of relationship fields 
+// keep drafts out of relationship fields
 // https://www.advancedcustomfields.com/resources/acf-fields-relationship-query/
 add_filter('acf/fields/relationship/query', 'relationship_options_filter', 10, 3);
 function relationship_options_filter($options, $field, $the_post) {
@@ -314,7 +314,7 @@ function show_template() {
     if( is_super_admin() ){
         global $template;
         print_r($template);
-    } 
+    }
 }
 // add_action('wp_footer', 'show_template');
 
