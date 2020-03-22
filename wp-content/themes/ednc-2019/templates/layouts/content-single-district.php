@@ -39,6 +39,7 @@ if ( function_exists( 'coauthors_posts_links' ) ) {
 $featured_image = Media\get_featured_image('featured-four-block');
 // $featured_image = Media\get_featured_image('featured-four-block');
 $title_overlay = get_field('title_overlay');
+$source_district = get_field('source_district', 'option');
 
 while (have_posts()) : the_post();
   $links = get_field('links');
@@ -54,67 +55,70 @@ while (have_posts()) : the_post();
         </div>
         <div class="content-district flex-horizontal">
           <div class="section">
-            <h6>Schools</h6>
+            <h6><?php the_field('schools_label'); ?></h6>
             <h1 class="lato"><?php the_field('number_of_schools'); ?></h1>
           </div>
           <div class="section">
-            <h6>Teachers</h6>
+            <h6><?php the_field('teachers_label'); ?></h6>
             <h1 class="lato"><?php the_field('number_of_teachers'); ?></h1>
           </div>
           <div class="section">
-            <h6>Students</h6>
+            <h6><?php the_field('students_label'); ?></h6>
             <h1 class="lato"><?php the_field('number_of_students'); ?></h1>
           </div>
         </div>
       </div>
     </div>
 
-    <h1 class="lato">School District: <?php the_title(); ?></h1>
+    <h1 class="lato"><?php the_field('sd_district', 'option'); ?> <?php the_title(); ?></h1>
     <div class="district-body">
       <?php the_field('description'); ?>
     </div>
 
     <div class="district-content">
       <div class="section">
-        <p class="large"><strong>Phone:</strong> <?php if (get_field('phone')) { the_field('phone');  } ?></p>
-        <p class="large"><strong>Fax:</strong> <?php if (get_field('fax')) { the_field('fax');  } ?></p>
+        <p class="large"><strong><?php the_field('phone_district', 'option'); ?></strong> <?php if (get_field('phone')) { the_field('phone');  } ?></p>
+        <p class="large"><strong><?php the_field('fax_district', 'option'); ?></strong> <?php if (get_field('fax')) { the_field('fax');  } ?></p>
         </br>
-        <p class="large"><strong>Street Address</strong></p>
+        <p class="large"><strong><?php the_field('street_district', 'option'); ?></strong></p>
         <p class="large"><?php the_field('address'); ?></p>
       </div>
       <div class="section-split">
         <div class="left">
-          <p class="large"><strong>Superintendant</strong></p>
+          <p class="large"><strong><?php the_field('superintendant_district', 'option'); ?></strong></p>
           <p class="large"><?php if (get_field('superintendent')) { the_field('superintendent');  } ?></p>
         </div>
         <div class="right">
           <img src="<?php the_field('superintendent_picture'); ?>" alt="<?php the_field('superintendent'); ?>" class="super-pic" />
         </div>
-        <p class="large"><strong>Email</strong></p>
+        <p class="large"><strong><?php the_field('email_district', 'option'); ?></strong></p>
         <p class="large"><?php if (get_field('superintendent_email')) { the_field('superintendent_email');  } ?></p>
       </div>
 
       <div class="section">
-        <p class="large"><strong>Links</strong></p>
+        <p class="large"><strong><?php the_field('links_district', 'option'); ?></strong></p>
         <?php
         if( have_rows('group_links') ):
             while ( have_rows('group_links') ) : the_row(); ?>
                 <?php
                 $website = get_sub_field('website-group');
+                $website_label = get_sub_field('website_label');
                 if( $website ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $website ); ?>"><p class="large">District Website</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $website ); ?>"><p class="large"><?php echo $website_label ?></p></a>
                 <?php endif; ?>
 
                 <?php
                 $school_board = get_sub_field('school_board');
+                $sb_label = get_sub_field('sb_label');
                 if( $school_board ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $school_board ); ?>"><p class="large">School Board</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $school_board ); ?>"><p class="large"><?php echo $sb_label ?></p></a>
                 <?php endif; ?>
 
                 <?php
                 $district_calendar_url = get_sub_field('district_calendar_url');
+                $calendar_label = get_sub_field('calendar_label');
                 if( $district_calendar_url ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $district_calendar_url); ?>"><p class="large">District Calendar</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $district_calendar_url); ?>"><p class="large"><?php echo $calendar_label ?></p></a>
                 <?php endif;
 
 
@@ -141,21 +145,23 @@ while (have_posts()) : the_post();
         ?>
       </div>
       <div class="section">
-        <p class="large"><strong>Social Media</strong></p>
+        <p class="large"><strong><?php the_field('sm_district', 'option'); ?></strong></p>
 
         <?php
         if( have_rows('social_media_section') ):
             while ( have_rows('social_media_section') ) : the_row(); ?>
                 <?php
                 $facebook_group = get_sub_field('facebook-group');
+                $facebook_label = get_sub_field('facebook_label');
                 if( $facebook_group ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $facebook_group ); ?>"><p class="large">Facebook</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $facebook_group ); ?>"><p class="large"><?php echo $facebook_label ?></p></a>
                 <?php endif; ?>
 
                 <?php
                 $twitter_group = get_sub_field('twitter-group');
+                $twitter_label = get_sub_field('twitter_label');
                 if( $twitter_group ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $twitter_group ); ?>"><p class="large">Twitter</p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $twitter_group ); ?>"><p class="large"><?php echo $twitter_label ?></p></a>
                 <?php endif;
 
                 if(get_sub_field('group_links_extra')): ?>
@@ -202,7 +208,7 @@ while (have_posts()) : the_post();
 
               if(get_sub_field('source')): ?>
               	<?php while(has_sub_field('source')): ?>
-              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_district ?> <?php the_sub_field('source_name'); ?></h6></a>
               	<?php endwhile; ?>
               <?php endif; ?>
 
@@ -255,7 +261,7 @@ while (have_posts()) : the_post();
 
               if(get_sub_field('source')): ?>
               	<?php while(has_sub_field('source')): ?>
-              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_district ?> <?php the_sub_field('source_name'); ?></h6></a>
               	<?php endwhile; ?>
               <?php endif; ?>
             </div>
@@ -401,7 +407,7 @@ while (have_posts()) : the_post();
 
               if(get_sub_field('source')): ?>
               	<?php while(has_sub_field('source')): ?>
-              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_district ?> <?php the_sub_field('source_name'); ?></h6></a>
               	<?php endwhile; ?>
               <?php endif; ?>
 
@@ -420,7 +426,7 @@ while (have_posts()) : the_post();
                         <span class="big"><?php the_sub_field('percentage') ?></span>
                       </p>
 
-                      <p><small>Local Rank: <?php the_sub_field('number_description') ?></small></p>
+                      <p><small><?php the_sub_field('number_description_label') ?> <?php the_sub_field('number_description') ?></small></p>
 
                   </div>
 
@@ -438,7 +444,7 @@ while (have_posts()) : the_post();
                         <span class="big"><?php the_sub_field('percentage') ?></span>
                       </p>
 
-                      <p><small>State Rank: <?php the_sub_field('number_description') ?></small></p>
+                      <p><small><?php the_sub_field('number_description_label') ?> <?php the_sub_field('number_description') ?></small></p>
 
                   </div>
 
@@ -456,7 +462,7 @@ while (have_posts()) : the_post();
                         <span class="big"><?php the_sub_field('percentage') ?></span>
                       </p>
 
-                      <p><small>Federal Rank: <?php the_sub_field('number_description') ?></small></p>
+                      <p><small><?php the_sub_field('number_description_label') ?> <?php the_sub_field('number_description') ?></small></p>
 
                   </div>
 
@@ -481,7 +487,7 @@ while (have_posts()) : the_post();
 
               if(get_sub_field('source')): ?>
               	<?php while(has_sub_field('source')): ?>
-              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6>Source: <?php the_sub_field('source_name'); ?></h6></a>
+              		<a class="" target="_blank"  href="<?php the_sub_field('source_url'); ?>"><h6><?php echo $source_district ?> <?php the_sub_field('source_name'); ?></h6></a>
               	<?php endwhile; ?>
               <?php endif; ?>
 
@@ -569,7 +575,7 @@ while (have_posts()) : the_post();
     <?php endif; ?>
 
     <div class="related-posts">
-      <h2 class="lato" style="margin-top: .5em;">Related Posts</h2>
+      <h2 class="lato" style="margin-top: .5em;"><?php the_field('related_post_district', 'option'); ?></h2>
       <?php
 
       $args = array(
@@ -621,7 +627,7 @@ while (have_posts()) : the_post();
       <?php endif;?>
     </div>
     <div class="related-maps">
-      <h2 class="lato" style="margin-top: .5em;">Related Maps</h2>
+      <h2 class="lato" style="margin-top: .5em;"><?php the_field('related_maps_district', 'option'); ?></h2>
       <?php
 
       $args = array(

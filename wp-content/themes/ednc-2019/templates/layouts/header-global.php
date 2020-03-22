@@ -73,7 +73,7 @@ use Roots\Sage\Nav;
 
           <div class="global-nav__connect-menu__signup">
 
-            <div class="global-nav__connect-menu__signup__title">Get Daily Headlines</div>
+            <div class="global-nav__connect-menu__signup__title"><?php the_field('daily_headlines', 'option'); ?></div>
 
             <form action="https://ednc.us9.list-manage.com/subscribe/post?u=8ba11e9b3c5e00a64382db633&amp;id=2696365d99" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
               <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="your@email.com" required>
@@ -95,11 +95,11 @@ use Roots\Sage\Nav;
           </div>
 
           <div class="global-nav__connect-menu__newsletters-link">
-            <a href="/newsletters/">Get all newsletters</a>
+            <a href="/newsletters/"><?php the_field('all_news', 'option'); ?></a>
           </div>
 
           <div class="global-nav__connect-menu__txt-msg">
-            <a href="/reach-nc-voices/">Sign up for alerts by text&nbsp;message</a>
+            <a href="/reach-nc-voices/"><?php the_field('text_alerts', 'option'); ?></a>
           </div>
 
         </div>
@@ -168,7 +168,7 @@ use Roots\Sage\Nav;
     </div>
 
     <div class="global-nav-mobile__footer__txt-msg">
-      <a href="#">Sign up for alerts by text&nbsp;message</a>
+      <a href="#"><?php the_field('text_alerts', 'option'); ?></a>
     </div>
 
   </div>
