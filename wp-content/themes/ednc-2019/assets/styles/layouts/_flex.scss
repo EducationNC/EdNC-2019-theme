@@ -17,6 +17,7 @@
 
 .flex-box {
   @include flex;
+  flex-wrap: wrap;
   // border: 1px solid red;
   .left-side, .right-side {
     width: 50%;
@@ -66,4 +67,15 @@
   // justify-content: center;
   // -ms-flex-wrap: nowrap;
   // flex-wrap: nowrap;
+}
+
+
+.category .nf-form-wrap {
+  width: 80%;
+  margin: 0 auto;
+}
+
+
+.nf-form-content .heading {
+  text-align: center;
 }

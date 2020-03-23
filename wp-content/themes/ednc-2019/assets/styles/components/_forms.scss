@@ -370,3 +370,68 @@
   }
 
 }
+
+.nf-form-content .field-wrap>div textarea {
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 5px;
+  color: rgba(0,0,0,.84);
+  font-family: Lato,sans-serif;
+  padding-left: 10px;
+}
+
+
+.nf-form-content .field-wrap input[type=button] {
+  height: 45px;
+  padding: 0 9px;
+  width: 100%;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #98a942;
+  border-color: transparent;
+  z-index: 10;
+}
+
+.nf-form-content .field-wrap>div input[type=email] {
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 5px;
+  color: rgba(0,0,0,.84);
+  height: 45px;
+  font-family: Lato,sans-serif;
+  padding-left: 10px;
+}
+.nf-form-content .field-wrap>div input[type=text] {
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 5px;
+  color: rgba(0,0,0,.84);
+  height: 45px;
+  font-family: Lato,sans-serif;
+  padding-left: 10px;
+}
+
+.nf-form-content .field-wrap>div input[type=checkbox] {
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 5px;
+  color: rgba(0,0,0,.84);
+  font-family: Lato, sans-serif;
+  padding-left: 10px;
+}
+
+.category .nf-form-fields-required {
+  display: none;
+}
+
+.contact-us .nf-form-wrap .field-wrap input[type=button] {
+  height: 45px;
+  padding: 0 11px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #98a942;
+  border-color: transparent;
+  z-index: 10;
+  font-family: Lato, sans-serif;
+  width: auto;
+}

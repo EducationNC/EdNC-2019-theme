@@ -168,7 +168,7 @@ $post_object = get_field('featured_article_category_pages', $term);
                       $articles = get_sub_field('articles');
                       if( $articles ): ?>
 
-                      <div class="row grey-background">
+                      <div class="row grey-background flex-content-articles">
                         <h3 class="bio-header">Featured Articles</h3>
                         <div class="recommended-blocks-bio">
                           <?php
