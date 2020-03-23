@@ -19,6 +19,7 @@ var runSequence  = require('run-sequence');
 var sass         = require('gulp-sass');
 var sourcemaps   = require('gulp-sourcemaps');
 var uglify       = require('gulp-uglify-es').default;
+var del          = require('del');
 
 // See https://github.com/austinpray/asset-builder
 var manifest = require('asset-builder')('./assets/manifest.json');
@@ -199,7 +200,9 @@ gulp.task('jshint', function jshintFn() {
 
 // ### Clean
 // `gulp clean` - Deletes the build folder entirely.
-gulp.task('clean', require('del').bind(null, [path.dist]));
+gulp.task('clean', function cleanFn() {
+  return del([ path.dist ]);
+});
 
 // ### Watch
 // `gulp watch` - Use BrowserSync to proxy your dev server and synchronize code
@@ -223,16 +226,6 @@ gulp.task('watch', function watchFn(done) {
   gulp.watch(['bower.json', 'assets/manifest.json'], gulp.series('build'));
   
   done();
-});
-
-// ### Build
-// `gulp build` - Run all the build tasks but don't clean up beforehand.
-// Generally you should be running `gulp` instead of `gulp build`.
-gulp.task('build', function buildFn(callback) {
-  runSequence('styles',
-              'scripts',
-              ['fonts', 'images'],
-              callback);
 });
 
 // ### Wiredep
@@ -291,9 +284,11 @@ gulp.task('scripts', gulp.series('jshint', function scriptsFn(done) {
     .pipe(writeToManifest('scripts'));
 }));
 
+// ### Build
+// `gulp build` - Run all the build tasks but don't clean up beforehand.
+// Generally you should be running `gulp` instead of `gulp build`.
+gulp.task('build', gulp.series('styles', 'scripts', 'fonts', 'images'));
+
 // ### Gulp
 // `gulp` - Run a complete build. To compile for production run `gulp --production`.
-gulp.task('default', gulp.series('clean', function defaultFn(done) {
-  gulp.series('build');
-  done();
-}));
+gulp.task('default', gulp.series('clean', 'build'));
