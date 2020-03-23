@@ -575,7 +575,7 @@ while (have_posts()) : the_post();
     <?php endif; ?>
 
     <div class="related-posts">
-      <h2 class="lato" style="margin-top: .5em;"><?php the_field('related_post_district', 'option'); ?></h2>
+      <h2 class="lato" style="margin-top: .5em;"><?php the_field('related_posts_district', 'option'); ?></h2>
       <?php
 
       $args = array(
