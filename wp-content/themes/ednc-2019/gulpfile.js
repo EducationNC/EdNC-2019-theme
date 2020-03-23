@@ -207,7 +207,7 @@ gulp.task('clean', require('del').bind(null, [path.dist]));
 // `manifest.config.devUrl`. When a modification is made to an asset, run the
 // build step for that asset and inject the changes into the page.
 // See: http://www.browsersync.io
-gulp.task('watch', function watchFn() {
+gulp.task('watch', function watchFn(done) {
   browserSync.init({
     files: ['{lib,templates}/**/*.php', '*.php'],
     proxy: config.devUrl,
@@ -221,6 +221,8 @@ gulp.task('watch', function watchFn() {
   gulp.watch([path.source + 'fonts/**/*'], gulp.series('fonts'));
   gulp.watch([path.source + 'images/**/*'], gulp.series('images'));
   gulp.watch(['bower.json', 'assets/manifest.json'], gulp.series('build'));
+  
+  done();
 });
 
 // ### Build
@@ -271,7 +273,7 @@ gulp.task('styles', gulp.series('wiredep', function stylesFn() {
 // ### Scripts
 // `gulp scripts` - Runs JSHint then compiles, combines, and optimizes Bower JS
 // and project JS.
-gulp.task('scripts', gulp.series('jshint', function scriptsFn() {
+gulp.task('scripts', gulp.series('jshint', function scriptsFn(done) {
   var merged = merge();
   manifest.forEachDependency('js', function(dep) {
     merged.add(
@@ -279,6 +281,9 @@ gulp.task('scripts', gulp.series('jshint', function scriptsFn() {
         .pipe(jsTasks(dep.name))
     );
   });
+  
+  done();
+  
   return merged
     .pipe(writeToManifest('scripts'));
 }));
