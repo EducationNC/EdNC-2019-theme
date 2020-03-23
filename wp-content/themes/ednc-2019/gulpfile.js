@@ -252,7 +252,7 @@ gulp.task('wiredep', function wiredepFn() {
 // `gulp styles` - Compiles, combines, and optimizes Bower CSS and project CSS.
 // By default this task will only log a warning if a precompiler error is
 // raised. If the `--production` flag is set: this task will fail outright.
-gulp.task('styles', gulp.series('wiredep', function stylesFn() {
+gulp.task('styles', gulp.series('wiredep', function stylesFn(done) {
   var merged = merge();
   manifest.forEachDependency('css', function(dep) {
     var cssTasksInstance = cssTasks(dep.name);
@@ -265,6 +265,9 @@ gulp.task('styles', gulp.series('wiredep', function stylesFn() {
     merged.add(gulp.src(dep.globs, {base: 'styles'})
       .pipe(cssTasksInstance));
   });
+  
+  done();
+  
   return merged
     .pipe(writeToManifest('styles'));
 }));
