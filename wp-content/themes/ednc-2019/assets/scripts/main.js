@@ -357,6 +357,13 @@
       });
   });
 
+  $( window ).on("load", function() {
+    // forcing facets to load on page load
+    if (window.FWP !== undefined) {
+      window.FWP.refresh();
+    }
+  });
+
 
   // document.getElementById("searchbox-input").keyup = function() {
   //   buttonUp();
