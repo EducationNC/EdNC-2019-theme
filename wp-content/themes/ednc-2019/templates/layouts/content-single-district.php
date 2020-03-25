@@ -112,7 +112,7 @@ while (have_posts()) : the_post();
                 $sb_label = get_sub_field('sb_label');
                 if( $school_board ): ?>
                     <a class="" target="_blank"  href="<?php echo esc_url( $school_board ); ?>"><p class="large"><?php echo $sb_label ?></p></a>
-                    <a class="" target="_blank"  href="<?php the_sub_field('school_board'); ?>"><p class="large">School Board Test</p></a>
+                    <!-- <a class="" target="_blank"  href="<?php// the_sub_field('school_board'); ?>"><p class="large">School Board Test</p></a> -->
                 <?php endif; ?>
 
                 <?php
