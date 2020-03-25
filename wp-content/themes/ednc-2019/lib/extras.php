@@ -307,21 +307,24 @@ add_filter( 'facetwp_index_row', function( $params, $class ) {
             return false;
         }
     }
-    
+
     if ('category' == $params['facet_name']) {
         $excluded_terms = array( 'Uncategorized' );
         if ( in_array( $params['facet_display_value'], $excluded_terms ) ) {
             return false;
         }
     }
-    
+
     return $params;
 }, 10, 2 );
 
 
 // Relevanssi exclude posts in hide from archives
+
+/*
 add_filter('relevanssi_do_not_index', 'rlv_exclude_cat', 10, 2);
 function rlv_exclude_cat($exclude, $post_id) {
     if (has_term('hide-from-archives', 'appearance', $post_id )) $exclude = true;
     return $exclude;
 }
+*/
