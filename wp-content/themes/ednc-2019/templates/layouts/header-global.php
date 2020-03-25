@@ -42,8 +42,8 @@ use Roots\Sage\Nav;
 
       <div class="global-nav__row__right">
 
-        <form action="/" method="get" class="global-nav__row__right__search">
-          <input type="text" name="s" id="search" value="<?php the_search_query(); ?>" placeholder="Search EdNC.org">
+        <form action="/advanced-search" method="get" class="global-nav__row__right__search">
+          <input type="text" name="fwp_search" id="search" value="<?php the_search_query(); ?>" placeholder="Search EdNC.org">
           <input type="image" alt="Search" src="<?php echo Assets\asset_path('images/header/search-icon.svg'); ?>">
         </form>
 
@@ -112,8 +112,8 @@ use Roots\Sage\Nav;
 
   <div class="global-nav__search-dropdown">
 
-    <form action="/" method="get" class="global-nav__search-dropdown__form">
-      <input type="text" name="s" id="search" value="<?php the_search_query(); ?>" placeholder="Search EdNC.org">
+    <form action="/advanced-search" method="get" class="global-nav__search-dropdown__form">
+      <input type="text" name="fwp_search" id="search" value="<?php the_search_query(); ?>" placeholder="Search EdNC.org">
       <input type="image" alt="Search" src="<?php echo Assets\asset_path('images/header/search-icon.svg'); ?>">
     </form>
 
