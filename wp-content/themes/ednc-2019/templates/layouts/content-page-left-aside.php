@@ -37,8 +37,6 @@ if (is_page('about')) {
 			<?php endif; ?>
 
 
-		    <?php// echo $content; ?>
-
 		</li>
 
 	<?php endwhile; ?>

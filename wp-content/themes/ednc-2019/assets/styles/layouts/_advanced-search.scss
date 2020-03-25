@@ -1,13 +1,13 @@
 .advanced-search {
-    
+
     .facetwp-facet {
-        margin-bottom: 20px;    
-        
+        margin-bottom: 20px;
+
         @media (min-width: $screen-sm-min) {
-            margin-bottom: 30px;   
+            margin-bottom: 30px;
         }
     }
-    
+
     .facetwp-search {
         width: 100%;
         font-family: $font-family-serif;
@@ -18,51 +18,50 @@
         padding-bottom: .25em;
         border: 1px solid #bbb;
     }
-    
+
     .facetwp-btn {
         right: 10px;
     }
-    
+
     .facetwp-pager {
         text-align: center;
         padding: 3rem 0 7rem;
-        // border-top: 1px solid #e5e5e5;
     }
-    
+
     .facetwp-date {
         font-family: $font-family-serif;
         border-radius: 5px;
         padding: .25em .5em;
-        border: 1px solid #bbb;      
+        border: 1px solid #bbb;
         width: 220px;
         font-size: 15px;
-        
+
         @media (min-width: $screen-md-min) {
-            width: 243px;   
+            width: 243px;
         }
     }
-    
+
     .facetwp-date-min {
         margin-bottom: 1em;
         margin-right: .5em;
-        
+
         @media (min-width: $screen-sm-min) {
-            margin-bottom: 0;   
+            margin-bottom: 0;
             margin-right: 0;
             border-radius: 5px 0 0 5px;
         }
     }
-    
+
     .facetwp-date-max {
         @media (min-width: $screen-sm-min) {
             border-radius: 0 5px 5px 0;
             border-left: none;
         }
     }
-    
+
     .fs-label-wrap {
         border-radius: 5px;
-        border: 1px solid #bbb;       
+        border: 1px solid #bbb;
         padding-top: .25em;
         padding-bottom: .25em;
         font-size: 15px;
@@ -73,14 +72,14 @@
 .search__filters {
     border-bottom: 1px solid #e5e5e5;
     margin-bottom: 4rem;
-    
+
     legend {
-         font-size: 16px;   
+         font-size: 16px;
          font-weight: bold;
          margin-bottom: 40px;
     }
 }
 
 .search__filters__facet__label {
-     font-size: 16px;   
+     font-size: 16px;
 }
