@@ -148,6 +148,12 @@ $post_object = get_field('featured_article_category_pages', $term);
                     </div>
 
                   <?php
+                  elseif( get_row_layout() == 'email' ):  ?>
+                    <div class="twitter">
+                      <?php echo do_shortcode( get_sub_field('email-flex') ); ?>
+                    </div>
+
+                  <?php
                   elseif( get_row_layout() == 'gallery-flex-box' ):
                       $images = get_sub_field('gallery-content');
                       if( $images ): ?>

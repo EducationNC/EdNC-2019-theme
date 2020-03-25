@@ -1,5 +1,7 @@
 <?php
 
+if( function_exists('acf_add_local_field_group') ):
+
 acf_add_local_field_group(array(
 	'key' => 'group_5cd0a11fc8422',
 	'title' => 'Flex Content',
@@ -221,6 +223,35 @@ acf_add_local_field_group(array(
 							'name' => 'twitter-flex',
 							'type' => 'text',
 							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+					),
+					'min' => '',
+					'max' => '',
+				),
+				'layout_5e7beb43d3e18' => array(
+					'key' => 'layout_5e7beb43d3e18',
+					'name' => 'email',
+					'label' => 'Email Signup',
+					'display' => 'block',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_5e7beb43d3e19',
+							'label' => 'Email',
+							'name' => 'email-flex',
+							'type' => 'text',
+							'instructions' => 'Enter shortcode from Ninja forms. For example, for The Daily, copy and paste [ninja_form id=9] into the box.',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -541,3 +572,5 @@ acf_add_local_field_group(array(
 	'active' => true,
 	'description' => '',
 ));
+
+endif;
