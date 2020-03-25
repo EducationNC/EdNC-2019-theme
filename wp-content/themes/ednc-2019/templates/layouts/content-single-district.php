@@ -55,15 +55,15 @@ while (have_posts()) : the_post();
         </div>
         <div class="content-district flex-horizontal">
           <div class="section">
-            <h6><?php the_field('schools_label'); ?></h6>
+            <h6><?php the_field('schools_label', 'option'); ?></h6>
             <h1 class="lato"><?php the_field('number_of_schools'); ?></h1>
           </div>
           <div class="section">
-            <h6><?php the_field('teachers_label'); ?></h6>
+            <h6><?php the_field('teachers_label', 'option'); ?></h6>
             <h1 class="lato"><?php the_field('number_of_teachers'); ?></h1>
           </div>
           <div class="section">
-            <h6><?php the_field('students_label'); ?></h6>
+            <h6><?php the_field('students_label', 'option'); ?></h6>
             <h1 class="lato"><?php the_field('number_of_students'); ?></h1>
           </div>
         </div>
@@ -112,13 +112,14 @@ while (have_posts()) : the_post();
                 $sb_label = get_sub_field('sb_label');
                 if( $school_board ): ?>
                     <a class="" target="_blank"  href="<?php echo esc_url( $school_board ); ?>"><p class="large"><?php echo $sb_label ?></p></a>
+                    <a class="" target="_blank"  href="<?php the_sub_field('school_board'); ?>"><p class="large">School Board Test</p></a>
                 <?php endif; ?>
 
                 <?php
                 $district_calendar_url = get_sub_field('district_calendar_url');
                 $calendar_label = get_sub_field('calendar_label');
                 if( $district_calendar_url ): ?>
-                    <a class="" target="_blank"  href="<?php echo esc_url( $district_calendar_url); ?>"><p class="large"><?php echo $calendar_label ?></p></a>
+                    <a class="" target="_blank"  href="<?php echo esc_url( $district_calendar_url ); ?>"><p class="large"><?php echo $calendar_label ?></p></a>
                 <?php endif;
 
 
