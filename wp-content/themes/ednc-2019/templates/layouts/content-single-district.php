@@ -91,8 +91,13 @@ while (have_posts()) : the_post();
         <div class="right">
           <img src="<?php the_field('superintendent_picture'); ?>" alt="<?php the_field('superintendent'); ?>" class="super-pic" />
         </div>
-        <p class="large"><strong><?php the_field('email_district', 'option'); ?></strong></p>
-        <p class="large"><?php if (get_field('superintendent_email')) { the_field('superintendent_email');  } ?></p>
+        <?php
+        $superintendent_email = get_field('superintendent_email');
+        if( $superintendent_email): ?>
+          <p class="large"><strong><?php the_field('email_district', 'option'); ?></strong></p>
+          <p class="large"><?php the_field('superintendent_email'); ?></p>
+        <?php endif; ?>
+
       </div>
 
       <div class="section">
