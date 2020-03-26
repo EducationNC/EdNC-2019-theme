@@ -185,6 +185,7 @@ class Ribbon extends Basic {
 	protected function render(){
 		$this->WRAP = esc_html('#uid-'.$this->get_id().' ');
 		$settings   = $this->_get_settings();
+		$settings['is_custom'] = '1';
 
 		/* @var \GT3\PhotoVideoGalleryPro\Block\Basic $gallery */
 		$gallery  = Gallery::instance();

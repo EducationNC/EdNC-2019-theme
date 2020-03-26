@@ -5,6 +5,8 @@
  */
 
 class ShortPixelCssParser {
+    const REGEX_CSS = '/(\s|{|;)(background-image|background)(\s*:(?:[^;]*?[,\s]|\s*))url\((?:\'|")?([^\'"\)]+)(\'|"|)?\s*\)/s';
+    const REGEX_IN_TAG = '/\<([\w]+)(?:[^\<\>]*?)(background-image|background)(\s*:(?:[^;]*?[,\s]|\s*))url\((?:\'|")?([^\'"\)]+)(\'|"|)?\s*\)/s';
     private $ctrl;
     private $logger;
 
@@ -17,14 +19,12 @@ class ShortPixelCssParser {
     public function __construct($controller) {
         $this->ctrl = $controller;
         $this->logger = ShortPixelAILogger::instance();
-        $this->regexCSS = '/(\s|{|;)(background-image|background)(\s*:(?:[^;]*?[,\s]|\s*))url\((?:\'|")?([^\'"\)]+)(\'|"|)?\s*\)/s';
-        $this->regexInTag = '/\<([\w]+)(?:[^\<\>]*?)(background-image|background)(\s*:(?:[^;]*?[,\s]|\s*))url\((?:\'|")?([^\'"\)]+)(\'|"|)?\s*\)/s';
     }
 
 
     public function replace_inline_style_backgrounds($style) {
         $style = preg_replace_callback(
-            $this->regexCSS,
+            self::REGEX_CSS,
             array(&$this, 'replace_background_image_from_style'),
             $style);
 
@@ -39,7 +39,7 @@ class ShortPixelCssParser {
     public function replace_in_tag_style_backgrounds($style) {
         if(strpos($style, 'background') === false) return $style;
         return preg_replace_callback(
-            $this->regexInTag,
+            self::REGEX_IN_TAG,
             //'/(^|\s|;)(background-image|background)\s*:([^;]*[,\s]|\s*)url\((?:\'|")?([^\'"\)]*)(\'|")?\s*\)/s',
             array(&$this, 'replace_background_image_from_tag'),
             $style);
@@ -95,7 +95,8 @@ class ShortPixelCssParser {
             $pristineUrl = trim($pristineUrl, '"');
         }
 
-        if(strpos($url, 'data:image/svg+xml;u=') !== false) {
+        //        if(strpos($url, 'data:image/svg+xml;u=') !== false) { // old implementation
+        if(ShortPixelUrlTools::url_from_placeholder_svg($url) !== false) {
             if($lazy) {
                 return (object)array('text' => $text, 'replaced' => false);
             } else {

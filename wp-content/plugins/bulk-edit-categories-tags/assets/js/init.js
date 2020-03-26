@@ -154,8 +154,8 @@ jQuery(document).ready(function () {
 			nanobar.go(1);
 			var rowsCount = jQuery('.be-total-rows').text().match(/\d+/g).map(Number);
 			var perPage = vgse_editor_settings.save_posts_per_page / 2;
-			if (perPage < 1) {
-				perPage = 1;
+			if (perPage < 3) {
+				perPage = 3;
 			}
 			// Start saving posts, start ajax loop
 			beAjaxLoop({

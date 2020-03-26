@@ -5,7 +5,7 @@ Tags: table of contents, toc
 Requires at least: 5.2
 Tested up to: 5.3
 Requires PHP: 5.6.20
-Stable tag: 2.0
+Stable tag: 2.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,29 @@ Easy Table Contents is a fork of the excellent [Table of Contents Plus](https://
 4. Activate the plugin on the Plugins admin page.
 
 == Changelog ==
+
+= 2.0.4 03/16/2020 =
+* NEW: Introduce the `ez_toc_container_class` filter.
+* TWEAK: Slight rework to ezTOC container classes logic.
+* BUG: `sprintf()` was eating `%` in the TOC heading item.
+* BUG: Do not insert TOC at top of post if before first heading option is selected even if first heading can not be found. Some page builders cause the TOC to insert twice or on blog pages.
+
+= 2.0.3 03/12/2020 =
+* TWEAK: Slightly tighten heading matching, last update made it a little too loose.
+* BUG: Correct logic required to place TOC before first heading which is required for the more lax heading matching required for page builders.
+
+= 2.0.2 03/12/2020 =
+* COMPATIBILITY: Remove filter to exclude Ultimate Addons for VC Composer Tabs from heading eligibility.
+* COMPATIBILITY: Add additional filters to improve Elementor compatibility.
+* TWEAK: Loosen heading matching when doing find/replace to insert in page links. Excluding the opening heading tag to allow matching heading where page builders dynamically add classes and id which break heading matching during find/replace.
+
+= 2.0.1 03/09/2020 =
+* COMPATIBILITY: Exclude the WordPress Related Posts plugin nodes.
+* COMPATIBILITY: Exclude a couple Atomic Block plugin nodes.
+* COMPATIBILITY: Exclude JetPack Related Posts from heading eligibility.
+* COMPATIBILITY: Exclude Ultimate Addons for VC Composer Tabs from heading eligibility.
+* COMPATIBILITY: Exclude WP Product Reviews from heading eligibility.
+* TWEAK: Prevent possible "strpos(): Empty needle in" warnings when excluding nodes from TOC eligibility.
 
 = 2.0 02/01/2020 =
 * NEW: Major rewrite of all code and processing logic to make it faster and more reliable.
@@ -310,4 +333,16 @@ Requires WordPress >= 4.4 and PHP >= 5.3. PHP version >= 7.1 recommended.
 Requires WordPress >= 4.4 and PHP >= 5.3. PHP version >= 7.1 recommended.
 
 = 2.0-rc4 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
+
+= 2.0.1 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
+
+= 2.0.2 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
+
+= 2.0.3 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
+
+= 2.0.4 =
 Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).

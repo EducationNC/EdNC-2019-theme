@@ -13,6 +13,7 @@ use luckywp\tableOfContents\core\wp\Options;
 use luckywp\tableOfContents\front\Front;
 use luckywp\tableOfContents\integrations\BeaverBuilder;
 use luckywp\tableOfContents\integrations\elementor\Elementor;
+use luckywp\tableOfContents\integrations\Oxygen;
 use luckywp\tableOfContents\integrations\RankMath;
 use luckywp\tableOfContents\integrations\ToolsetViews;
 use luckywp\tableOfContents\integrations\TwentyTwentyTheme;
@@ -78,6 +79,9 @@ class Plugin extends BasePlugin
             }
             if (class_exists('\SitePress')) {
                 Core::createObject(Wpml::class);
+            }
+            if (defined('CT_VERSION')) {
+                Core::createObject(Oxygen::class);
             }
         });
 
@@ -354,6 +358,7 @@ class Plugin extends BasePlugin
         return [
             'div' => 'DIV',
             'ul' => 'UL/LI',
+            'ol' => 'OL/LI',
         ];
     }
 

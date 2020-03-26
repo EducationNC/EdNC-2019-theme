@@ -142,7 +142,11 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 				wp_send_json_error(array('message' => __('Missing parameters.', VGSE()->textname)));
 			}
 
-			$posts_found = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE post_type = '" . esc_sql($post_type) . "' AND post_title LIKE '%" . esc_sql($search) . "%' LIMIT 10");
+			$where = " post_type = '" . esc_sql($post_type) . "' AND post_title LIKE '%" . esc_sql($search) . "%' ";
+			if (is_numeric($search)) {
+				$where .= "  OR ID = '" . intval($search) . "' ";
+			}
+			$posts_found = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE " . $where . " LIMIT 10");
 
 			if (empty($posts_found)) {
 				wp_send_json_error(array('message' => __('No items found.', VGSE()->textname)));
@@ -317,7 +321,8 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 
 				if (!isset($taxonomies_labels[$result['taxonomy']])) {
 					$tmp_tax = get_taxonomy($result['taxonomy']);
-					$taxonomies_labels[$result['taxonomy']] = $tmp_tax->label;
+					$label = ($tmp_tax->label === __('Tags') && $tmp_tax->name !== 'post_tag') ? $tmp_tax->name : $tmp_tax->label;
+					$taxonomies_labels[$result['taxonomy']] = $label;
 				}
 
 				$output_key = strtr($output_format, array(
@@ -388,6 +393,28 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 			wp_send_json_success();
 		}
 
+		function set_settings() {
+			$data = VGSE()->helpers->clean_data($_POST);
+
+			$nonce = $data['nonce'];
+			if (!wp_verify_nonce($nonce, 'bep-nonce') || !current_user_can('manage_options')) {
+				wp_send_json_error();
+			}
+
+			// This is safe. We save options only inside our serialized array, so there's 
+			// zero chance of editing other site options
+			// and we run this only if the user can manage_options
+
+			unset($data['nonce']);
+			unset($data['action']);
+			$options = get_option(VGSE()->options_key);
+			$new_settings = $data;
+			$options = wp_parse_args($new_settings, $options);
+			update_option(VGSE()->options_key, $options);
+
+			wp_send_json_success();
+		}
+
 		function dismiss_review_tip() {
 			$data = VGSE()->helpers->clean_data($_REQUEST);
 
@@ -432,6 +459,7 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 			add_action('wp_ajax_vgse_find_users_by_keyword', array($this, 'search_users'));
 			add_action('wp_ajax_vgse_save_post_types_setting', array($this, 'save_post_types_setting'));
 			add_action('wp_ajax_vgse_disable_quick_setup', array($this, 'disable_quick_setup'));
+			add_action('wp_ajax_vgse_set_settings', array($this, 'set_settings'));
 		}
 
 		/**

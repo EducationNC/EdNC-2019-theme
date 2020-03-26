@@ -39,6 +39,19 @@ class Dom
 
     /**
      * @param \DOMNode $node
+     * @return string
+     */
+    public static function getInnerHtml($node)
+    {
+        $html = '';
+        foreach ($node->childNodes as $child) {
+            $html .= $node->ownerDocument->saveHTML($child);
+        }
+        return static::prepareHtmlOut($html);
+    }
+
+    /**
+     * @param \DOMNode $node
      * @param string $shortcode
      */
     public static function beforeNodeInsertShortcode($node, $shortcode)
@@ -68,15 +81,6 @@ class Dom
                 $node->parentNode->insertBefore($node->ownerDocument->importNode($newNode, true), $before ? $node : $node->nextSibling);
             }
         }
-    }
-
-    /**
-     * @param \DOMElement $node
-     * @return string
-     */
-    public static function getNodeValue($node)
-    {
-        return static::prepareHtmlOut($node->nodeValue);
     }
 
     /**

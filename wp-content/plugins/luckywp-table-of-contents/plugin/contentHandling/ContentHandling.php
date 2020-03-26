@@ -35,10 +35,7 @@ class ContentHandling
         foreach ($headingNodes as $node) {
             /** @var $node \DOMElement */
 
-            $label = Dom::getNodeValue($node);
-            $label = html_entity_decode($label, ENT_HTML5, 'UTF-8');
-            $label = preg_replace('/\s+/u', ' ', $label);
-            $label = trim($label);
+            $label = static::makeLabel($node);
             if ($label == '') {
                 continue;
             }
@@ -72,6 +69,27 @@ class ContentHandling
         $result->content = Dom::getBody($dom);
 
         return $result;
+    }
+
+    /**
+     * @param \DOMElement $node
+     * @return string
+     */
+    protected static function makeLabel($node)
+    {
+        $html = Dom::getInnerHtml($node);
+        $html = apply_filters('lwptoc_heading_html', $html);
+
+        $html = preg_replace('#<\s*script[^>]*>.*?</script\s*>#imsu', '', $html);
+        $html = preg_replace('#<\s*style[^>]*>.*?</style\s*>#imsu', '', $html);
+
+        $label = strip_tags($html);
+        $label = html_entity_decode($label, ENT_HTML5, 'UTF-8');
+        $label = apply_filters('lwptoc_heading_label', $label, $html);
+
+        $label = preg_replace('/\s+/u', ' ', $label);
+        $label = trim($label);
+        return $label;
     }
 
     /**
@@ -134,6 +152,7 @@ class ContentHandling
 
                 if ($dto->hashReplaceUnderlinesToDashes) {
                     $id = str_replace('_', '-', $id);
+                    $id = preg_replace('/--+/', '-', $id);
                 }
 
                 if (!$id) {

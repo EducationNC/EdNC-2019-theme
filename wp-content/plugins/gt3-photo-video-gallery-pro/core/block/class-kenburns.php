@@ -87,15 +87,21 @@ class Kenburns extends Basic {
 			$this->add_render_attribute('wrapper', 'class', 'full-height');
 		}
 
+		$dataSettings = apply_filters('gt3pg-pro/blocks/kenburns/data-settings', $dataSettings, $this, $settings);
+
 		$this->add_render_attribute('wrapper', 'data-settings', wp_json_encode($dataSettings));
 
 		$this->add_style('.gallery_kenburns .kenburn-slide', array(
 			'transitionDuration: %1$ss, %2$sms, %1$ss' => array( $settings['interval']*1.3, $settings['transitionTime'] ),
-		))
+		));
 
+		do_action('gt3pg-pro/blocks/kenburns/before-render', $this, $settings);
 		?>
 
 		<div <?php $this->print_render_attribute_string('wrapper') ?>></div>
+
 		<?php
+		do_action('gt3pg-pro/blocks/kenburns/after-render', $this, $settings);
+
 	}
 }

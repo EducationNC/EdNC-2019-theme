@@ -18,6 +18,11 @@ function lwptoc_items($items, $echo = true)
                 $itemTag = 'li';
                 break;
 
+            case 'ol':
+                $containerTag = 'ol';
+                $itemTag = 'li';
+                break;
+
             case 'div':
             default:
                 $containerTag = 'div';

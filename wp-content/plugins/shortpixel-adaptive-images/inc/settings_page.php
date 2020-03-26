@@ -53,7 +53,7 @@ class ShortPixelAI_Settings{
                 register_setting( 'spai_setting_group', 'spai_settings_parse_json_lazy');
                 register_setting( 'spai_setting_group', 'spai_settings_parse_css_files');
                 register_setting( 'spai_setting_group', 'spai_settings_css_domains');
-                register_setting( 'spai_setting_group', 'spai_settings_ext_meta');
+                //register_setting( 'spai_setting_group', 'spai_settings_ext_meta'); //TODO REMOVE OBSOLETE
             }
 			function spRadio($id, $extraClass, $optionName, $optionValue, $radioOptions, $msg, $details){
 			    ?>
@@ -369,6 +369,7 @@ class ShortPixelAI_Settings{
                                                             </p>
                                                         </td>
                                                     </tr>
+                                                    <?php if(false) { //OBSOLETE TODO REMOVE ?>
                                                     <tr><th scope="row"><?php _e('Use external metadata','shortpixel-adaptive-images');?></th>
                                                         <td><label><input type="checkbox" name="spai_settings_ext_meta" class="spai_settings_ext_meta"
                                                                           value="1" <?php checked( 1, get_option( 'spai_settings_ext_meta' ), true );  ?>/>
@@ -379,6 +380,7 @@ class ShortPixelAI_Settings{
                                                             </p>
                                                         </td>
                                                     </tr>
+                                                    <?php } ?>
                                                 </table>
                                                 <?php submit_button(); ?>
                                                 <?php if(SHORTPIXEL_AI_DEBUG) { ?>

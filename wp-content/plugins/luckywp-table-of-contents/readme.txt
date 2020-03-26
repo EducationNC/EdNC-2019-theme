@@ -3,8 +3,8 @@ Contributors: theluckywp
 Donate link: https://theluckywp.com/product/table-of-contents/
 Tags: table of contents, toc, navigation, links, seo
 Requires at least: 4.7
-Tested up to: 5.3.2
-Stable tag: 2.0.8
+Tested up to: 5.4
+Stable tag: 2.1.1
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -74,6 +74,7 @@ LuckyWP Table of Contents was successfully tested with the following plugins:
 * Elementor Page Builder
 * Beaver Builder and Beaver Builder Themer Add-On
 * WPBakery Page Builder
+* Oxygen
 * WordPress Multilingual Plugin (WPML), [officially confirmed](https://wpml.org/plugin/luckywp-table-of-contents/)
 * Rank Math, [officially confirmed](https://rankmath.com/compatibility/luckywp-table-of-contents/)
 * WP Rocket
@@ -158,6 +159,22 @@ For non-English websites it is recommended to enable the `Intl` PHP extension.
 11. Miscellaneous Settings
 
 == Changelog ==
+
+= 2.1.1 — 2020-03-15 =
+* In heading ID duplicate hyphens are replaced with one.
+* Fixed: content of tags `<style>` and `<script>` was included in heading label.
+
+= 2.1 — 2020-03-12 =
++ Added option "Additional CSS Class(es)".
++ Added option "OL/LI" to "List Markup Tags".
++ Added support Oxygen Builder.
+- Removed class "lwptoc_item" from links.
+* Minor fixes for performance.
+
+= 2.0.9 — 2020-03-07 =
++ Added hook filters `lwptoc_heading_html` and `lwptoc_heading_label`.
+* Fixed: in some cases don't register JS/CSS files.
+* Minor fixes for compatibility with future versions of WordPress.
 
 = 2.0.8 — 2020-02-23 =
 + Added hook filter `lwptoc_active`.

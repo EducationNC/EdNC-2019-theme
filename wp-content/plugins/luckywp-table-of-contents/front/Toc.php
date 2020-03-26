@@ -193,6 +193,12 @@ class Toc
             'class' => ['lwptoc_i'],
         ];
 
+        // Дополнительные классы
+        $classes = trim((string)ArrayHelper::getValue($attrs, 'containerclass', Core::$plugin->settings->getMiscContainerClass()));
+        if ($classes) {
+            $containerOptions['class'][] = $classes;
+        }
+
         // Плавная прокрутка
         $smoothScroll = ValueHelper::assertBool(ArrayHelper::getValue($attrs, 'smoothscroll', Core::$plugin->settings->getGeneralSmoothScroll()));
         $containerOptions['data']['smooth-scroll'] = $smoothScroll ? 1 : 0;

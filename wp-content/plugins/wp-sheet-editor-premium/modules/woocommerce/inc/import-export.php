@@ -26,7 +26,7 @@ if (!class_exists('WPSE_WC_Products_Universal_Sheet')) {
 			add_action('vg_sheet_editor/import/columns', array($this, 'add_special_columns_to_api_import_list'), 10, 2);
 			add_action('vg_sheet_editor/import/columns', array($this, 'remove_core_fields_from_export_list'), 20, 2);
 			add_filter('vg_sheet_editor/import/wp_check/available_columns_options', array($this, 'filter_wp_check_options_for_import'), 10, 2);
-			add_action('vg_sheet_editor/save_rows/row_data_before_save', array($this, 'save_columns_data_during_import'), 10, 5);
+			add_filter('vg_sheet_editor/save_rows/row_data_before_save', array($this, 'save_columns_data_during_import'), 10, 5);
 			add_action('vg_sheet_editor/save_rows/incoming_data', array($this, 'maybe_create_template_products'), 10, 2);
 			add_action('vg_sheet_editor/save_rows/after_saving_rows', array($this, 'remove_placeholder_products_after_import'), 10, 4);
 			add_filter('vg_sheet_editor/import/is_not_supported', array($this, 'is_import_export_supported'), 10, 2);
@@ -248,7 +248,8 @@ if (!class_exists('WPSE_WC_Products_Universal_Sheet')) {
 		}
 
 		function save_columns_data_during_import($data, $post_id, $post_type, $spreadsheet_columns, $settings) {
-			if ($post_type !== VGSE()->WC->post_type || empty($settings['wpse_source']) || $settings['wpse_source'] !== 'import') {
+			global $wpdb;
+			if (is_wp_error($data) || $post_type !== VGSE()->WC->post_type || empty($settings['wpse_source']) || $settings['wpse_source'] !== 'import') {
 				return $data;
 			}
 
@@ -285,6 +286,21 @@ if (!class_exists('WPSE_WC_Products_Universal_Sheet')) {
 			// the SKU contains & and it's not really duplicated.
 			if (!empty($data['sku'])) {
 				$data['sku'] = str_replace('&', 'and', $data['sku']);
+			}
+
+			// Prevent error. Notify when variation references a non-existent parent
+			if (!empty($data['parent_id'])) {
+				if (preg_match('/^id:(\d+)$/', $data['parent_id'], $matches)) {
+					$raw_id = intval($matches[1]);
+					$id = (int) $wpdb->get_var($wpdb->prepare("SELECT ID FROM {$wpdb->posts} WHERE post_type IN ( 'product', 'product_variation' ) AND ID = %d;", $raw_id)); // WPCS: db call ok, cache ok.
+					$type = 'ID';
+				} else {
+					$id = (int) wc_get_product_id_by_sku($data['parent_id']);
+					$type = 'SKU';
+				}
+				if (!$id) {
+					return new WP_Error('wpse', sprintf(__('One variation row has a parent product that does not exist. The "parent" column contains the %s: %s. Please correct it and start a new import', VGSE()->textname), $type, $data['parent_id']));
+				}
 			}
 
 

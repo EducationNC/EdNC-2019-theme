@@ -297,10 +297,13 @@ class Rest_Api {
 		);
 		$isSelect2 = ($request->get_param('typeQuery') === 'select2');
 
+		$paged = key_exists('page', $params) ? $params['page'] :
+			(key_exists('paged', $params) ? $params['paged'] : 1);
+
 		$args = array(
 			'post_status'    => 'publish',
 			'post_type'      => $params['post_type'],
-			'paged'          => $params['paged'],
+			'paged'          => $paged,
 			'posts_per_page' => 5,
 		);
 

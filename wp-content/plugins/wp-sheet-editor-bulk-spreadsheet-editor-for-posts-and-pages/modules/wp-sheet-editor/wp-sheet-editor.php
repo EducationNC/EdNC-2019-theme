@@ -32,7 +32,7 @@ if (!class_exists('WP_Sheet_Editor')) {
 	class WP_Sheet_Editor {
 
 		private $post_type;
-		var $version = '2.17.0';
+		var $version = '2.18.0';
 		var $textname = 'vg_sheet_editor';
 		var $options_key = 'vg_sheet_editor';
 		var $plugin_url = null;
@@ -577,21 +577,32 @@ if (!class_exists('WP_Sheet_Editor')) {
 			global $wpdb;
 
 			// Delete unnecessary info from the DB
-			$option_keys = array(
-				'vg_sheet_editor-transients',
-				'vg_sheet_editor',
+			$option_keys_like = array(
 				'vgse_user_path',
-				'vgse_welcome_redirect',
 				'vgse_hide_whats_new',
 				'vgse_dismiss_review_tip',
 				'vgse_post_type_setup_done',
 				'vgse_detected_fields',
-				'vgse_variation_meta_keys',
 				'vgse_all_meta_keys_',
 			);
+			$option_keys_equal = array(
+				'vg_sheet_editor',
+				'vg_sheet_editor-transients',
+				'vgse_welcome_redirect',
+				'vgse_hide_extensions_popup',
+				'vgse_variation_meta_keys',
+				'vgse_disable_quick_setup',
+				'vgse_dismiss_review_tip',
+				'vgse_columns_visibility_migrated',
+				'vgse_post_type_setup_done',
+				'vgse_welcome_redirect',
+			);
 
-			foreach ($option_keys as $option_key) {
+			foreach ($option_keys_like as $option_key) {
 				$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '%" . esc_sql($option_key) . "%' ");
+			}
+			foreach ($option_keys_equal as $option_key) {
+				delete_option($option_key);
 			}
 		}
 

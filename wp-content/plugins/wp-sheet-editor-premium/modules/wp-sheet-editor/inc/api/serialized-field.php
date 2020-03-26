@@ -233,6 +233,7 @@ if (!class_exists('WP_Sheet_Editor_Serialized_Field')) {
 						$key = $this->settings['sample_field_key'] . '_' . $field . '_i_' . $i;
 						$column_settings = apply_filters('vg_sheet_editor/serialized_addon/column_settings', array_merge(array(
 							'data_type' => 'meta_data',
+							'key' => $key,
 							'unformatted' => array('data' => $key),
 							'column_width' => ( empty($this->settings['column_width'])) ? 150 : $this->settings['column_width'],
 							'title' => ucwords(str_replace(array('_', '-'), ' ', $field_label)),
@@ -247,7 +248,8 @@ if (!class_exists('WP_Sheet_Editor_Serialized_Field')) {
 							'allow_to_save' => ( (isset($_REQUEST['action']) && in_array($_REQUEST['action'], array('vgse_load_data', 'vgse_insert_individual_post'))) || empty($_POST) ) ? true : false,
 							'is_single_level' => $this->settings['is_single_level'],
 							'default_value' => (!empty($this->settings['sample_field'][$field])) ? $this->settings['sample_field'][$field] : '',
-							'serialized_field_settings' => $this->settings
+							'serialized_field_settings' => $this->settings,
+							'serialized_field_original_key' => $this->settings['sample_field_key']
 										), $this->settings['column_settings']), $first_set_keys, $field, $key, $post_type, $this->settings);
 
 						if (!empty($column_settings)) {

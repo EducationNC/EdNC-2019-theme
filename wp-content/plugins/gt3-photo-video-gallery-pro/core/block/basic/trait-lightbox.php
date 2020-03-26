@@ -41,6 +41,10 @@ trait Lightbox_Trait {
 		} else {
 			$result = $result['headers']->getAll();
 
+			if ($result['content-type'] === 'video/quicktime') {
+				$result['content-type'] = 'video/mp4';
+			}
+
 			return $result['content-type'];
 		}
 	}
@@ -48,7 +52,7 @@ trait Lightbox_Trait {
 	protected function is_allowed_video($src){
 		$ext = mb_strtolower(substr(strrchr($src, '.'), 1));
 
-		return in_array($ext, array( 'm4v','mp4', 'webm', 'ogg', 'ogv' ));
+		return in_array($ext, array( 'm4v','mp4', 'webm', 'ogg', 'ogv','mov' ));
 	}
 
 	protected function has_local_video($local_video){

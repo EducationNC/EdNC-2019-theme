@@ -443,4 +443,12 @@ class Settings extends \luckywp\tableOfContents\core\wp\Settings
         }
         return $tags;
     }
+
+    /**
+     * @return string
+     */
+    public function getMiscContainerClass()
+    {
+        return (string)$this->getValue('misc', 'containerClass', '');
+    }
 }

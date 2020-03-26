@@ -202,11 +202,17 @@ if (!class_exists('WP_Sheet_Editor_Columns_Visibility')) {
 				$options = WP_Sheet_Editor_Columns_Visibility::get_visibility_options();
 			}
 
+
+			remove_filter('vg_sheet_editor/columns/all_items', array('WP_Sheet_Editor_Columns_Visibility', 'filter_columns_for_visibility'), 9999);
+
 			$unfiltered_columns = WP_Sheet_Editor_Columns_Visibility::$unfiltered_columns;
 			$post_type_columns = isset($unfiltered_columns[$post_type]) ? $unfiltered_columns[$post_type] : array();
 			if (empty($post_type_columns)) {
 				$post_type_columns = VGSE()->helpers->get_provider_columns($post_type);
 			}
+
+			add_filter('vg_sheet_editor/columns/all_items', array('WP_Sheet_Editor_Columns_Visibility', 'filter_columns_for_visibility'), 9999);
+
 
 			$new_columns = array(
 				'enabled' => array(),
@@ -217,11 +223,22 @@ if (!class_exists('WP_Sheet_Editor_Columns_Visibility')) {
 			foreach ($columns_keys as $column_index => $column_key) {
 				$new_columns['enabled'][$column_key] = (!empty($data['columns_names'][$column_index])) ? $data['columns_names'][$column_index] : $column_key;
 			}
+			// Save all the registered columns not found in the enabled list as disabled
 			foreach ($post_type_columns as $key => $existing_column) {
 				if (isset($new_columns['enabled'][$key])) {
 					continue;
 				}
 				$new_columns['disabled'][$key] = $existing_column['title'];
+			}
+			// Edge case. Sometimes get_provider_columns() doesn't show some columns
+			// so we save the disabled columns received from the request in addition to the above
+			if (!empty($data['disallowed_columns'])) {
+				$disallowed_columns_keys = $data['disallowed_columns'];
+				foreach ($disallowed_columns_keys as $column_index => $column_key) {
+					if (!isset($new_columns['disabled'][$column_key])) {
+						$new_columns['disabled'][$column_key] = (!empty($data['disallowed_columns_names'][$column_index])) ? $data['disallowed_columns_names'][$column_index] : $column_key;
+					}
+				}
 			}
 
 			$options[$post_type] = $new_columns;
@@ -229,6 +246,8 @@ if (!class_exists('WP_Sheet_Editor_Columns_Visibility')) {
 			if (is_null($custom_options)) {
 				update_option(WP_Sheet_Editor_Columns_Visibility::$columns_visibility_key, $options);
 			}
+
+			do_action('vg_sheet_editor/columns_visibility/after_options_saved', $post_type, $data, $options);
 
 			if ($silent) {
 				return $options;
@@ -271,6 +290,13 @@ if (!class_exists('WP_Sheet_Editor_Columns_Visibility')) {
 
 			if (!$options) {
 				$options = WP_Sheet_Editor_Columns_Visibility::get_visibility_options();
+			}
+
+			if (empty($options[$post_type])) {
+				$options[$post_type] = array();
+			}
+			if (empty($options[$post_type]['enabled'])) {
+				$options[$post_type]['enabled'] = wp_list_pluck($filtered_columns, 'title', 'key');
 			}
 			$editor = VGSE()->helpers->get_provider_editor($post_type);
 

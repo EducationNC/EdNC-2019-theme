@@ -276,6 +276,18 @@ class Albums extends Album_Basic {
 			$paged = (get_query_var('page')) ? get_query_var('page') : 1;
 		}
 
+		$settings['query'] = array_merge(array(
+			'posts_per_page'      => 12,
+			'orderby'             => '',
+			'order'               => '',
+			'taxonomy'            => array(),
+			'tags'                => array(),
+			'author__in'          => array(),
+			'post__in'            => array(),
+			'ignore_sticky_posts' => 0,
+		), $settings['query']);
+
+
 		$query_raw             = $settings['query'];
 		$query_args = static::buildQuery($settings['query']);
 		$query_args['paged']   = $paged;
@@ -294,8 +306,7 @@ class Albums extends Album_Basic {
 				'type'    => 'NUMBER',
 			),
 		);
-		if(!is_array($query_raw['taxonomy']) || !count($query_raw['taxonomy'])) {
-			$settings['filter_array'] = array();
+		if(key_exists('taxonomy', $query_raw) && (!is_array($query_raw['taxonomy']) || !count($query_raw['taxonomy']))) {	$settings['filter_array'] = array();
 			$settings['filterEnable'] = false;
 		}
 

@@ -233,6 +233,9 @@ class Admin extends BaseObject
         if (null !== $v = $getValue($source, 'skipHeadingText')) {
             $rows[] = [esc_html__('Skip headings', 'luckywp-table-of-contents'), $v == '' ? null : $v];
         }
+        if (null !== $v = $getValue($source, 'containerClass')) {
+            $rows[] = [esc_html__('Additional CSS Class(es)', 'luckywp-table-of-contents'), $v == '' ? null : $v];
+        }
         return array_map(function ($row) {
             if ($row[1] !== null && ArrayHelper::getValue($row, 2, true) === true) {
                 $row[1] = esc_html($row[1]);

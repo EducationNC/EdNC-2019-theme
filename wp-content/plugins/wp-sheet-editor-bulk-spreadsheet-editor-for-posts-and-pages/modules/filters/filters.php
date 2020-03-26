@@ -142,9 +142,14 @@ if (!class_exists('WP_Sheet_Editor_Filters')) {
 			$keywords = array_map('trim', explode(';', $raw_keywords));
 			foreach ($keywords as $single_keyword) {
 				$checks[] = " $wpdb->posts.post_title $operator '%" . esc_sql($single_keyword) . "%' $internal_join $wpdb->posts.post_content $operator '%" . esc_sql($single_keyword) . "%' $internal_join $wpdb->posts.post_excerpt $operator '%" . esc_sql($single_keyword) . "%' ";
+				// Allow to search by ID
+				if (is_numeric($single_keyword)) {
+					$checks[count($checks) - 1] .= " $internal_join $wpdb->posts.ID = '" . intval($single_keyword) . "' ";
+				}
+				$checks[count($checks) - 1] = apply_filters('vg_sheet_editor/filters/search_by_keyword_clauses/keyword_check', $checks[count($checks) - 1], $single_keyword, $clauses, $raw_keywords, $operator, $internal_join);
 			}
 			$clauses['where'] .= " AND ( " . implode(' OR ', $checks) . " ) ";
-			return $clauses;
+			return apply_filters('vg_sheet_editor/filteres/search_by_keyword_clauses', $clauses, $raw_keywords, $operator, $internal_join);
 		}
 
 		function enable_cell_locator_js($args) {
@@ -188,11 +193,17 @@ if (!class_exists('WP_Sheet_Editor_Filters')) {
 			foreach ($post_types as $post_type) {
 				$editor->args['toolbars']->register_item('run_filters', array(
 					'type' => 'button',
-					'help_tooltip' => __('Make advanced searches and show only the matching rows in the spreadsheet. You can search by multiple conditions at once.', VGSE()->textname),
 					'content' => __('Search', VGSE()->textname),
 					'icon' => 'fa fa-search',
 					'extra_html_attributes' => 'data-remodal-target="modal-filters"',
 					'footer_callback' => array($this, 'render_filters_form')
+						), $post_type);
+
+				$editor->args['toolbars']->register_item('quick_search', array(
+					'type' => 'html', // html | switch | button
+					'content' => __('Quick search', VGSE()->textname) . '<input type="search" class="wpse-quick-search" placeholder="' . __('Enter a keyword', VGSE()->textname) . '"/>',
+					'allow_in_frontend' => false,
+					'parent' => 'run_filters',
 						), $post_type);
 			}
 		}
@@ -353,7 +364,6 @@ if (!class_exists('WP_Sheet_Editor_Filters')) {
 				<div class="modal-content">
 					<form action="<?php echo admin_url(); ?>" method="GET" id="be-filters" >
 						<h3><?php _e('Search', VGSE()->textname); ?></h3>
-						<p><?php _e('This feature allows you to filter the items in the spreadsheet to display only the items you want to edit.', VGSE()->textname); ?></p>
 
 						<?php do_action('vg_sheet_editor/filters/above_form_fields', $filters, $current_post_type); ?>
 
@@ -406,6 +416,9 @@ if (!class_exists('WP_Sheet_Editor_Filters')) {
 						?>
 						<button type="submit" class="remodal-confirm"><?php _e('Run search', VGSE()->textname); ?></button>
 						<button data-remodal-action="confirm" class="remodal-cancel"><?php _e('Close', VGSE()->textname); ?></button>
+						<?php
+						do_action('vg_sheet_editor/filters/after_form_closing', $current_post_type, $filters);
+						?>
 					</form>
 				</div>
 				<br>

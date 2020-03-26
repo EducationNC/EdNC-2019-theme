@@ -509,8 +509,6 @@ ORDER BY t.name ASC ";
 FROM $wpdb->terms AS t 
 INNER JOIN $wpdb->term_taxonomy AS tt
 ON t.term_id = tt.term_id
-INNER JOIN $wpdb->term_relationships AS tr
-ON tr.term_taxonomy_id = tt.term_taxonomy_id
 LEFT JOIN $meta_table AS tm
 ON (t.term_id = tm.term_id) 
 WHERE tt.taxonomy IN ('" . esc_sql($post_type) . "') AND  tm.meta_key = '" . esc_sql($meta_key) . "' GROUP BY tm.meta_value ORDER BY LENGTH(tm.meta_value) DESC LIMIT 4 ";

@@ -35,26 +35,34 @@ $subtle_lock = in_array(date('Y-m-d'), array('2019-10-22', '2019-10-24', '2019-1
 <div class="remodal-bg highlightCurrentRow <?php if ($subtle_lock) echo 'vgse-subtle-lock'; ?>" id="vgse-wrapper" data-nonce="<?php echo $nonce; ?>">
 	<div class="">
 		<div class="sheet-header">
-			<?php if (apply_filters('vg_sheet_editor/editor_page/allow_display_logo', true, $current_post_type)) { ?>
-				<div class="sheet-logo-wrapper">
-					<h2 class="hidden"><?php _e('Sheet Editor', VGSE()->textname); ?></h2>
-					<a href="https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=editor-logo&utm_campaign=<?php echo $current_post_type; ?>" target="_blank" class="logo-link"><img src="<?php echo VGSE()->plugin_url; ?>assets/imgs/logo-248x102.png" class="vg-logo"></a>
-
-					<?php if (is_admin() && apply_filters('vg_sheet_editor/editor_page/full_screen_mode_active', empty(VGSE()->options['be_disable_full_screen_mode_on']))) { ?>
-						<div class="wpse-full-screen-notice">
-							<div class="wpse-full-screen-notice-content notice-on"><?php _e('Full screen mode is active', VGSE()->textname); ?> <a href="#" class="wpse-full-screen-toggle"><?php _e('Exit', VGSE()->textname); ?></a> <a href="#" class="tipso tipso_style" data-tipso="<?php _e('You can deactivate this forever on the settings page', VGSE()->textname); ?>">( ? )</a></div>
-							<div class="wpse-full-screen-notice-content notice-off"><a href="#" class="wpse-full-screen-toggle"><?php _e('Activate full screen', VGSE()->textname); ?></a></div>
-						</div>
-					<?php } ?>
-					<?php do_action('vg_sheet_editor/editor_page/after_logo', $current_post_type); ?>
-				</div>
-			<?php } ?>
-			<?php do_action('vg_sheet_editor/editor_page/before_toolbars', $current_post_type); ?>
-
 
 			<!--Primary toolbar placeholder, used to keep its height when the toolbar is fixed when scrolling-->
 			<div id="vg-header-toolbar-placeholder" class="vg-toolbar-placeholder"></div>
 			<div id="vg-header-toolbar" class="vg-toolbar">
+				<?php if (apply_filters('vg_sheet_editor/editor_page/allow_display_logo', true, $current_post_type)) { ?>
+					<div class="sheet-logo-wrapper">
+						<h2 class="hidden"><?php _e('Sheet Editor', VGSE()->textname); ?></h2>
+						<a href="https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=editor-logo&utm_campaign=<?php echo $current_post_type; ?>" target="_blank" class="logo-link"><img src="<?php echo VGSE()->plugin_url; ?>assets/imgs/logo-248x102.png" class="vg-logo"></a>
+
+						<?php
+						if (is_admin() && apply_filters('vg_sheet_editor/editor_page/full_screen_mode_active', true)) {
+							$is_active = empty(VGSE()->options['be_disable_full_screen_mode_on']);
+							?>
+							<div class="wpse-full-screen-notice" data-status="<?php echo (int) !$is_active; ?>">
+								<div class="wpse-full-screen-notice-content notice-on">
+									<?php _e('Full screen mode is active', VGSE()->textname); ?> 
+									<a href="#" class="wpse-full-screen-toggle wpse-set-settings" data-silent-action="1" data-name="be_disable_full_screen_mode_on" data-value="1"><?php _e('Exit', VGSE()->textname); ?></a> 
+								</div>
+
+								<div class="wpse-full-screen-notice-content notice-off">
+									<a href="#" class="wpse-full-screen-toggle wpse-set-settings" data-silent-action="1" data-name="be_disable_full_screen_mode_on" data-value=""><?php _e('Activate full screen', VGSE()->textname); ?></a>
+								</div>
+							</div>
+						<?php } ?>
+						<?php do_action('vg_sheet_editor/editor_page/after_logo', $current_post_type); ?>
+					</div>
+				<?php } ?>
+				<?php do_action('vg_sheet_editor/editor_page/before_toolbars', $current_post_type); ?>
 
 				<?php
 				$secondary_toolbar_items_html = ($editor->args['toolbars']) ? $editor->args['toolbars']->get_rendered_provider_items($current_post_type, 'secondary') : '';
@@ -103,9 +111,22 @@ $subtle_lock = in_array(date('Y-m-d'), array('2019-10-22', '2019-10-24', '2019-1
 
 			<!--Footer toolbar-->
 			<div id="vg-footer-toolbar" class="vg-toolbar">
-				<button name="mas" class="button"><i class="fa fa-chevron-down"></i> <?php _e('Load More Rows', VGSE()->textname); ?></button>  
-				<button id="go-top" class="button"><i class="fa fa-chevron-up"></i> <?php _e('Go to the top', VGSE()->textname); ?></button>		
-				<?php if (current_user_can('manage_options')) { ?>
+				<?php
+				if (!empty(VGSE()->options['enable_pagination'])) {
+					?>
+					<div class="pagination-links"></div>
+					<div class="pagination-jump"><?php _e('Go to page', VGSE()->textname); ?> <input type="number" min="1"></div>
+					<?php if (current_user_can('manage_options') && is_admin()) { ?>
+						<a class="change-pagination-style wpse-set-settings" href="#" data-reload-after-success="1" data-name="enable_pagination" data-value=""><?php _e('Use an infinite list instead of pagination', VGSE()->textname); ?></a> <a class="tipso tipso_style" data-tipso="<?php _e('Activate this option to remove the pagination buttons and load rows automatically when you scroll down. You will see all the rows at the same time, you can load thousands of rows without problems.', VGSE()->textname); ?>" href="#">(?)</a>
+					<?php } ?>
+				<?php } else { ?>
+					<button class="load-more button"><i class="fa fa-chevron-down"></i> <?php _e('Load More Rows', VGSE()->textname); ?></button>  
+					<button id="go-top" class="button"><i class="fa fa-chevron-up"></i> <?php _e('Go to the top', VGSE()->textname); ?></button>		
+					<?php if (current_user_can('manage_options') && is_admin()) { ?>
+						<a class="change-pagination-style wpse-set-settings" href="#" data-reload-after-success="1" data-name="enable_pagination" data-value="1"><?php _e('Enable pagination', VGSE()->textname); ?></a> <a class="tipso tipso_style" data-tipso="<?php _e('By default we use an infinite list of rows and we load more rows every time you scroll down. You can activate this option to display pagination links and disable the infinite list', VGSE()->textname); ?>" href="#">(?)</a>
+					<?php } ?>
+				<?php } ?>
+				<?php if (current_user_can('manage_options') && is_admin()) { ?>
 					<a class="increase-rows-per-page" href="<?php echo esc_url(VGSE()->helpers->get_settings_page_url()); ?>" target="_blank"><?php _e('Increase rows per page', VGSE()->textname); ?></a> <a class="tipso tipso_style" data-tipso="<?php _e('We use pagination. By default we load 20 rows per page (every time you scroll down). You can increase the number to load more rows every time you scroll down.', VGSE()->textname); ?>" href="#">(?)</a>
 				<?php } ?>
 				<?php do_action('vg_sheet_editor/editor_page/after_footer_actions', $current_post_type); ?>

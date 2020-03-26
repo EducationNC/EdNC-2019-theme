@@ -30,7 +30,8 @@ SPAI.prototype = {
 
     sniperOn: false,
 
-    debugInfo: []
+    debugInfo: {log: ''},
+    loadTs: Date.now()
 };
 
 
@@ -57,6 +58,20 @@ SPAI.prototype.record = function(action, type, value) {
     }
 }
 
+SPAI.prototype.log = function(msg) {
+    var ms = Date.now() - ShortPixelAI.loadTs;
+    var log = ms + 'ms - ' + msg;
+    if(ms < 2000) { //TODO remove - this is for puppeteer that doesn't show the first ~1 sec of console output
+        ShortPixelAI.debugInfo['log'] += log + '\n';
+        return;
+    }
+    if(ShortPixelAI.debugInfo['log'] !== ''){
+        console.log(ShortPixelAI.debugInfo['log']);
+        ShortPixelAI.debugInfo['log'] = '';
+    }
+    console.log(log);
+}
+
 /**This was created for iPhone on which the placeholders are not .complete when the DOMLoaded event is triggered, on first page load on that phone.
  * defer_all is thrown by updateImageUrl.
  * @param theParent
@@ -73,10 +88,11 @@ SPAI.prototype.handleBody = function(){
         //console.log("body handled " + ShortPixelAI.bodyCount);
     } catch(error) {
         if(error == 'defer_all' && ShortPixelAI.bodyCount < 20) {
-            //console.log("body deferred " + ShortPixelAI.bodyCount);
+            //spai_settings.debug && ShortPixelAI.log("handleBody - DEFER ALL");
             setTimeout(ShortPixelAI.handleBody, 20 * ShortPixelAI.bodyCount );
             ShortPixelAI.bodyCount++;
         } else {
+            spai_settings.debug && ShortPixelAI.log("handleBody - error " + error /* + (typeof e.stack !== 'undefined'? ' stack ' + e.stack : 'no stack')*/);
             throw error;
         }
     }
@@ -88,12 +104,13 @@ SPAI.prototype.handleUpdatedImageUrlsWithRetry = function(initial, theParent, ha
         //console.log("body handled " + ShortPixelAI.bodyCount);
     } catch(error) {
         if(error == 'defer_all' && ShortPixelAI.bodyCount < 30) {
-            //console.log("body deferred " + ShortPixelAI.bodyCount);
+            spai_settings.debug && ShortPixelAI.log("handleUpdatedImageUrlsWRetry - DEFER ALL");
             setTimeout( function() {
                 ShortPixelAI.handleUpdatedImageUrls(initial, theParent, hasMutationObserver, fromIntersection);
             }, 20 * ShortPixelAI.bodyCount );
             ShortPixelAI.bodyCount++;
         } else {
+            spai_settings.debug && ShortPixelAI.log("handleUpdatedImageUrlsWRetry - error " + error.description);
             throw error;
         }
     }
@@ -119,7 +136,10 @@ SPAI.prototype.handleUpdatedImageUrls = function(initial, theParent, hasMutation
             }
         }
     */
-    if(!initial && !ShortPixelAI.bodyHandled) return; //not called through handleBody and handleBody wasn't yet successfully ran
+    if(!initial && !ShortPixelAI.bodyHandled) {
+        //spai_settings.debug && ShortPixelAI.log("handleUpdatedImageUrls return 1");
+        return; //not called through handleBody and handleBody wasn't yet successfully ran
+    }
     if(theParent.is('img,amp-img')) {
         ShortPixelAI.updateImageUrl(theParent, hasMutationObserver, fromIntersection);
         return;
@@ -233,6 +253,7 @@ SPAI.prototype.updateImageUrl = function(elm, hasMutationObserver, fromIntersect
 
     //flag 4 means eager, don't observe eager elements, just replace them right away
     if(!(isExcluded & 4) && !fromIntersection && !ShortPixelAI.elementInViewport(elm[0], ShortPixelAI.intersectionMargin)) {
+        //spai_settings.debug && ShortPixelAI.log("Observing image: " + ShortPixelAI.parsePseudoSrc(elm[0].src).src);
         //will handle this with the intersectionObserver
         ShortPixelAI.intersectionObserver.observe(elm[0]);
         return;
@@ -250,7 +271,19 @@ SPAI.prototype.updateImageUrl = function(elm, hasMutationObserver, fromIntersect
                 //on iPhone on first page load, the placeholders are not rendered when it gets here, so defer the parsing of the page altogether
                 throw 'defer_all';
             }
-            if(err == 'defer' && hasMutationObserver && !(isExcluded & 4)) {
+            if (typeof err.type !== 'undefined' && err.type == 'defer' && hasMutationObserver && !(isExcluded & 4)) {
+                spai_settings.debug && ShortPixelAI.log("Defer " + err.cause + ' ' + ShortPixelAI.parsePseudoSrc(elm[0].src).src);
+                // binding the mouseover event on deferred elements (e.g. which were hid on load)
+                elm.on( 'mouseover', function() {
+                    var $this = jQuery( this );
+
+                    var width  = $this.width(),
+                        height = $this.height();
+
+                    if ( $this.is( ':visible' ) ) {
+                        ShortPixelAI.updateImageUrl( $this, hasMutationObserver, fromIntersection );
+                    }
+                } );
                 return;
             }
         }
@@ -306,7 +339,7 @@ SPAI.prototype.updateWpBakeryTestimonial = function(elm) {
             w = Math.ceil(sizes.width);
             h = Math.ceil(sizes.height);
         } catch (err) {
-            if(err == 'defer' && hasMutationObserver) {
+            if(typeof err.type !== 'undefined' && err.type == 'defer' && hasMutationObserver && !(isExcluded & 4)) {
                 return;
             }
         }
@@ -337,7 +370,7 @@ SPAI.prototype.updateDivUrl = function(elm, hasMutationObserver, fromIntersectio
             w = Math.ceil(sizes.width);
             h = Math.ceil(sizes.height);
         } catch (err) {
-            if(err == 'defer' && hasMutationObserver) {
+            if(typeof err.type !== 'undefined' && err.type == 'defer' && hasMutationObserver && !(isExcluded & 4)) {
                 return;
             }
         }
@@ -371,15 +404,15 @@ SPAI.prototype.isExcluded = function(elm) {
     var excluded = 0;
     for(var i = 0; i < spai_settings.eager_selectors.length; i++) { //.elementor-section-stretched img.size-full
         var selector = spai_settings.eager_selectors[i];
-        try {if(elm.is(selector)) excluded |= 4;} catch (xc){console.log("eager:" + xc.message)} //we don't bother about wrong selectors at this stage
+        try {if(elm.is(selector)) excluded |= 4;} catch (xc){spai_settings.debug && ShortPixelAI.log("eager:" + xc.message)} //we don't bother about wrong selectors at this stage
     }
     for(var i = 0; i < spai_settings.excluded_selectors.length; i++) { //.elementor-section-stretched img.size-full
         var selector = spai_settings.excluded_selectors[i];
-        try {if(elm.is(selector)) excluded |= 2;} catch (xc){console.log("excluded:" + xc.message)}
+        try {if(elm.is(selector)) excluded |= 2;} catch (xc){spai_settings.debug && ShortPixelAI.log("excluded:" + xc.message)}
     }
     for(var i = 0; i < spai_settings.noresize_selectors.length; i++) { //.elementor-section-stretched img.size-full
         var selector = spai_settings.noresize_selectors[i];
-        try {if(elm.is(selector)) excluded |= 1;} catch (xc){console.log("noresize:" + xc.message)}
+        try {if(elm.is(selector)) excluded |= 1;} catch (xc){spai_settings.debug && ShortPixelAI.log("noresize:" + xc.message)}
     }
     return excluded;
 };
@@ -497,14 +530,19 @@ SPAI.prototype.setupIntersectionObserverAndParse = function() {
         threshold: 0
     };
     ShortPixelAI.intersectionObserver = new IntersectionObserver(function(entries, observer){
+        //spai_settings.debug && ShortPixelAI.log("Intersection Observer called, scroll: " + (ShortPixelAI.getScroll().join(', ')));
         entries.forEach(function(entry) {
             if(entry.isIntersecting) {
                 var elm = jQuery(entry.target);
+                //spai_settings.debug && ShortPixelAI.log(elm[0].nodeName + " is intersecting - " + ShortPixelAI.parsePseudoSrc(elm[0].src).src);
                 ShortPixelAI.handleUpdatedImageUrlsWithRetry(false, elm, true, true);
                 if (entry.target.outerHTML.indexOf('background') > 0) {
                     ShortPixelAI.updateInlineStyle(elm, false, false, true);
                 }
                 observer.unobserve(entry.target);
+            } else if (spai_settings.debug){
+                var elm = jQuery(entry.target);
+                ShortPixelAI.log(elm[0].nodeName + " is NOT intersecting - " + ShortPixelAI.parsePseudoSrc(elm[0].src).src);
             }
         });
     }, options);
@@ -516,8 +554,8 @@ SPAI.prototype.setupIntersectionObserverAndParse = function() {
             if(t.replaced) {
                 e.html(t.text);
             }
-        } catch (e) {
-            console.log('error');
+        } catch (ie) {
+            spai_settings.debug && ShortPixelAI.log('error ' + ie.description);
         }
     });
     //initial parse of the document
@@ -533,7 +571,7 @@ SPAI.prototype.setupIntersectionObserverAndParse = function() {
             }
         } catch (ierror) {
             //on Internet Explorer jQuery throws undefined function 'replace' for some style tags.
-            console.log('Error parsing styles: ' + ierror.description + ' (STYLE TAG: ' + elm.html() + ')');
+            spai_settings.debug && ShortPixelAI.log('Error parsing styles: ' + ierror.description + ' (STYLE TAG: ' + elm.html() + ')');
         }
     });
 
@@ -640,7 +678,13 @@ SPAI.prototype.composeApiUrl = function(doRegister, src, w, h) {
             src = l.protocol + "//" + l.hostname + src;
         } else {
             var href = window.location.href.split('#')[0].split('?')[0]; //get rid of hash and query string
-            src = window.location.href + (window.location.href.endsWith('/') ? '' : '/') + src;
+            if(!href.endsWith('/')) {
+                //fix the problem of relative paths to paths not ending in '/' - remove the last base path item
+                var hrefp = href.split('/');
+                hrefp.pop();
+                href = hrefp.join('/') + '/';
+            }
+            src = href + src;
             if(src.indexOf('..') > 0) {
                 //normalize the URL
                 var l = document.createElement("a");
@@ -692,7 +736,7 @@ SPAI.prototype.composeApiUrl = function(doRegister, src, w, h) {
 
 SPAI.prototype.isFullPseudoSrc = function(pseudoSrc) {
     //return pseudoSrc.indexOf('data:image/gif;u=') >= 0;
-    return pseudoSrc.indexOf('data:image/svg+xml;u=') >= 0;
+    return this.parsePseudoSrc(pseudoSrc).full;
 };
 
 SPAI.prototype.containsPseudoSrc = function(pseudoSrc) {
@@ -700,7 +744,77 @@ SPAI.prototype.containsPseudoSrc = function(pseudoSrc) {
     return pseudoSrc.indexOf('data:image/svg+xml;') >= 0;
 };
 
+/**
+ * New implementation
+ *
+ * @param {string} pseudoSrc
+ * @returns {{origHeight: number, src: boolean, origWidth: number, full: boolean}}
+ */
+SPAI.prototype.parsePseudoSrc = function( pseudoSrc ) {
+    var prepared     = {
+            src        : false,
+            origWidth  : 0,
+            origHeight : 0,
+            full       : false
+        },
+        base64RegExp = /([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
 
+    if(typeof pseudoSrc === 'undefined' || !this.containsPseudoSrc(pseudoSrc)) {
+        return prepared;
+    }
+
+    var $svgElement, svgDecoded, svgEncoded;
+    pseudoSrc = pseudoSrc.trim();
+
+    if ( typeof pseudoSrc === 'string' ) {
+        svgEncoded = pseudoSrc.match( base64RegExp );
+        svgEncoded = svgEncoded.length > 0 ? svgEncoded[ 0 ] : undefined;
+
+        if ( typeof svgEncoded === 'string' ) {
+            svgDecoded = atob( svgEncoded );
+        }
+    }
+
+    try {
+        if ( typeof svgDecoded === 'string' ) {
+            $svgElement = jQuery( svgDecoded );
+        }
+    }
+    catch ( x ) {
+        spai_settings.debug && ShortPixelAI.log( 'svgDecoded: ' + svgDecoded );
+        return prepared;
+    }
+
+    if ( $svgElement instanceof jQuery ) {
+        var metaData = {
+            url    : $svgElement.data( 'u' ),
+            width  : $svgElement.data( 'w' ),
+            height : $svgElement.data( 'h' )
+        };
+
+        prepared.src = metaData.url === undefined || metaData.url === '' ? prepared.src : ShortPixelAI.urldecode( metaData.url );
+
+        if ( prepared.src !== '' && typeof prepared.src === 'string' ) {
+            if ( prepared.src.lastIndexOf( '//', 0 ) === 0 ) {
+                // if the url doesn't have the protocol, use the current one
+                prepared.src = window.location.protocol + prepared.src;
+            }
+        }
+
+        prepared.origWidth = metaData.width === undefined || metaData.width === '' ? prepared.origWidth : metaData.width;
+        prepared.origHeight = metaData.height === undefined || metaData.height === '' ? prepared.origHeight : metaData.height;
+        prepared.full = typeof prepared.src === 'string' && prepared.src !== '';
+    }
+
+    return prepared;
+};
+
+/**
+ * OLD IMPLEMENTATION
+ *
+ * @param pseudoSrc
+ * @returns {{origHeight: number, src: boolean, origWidth: number, full: number}|boolean}
+ *
 SPAI.prototype.parsePseudoSrc = function(pseudoSrc) {
     var src = false;
     var origWidth = 0, origHeight = 0, full = false;
@@ -744,7 +858,7 @@ SPAI.prototype.parsePseudoSrc = function(pseudoSrc) {
     }
     return { src: src, origWidth: origWidth, origHeight: origHeight, full: full};
 };
-
+*/
 
 SPAI.prototype.updateSrc = function(elm, attr, w, h, isApi, maxHeight) {
     var pseudoSrc = elm.attr('data-spai-' + attr + '-meta');
@@ -847,57 +961,74 @@ SPAI.prototype.removeSrcSet = function(elm) {
 SPAI.prototype.updateInlineStyle = function(elm, w, h, isApi) {
     var style = elm.attr('style');
     var pseudoSrc = ShortPixelAI.getBackgroundPseudoImage(elm.attr('style'));
+    var affectedData = [];
     if(!pseudoSrc) return;
-    var data = ShortPixelAI.parsePseudoSrc(pseudoSrc);
-    var src = data ? data.src : false;
 
-    if(src){
-        //remove the " from beginning and end, happens when the original URL is surrounded by &quot;
-        while(src.charAt(0) == '"'){
-            src = src.substring(1);
+    for ( var index = 0; index < pseudoSrc.length; index++ ) {
+        var data = ShortPixelAI.parsePseudoSrc(pseudoSrc[index]);
+        var src = data ? data.src : false;
+
+        if(src){
+            //remove the " from beginning and end, happens when the original URL is surrounded by &quot;
+            while(src.charAt(0) == '"'){
+                src = src.substring(1);
+            }
+            while(src.charAt(src.length-1)=='"') {
+                src = src.substring(0,src.length-1);
+            }
+        } else {
+            return false;
         }
-        while(src.charAt(src.length-1)=='"') {
-            src = src.substring(0,src.length-1);
-        }
-    } else {
-        return false;
+
+        //devicePixelRatio is applied in composeApiUrl
+        var screenWidth = window.screen.width;
+        var setMaxWidth = spai_settings.backgrounds_max_width ? spai_settings.backgrounds_max_width : 99999;
+        var origWidth = data.origWidth > 0 ? data.origWidth : 99999;
+        var cappedWidth = Math.min(origWidth , screenWidth, w ? w : 99999, setMaxWidth);
+        var screenHeight = window.screen.height;
+        var origHeight = data.origHeight > 0 ? data.origHeight : 99999;
+        //if no original height, then it doesn't make sense to calculate the capped height as we can't determine the aspect ratio
+        var cappedHeight = origHeight < 99999 ? Math.min(origHeight , screenHeight, w ? w : 99999) : 99999;
+
+        //background-size si background-position
+        /*    var sizeCss = elm.css('background-size');
+			if(sizeCss !== 'auto') {
+				//we need to determine the scaling introduced by CSS
+			}
+			var posCss = elm.css('background-position');
+			if(posCss !== '0% 0%' && false) { //TODO
+
+			}
+		*/
+        var newSrc = isApi ? ShortPixelAI.composeApiUrl(false, src, cappedWidth < 99999 ? cappedWidth: false,
+            (!!spai_settings.crop) && cappedHeight < 99999 ? cappedHeight: false) : src;
+        elm.attr('style', style.replace(pseudoSrc[ index ], newSrc));
+
+        affectedData.push( data );
     }
 
-    //devicePixelRatio is applied in composeApiUrl
-    var screenWidth = window.screen.width;
-    var setMaxWidth = spai_settings.backgrounds_max_width ? spai_settings.backgrounds_max_width : 99999;
-    var origWidth = data.origWidth > 0 ? data.origWidth : 99999;
-    var cappedWidth = Math.min(origWidth , screenWidth, w ? w : 99999, setMaxWidth);
-    var screenHeight = window.screen.height;
-    var origHeight = data.origHeight > 0 ? data.origHeight : 99999;
-    //if no original height, then it doesn't make sense to calculate the capped height as we can't determine the aspect ratio
-    var cappedHeight = origHeight < 99999 ? Math.min(origHeight , screenHeight, w ? w : 99999) : 99999;
-
-    //background-size si background-position
-/*    var sizeCss = elm.css('background-size');
-    if(sizeCss !== 'auto') {
-        //we need to determine the scaling introduced by CSS
-    }
-    var posCss = elm.css('background-position');
-    if(posCss !== '0% 0%' && false) { //TODO
-
-    }
-*/
-    var newSrc = isApi ? ShortPixelAI.composeApiUrl(false, src, cappedWidth < 99999 ? cappedWidth: false, cappedHeight < 99999 ? cappedHeight: false) : src;
-    elm.attr('style', style.replace(pseudoSrc, newSrc));
-
-    return data;
+    return affectedData.length > 0 ? affectedData : false;
 };
 
-SPAI.prototype.getBackgroundPseudoImage = function(style) {
-    if( typeof style === 'undefined' || style.indexOf('background') < 0 ) {
+SPAI.prototype.getBackgroundPseudoImage = function( style ) {
+    if ( typeof style === 'undefined' || style.indexOf( 'background' ) < 0 ) {
         return false;
     }
-    var matches = (/(background-image|background)\s*:([^;]*[,\s]|\s*)url\(['"]?([^'"\)]*?)(['"]?)\)/gm).exec(style);
-    if(!matches || matches.length < 3 || matches[3].indexOf('data:image') < 0) {
-        return false;
+    var regExp        = /(background-image|background)\s*:([^;]*[,\s]|\s*)url\(['"]?([^'"\)]*?)(['"]?)\)/gm,
+        matches,
+        pseudoSources = [];
+
+    while ( ( matches = regExp.exec( style ) ) !== null ) {
+        if ( !matches || matches.length < 3 ) {
+            return false;
+        }
+
+        if ( matches[ 3 ].indexOf( 'data:image' ) >= 0 ) {
+            pseudoSources.push( matches[ 3 ] );
+        }
     }
-    return matches[3];
+
+    return pseudoSources.length > 0 ? pseudoSources : false;
 };
 
 SPAI.prototype.urldecode = function(str) {
@@ -910,16 +1041,17 @@ SPAI.prototype.urldecode = function(str) {
  */
 SPAI.prototype.getSizesRecursive = function(elm, deferHidden) {
     if(!elm.is(':visible') && deferHidden) {
-        throw 'defer';
+        throw {type: 'defer', cause: 'invisible'};
     }
-    var width = elm.css('width');
-    var height = elm.css('height');
-    var w = parseInt(width);
-    var h = parseInt(height);
+    var computedStyle = window.getComputedStyle(elm[0]);
+    var width = computedStyle['width'];
+    var height = computedStyle['height'];
+    var w = Math.round(parseFloat(width));
+    var h = Math.round(parseFloat(height));
     if(width == '0px' && elm[0].nodeName !== 'A') {
         //will need to delay the URL replacement as the element will probably be rendered by JS later on...
         //but skip <a>'s because these haven't got any size
-        throw 'defer';
+        throw {type: 'defer', cause: 'width 0'};
     }
     if(width.slice(-1) == '%') {
         if(typeof elm.parent() === 'undefined') return {width: -1};
@@ -1038,6 +1170,19 @@ SPAI.prototype.elementUpdated = function(elm, w) {
     elm.attr('data-spai-upd', w);
     if(typeof ShortPixelAI.callbacks['element-updated'] !== 'undefined') {
         ShortPixelAI.callbacks['element-updated'](elm);
+    }
+}
+
+SPAI.prototype.getScroll = function() {
+    if (window.pageYOffset != undefined) {
+        return [pageXOffset, pageYOffset];
+    } else {
+        var sx, sy, d = document,
+            r = d.documentElement,
+            b = d.body;
+        sx = r.scrollLeft || b.scrollLeft || 0;
+        sy = r.scrollTop || b.scrollTop || 0;
+        return [sx, sy];
     }
 }
 

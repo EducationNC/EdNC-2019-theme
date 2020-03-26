@@ -149,6 +149,10 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 							'is_single_level' => $detected_type['is_single_level'],
 							'allow_in_wc_product_variations' => false,
 							'wpse_source' => 'custom_columns',
+							'column_settings' => array(
+								'allow_custom_format' => true,
+							),
+							'detected_type' => $detected_type
 						);
 					} elseif ($detected_type['type'] === 'infinite_serialized') {
 						$columns_detected['infinite_serialized'][$meta_key] = array_merge($detected_type, array(
@@ -156,6 +160,10 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 							'allowed_post_types' => array($post_type),
 							'allow_in_wc_product_variations' => false,
 							'wpse_source' => 'custom_columns',
+							'column_settings' => array(
+								'allow_custom_format' => true,
+							),
+							'detected_type' => $detected_type
 						));
 					} else {
 						if ($editor->args['columns']->has_item($meta_key, $post_type)) {
@@ -171,7 +179,9 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 							'formatted' => array('data' => $meta_key),
 							'allow_to_hide' => true,
 							'allow_to_rename' => true,
-							'allow_to_save' => true
+							'allow_to_save' => true,
+							'allow_custom_format' => true,
+							'detected_type' => $detected_type
 						);
 						if ($detected_type['type'] === 'checkbox') {
 							$column_settings['formatted']['type'] = 'checkbox';
@@ -183,6 +193,8 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 						$columns_detected['normal'][$meta_key] = $column_settings;
 					}
 				}
+
+				$columns_detected = apply_filters('vg_sheet_editor/custom_columns/columns_detected_settings_before_cache', $columns_detected, $post_type);
 				$total_rows = (int) $editor->provider->get_total($post_type);
 				// If the spreadsheet has < 200 rows in total, we refresh the automatic columns more often
 				$cache_expiration = VGSE()->helpers->columns_cache_expiration($total_rows);
@@ -212,19 +224,18 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 
 		function detect_column_type($meta_key, $editor) {
 			$post_type = $editor->args['provider'];
-			$values = $editor->provider->get_meta_field_unique_values($meta_key, $post_type);
+			$values = array_map('maybe_unserialize', $editor->provider->get_meta_field_unique_values($meta_key, $post_type));
 
 			$out = array(
 				'type' => 'text',
 				'positive_value' => '',
 				'negative_value' => '',
+				'sample_values' => $values
 			);
 			$positive_values = array();
 			$negative_values = array();
 			$forced_infinite_serialized_handler = isset(VGSE()->options['keys_for_infinite_serialized_handler']) ? array_map('trim', explode(',', VGSE()->options['keys_for_infinite_serialized_handler'])) : array();
 			foreach ($values as $value) {
-
-				$value = maybe_unserialize($value);
 
 				if (is_array($value)) {
 					$array_level = $this->_array_depth($value);
@@ -390,6 +401,8 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 							'data' => $column_settings['key'],
 							'readOnly' => ( $column_settings['read_only'] === 'yes') ? true : false,
 						),
+						'skip_columns_limit' => true,
+						'skip_blacklist' => true,
 					);
 
 					if (in_array($column_settings['plain_renderer'], array('html', 'text'))) {

@@ -488,6 +488,11 @@ return [
                         ],
                         'default' => 'div',
                     ],
+                    'containerClass' => [
+                        'label' => esc_html__('Additional CSS Class(es)', 'luckywp-table-of-contents'),
+                        'widget' => 'textInput',
+                        'desc' => esc_html__('Separate multiple classes with spaces.', 'luckywp-table-of-contents'),
+                    ],
                 ],
             ],
         ],

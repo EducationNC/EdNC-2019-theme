@@ -2,9 +2,9 @@
 Contributors: ShortPixel
 Tags: adaptive images, responsive images, resize images, scale images, cdn, optimize images, compress images, on the fly, webp, lazy load
 Requires at least: 3.2.0
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.2
-Stable tag: 1.8.0
+Stable tag: 1.8.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,7 +23,7 @@ ShortPixel Adaptive Images comes to the rescue and resolves your site's image-re
 
 = What are the benefits? =
 Imagine that you could have all your image-related website problems solved with a simple click, wouldn't that be great?
-Usually the images are the biggest resource on a website page. With just one click, ShortPixel Adaptive Images replaces all your website's pics with properly sized, smartly-cropped, optimized images and serves them from ShortPixel's global CDN.
+Usually the images are the biggest resource on a website page. With just one click, ShortPixel Adaptive Images replaces all your website's pics with properly sized, smartly-cropped, optimized images and offloads them on to the ShortPixel's global CDN.
 And for more Google love the plugin serves <a href="https://en.wikipedia.org/wiki/WebP">WebP</A> images to the right browsers auto-magically!
 
 = What are the features? =
@@ -64,7 +64,7 @@ The images that weren't already optimized will be served directly from your webs
 
 = What Content Delivery Network (CDN) do you use? =
 
-ShortPixel Adaptive Images uses <a href="https://www.stackpath.com/">STACKPATH</a> - a global CDN with <a href="https://www.stackpath.com/platform/network/">45 edge locations</a> around the world.
+ShortPixel Adaptive Images uses <a href="https://www.stackpath.com/">STACKPATH</a> to offload the images - a global CDN with <a href="https://www.stackpath.com/platform/network/">45 edge locations</a> around the world.
 Both free and paid plans use the same CDN with the same number of locations.
 You can independently check out how StackPath CDN compares to other CDN providers <a href="https://www.cdnperf.com/">here</a> (wordlwide) and <a href="https://www.cdnperf.com/#!performance,North%20America">here</a> (North America).
 
@@ -120,12 +120,38 @@ If you need to do a post-processing in JavaScript after the image/tag gets updat
 
 == Changelog ==
 
+= 1.8.4 =
+Release date: 16th March 2020
+* Fix background-images with white space before the closing paranthesis
+* Fix isFullPseudoSrc
+* Language – 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted
+
+= 1.8.3 =
+Release date: 12th March 2020
+* Fix replacing images when NextGen active
+* Language – 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted
+
+= 1.8.2 =
+Release date: 5th March 2020
+* Fix images having URLs without protocol (//mysite.com)
+* Handle multiple background-image's in the same style attribute
+* Language – 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted
+
+= 1.8.1 =
+Release date: 3rd March 2020
+* W3C compliant inline image placeholders
+* Integrate with the Content Views plugin.
+* Fix wrong absolute URL calculation for relative image URLs and page URLs not ending in /
+* More precise size determination for fractional width and height, using getComputedStyle instead of jQuery.
+* Remove the obsolete setting External meta because now the inline image placeholders are W3C compliant.
+* Language – 0 new strings added, 0 updated, 0 fuzzied, and 2 obsoleted
+
 = 1.8.0 =
 Release date: 11th February 2020
 * Integrate with WP Rocket's CSS cache in order to replace the image URLs there.
 * Add preconnect header.
 * Integrate with Lovely 2 theme.
-* Integrate with My Listing theme.
+* Integrate with My Listings theme.
 * Parse divs data-thumbnail and data-options too.
 * Fixed: 'path' not defined notice when validating some URLs
 * Fixed: parsing encoded HTML inside JSON blocks inside HTML.

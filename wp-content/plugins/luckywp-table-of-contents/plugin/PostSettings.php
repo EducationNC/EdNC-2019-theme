@@ -175,6 +175,11 @@ class PostSettings extends BaseObject
     public $skipHeadingText;
 
     /**
+     * @var string|null
+     */
+    public $containerClass;
+
+    /**
      * @var int
      */
     protected $postId;
@@ -223,6 +228,7 @@ class PostSettings extends BaseObject
                 $this->useNofollow = ArrayHelper::getValue($data, 'useNofollow');
                 $this->skipHeadingLevel = ArrayHelper::getValue($data, 'skipHeadingLevel');
                 $this->skipHeadingText = ArrayHelper::getValue($data, 'skipHeadingText');
+                $this->containerClass = ArrayHelper::getValue($data, 'containerClass');
             }
         }
     }
@@ -316,6 +322,9 @@ class PostSettings extends BaseObject
         }
         if ($this->skipHeadingText !== null) {
             $data['skipHeadingText'] = wp_slash($this->skipHeadingText);
+        }
+        if ($this->containerClass !== null) {
+            $data['containerClass'] = wp_slash($this->containerClass);
         }
         if ($data ||
             $this->enabled != $this->defaultEnabled ||
