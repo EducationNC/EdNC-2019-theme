@@ -320,10 +320,11 @@ add_filter( 'facetwp_index_row', function( $params, $class ) {
 
 
 // Relevanssi exclude posts in hide from archives
-
-
-add_filter('relevanssi_do_not_index', 'rlv_exclude_cat', 10, 2);
-function rlv_exclude_cat($exclude, $post_id) {
-    if (has_term('hide-from-archives', 'appearance', $post_id )) $exclude = true;
+add_filter('relevanssi_do_not_index', function($exclude, $post_id) {
+    $hide_tag_id = 265;
+    $exclude = false;
+    if (has_term($hide_tag_id, 'appearance', $post_id )) {
+      $exclude = true;
+    }
     return $exclude;
-}
+}, 10, 2);
