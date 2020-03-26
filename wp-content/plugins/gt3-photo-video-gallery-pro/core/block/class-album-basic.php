@@ -62,17 +62,6 @@ abstract class Album_Basic extends Isotope_Gallery {
 			'taxonomy'    => array(),
 			'tags'        => array(),
 		);
-		$value      = array_merge(array(
-			'posts_per_page'      => 12,
-			'orderby'             => '',
-			'order'               => '',
-			'taxonomy'            => array(),
-			'tags'                => array(),
-			'author__in'          => array(),
-			'post__in'            => array(),
-			'ignore_sticky_posts' => 0,
-		), $value);
-
 
 		if(!empty($value['posts_per_page'])) {
 			$value_args['posts_per_page'] = $value['posts_per_page'];

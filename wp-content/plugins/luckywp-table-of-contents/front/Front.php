@@ -28,10 +28,15 @@ class Front extends BaseFront
         }
     }
 
+    private $_assetsRegistred = false;
+
     public function registerAssets()
     {
-        wp_register_style('lwptoc-main', Core::$plugin->url . '/front/assets/main.min.css', [], Core::$plugin->version);
-        wp_register_script('lwptoc-main', Core::$plugin->url . '/front/assets/main.min.js', [], Core::$plugin->version);
+        if (!$this->_assetsRegistred) {
+            wp_register_style('lwptoc-main', Core::$plugin->url . '/front/assets/main.min.css', [], Core::$plugin->version);
+            wp_register_script('lwptoc-main', Core::$plugin->url . '/front/assets/main.min.js', [], Core::$plugin->version);
+            $this->_assetsRegistred = true;
+        }
     }
 
     private $_assetsEnqueued = false;
@@ -39,6 +44,7 @@ class Front extends BaseFront
     public function enqueueAssets()
     {
         if (!$this->_assetsEnqueued) {
+            $this->registerAssets();
             if (apply_filters('lwptoc_enqueue_style', true)) {
                 wp_enqueue_style('lwptoc-main');
             }
@@ -143,6 +149,7 @@ class Front extends BaseFront
         $attrs['useNofollow'] = $settings->useNofollow;
         $attrs['skipHeadingLevel'] = $settings->skipHeadingLevel;
         $attrs['skipHeadingText'] = $settings->skipHeadingText;
+        $attrs['containerClass'] = $settings->containerClass;
 
         $shortcode = Core::$plugin->shortcode->make($attrs, true);
 

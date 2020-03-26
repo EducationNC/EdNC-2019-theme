@@ -769,7 +769,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'allow_to_rename' => true,
 			));
 			$editor->args['columns']->register_item('_downloadable_files', $post_type, array(
-				'data_type' => 'meta_data',
+				'data_type' => null,
 				'unformatted' => array('data' => '_downloadable_files', 'renderer' => 'html', 'readOnly' => true),
 				'column_width' => 120,
 				'title' => __('Download files', VGSE()->textname),
@@ -855,7 +855,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 			));
 
 			$editor->args['columns']->register_item('default_attributes', $post_type, array(
-				'data_type' => 'meta_data',
+				'data_type' => null,
 				'unformatted' => array('data' => 'default_attributes', 'renderer' => 'html', 'readOnly' => true),
 				'column_width' => 160,
 				'title' => __('Default attributes', VGSE()->textname),

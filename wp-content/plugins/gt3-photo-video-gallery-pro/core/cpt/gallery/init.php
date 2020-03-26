@@ -697,9 +697,10 @@ if(!class_exists('GT3_Post_Type_Gallery')) {
 				'id'   => $post->ID,
 				'type' => '',
 			), $atts);
-			if($post->post_type === self::post_type && $rendered) {
+			if(($post->post_type === self::post_type && $rendered) || !did_action('wp_print_scripts')) {
 				return '';
 			}
+
 			$rendered = true;
 
 			$settings = $this->getSettings('gt3_gallery');

@@ -28,6 +28,76 @@ if (!class_exists('WP_Sheet_Editor_Advanced_Filters')) {
 			add_filter('posts_clauses', array($this, 'exclude_by_keyword'), 10, 2);
 			add_filter('posts_clauses', array($this, 'add_advanced_post_data_query'), 10, 2);
 			add_filter('posts_clauses', array($this, 'add_advanced_taxonomy_query'), 10, 2);
+			add_action('vg_sheet_editor/filters/after_form_closing', array($this, 'render_save_this_search'));
+			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_toolbar_items'), 50);
+			add_action('wp_ajax_vgse_delete_saved_search', array($this, 'delete_saved_search'));
+		}
+
+		function delete_saved_search() {
+			$data = VGSE()->helpers->clean_data($_REQUEST);
+			if (!wp_verify_nonce($data['nonce'], 'bep-nonce') || !current_user_can('manage_options')) {
+				wp_send_json_error(array('message' => __('You dont have enough permissions to view this page.', VGSE()->textname)));
+			}
+
+			$post_type = $data['post_type'];
+			$name = $data['search_name'];
+
+			$saved_items = get_option('vgse_saved_searches');
+			if (empty($saved_items)) {
+				wp_send_json_success();
+			}
+
+			if (!isset($saved_items[$post_type])) {
+				wp_send_json_success();
+			}
+
+			$same_name = wp_list_filter($saved_items[$post_type], array('name' => $name));
+			foreach ($same_name as $index => $same_name_search) {
+				unset($saved_items[$post_type][$index]);
+			}
+			update_option('vgse_saved_searches', $saved_items);
+			wp_send_json_success();
+		}
+
+		function register_toolbar_items($editor) {
+
+			if (!current_user_can('manage_options')) {
+				return;
+			}
+			$post_types = $editor->args['enabled_post_types'];
+			$private_keys = array('name', 'search_name', 'post_type');
+			foreach ($post_types as $post_type) {
+				$saved_searches = $this->get_saved_searches($post_type);
+				foreach ($saved_searches as $index => $saved_search) {
+					$name = esc_html($saved_search['name']);
+					foreach ($saved_search as $key => $value) {
+						if (in_array($key, $private_keys, true)) {
+							unset($saved_search[$key]);
+						}
+					}
+
+					$editor->args['toolbars']->register_item('saved_search' . $index, array(
+						'type' => 'button',
+						'content' => $name,
+						'toolbar_key' => 'secondary',
+						'allow_in_frontend' => false,
+						'parent' => 'run_filters',
+						'extra_html_attributes' => 'data-search-name="' . esc_attr($name) . '" data-start-saved-search="' . esc_attr(json_encode($saved_search)) . '"',
+							), $post_type);
+				}
+			}
+		}
+
+		function render_save_this_search() {
+			if (!current_user_can('manage_options') || !is_admin()) {
+				return;
+			}
+			?>
+			<div class="save-search-wrapper">
+				<label class="save-search"><?php _e('Save this search', VGSE()->textname); ?></label>
+				<input name="search_name" placeholder="<?php esc_attr_e('Enter a name...', VGSE()->textname); ?>" class="save-search-input">
+			</div>
+			<?php
 		}
 
 		function add_advanced_taxonomy_query($clauses, $wp_query) {
@@ -69,6 +139,11 @@ if (!class_exists('WP_Sheet_Editor_Advanced_Filters')) {
 					$post_data_parameters['value'] = '^.{' . (int) $post_data_parameters['value'] . ',}$';
 				}
 
+				if ($post_data_parameters['compare'] === 'OR') {
+					$post_data_parameters['compare'] = 'REGEXP';
+					$keywords = array_map('trim', explode(';', $post_data_parameters['value']));
+					$post_data_parameters['value'] = '(' . implode('|', $keywords) . ')';
+				}
 				if ($post_data_parameters['compare'] === 'starts_with') {
 					$post_data_parameters['compare'] = 'LIKE';
 					$post_data_parameters['value'] = $post_data_parameters['value'] . '%';
@@ -153,6 +228,11 @@ GROUP BY tr.object_id";
 					$post_data_parameters['compare'] = 'REGEXP';
 					$post_data_parameters['value'] = '^.{' . (int) $post_data_parameters['value'] . ',}$';
 				}
+				if ($post_data_parameters['compare'] === 'OR') {
+					$post_data_parameters['compare'] = 'REGEXP';
+					$keywords = array_map('trim', explode(';', $post_data_parameters['value']));
+					$post_data_parameters['value'] = '(' . implode('|', $keywords) . ')';
+				}
 				if ($post_data_parameters['compare'] === 'starts_with') {
 					$post_data_parameters['compare'] = 'LIKE';
 					$post_data_parameters['value'] = $post_data_parameters['value'] . '%';
@@ -205,8 +285,47 @@ GROUP BY tr.object_id";
 						'description' => ''
 					);
 				}
+// Remove the post status field because they can search using the advanced filters
+				if (isset($filters['post_status'])) {
+					unset($filters['post_status']);
+				}
 			}
 			return $filters;
+		}
+
+		function get_saved_searches($post_type) {
+
+			$saved_items = get_option('vgse_saved_searches');
+			if (empty($saved_items)) {
+				$saved_items = array();
+			}
+
+			if (!isset($saved_items[$post_type])) {
+				$saved_items[$post_type] = array();
+			}
+			return $saved_items[$post_type];
+		}
+
+		function save_search($data) {
+			if (empty($data['name'])) {
+				return;
+			}
+			$post_type = $data['post_type'];
+			$saved_items = get_option('vgse_saved_searches');
+			if (empty($saved_items)) {
+				$saved_items = array();
+			}
+
+			if (!isset($saved_items[$post_type])) {
+				$saved_items[$post_type] = array();
+			}
+
+			$same_name = wp_list_filter($saved_items[$post_type], array('name' => $data['name']));
+			foreach ($same_name as $index => $same_name_search) {
+				unset($saved_items[$post_type][$index]);
+			}
+			$saved_items[$post_type][] = $data;
+			update_option('vgse_saved_searches', $saved_items);
 		}
 
 		/**
@@ -220,6 +339,12 @@ GROUP BY tr.object_id";
 			if (!empty($data['filters'])) {
 				$filters = WP_Sheet_Editor_Filters::get_instance()->get_raw_filters($data);
 
+				if (!empty($filters['search_name']) && current_user_can('manage_options')) {
+					$this->save_search(array_merge($filters, array(
+						'name' => $filters['search_name'],
+						'post_type' => $query_args['post_type']
+					)));
+				}
 				$query_args['wpse_original_filters'] = $filters;
 
 				if (!empty($filters['apply_to']) && is_array($filters['apply_to'])) {
@@ -300,6 +425,12 @@ GROUP BY tr.object_id";
 				}
 				if (!empty($filters['meta_query']) && is_array($filters['meta_query'])) {
 					foreach ($filters['meta_query'] as $index => $meta_query) {
+						// The JS doesn't send empty field so we ensure the value key exists
+						if (!isset($meta_query['value'])) {
+							$meta_query['value'] = '';
+							$filters['meta_query'][$index]['value'] = '';
+							$query_args['wpse_original_filters']['meta_query'][$index]['value'] = '';
+						}
 						if (is_array($meta_query['key'])) {
 							$meta_query['key'] = array_filter($meta_query['key']);
 						}
@@ -326,6 +457,11 @@ GROUP BY tr.object_id";
 							}
 							$filters['meta_query'][$index]['compare'] = 'REGEXP';
 							$filters['meta_query'][$index]['value'] = '^.{' . (int) $meta_query['value'] . ',}$';
+						}
+						if ($meta_query['compare'] === 'OR') {
+							$filters['meta_query'][$index]['compare'] = 'REGEXP';
+							$keywords = array_map('trim', explode(';', $meta_query['value']));
+							$filters['meta_query'][$index]['value'] = '(' . implode('|', $keywords) . ')';
 						}
 						if ($meta_query['compare'] === 'starts_with') {
 							$filters['meta_query'][$index]['compare'] = 'REGEXP';
@@ -365,12 +501,14 @@ GROUP BY tr.object_id";
 			if (isset($filters['taxonomy_term'])) {
 				?>
 				<li class="<?php
-				$labels = VGSE()->helpers->get_post_type_taxonomies_single_data($current_post_type, 'label');
+				$labels = apply_filters('vg_sheet_editor/advanced_filters/taxonomy_labels', VGSE()->helpers->get_post_type_taxonomies_single_data($current_post_type, 'label'), $current_post_type);
 				if (empty($labels)) {
 					echo ' hidden';
 				}
 
-				$labels[count($labels) - 1] = ' or ' . end($labels);
+				if (count($labels) > 1) {
+					$labels[count($labels) - 1] = ' or ' . end($labels);
+				}
 				?>">
 					<label><?php printf(__('Enter %s', VGSE()->textname), implode(', ', array_unique($labels))); ?> <a href="#" class="tipso" data-tipso="<?php _e('Enter the names of ' . implode(', ', $labels)); ?>">( ? )</a></label>
 					<select data-placeholder="<?php _e('Category name...', VGSE()->textname); ?>" name="apply_to[]" class="select2"  multiple data-remote="true" data-action="vgse_search_taxonomy_terms" data-min-input-length="4">
@@ -394,7 +532,7 @@ GROUP BY tr.object_id";
 			global $wpdb;
 			$all_meta_keys = apply_filters('vg_sheet_editor/advanced_filters/all_meta_keys', VGSE()->helpers->get_all_meta_keys($current_post_type, 1000), $current_post_type, $filters);
 
-			// post data and taxonomy advanced filters are available for post types only
+// post data and taxonomy advanced filters are available for post types only
 			if (VGSE()->helpers->get_current_provider()->is_post_type) {
 				$taxonomy_keys = VGSE()->helpers->get_post_type_taxonomies_single_data($current_post_type, 'name');
 				$item_raw = $wpdb->get_row("SELECT * FROM $wpdb->posts LIMIT 1", ARRAY_A);
@@ -423,7 +561,7 @@ GROUP BY tr.object_id";
 					<li class="base advanced-field" style="display: none;">
 						<div class="fields-wrap">
 							<div class="field-wrap">
-								<label><?php _e('Field key', VGSE()->textname); ?></label>
+								<label><?php _e('Field', VGSE()->textname); ?></label>
 								<select name="meta_query[][key]" data-placeholder="<?php _e('Select...', VGSE()->textname); ?>" class="select2 wpse-advanced-filters-field-selector">
 									<option value="" selected>- -</option>
 									<?php
@@ -457,6 +595,7 @@ GROUP BY tr.object_id";
 									<option value="<=" ><=</option>
 									<option value=">" >></option>
 									<option value=">=" >>=</option>
+									<option value="OR" data-custom-label="ANY"><?php _e('Any of these values (Enter multiple values separated by ;)', VGSE()->textname); ?></option>
 									<option value="LIKE" ><?php _e('CONTAINS', VGSE()->textname); ?></option>
 									<option value="NOT LIKE" ><?php _e('NOT CONTAINS', VGSE()->textname); ?></option>
 									<option value="starts_with" ><?php _e('STARTS WITH', VGSE()->textname); ?></option>

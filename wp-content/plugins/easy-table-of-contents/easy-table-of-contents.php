@@ -3,7 +3,7 @@
  * Plugin Name: Easy Table of Contents
  * Plugin URI: http://connections-pro.com/
  * Description: Adds a user friendly and fully automatic way to create and display a table of contents generated from the page content.
- * Version: 2.0
+ * Version: 2.0.4
  * Author: Steven A. Zahm
  * Author URI: http://connections-pro.com/
  * Text Domain: easy-table-of-contents
@@ -26,7 +26,7 @@
  * @package  Easy Table of Contents
  * @category Plugin
  * @author   Steven A. Zahm
- * @version  2.0
+ * @version  2.0.4
  */
 
 use function Easy_Plugins\Table_Of_Contents\String\mb_find_replace;
@@ -47,7 +47,7 @@ if ( ! class_exists( 'ezTOC' ) ) {
 		 * @since 1.0
 		 * @var string
 		 */
-		const VERSION = '2.0';
+		const VERSION = '2.0.4';
 
 		/**
 		 * Stores the instance of this class.
@@ -601,8 +601,27 @@ if ( ! class_exists( 'ezTOC' ) ) {
 
 				case 'before':
 				default:
-					$replace[0] = $html . $replace[0];
+					//$replace[0] = $html . $replace[0];
 					$content    = mb_find_replace( $find, $replace, $content );
+
+					$pattern = '`<h[1-6]{1}[^>]*' . preg_quote( $replace[0], '`' ) . '`msuU';
+					$result  = preg_match( $pattern, $content, $matches );
+
+					/*
+					 * Try to place TOC before the first heading found in eligible heading, failing that,
+					 * insert TOC at top of content.
+					 */
+					if ( 1 === $result ) {
+
+						$start   = strpos( $content, $matches[0] );
+						$content = substr_replace( $content, $html, $start, 0 );
+
+					} else {
+
+						// Somehow, there are scenarios where the processing get this far and
+						// the TOC is being added to pages where it should not. Disable for now.
+						//$content = $html . $content;
+					}
 			}
 
 			return $content;

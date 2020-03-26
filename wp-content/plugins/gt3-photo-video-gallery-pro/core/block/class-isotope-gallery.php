@@ -239,6 +239,10 @@ abstract class Isotope_Gallery extends Basic {
 		}
 
 		foreach($settings['images'] as $image) {
+			foreach($image as $k=>$v) {
+				$image[$k] = is_array($v) ? $v : stripslashes($v);
+			}
+
 			$respond .= $this->renderItem($image, $settings);
 		}
 

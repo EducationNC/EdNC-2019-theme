@@ -3,7 +3,7 @@
  * Plugin Name: ShortPixel Adaptive Images
  * Plugin URI: https://shortpixel.com/
  * Description: Display properly sized, smart cropped and optimized images on your website. Images are processed on the fly and served from our CDN.
- * Version: 1.8.0
+ * Version: 1.8.4
  * Author: ShortPixel
  * Author URI: https://shortpixel.com
  * Text Domain: shortpixel-adaptive-images
@@ -11,7 +11,7 @@
 ! defined( 'ABSPATH' ) and exit;
 
 if(!class_exists('ShortPixelAI') ) {
-    define( 'SHORTPIXEL_AI_VERSION', '1.8.0' );
+    define( 'SHORTPIXEL_AI_VERSION', '1.8.4' );
     define('SHORTPIXEL_AI_PLUGIN_FILE', __FILE__);
 
     require_once(__DIR__ . '/inc/logger.class.php');

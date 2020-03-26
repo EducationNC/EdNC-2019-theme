@@ -17,7 +17,13 @@ class EditorBlock extends BaseObject
 
     public function wpInit()
     {
-        wp_register_script('lwptoc-editorBlock', $this->getUrl() . '/editorBlock.min.js', ['wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'lwptoc_adminMain'], Core::$plugin->version);
+        wp_register_script('lwptoc-editorBlock', $this->getUrl() . '/editorBlock.min.js', [
+            'wp-blocks',
+            'wp-element',
+            wp_script_is('wp-block-editor') ? 'wp-block-editor' : 'wp-editor',
+            'wp-components',
+            'lwptoc_adminMain'
+        ], Core::$plugin->version);
         register_block_type('luckywp/tableofcontents', [
             'editor_script' => 'lwptoc-editorBlock',
             'render_callback' => function ($attrs) {

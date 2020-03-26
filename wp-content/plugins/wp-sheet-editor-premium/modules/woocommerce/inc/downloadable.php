@@ -18,6 +18,69 @@ if (!class_exists('WPSE_WC_Products_Downloadable')) {
 			add_filter('vg_sheet_editor/formulas/form_settings', array($this, 'filter_formula_builder_for_downloadable_files'), 10, 2);
 			add_filter('vg_sheet_editor/formulas/execute_formula/custom_formula_handler_executed', array($this, 'execute_formula_on_downloadable_files'), 10, 7);
 			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_columns'));
+			add_filter('vg_sheet_editor/save_rows/row_data_before_save', array($this, 'save_files_from_individual_columns'), 10, 3);
+		}
+
+		function save_files_from_individual_columns($item, $post_id, $post_type) {
+			if (is_wp_error($item) || !isset($item['wpse_downloadable_file_names']) && !isset($item['wpse_downloadable_file_urls']) || $post_type !== VGSE()->WC->post_type) {
+				return $item;
+			}
+			$meta_key = '_downloadable_files';
+			$existing_files_raw = maybe_unserialize(VGSE()->helpers->get_current_provider()->get_item_meta($post_id, $meta_key, true));
+			if (empty($existing_files_raw)) {
+				$existing_files_raw = array();
+			}
+			$existing_files = array();
+			foreach ($existing_files_raw as $existing_file) {
+				$existing_files[$existing_file['file']] = $existing_file;
+			}
+
+			if (isset($item['wpse_downloadable_file_urls']) && !isset($item['wpse_downloadable_file_names'])) {
+				$item['wpse_downloadable_file_names'] = $this->get_downloadable_file_names_for_cell(get_post($post_id), $meta_key, array());
+			}
+			if (isset($item['wpse_downloadable_file_names']) && !isset($item['wpse_downloadable_file_urls'])) {
+				$item['wpse_downloadable_file_urls'] = $this->get_downloadable_file_urls_for_cell(get_post($post_id), $meta_key, array());
+			}
+
+			$new_files = array();
+			$raw_files = array_map('trim', explode(',', $item['wpse_downloadable_file_urls']));
+			$raw_names = array_map('trim', explode(',', $item['wpse_downloadable_file_names']));
+			foreach ($raw_files as $index => $file_url) {
+				$new_files[] = array(
+					'name' => isset($raw_names[$index]) ? $raw_names[$index] : '',
+					'file' => $file_url,
+					'id' => isset($existing_files[$file_url]) ? $existing_files[$file_url]['id'] : '',
+				);
+			}
+
+			$response = $this->_save_download_files($new_files, $post_id);
+
+			if (isset($item['wpse_downloadable_file_urls'])) {
+				unset($item['wpse_downloadable_file_urls']);
+			}
+			if (isset($item['wpse_downloadable_file_names'])) {
+				unset($item['wpse_downloadable_file_names']);
+			}
+
+			return $item;
+		}
+
+		function get_downloadable_file_urls_for_cell($post, $cell_key, $cell_args) {
+			$existing_files = maybe_unserialize(VGSE()->helpers->get_current_provider()->get_item_meta($post->ID, '_downloadable_files', true));
+			$value = '';
+			if (is_array($existing_files) && !empty($existing_files)) {
+				$value = implode(', ', wp_list_pluck($existing_files, 'file'));
+			}
+			return $value;
+		}
+
+		function get_downloadable_file_names_for_cell($post, $cell_key, $cell_args) {
+			$existing_files = maybe_unserialize(VGSE()->helpers->get_current_provider()->get_item_meta($post->ID, '_downloadable_files', true));
+			$value = '';
+			if (is_array($existing_files) && !empty($existing_files)) {
+				$value = implode(', ', wp_list_pluck($existing_files, 'name'));
+			}
+			return $value;
 		}
 
 		/**
@@ -84,8 +147,37 @@ if (!class_exists('WPSE_WC_Products_Downloadable')) {
 				'allow_to_hide' => true,
 				'allow_to_rename' => true,
 			));
-			$editor->args['columns']->register_item('_downloadable_files', $post_type, array(
+			$editor->args['columns']->register_item('wpse_downloadable_file_names', $post_type, array(
 				'data_type' => 'meta_data',
+				'column_width' => 250,
+				'title' => __('Download files : names', VGSE()->textname),
+				'type' => '',
+				'supports_formulas' => false,
+				'supports_sql_formulas' => false,
+				'save_value_callback' => array($this, 'save_downloadable_file_names_from_cell'),
+				'get_value_callback' => array($this, 'get_downloadable_file_names_for_cell'),
+				'formatted' => array(
+					'comment' => array('value' => __('This is optional. Leave empty to use the name from the URLs. Enter multiple names separated by commas', VGSE()->textname))
+				),
+				'allow_to_hide' => true,
+				'allow_to_rename' => true,
+			));
+			$editor->args['columns']->register_item('wpse_downloadable_file_urls', $post_type, array(
+				'data_type' => 'meta_data',
+				'column_width' => 250,
+				'title' => __('Download files : URLs', VGSE()->textname),
+				'type' => '',
+				'supports_formulas' => false,
+				'save_value_callback' => array($this, 'save_downloadable_file_urls_from_cell'),
+				'get_value_callback' => array($this, 'get_downloadable_file_urls_for_cell'),
+				'formatted' => array(
+					'comment' => array('value' => __('Enter multiple URLs separated by commas', VGSE()->textname))
+				),
+				'allow_to_hide' => true,
+				'allow_to_rename' => true,
+			));
+			$editor->args['columns']->register_item('_downloadable_files', $post_type, array(
+				'data_type' => null,
 				'unformatted' => array('data' => '_downloadable_files', 'renderer' => 'html'),
 				'column_width' => 160,
 				'title' => __('Download files', VGSE()->textname),

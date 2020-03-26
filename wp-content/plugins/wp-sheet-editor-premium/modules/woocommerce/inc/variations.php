@@ -298,7 +298,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				'enable_variations_when_fetching_created_rows'
 					), 10, 2);
 
-			add_action('woocommerce_rest_save_product_variation', array($this, 'add_variation_meta_after_copy'), 10, 3);
+			add_action('woocommerce_rest_insert_product_variation_object', array($this, 'add_variation_meta_after_copy'), 10, 2);
 			add_filter('vg_sheet_editor/provider/post/get_items_terms', array($this, 'get_variation_attributes'), 10, 3);
 
 			add_filter('vg_sheet_editor/filters/after_fields', array($this, 'add_search_on_variations_field'), 10, 2);
@@ -345,17 +345,19 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				'column_width' => 140,
 				'title' => __('Variation enabled?', 'woocommerce'),
 				'supports_formulas' => true,
+				'supports_sql_formulas' => false,
 				'formatted' => array(
 					'data' => '_vgse_variation_enabled',
 					'type' => 'checkbox',
 					'checkedTemplate' => 'on',
-					'uncheckedTemplate' => ''
+					'uncheckedTemplate' => 'off'
 				),
 				'default_value' => 'on',
+				'save_value_callback' => array($this, 'save_variation_enabled_from_cell'),
 			));
 
 			$editor->args['columns']->register_item('_default_attributes', $post_type, array(
-				'data_type' => 'meta_data',
+				'data_type' => null,
 				'unformatted' => array('data' => '_default_attributes', 'renderer' => 'html'),
 				'column_width' => 160,
 				'title' => __('Default attributes', 'woocommerce'),
@@ -391,6 +393,13 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				'key_for_formulas' => '_default_attributes',
 				'formatted' => array('data' => '_default_attributes', 'renderer' => 'html'),
 				'use_new_handsontable_renderer' => true
+			));
+		}
+
+		function save_variation_enabled_from_cell($post_id, $cell_key, $data_to_save, $post_type, $cell_args, $spreadsheet_columns) {
+			$post = get_post($post_id);
+			$api_response = VGSE()->helpers->create_rest_request('POST', '/wc/v3/products/' . $post->post_parent . '/variations/' . $post_id, array(
+				'status' => $data_to_save === 'on' ? 'publish' : 'private'
 			));
 		}
 
@@ -437,7 +446,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 		}
 
 		function save_default_attributes_from_cell($item, $post_id, $post_type) {
-			if (!isset($item['_default_attributes']) || $post_type !== $this->post_type) {
+			if (is_wp_error($item) || !isset($item['_default_attributes']) || $post_type !== $this->post_type) {
 				return $item;
 			}
 			$this->save_default_attributes(json_decode(wp_unslash($item['_default_attributes']), true), $post_id);
@@ -453,7 +462,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 			return $this->get_default_attributes($post->ID);
 		}
 
-		function add_variation_meta_after_copy($variation_id, $menu_order, $data) {
+		function add_variation_meta_after_copy($object, $data) {
+			$variation_id = $object->get_id();
 			if (empty($data['wpse_custom_meta'])) {
 				return;
 			}
@@ -606,6 +616,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				'_downloadable',
 				'_virtual',
 				'_downloadable_files',
+				'wpse_downloadable_file_names',
+				'wpse_downloadable_file_urls',
 				'_download_expiry',
 				'_download_limit',
 				'_tax_status',
@@ -717,7 +729,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 					continue;
 				}
 				$post_obj = get_post($post['ID']);
-				$rows[$row_index]['_vgse_variation_enabled'] = ($post_obj->post_status !== 'publish') ? '' : 'on';
+				$rows[$row_index]['_vgse_variation_enabled'] = ($post_obj->post_status !== 'publish') ? 'off' : 'on';
 				$rows[$row_index]['post_status'] = 'publish';
 
 				// Set variation titles
@@ -771,23 +783,31 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 			if ($post->post_parent > 0) {
 				$copy_from_product = $post->post_parent;
 			}
-			$api_response = VGSE()->helpers->create_rest_request('GET', '/wc/v1/products/' . $copy_from_product);
+			$api_response = VGSE()->helpers->create_rest_request('GET', '/wc/v3/products/' . $copy_from_product);
 			$product_data = $api_response->get_data();
-			$variations = array();
-			$source_attributes = array();
-			$variations_to_copy = (!empty($data['copy_individual_variations']) && is_array($data['individual_variations']) ) ? array_filter(array_map('intval', $data['individual_variations'])) : array();
 
 			if (empty($product_data['variations'])) {
 				wp_send_json_error(array('message' => __('The source product doesn´t have variations.', VGSE()->textname)));
 			}
 
+			$product_variations_response = VGSE()->helpers->create_rest_request('GET', '/wc/v3/products/' . $copy_from_product . '/variations', array('per_page' => count($product_data['variations'])));
+			$product_variations = $product_variations_response->get_data();
+
+			// Reduce memory usage
+			$product_variations_response = null;
+			$api_response = null;
+
+
+			$variations = array();
+			$variations_to_copy = (!empty($data['copy_individual_variations']) && is_array($data['individual_variations']) ) ? array_filter(array_map('intval', $data['individual_variations'])) : array();
+
 			$placeholder_image_url = wc_placeholder_img_src();
 
-			foreach ($product_data['variations'] as $variation) {
+			foreach ($product_variations as $variation) {
 				if (!empty($variations_to_copy) && !in_array((int) $variation['id'], $variations_to_copy, true)) {
 					continue;
 				}
-				// Save all meta data of the variation, we'll increase it later using another hook
+				// Save all meta data of the variation, we'll save it later using another hook
 				// This allow copying meta data added by other plugins
 				$variation['wpse_custom_meta'] = get_post_meta($variation['id']);
 
@@ -798,6 +818,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				unset($variation['permalink']);
 				unset($variation['sku']);
 				unset($variation['price']);
+				unset($variation['meta_data']);
 
 				// Remove all fields that inherit value from the parent to avoid error 400s
 				// when the parent doesn't have the field value or has it with wrong format,
@@ -838,12 +859,16 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 			}
 
 			// Add index to source attributes so we can access them easily later
+			$source_attributes = array();
 			foreach ($product_data['attributes'] as $attribute) {
 				$attribute_key = $attribute['id'] > 0 ? wc_attribute_taxonomy_name_by_id($attribute['id']) : sanitize_title($attribute['name']);
 				$source_attributes[$attribute_key] = $attribute;
 			}
 
 			foreach ($product_ids as $product_id) {
+				if ((int) $copy_from_product === (int) $product_id) {
+					continue;
+				}
 				if (!empty($data['use_parent_product_price'])) {
 					foreach ($variations as $variation_index => $variation) {
 						$variations[$variation_index]['regular_price'] = VGSE()->helpers->get_current_provider()->get_item_meta($product_id, '_regular_price', true);
@@ -897,13 +922,27 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 					}
 				}
 
-				$api_response = VGSE()->WC->update_products_with_api(array(
+
+				$modified_product_api_response = VGSE()->WC->update_products_with_api(array(
 					'ID' => $product_id,
 					'type' => 'variable',
 					'default_attributes' => $product_data['default_attributes'],
 					'attributes' => array_values($new_attributes),
-					'variations' => $variations,
+						), 3);
+
+				$modified_variations_api_response = VGSE()->helpers->create_rest_request('POST', '/wc/v3/products/' . $product_id . '/variations/batch', array(
+					'create' => $variations
 				));
+
+				$modified_product_data = $modified_product_api_response->get_data();
+				$modified_variations_data = $modified_variations_api_response->get_data();
+				do_action('vg_sheet_editor/woocommerce/variations_copied', $modified_variations_data['create'], $modified_product_data);
+
+				// Reduce memory usage
+				$modified_product_api_response = null;
+				$modified_variations_api_response = null;
+				$modified_product_data = null;
+				$modified_variations_data = null;
 			}
 
 			$variations_count = count($variations) * count($product_ids);
@@ -941,7 +980,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 						$product_ids[] = VGSE()->helpers->_get_post_id_from_search($product);
 					}
 				}
-			} elseif ($data['vgse_variation_manager_source'] === 'search') {
+			} elseif (in_array($data['vgse_variation_manager_source'], array('search', 'all'), true)) {
 
 				$get_rows_args = apply_filters('vg_sheet_editor/woocommerce/copy_variations/search_query/get_rows_args', array(
 					'nonce' => wp_create_nonce('bep-nonce'),
@@ -1011,7 +1050,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 
 			// We don't retrieve the rows when using the search to reduce
 			// memory usage because we might copy to a lot of products at once
-			if (isset($data['vgse_variation_manager_source']) && $data['vgse_variation_manager_source'] === 'search') {
+			if (isset($data['vgse_variation_manager_source']) && in_array($data['vgse_variation_manager_source'], array('search', 'all'), true)) {
 				$data = array();
 			} else {
 				$rows = VGSE()->helpers->get_rows(array(
@@ -1032,7 +1071,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 			wp_send_json_success(array(
 				'message' => sprintf(__('%s variations created.', VGSE()->textname), $variations_count),
 				'deleted' => array_unique(VGSE()->deleted_rows_ids),
-				'data' => $data
+				'data' => $data,
+				'processed_products' => $product_ids
 			));
 		}
 
@@ -1054,7 +1094,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				return new WP_Error('wpse', array('message' => __('Data missing, try again later.', VGSE()->textname)));
 			}
 
-			wc_maybe_define_constant('WC_MAX_LINKED_VARIATIONS', 200);
+			$max_variations = (!empty(VGSE()->options['maximum_variations_combination'])) ? (int) VGSE()->options['maximum_variations_combination'] : 200;
+			wc_maybe_define_constant('WC_MAX_LINKED_VARIATIONS', $max_variations);
 			wc_set_time_limit(0);
 			$product = wc_get_product($post_id);
 			$data_store = $product->get_data_store();

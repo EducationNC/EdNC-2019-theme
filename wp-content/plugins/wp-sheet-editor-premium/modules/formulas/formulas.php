@@ -282,7 +282,7 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 		}
 
 		function can_execute_formula_as_sql($formula, $column, $post_type, $spreadsheet_columns, $raw_form_data) {
-			$custom_check = apply_filters('vg_sheet_editor/formulas/sql_execution/can_execute', null, $formula, $column, $post_type, $spreadsheet_columns);
+			$custom_check = apply_filters('vg_sheet_editor/formulas/sql_execution/can_execute', null, $formula, $column, $post_type, $spreadsheet_columns, $raw_form_data);
 			if (is_bool($custom_check)) {
 				return $custom_check;
 			}
@@ -290,6 +290,9 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 
 			// Use column callback to retrieve the cell value
 			if (!empty($column['save_value_callback'])) {
+				return false;
+			}
+			if (!empty($column['prepare_value_for_database'])) {
 				return false;
 			}
 			if (empty($column['supports_sql_formulas'])) {
@@ -511,17 +514,7 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 
 		function _get_initial_data_from_cell($cell_args, $post, $editor) {
 			$cell_key = $cell_args['key_for_formulas'];
-
-			// Use column callback to retrieve the cell value
-			if (!empty($cell_args['get_value_callback']) && is_callable($cell_args['get_value_callback'])) {
-				$data = call_user_func($cell_args['get_value_callback'], $post, $cell_key, $cell_args);
-			} elseif ($cell_args['data_type'] === 'post_data') {
-				$data = VGSE()->data_helpers->get_post_data($cell_key, $post->ID);
-			} elseif ($cell_args['data_type'] === 'meta_data' || $cell_args['data_type'] === 'post_meta') {
-				$data = $editor->provider->get_item_meta($post->ID, $cell_key, true, 'read');
-			} elseif ($cell_args['data_type'] === 'post_terms') {
-				$data = $editor->provider->get_item_terms($post->ID, $cell_key);
-			}
+			$data = VGSE()->helpers->get_column_text_value($cell_key, $post, $cell_args);
 			return $data;
 		}
 
@@ -765,6 +758,11 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 										), $post_type, $cell_args, $cell_key, $spreadsheet_columns, $post_id);
 
 								$data_to_save = $this->_prepare_data_for_saving($data, $cell_args);
+
+								// If the value should be prepared using a callback before we save
+								if (!empty($cell_args['prepare_value_for_database'])) {
+									$data_to_save = call_user_func($cell_args['prepare_value_for_database'], $post->ID, $cell_key, $data_to_save, $post_type, $cell_args, $spreadsheet_columns);
+								}
 
 								// Use column callback to save the cell value
 								if (!empty($cell_args['save_value_callback']) && is_callable($cell_args['save_value_callback'])) {

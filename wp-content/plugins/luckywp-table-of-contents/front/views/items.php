@@ -12,7 +12,7 @@ echo Html::beginTag($containerTag, ['class' => 'lwptoc_itemWrap']);
 foreach ($items as $item) {
     echo Html::beginTag($itemTag, ['class' => 'lwptoc_item']);
     ?>
-    <a href="#<?= $item['id'] ?>" class="lwptoc_item"<?= $item['relNofollow'] ?>>
+    <a href="#<?= $item['id'] ?>"<?= $item['relNofollow'] ?>>
         <?php if ($item['number']) { ?>
             <span class="lwptoc_item_number"><?= $item['number'] . $item['numberSuffix'] ?></span>
         <?php } ?>

@@ -94,7 +94,7 @@ class ShortPixelAI
     public function init_ob()
     {
         if ($this->isWelcome()) {
-            SHORTPIXEL_AI_DEBUG && $this->logger->log('WILL PARSE ' . $_SERVER['REQUEST_URI'] . ' CALLED BY ' . $_SERVER['HTTP_REFERER']);
+            SHORTPIXEL_AI_DEBUG && $this->logger->log('WILL PARSE ' . $_SERVER['REQUEST_URI'] . ' CALLED BY ' . @$_SERVER['HTTP_REFERER']);
             //remove srcset and sizes param
             add_filter('wp_calculate_image_srcset', array($this, 'replace_image_srcset'), 10, 5);
 
@@ -158,7 +158,7 @@ class ShortPixelAI
             'parse_json_lazy' => get_option('spai_settings_parse_json_lazy'),
             'parse_css_files' => get_option('spai_settings_parse_css_files'),
             'css_domains' => get_option('spai_settings_css_domains'),
-            'ext_meta' => get_option('spai_settings_ext_meta')
+            //TODO REMOVE OBSOLETE 'ext_meta' => get_option('spai_settings_ext_meta')
         );
 
         if($this->settings['parse_css_files']) {
@@ -228,23 +228,23 @@ class ShortPixelAI
         $args = array(
             'id'    => 'shortpixel_ai_sniper',
             'title' => '<div id="shortpixel_ai_sniper" title="' . __('Select an image to refresh on CDN or exclude','shortpixel-adaptive-images') . '" class="shortpixel_ai_sniper"><img src="'
-                . plugins_url( 'img/spai-sniper.png', SHORTPIXEL_AI_PLUGIN_FILE ) . '" success-url="javascript:spaiSnip();" style="margin-top: 4px;" class="spai-snip-menu-popup-trigger shortpixel_ai_sniper">'
-                    . '<div id="spai-snip-menu-popups">
-                            <div id="spai-snip-menu-popup-multiple" class="spai-snip-menu-popup">
-                                <p id="spai-snip-menu-popup-multiple-title">' . __('Please choose an image from the following list.','shortpixel-adaptive-images') . '</p>
-                                <div id="spai-snip-menu-popup-multiple-list"></div>
+                . plugins_url( 'img/spai-sniper.png', SHORTPIXEL_AI_PLUGIN_FILE ) . '" success-url="javascript:spaiSnip();" style="margin-top: 4px;" class="spai-smp-trigger shortpixel_ai_sniper">'
+                    . '<div id="spai-smps">
+                            <div id="spai-smp-multiple" class="spai-smp">
+                                <p id="spai-smp-multiple-title">' . __('Please choose an image from the following list.','shortpixel-adaptive-images') . '</p>
+                                <div id="spai-smp-multiple-list"></div>
                             </div>
-                            <div id="spai-snip-menu-popup-single-template" class="spai-snip-menu-popup">
-                                <div class="spai-snip-menu-popup-single-item-container">
-                                    <div class="spai-snip-menu-popup-single-item-container-image-container">
-                                        <img src="#" class="spai-snip-menu-popup-single-item-container-image" alt="">
+                            <div id="spai-smp-single-template" class="spai-smp">
+                                <div class="spai-smp-single-item-container">
+                                    <div class="spai-smp-single-item-container-image-container">
+                                        <img src="#" class="spai-smp-single-item-container-image" alt="">
                                     </div>
-                                    <span class="spai-snip-menu-popup-single-item-container-basename"></span>
+                                    <span class="spai-smp-single-item-container-basename"></span>
                                 </div>
-                                <p class="spai-snip-menu-popup-single-title"></p>
-                                <div class="spai-snip-menu-popup-single-options"></div>
+                                    <p class="spai-smp-single-title"></p>
+                                    <div class="spai-smp-single-options"></div>
+                                </div>
                             </div>
-                       </div>
 					   <div id="spai-snip-loader" class="spai-snip-loader">
 							<img src="' . plugins_url( 'img/Spinner-1s-200px.gif', SHORTPIXEL_AI_PLUGIN_FILE ) . '" alt="" class="spai-snip-loader-img" />
 							<p class="spai-snip-loader-text">' . __('Loading...','shortpixel-adaptive-images') . '</p>
@@ -730,26 +730,26 @@ class ShortPixelAI
                 array('shortpixel-ai' => 1)
             );
         } else {
-            $args = array();
-            //ATTENTION, w_ should ALWAYS be the first parameter if present! (see fancyboxUpdateWidth in JS)
-            if ($width !== false) {
-                $args[] = array('w' => $width);
-                //$args[] = array('h' => $height);
-            }
-            $args[] = array('q' => ($this->settings['compress_level'] == 1 ? 'lossy' : ($this->settings['compress_level'] == 2 ? 'glossy' : 'lossless')));
-            /*
-            $args[] = ['g' => 'face'];
-            $args[] = ['r' => 'max']
-            $args[] = ['f' => 'auto']
-            $args[] = ['x' => $this->settings['remove_exif'];*/
-            $args[] = array('ret' => 'img');// img returns the original if not found, wait will wait for a quick resize
-            //most proably not a good idea because of the page cache:
-            /*if($this->browser_can_webp()) {
-                $args[] = array('to' => 'webp');
-            }*/
-            if($this->settings['remove_exif'] == 0) {
-                $args[] = array('ex' => '1');
-            }
+        $args = array();
+        //ATTENTION, w_ should ALWAYS be the first parameter if present! (see fancyboxUpdateWidth in JS)
+        if ($width !== false) {
+            $args[] = array('w' => $width);
+            //$args[] = array('h' => $height);
+        }
+        $args[] = array('q' => ($this->settings['compress_level'] == 1 ? 'lossy' : ($this->settings['compress_level'] == 2 ? 'glossy' : 'lossless')));
+        /*
+        $args[] = ['g' => 'face'];
+        $args[] = ['r' => 'max']
+        $args[] = ['f' => 'auto']
+        $args[] = ['x' => $this->settings['remove_exif'];*/
+        $args[] = array('ret' => 'img');// img returns the original if not found, wait will wait for a quick resize
+        //most proably not a good idea because of the page cache:
+        /*if($this->browser_can_webp()) {
+            $args[] = array('to' => 'webp');
+        }*/
+        if($this->settings['remove_exif'] == 0) {
+            $args[] = array('ex' => '1');
+        }
         }
         $api_url = $this->settings['api_url'];
         if (!$api_url) {
@@ -856,9 +856,18 @@ class ShortPixelAI
         return $matches[1] . '://';
     }
 
+    /**
+     * Method is unused anywhere
+     * Method which locates below seems has been a replacement of this
+     *
+     * @param $matches
+     *
+     * @return mixed
+     */
     public function replace_images_data_large_image($matches)
     {
-        if (count($matches) < 3 || strpos($matches[0], 'data-large_image=' . $matches[1] . 'data:image/svg+xml;u=')) {
+        // if (count($matches) < 3 || strpos($matches[0], 'data-large_image=' . $matches[1] . 'data:image/svg+xml;u=')) { // old
+        if (count($matches) < 3 || strpos($matches[0], 'data-large_image=' . $matches[1] . 'data:image/svg+xml;base64')) {
             //avoid duplicated replaces due to filters interference
             return $matches[0];
         }
@@ -878,7 +887,8 @@ class ShortPixelAI
         if($this->settings['type'] == 1) return $sources; //not returning array() because the srcset is integrated and removed in full document parse;
         $pseudoSources = array();
         foreach ($sources as $key => $data) {
-            if(strpos($data['url'], 'data:image/svg+xml;u=') === false) {
+            // if(strpos($data['url'], 'data:image/svg+xml;u=') === false) { // old implementation
+            if(ShortPixelUrlTools::url_from_placeholder_svg($data['url']) !== false) {
                 if($this->urlIsExcluded($data['url'])) {
                     //if any of the items are excluded, don't replace
                     return $sources;
@@ -917,9 +927,9 @@ class ShortPixelAI
             $wpRocketSettings = get_option('wp_rocket_settings', array());
             $hasCssFilter = (version_compare($pluginVersion, '3.4.3') >= 0);
             $rocket = array( 'lazyload' => (isset($wpRocketSettings['lazyload']) && $wpRocketSettings['lazyload'] == 1),
-                             'css-filter' => $hasCssFilter,
+				'css-filter' => $hasCssFilter,
                              'minify-css' => isset($wpRocketSettings['minify_css']) && $wpRocketSettings['minify_css'] == 1
-                );
+			);
         } else {
             $rocket = array('lazyload' => false, 'css-filter' => false, 'minify-css' => false);
         }
@@ -940,6 +950,7 @@ class ShortPixelAI
             'smart-slider' => in_array('smart-slider-3/smart-slider-3.php', $activePlugins) || in_array('nextend-smart-slider3-pro/nextend-smart-slider3-pro.php', $activePlugins),
             'wp-grid-builder' => in_array('wp-grid-builder/wp-grid-builder.php', $activePlugins),
             'social-pug' => in_array('social-pug/index.php', $activePlugins), //Mediavine Grow
+            'content-views' => in_array( 'content-views-query-and-display-post-page/content-views.php', $activePlugins),
             'wp-rocket' => $rocket
         );
         //test theme. 'Jupiter' 'CROWD 2'
@@ -979,11 +990,13 @@ class ShortPixelAI
         }
 
         $regexItems = array(
+            // !! IF CHANGING ORDER, CHANGE ALSO IN if( .... nextgen ) BELOW
             array('img|div', 'data-src'), //CHANGED ORDER for images which have both src and data-src - TODO better solution
-            array('img|amp-img', 'src', false, false, ($this->settings['type'] == 1 ? 'srcset' : false), false, false, $this->settings['ext_meta'] == '1'),
+
+            array('img|amp-img', 'src', false, false, ($this->settings['type'] == 1 ? 'srcset' : false), false, false, false /*$this->settings['ext_meta'] == '1'*/),
             //fifth param instructs to integrate that attribute into the second, for method 1 (src) we integrate of srcset
             //\-> The given fifth attribute should have the exact structure of srcset.
-            // eighth param - extMeta (default false)
+            // eighth param - extMeta (default false) TODO REMOVE OBSOLETE
             array('img', 'data-large-image'),
             array('a', 'href', 'media-gallery-link'), //this one seems generally related to sliders, see HS 972394549
             array('link', 'href', false, 'rel', false, 'icon', true) //sixth param together with fourth filters by attribute value, seventh param isEager
@@ -993,7 +1006,7 @@ class ShortPixelAI
             array_unshift($regexItems, array('img', 'data-original-src', false, false, false, false, true));
         }
         if ($this->integrations['nextgen']) {
-            $regexItems[1] = array('img|div|a', 'data-src');
+            $regexItems[0] = array('img|div|a', 'data-src');
             $regexItems[] = array('a', 'data-thumbnail');
         }
         if ($this->integrations['modula']) {
@@ -1033,6 +1046,9 @@ class ShortPixelAI
         }
         if ($this->integrations['wp-grid-builder']) {
             $regexItems[] = array('div', 'data-wpgb-src');
+        }
+        if ($this->integrations['content-views']) {
+            $regexItems[] = array('img', 'data-cvpsrc');
         }
 
         if($this->settings['parse_css_files'] && !($this->integrations['wp-rocket']['minify-css'] && $this->integrations['wp-rocket']['css-filter'])) {

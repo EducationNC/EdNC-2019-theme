@@ -47,6 +47,7 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'import_failed_server_error_tips' => sprintf(__('The last import batch failed due to a server error, it\'s more likely that the server got overloaded.<br>1- You can try <a href="%s" target="_blank">importing fewer rows</a> per batch (i.e. import 2 rows every few seconds).<br>2- You can start a new import, sometimes trying again works (use the "advanced settings" in the step 1 of the import to start from a specific row).<br>3- You can increase the php memory <a href="%s" target="_blank">following this tutorial</a><br>4- If the problem happens after trying with 1 row per batch, you can <a href="%s" target="_blank">contact us</a> and we will make it work for you', VGSE()->textname), VGSE()->helpers->get_settings_page_url(), 'https://docs.woocommerce.com/document/increasing-the-wordpress-memory-limit/', VGSE()->get_support_links('contact_us', 'url', 'import-server-error')),
 				'import_failed_retry_server_error' => __('Your server was not able to process this batch. Do you want to try again? You can retry 3 times, If 3 attempts fail we will stop the import completely.', VGSE()->textname),
 				'import_data_issue_correct_restart' => __('Please correct the error in the file and start a new import. You can use the "Advanced options" in the step 1 of the import to start from this specific row.', VGSE()->textname),
+				'import_finished' => __('<p>The import has finished</p>', VGSE()->textname),
 				'product_without_variations' => __('The selected product does not have variations', VGSE()->textname),
 				'empty' => __('empty', VGSE()->textname),
 				'column_for_variations_only' => ( empty(VGSE()->options['hide_cell_comments']) ) ? __('This column is only for variation rows, parent products don\'t use this field', VGSE()->textname) : '',
@@ -192,7 +193,10 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 		 * Render editor page
 		 */
 		function render_editor_page() {
-			if (!current_user_can('edit_posts')) {
+
+			$post_type_key = VGSE()->helpers->get_provider_from_query_string();
+			$required_capability = VGSE()->helpers->get_edit_spreadsheet_capability($post_type_key);
+			if (!current_user_can($required_capability)) {
 				wp_die(__('You dont have enough permissions to view this page.', VGSE()->textname));
 			}
 
@@ -220,7 +224,7 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 			$all_spreadsheet_columns_settings = VGSE()->helpers->array_remove_empty(wp_parse_args($spreadsheet_columns, $unfiltered_original_columns[$current_provider_in_page]));
 			foreach ($all_spreadsheet_columns_settings as $column_key => $column_settings) {
 				foreach ($column_settings as $setting_key => $setting_value) {
-					if (is_object($setting_value) || in_array($setting_key, array('get_value_callback', 'save_value_callback'))) {
+					if (is_object($setting_value) || in_array($setting_key, array('get_value_callback', 'save_value_callback', 'prepare_value_for_database', 'prepare_value_for_display'))) {
 						unset($all_spreadsheet_columns_settings[$column_key][$setting_key]);
 					}
 				}
@@ -252,6 +256,7 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'rest_base_url' => rest_url(),
 				'taxonomy_terms_separator' => (!empty(VGSE()->options['be_taxonomy_terms_separator']) ) ? VGSE()->options['be_taxonomy_terms_separator'] : ',',
 				'export_page_size' => (!empty(VGSE()->options['export_page_size']) ) ? (int) VGSE()->options['export_page_size'] : 100,
+				'enable_pagination' => (!empty(VGSE()->options['enable_pagination']) ) ? true : false,
 				'is_editor_page' => VGSE()->helpers->is_editor_page(),
 				'is_premium' => VGSE()->helpers->get_plugin_mode() === 'pro-plugin',
 				'is_post_type' => $this->provider->is_post_type,
@@ -319,17 +324,18 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 					$render_callback = array($this, 'render_editor_page');
 				}
 
+				$capability = (!empty($admin_menu['capability'])) ? $admin_menu['capability'] : 'edit_posts';
 				if ($admin_menu['type'] === 'submenu') {
 					if (empty($admin_menu['parent'])) {
 						$admin_menu['parent'] = 'vg_sheet_editor_setup';
 					}
-					add_submenu_page($admin_menu['parent'], $admin_menu['name'], $admin_menu['name'], 'edit_posts', $admin_menu['slug'], $render_callback);
+					add_submenu_page($admin_menu['parent'], $admin_menu['name'], $admin_menu['name'], $capability, $admin_menu['slug'], $render_callback);
 				} else {
 
 					if (empty($admin_menu['icon'])) {
 						$admin_menu['icon'] = null;
 					}
-					add_menu_page($admin_menu['name'], $admin_menu['name'], 'edit_posts', $admin_menu['slug'], $render_callback, $admin_menu['icon']);
+					add_menu_page($admin_menu['name'], $admin_menu['name'], $capability, $admin_menu['slug'], $render_callback, $admin_menu['icon']);
 				}
 			}
 		}

@@ -442,6 +442,11 @@ class ezTOC_Post {
 
 		foreach ( $this->excludedNodes as $node ) {
 
+			if ( empty( $node ) ) {
+
+				return false;
+			}
+
 			if ( false !== strpos( $node, $string ) ) {
 
 				return true;
@@ -894,7 +899,26 @@ class ezTOC_Post {
 
 		if ( isset( $this->pages[ $page ] ) ) {
 
-			$headings = wp_list_pluck( $this->pages[ $page ]['headings'], 0 );
+			//$headings = wp_list_pluck( $this->pages[ $page ]['headings'], 0 );
+
+			$matches = $this->pages[ $page ]['headings'];
+			$count   = count( $matches );
+
+			for ( $i = 0; $i < $count; $i++ ) {
+
+				//$anchor     = $matches[ $i ]['id'];
+				$headings[] = str_replace(
+					array(
+						$matches[ $i ][1],                // start of heading
+						'</h' . $matches[ $i ][2] . '>'   // end of heading
+					),
+					array(
+						'>',
+						'</h' . $matches[ $i ][2] . '>'
+					),
+					$matches[ $i ][0]
+				);
+			}
 		}
 
 		return $headings;
@@ -933,7 +957,7 @@ class ezTOC_Post {
 						'</h' . $matches[ $i ][2] . '>'   // end of heading
 					),
 					array(
-						$matches[ $i ][1],
+						'>',
 						'<span class="ez-toc-section" id="' . $anchor . '"></span></h' . $matches[ $i ][2] . '>'
 					),
 					$matches[ $i ][0]
@@ -979,8 +1003,8 @@ class ezTOC_Post {
 	 */
 	public function getTOC() {
 
-		$css_classes = '';
-		$html        = '';
+		$class = array( 'ez-toc-v' . str_replace( '.', '_', ezTOC::VERSION ) );
+		$html  = '';
 
 		if ( $this->hasTOCItems() ) {
 
@@ -988,11 +1012,11 @@ class ezTOC_Post {
 			switch ( ezTOC_Option::get( 'wrapping' ) ) {
 
 				case 'left':
-					$css_classes .= ' ez-toc-wrap-left';
+					$class[] = 'ez-toc-wrap-left';
 					break;
 
 				case 'right':
-					$css_classes .= ' ez-toc-wrap-right';
+					$class[] = 'ez-toc-wrap-right';
 					break;
 
 				case 'none':
@@ -1002,25 +1026,25 @@ class ezTOC_Post {
 
 			if ( ezTOC_Option::get( 'show_hierarchy' ) ) {
 
-				$css_classes .= ' counter-hierarchy';
+				$class[] = 'counter-hierarchy';
 
 			} else {
 
-				$css_classes .= ' counter-flat';
+				$class[] .= 'counter-flat';
 			}
 
 			switch ( ezTOC_Option::get( 'counter' ) ) {
 
 				case 'numeric':
-					$css_classes .= ' counter-numeric';
+					$class[] .= 'counter-numeric';
 					break;
 
 				case 'roman':
-					$css_classes .= ' counter-roman';
+					$class[] = 'counter-roman';
 					break;
 
 				case 'decimal':
-					$css_classes .= ' counter-decimal';
+					$class[] = 'counter-decimal';
 					break;
 			}
 
@@ -1028,44 +1052,44 @@ class ezTOC_Post {
 			switch ( ezTOC_Option::get( 'theme' ) ) {
 
 				case 'light-blue':
-					$css_classes .= ' ez-toc-light-blue';
+					$class[] = 'ez-toc-light-blue';
 					break;
 
 				case 'white':
-					$css_classes .= ' ez-toc-white';
+					$class[] = 'ez-toc-white';
 					break;
 
 				case 'black':
-					$css_classes .= ' ez-toc-black';
+					$class[] = 'ez-toc-black';
 					break;
 
 				case 'transparent':
-					$css_classes .= ' ez-toc-transparent';
+					$class[] .= 'ez-toc-transparent';
 					break;
 
 				case 'grey':
-					$css_classes .= ' ez-toc-grey';
+					$class[] = 'ez-toc-grey';
 					break;
-
-				default:
-					// do nothing
 			}
 
-			if ( ezTOC_Option::get( 'css_container_class' ) ) {
+			$custom_classes = ezTOC_Option::get( 'css_container_class', '' );
 
-				$css_classes .= ' ' . ezTOC_Option::get( 'css_container_class' );
+			if ( 0 < strlen( $custom_classes ) ) {
+
+				$custom_classes = explode( ' ', $custom_classes );
+				$custom_classes = apply_filters( 'ez_toc_container_class', $custom_classes, $this );
+
+				if ( is_array( $custom_classes ) ) {
+
+					$class = array_merge( $class, $custom_classes );
+				}
 			}
 
-			$css_classes = trim( $css_classes );
+			$class = array_filter( $class );
+			$class = array_map( 'trim', $class );
+			$class = array_map( 'sanitize_html_class', $class );
 
-			// an empty class="" is invalid markup!
-			if ( ! $css_classes ) {
-
-				$css_classes = ' ';
-			}
-
-			// add container, toc title and list items
-			$html .= '<div id="ez-toc-container" class="' . $css_classes . '">' . PHP_EOL;
+			$html .= '<div id="ez-toc-container" class="' . implode( ' ', $class ) . '">' . PHP_EOL;
 
 			if ( ezTOC_Option::get( 'show_heading_text' ) ) {
 
@@ -1254,9 +1278,10 @@ class ezTOC_Post {
 	private function createTOCItemAnchor( $page, $id, $title, $count ) {
 
 		return sprintf(
-			'<a class="ez-toc-link ez-toc-heading-' . $count . '" href="%1$s" title="%2$s">' . $title . '</a>',
+			'<a class="ez-toc-link ez-toc-heading-' . $count . '" href="%1$s" title="%2$s">%3$s</a>',
 			esc_url( $this->createTOCItemURL( $id, $page ) ),
-			esc_attr( strip_tags( $title ) )
+			esc_attr( strip_tags( $title ) ),
+			$title
 		);
 	}
 

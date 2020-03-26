@@ -85,7 +85,9 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 				$this->quick_access_rendered = true;
 				?>
 				<script>jQuery(window).on('load', function () {
-						jQuery('.page-title-action, .fusion-split-page-title-action').last().after('<a href=<?php echo json_encode($url); ?> class="page-title-action"><?php _e('Open in a Spreadsheet', VGSE()->textname); ?></a>');
+						if (!jQuery('#wpse-quick-access').length) {
+							jQuery('.page-title-action, .fusion-split-page-title-action').last().after('<a href=<?php echo json_encode($url); ?> class="page-title-action" id="wpse-quick-access"><?php _e('Open in a Spreadsheet', VGSE()->textname); ?></a>');
+						}
 					});</script>
 
 				<?php
@@ -106,10 +108,12 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 				$page_slug = 'vgse-bulk-edit-' . $post_type_key;
 				$post_type_label = (!empty($this->settings['post_type_labels'][$post_type_key]) ) ? $this->settings['post_type_labels'][$post_type_key] : VGSE()->helpers->get_post_type_label($post_type_key);
 
+				$required_capability = VGSE()->helpers->get_edit_spreadsheet_capability($post_type_key);
 				$admin_menu[] = array(
 					'type' => 'submenu',
 					'name' => sprintf(__('Edit %s', VGSE()->textname), $post_type_label),
 					'slug' => $page_slug,
+					'capability' => $required_capability
 				);
 				if ($post_type_key === 'post') {
 					$parent = 'edit.php';
@@ -124,6 +128,7 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 					'name' => __('Sheet Editor', VGSE()->textname),
 					'slug' => 'admin.php?page=' . $page_slug,
 					'treat_as_url' => true,
+					'capability' => $required_capability
 				);
 			}
 
@@ -132,6 +137,25 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 
 		function render_support_modal($provider) {
 			require VGSE_DIR . '/views/support-modal.php';
+		}
+
+		function render_advanced_settings_modal($provider) {
+			$supported_types = array('text', 'textarea', 'switch');
+			$raw_sections = WP_Sheet_Editor_Redux_Setup::$sections;
+			$sections = array();
+
+			foreach ($raw_sections as $section_index => $section) {
+				foreach ($section['fields'] as $field) {
+					if (in_array($field['type'], $supported_types, true)) {
+						if (!isset($sections[$section_index])) {
+							$section['fields'] = array();
+							$sections[$section_index] = $section;
+						}
+						$sections[$section_index]['fields'][$field['id']] = $field;
+					}
+				}
+			}
+			require VGSE_DIR . '/views/advanced-settings-modal.php';
 		}
 
 		function render_extensions_modal($provider) {
@@ -155,14 +179,17 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 					'toolbar_key' => 'secondary',
 					'allow_in_frontend' => false,
 						), $post_type);
-				$toolbars->register_item('general_settings', array(
-					'type' => 'button',
-					'content' => __('Advanced settings', VGSE()->textname),
-					'url' => VGSE()->helpers->get_settings_page_url(),
-					'toolbar_key' => 'secondary',
-					'allow_in_frontend' => false,
-					'parent' => 'settings'
-						), $post_type);
+				if (current_user_can('manage_options')) {
+					$toolbars->register_item('advanced_settings', array(
+						'type' => 'button',
+						'content' => __('Advanced settings', VGSE()->textname),
+						'toolbar_key' => 'secondary',
+						'allow_in_frontend' => false,
+						'parent' => 'settings',
+						'extra_html_attributes' => 'data-remodal-target="modal-advanced-settings"',
+						'footer_callback' => array($this, 'render_advanced_settings_modal')
+							), $post_type);
+				}
 				$toolbars->register_item('support', array(
 					'type' => 'button',
 					'content' => __('Help', VGSE()->textname),
@@ -204,6 +231,15 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 					'content' => __('Load', VGSE()->textname),
 					'container_class' => 'hidden',
 						), $post_type);
+				$toolbars->register_item('exit_full_screen', array(
+					'allow_to_hide' => false,
+					'icon' => 'fa fa-remove',
+					'type' => 'button', // html | switch | button
+					'content' => __('Exit Full Screen', VGSE()->textname),
+					'container_class' => 'right-toolbar-item',
+					'css_class' => 'wpse-full-screen-toggle',
+					'allow_in_frontend' => false,
+						), $post_type);
 				$toolbars->register_item('cells_format', array(
 					'type' => 'switch', // html | switch | button
 					'content' => __('Show cells as simple text', VGSE()->textname),
@@ -213,15 +249,17 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 					'default_value' => false,
 					'parent' => 'settings',
 						), $post_type);
-				$toolbars->register_item('infinite_scroll', array(
-					'type' => 'switch', // html | switch | button
-					'content' => __('Load more on scroll', VGSE()->textname),
-					'id' => 'infinito',
-					'toolbar_key' => ( defined('VGSE_WC_FILE') ) ? 'secondary' : 'primary',
-					'help_tooltip' => __('When this is enabled more items will be loaded to the bottom of the spreadsheet when you reach the end of the page', VGSE()->textname),
-					'default_value' => VGSE()->options['be_load_items_on_scroll'] == true,
-					'parent' => 'settings',
-						), $post_type);
+				if (empty(VGSE()->options['enable_pagination'])) {
+					$toolbars->register_item('infinite_scroll', array(
+						'type' => 'switch', // html | switch | button
+						'content' => __('Load more on scroll', VGSE()->textname),
+						'id' => 'infinito',
+						'toolbar_key' => ( defined('VGSE_WC_FILE') ) ? 'secondary' : 'primary',
+						'help_tooltip' => __('When this is enabled more items will be loaded to the bottom of the spreadsheet when you reach the end of the page', VGSE()->textname),
+						'default_value' => VGSE()->options['be_load_items_on_scroll'] == true,
+						'parent' => 'settings',
+							), $post_type);
+				}
 				if (current_user_can('manage_options')) {
 					$toolbars->register_item('rescan_db', array(
 						'type' => 'button',
@@ -232,16 +270,6 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 						'help_tooltip' => __('We can scan the database, find new fields, and create columns automatically for the supported fields.', VGSE()->textname),
 						'parent' => 'settings',
 						'url' => add_query_arg('wpse_rescan_db_fields', 1)
-							), $post_type);
-					$toolbars->register_item('reset_settings', array(
-						'type' => 'button',
-						'content' => __('Reset settings', VGSE()->textname),
-						'id' => 'reset_settings',
-						'allow_in_frontend' => false,
-						'toolbar_key' => 'secondary',
-						'help_tooltip' => __('We will display all the columns that were deleted or disabled, renamed columns will show the original titles, we will rescan the database to find columns again, and the speed/advanced settings will be reset to the defaults. This only affects settings of our plugin and it does not affect the data edited with the sheet.', VGSE()->textname),
-						'parent' => 'settings',
-						'url' => add_query_arg('wpse_hard_reset', 1)
 							), $post_type);
 				}
 			}

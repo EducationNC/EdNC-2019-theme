@@ -365,6 +365,7 @@ ORDER BY t.name ASC";
 			$values['edit_date'] = true;
 		}
 
+
 		if (!empty($values['post_modified'])) {
 			$mysql_time_format = "Y-m-d H:i:s";
 			$time = strtotime($values['post_modified']);
@@ -374,18 +375,15 @@ ORDER BY t.name ASC";
 			unset($values['post_modified']);
 		}
 
-		// FIX - When changing the post type of a post, from page to another, clear the 
-		// page template meta key to prevent the "invalid page template" error thrown by wp core
-		if (isset($values['post_type'])) {
-			$old_post_type = get_post_type($post_id);
-			$new_post_type = $values['post_type'];
-			// Don't allow to save empty post type
-			if (empty($new_post_type)) {
-				$new_post_type = $old_post_type;
-				unset($values['post_type']);
-			}
+		$post_template = get_post_meta($post_id, '_wp_page_template', true);
 
-			if ($old_post_type !== $new_post_type && post_type_supports($old_post_type, 'page-attributes') && !post_type_supports($new_post_type, 'page-attributes')) {
+		// Make sure the posts don't use invalid templates because wp throws errors
+		if (!empty($post_template)) {
+			$post_obj = get_post($post_id);
+			$post_type_for_saving = (!empty($values['post_type'])) ? sanitize_text_field($values['post_type']) : $post_obj->post_type;
+			$available_templates = get_page_templates($post_obj, $post_type_for_saving);
+
+			if (!in_array($post_template, $available_templates, true) || !post_type_supports($post_type_for_saving, 'page-attributes')) {
 				update_post_meta($post_id, '_wp_page_template', '');
 			}
 		}

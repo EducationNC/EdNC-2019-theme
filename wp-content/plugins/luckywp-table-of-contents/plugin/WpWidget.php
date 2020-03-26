@@ -19,7 +19,10 @@ class WpWidget extends WP_Widget
     {
         parent::__construct(
             self::ID_BASE,
-            esc_html__('Table of Contents', 'luckywp-table-of-contents')
+            esc_html__('Table of Contents', 'luckywp-table-of-contents'),
+            [
+                'description' => esc_html__('Creates a table of contents for your posts and pages.', 'luckywp-table-of-contents'),
+            ]
         );
     }
 

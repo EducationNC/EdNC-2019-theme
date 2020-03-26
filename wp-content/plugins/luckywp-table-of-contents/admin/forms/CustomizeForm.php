@@ -98,6 +98,9 @@ class CustomizeForm extends Model
     public $defaultSkipHeadingText;
     public $skipHeadingText;
 
+    public $defaultContainerClass;
+    public $containerClass;
+
     /**
      * @var PostSettings|null
      */
@@ -142,6 +145,7 @@ class CustomizeForm extends Model
         'useNofollow',
         'skipHeadingLevel',
         'skipHeadingText',
+        'containerClass',
     ];
 
     /**
@@ -229,6 +233,7 @@ class CustomizeForm extends Model
                     return Core::$plugin->skipHeadingTextMultipleStringToString((string)$value);
                 }
             ],
+            ['containerClass', 'filter', 'filter' => 'trim'],
         ];
     }
 
@@ -303,6 +308,7 @@ class CustomizeForm extends Model
             'useNofollow' => $this->defaultUseNofollow ? null : (bool)$this->useNofollow,
             'skipHeadingLevel' => $this->defaultSkipHeadingLevel ? null : $this->skipHeadingLevel,
             'skipHeadingText' => $this->defaultSkipHeadingText ? null : $this->skipHeadingText,
+            'containerClass' => $this->defaultContainerClass ? null : $this->containerClass,
         ];
     }
 }

@@ -77,7 +77,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 
 						<ul class="unstyled-list">
 							<li class="posts-query">
-								<p><?php _e('1. Select the rows that you want to update.', VGSE()->textname); ?> 
+								<p><?php _e('Select the rows that you want to update.', VGSE()->textname); ?> 
 									<select class="wpse-select-rows-options" required>
 										<option value="">--</option>
 										<option value="current_search"><?php _e('Edit all the rows from my current search (including non-visible rows).', VGSE()->textname); ?></option>
@@ -94,7 +94,6 @@ if (!class_exists('WPSE_Formulas_UI')) {
 							<li class="multiple-column-selector">
 								<label><?php _e('What field do you want to edit?', VGSE()->textname); ?></label>
 								<select name="columns[]" required data-placeholder="<?php _e('Select column...', VGSE()->textname); ?>" class="select2" multiple>
-									<option></option>
 									<?php
 									echo implode(apply_filters('vg_sheet_editor/formulas/available_columns_options', VGSE()->helpers->get_post_type_columns_options($current_post_type, array(
 														'conditions' => array(
@@ -131,14 +130,15 @@ if (!class_exists('WPSE_Formulas_UI')) {
 							<li class="apply-to-future-posts-field">
 								<label><input type="checkbox" value="yes" name="apply_to_future_posts"><?php _e('Execute formula on future posts automatically (Advanced users only)', VGSE()->textname); ?> <a href="#" class="tipso tipso_style" data-tipso="<?php _e('If you mark this option , when you create or update a post in the spreadsheet, we will check if the post matches the formula parameters and execute the formula automatically on that post. For example. When you create a product with category apples we can set the description automatically, or when you change the SKU we can update the downloadable files URLs automatically.', VGSE()->textname); ?>">( ? )</a></label>		
 							</li>
+							<li class="rows-to-be-updated-total">
+								<?php printf(__('%s rows will be edited.', VGSE()->textname), '<span class="total-count"></span>'); ?> <a href="#" class="tipso tipso_style" data-tipso="<?php _e('You can select the rows for the edit in the first option of this form.', VGSE()->textname); ?>">( ? )</a>
+							</li>
 							<?php do_action('vg_sheet_editor/formulas/after_form_fields', $current_post_type); ?>
-							<li>
+							<li class="vgse-formula-actions">
 								<input type="hidden" value="apply_formula" name="action">		
 								<input type="hidden" value="<?php echo $current_post_type; ?>" name="post_type">						
 								<input type="hidden" value="<?php echo $nonce; ?>" name="nonce">
 								<input type="hidden" value="" name="visibles">
-							</li>
-							<li class="vgse-formula-actions">
 								<button type="submit" class="remodal-confirm submit"><?php
 									if (is_admin() && current_user_can('manage_options')) {
 										_e('I have a database backup, Execute Now', VGSE()->textname);

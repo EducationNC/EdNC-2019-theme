@@ -2,21 +2,39 @@
 Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 4.9
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.5
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-ACF field that allows user to crop image to a specific aspect ratio
+ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
 == Description ==
 
-A field for Advanced Custom Field that forces the user to crop their image to specific aspect ratio after uploading. This is especially useful in responsive image use cases.
+A field for Advanced Custom Field that forces the user to crop their image to specific aspect ratio or pixel size after uploading. Using an aspect ratio is especially useful in responsive image use cases.
 
 After cropping, a new cropped image variant is created in the gallery and saved into the post. Thumbnails are also generated for the new image. User can re-crop the original image at any time from the post page.
 
 The cropped image variants are hidden by default in the media browser and on the media page but you can view them by selecting the "list view" on the media page.
+
+There are two modes of operation: aspect ratio and pixel size. You can select this option when creating the field in ACF field options.
+
+= Aspect ratio =
+
+Use this option if you want the image to be of specific aspect ratio like 16:9 but the pixel size is not important.
+
+After selecting an image, user can select an area from the image that matches this aspect ratio. When crop button is pressed, the area is cropped from the original image.
+
+If you need a smaller image size, you make use of WordPress's thumbnail functionality to access a smaller version of the image.
+
+= Pixel size =
+
+Use this option if you need a specific pixel size image like 640x480. User will not be able to select an image smaller than the defined pixel size.
+
+After selecting an image, user can select an area from the image they want, which can be larger than the pixel size but may not be smaller. The aspect ratio of the selection is locked according to the pixel size.
+
+When crop button is pressed, the area is cropped from the original image. After the crop is complete, the image will be automatically scaled down to the pixel size. This means the final image will always be the specified size.
 
 = Compatibility =
 
@@ -37,6 +55,10 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 
 == Frequently Asked Questions ==
 
+= Can I use this plugin with a front-end acf_form? =
+
+Unfortunately this is not supported right now since the plugin requires `upload_files` capability to access the media library. If user does not have this permission, a basic upload dialog will be displayed without a cropper. You can enable cropping by assigning  `upload_files`  capability to the user role but this means that users are able to access the media library like admin users. I will look into implementing front-end form cropping without needing this capability in a future release of this plugin.
+
 = Can I access metadata in the original image from a cropped image? =
 
 Yes, the original image data is saved under `original_image` key in the returned ACF array. You can access data such as alt text, description and title this way.
@@ -47,11 +69,13 @@ Please use the [GitHub repository](https://github.com/joppuyo/acf-image-aspect-r
 
 = How is this different from the other plugin? =
 
-[Advanced Custom Fields: Image Crop Add-on](https://wordpress.org/plugins/acf-image-crop-add-on/) is based on exact image dimensions (like 640x480). This plugin uses an aspect ratio such as 4:3 instead. Using an aspect ratio is is more convenient when working with responsive images since you care about the aspect ratio more than pixel dimensions.
+This plugin is similar to [Advanced Custom Fields: Image Crop Add-on](https://wordpress.org/plugins/acf-image-crop-add-on/). I originally created a fork of that plugin to add functionality I need: specifying an aspect ratio instead of pixel size. Unfortunately the plugin doesn't seem to be maintained anymore so my pull request was not merged.
 
-Of course, nothing will stop you from using an aspect ratio like 1200:630 which is similar to a pixel amount with this plugin, if you want.
+So I created **ACF Image Aspect Ratio Crop** from scratch as an alternative to **ACF Image Crop**.
 
-Also, as of 2019, the other plugin is not actively maintained anymore and does not work well with latest ACF versions. I try to maintain this plugin as best as I can when new versions of ACF and WordPress come out.
+Possibility to use a pixel size instead of aspect ratio was added later on because I got so many requests for adding that feature.
+
+The other plugin is not actively maintained and does not work well with latest ACF versions. I try to maintain this plugin as best as I can when new versions of ACF and WordPress come out.
 
 == Screenshots ==
 
@@ -61,15 +85,28 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 3.2.0 =
+* Feature: Added an option to use a pixel size instead of aspect ratio. Check the [readme](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/) for more information about how it works.
+* Fix: Fixed images displaying in wrong rotation in WP < 5.3
+* Fix: Visual bug fixes to cropper and field edit buttons to prevent overflowing of elements
+* Change: updated tested WP version to 5.4
+
+= 3.1.12 =
+* Fix: Improved compatibility with WordPress 5.3 large image handing
+* Fix: Allow closing crop modal with escape key
+* Change: change file name suffix aspect ratio from x to dash because this caused some issues with WP 5.3.
+  Now file my-image-aspect-ratio-16x9.jpeg will be called my-image-aspect-ratio-16-9.jpeg instead
+* Fix: Fix problem where "delete unused cropped images" did not work properly with nested fields
+
 = 3.1.11 =
-* Remove ramsey/uuid dependency in favor of using native wp function since the dependency caused issues in some server
-  configurations
+* Fix: Remove ramsey/uuid dependency in favor of using native wp function since the dependency caused issues in some
+  server configurations
 
 = 3.1.10 =
-* Fix issue where image was not visible in backed due to malformed URL
+* Fix: Fix issue where image was not visible in backed due to malformed URL
 
 = 3.1.8 =
-* Deployment fix
+* Fix: Deployment fix
 
 = 3.1.0 =
 * Feature: Add new beta feature: delete unused crop images. You can enable this by going to

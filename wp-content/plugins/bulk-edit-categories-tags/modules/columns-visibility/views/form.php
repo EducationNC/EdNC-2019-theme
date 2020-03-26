@@ -8,7 +8,7 @@
 			<h3><?php _e('Columns manager', VGSE()->textname); ?></h3>
 			<ul class="unstyled-list">
 				<li>
-					<p><?php _e('Drag the columns to the left or right side to enable/disable them, drag them to the top or bottom to sort them, click on the "edit" button to rename them, click on the "x" button to delete them completely (only when they are disabled previously).', VGSE()->textname); ?></p> 
+					<p><?php _e('Drag the columns to the left or right side to enable/disable them, drag them to the top or bottom to sort them, click on the "edit" button to rename them, click on the "x" button to delete them completely (only when they are disabled previously).', VGSE()->textname); ?><?php do_action('vg_sheet_editor/columns_visibility/after_instructions', $post_type, $visible_columns, $options[$post_type], $editor); ?></p> 
 
 					<button class="button vgse-change-all-states" data-to="enabled"><?php _e('Enable all', VGSE()->textname); ?></button> - 
 					<button class="button vgse-change-all-states" data-to="disabled"><?php _e('Disable all', VGSE()->textname); ?></button>
@@ -20,12 +20,6 @@
 						<h3><?php _e('Enabled', VGSE()->textname); ?></h3>
 						<ul class="vgse-sorter columns-enabled" id="vgse-columns-enabled">
 							<?php
-							if (empty($options[$post_type])) {
-								$options[$post_type] = array();
-							}
-							if (empty($options[$post_type]['enabled'])) {
-								$options[$post_type]['enabled'] = wp_list_pluck($filtered_columns, 'title', 'key');
-							}
 							foreach ($visible_columns as $column_key => $column) {
 								if (in_array($column_key, $not_allowed_columns)) {
 									continue;
@@ -119,6 +113,8 @@
 
 				</li>
 
+				<?php do_action('vg_sheet_editor/columns_visibility/after_fields', $post_type); ?>
+
 				<li class="vgse-save-settings">
 					<?php if (!$partial_form) { ?>
 						<button type="submit" class="remodal-confirm"><?php _e('Apply settings', VGSE()->textname); ?></button>
@@ -135,6 +131,7 @@
 			<?php } ?>
 			<input type="hidden" value="<?php echo $post_type; ?>" name="wpsecv_post_type">
 			<input type="hidden" value="<?php echo $nonce; ?>" name="wpsecv_nonce">
+			<input type="hidden" value="" name="wpse_auto_reload_after_saving">
 
 			<?php if (!$partial_form) { ?>
 			</form>

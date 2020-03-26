@@ -5,6 +5,7 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 	class WP_Sheet_Editor_Columns {
 
 		private $registered_items = array();
+		private $rejected_items = array();
 
 		function __construct() {
 			
@@ -18,7 +19,7 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 		}
 
 		function get_blacklisted_column_keywords($provider) {
-			return $blacklisted_keys = apply_filters('vg_sheet_editor/columns/blacklisted_columns', array('_nxs_snap', '_edit_lock', '_edit_last', '_wp_old_slug', '_wpcom_is_markdown', 'vgse_column_sizes', 'wxr_import', '_oembed', '^\d+_\d+_\d+$', '_user_wished_', '_user_wished_user', '_rehub_views_date', '-wpfoof-', '^_transient_tribe', '_learndash_memberpress_enrolled_courses_access', 'course_\d+_access_from', 'ld_sent_notification_enroll_course_', 'learndash_last_known_course_', 'learndash_group_users_', '_badgeos_achievements_', 'learndash_group_leaders_', 'course_timer_completed_', 'course_completed_', 'screen_layout_', 'enrolled_courses_access_counter_', '_sfwd-quizzes_', '_uo-course-cert-', 'screen_options_per_page', 'gform_recent_forms_', '^manage.+columnshidden_', '^edit_.+_per_page', 'uo_timer_', '_screen_options_default', '_edd_download_limit_override', '_wcj_product_input_fields', 'seopress_pro_rich_snippets', 'seopress_analysis_data', '[a-zA-Z0-9]{28,}', 'yith_wcgpf_product_feed_configuration'), $provider);
+			return $blacklisted_keys = apply_filters('vg_sheet_editor/columns/blacklisted_columns', array('_nxs_snap', '_edit_lock', '_edit_last', '_wp_old_slug', '_wpcom_is_markdown', 'vgse_column_sizes', 'wxr_import', '_oembed', '^\d+_\d+_\d+$', '_user_wished_', '_user_wished_user', '_rehub_views_date', '-wpfoof-', '^_transient_tribe', '_learndash_memberpress_enrolled_courses_access', 'course_\d+_access_from', 'ld_sent_notification_enroll_course_', 'learndash_last_known_course_', 'learndash_group_users_', '_badgeos_achievements_', 'learndash_group_leaders_', 'course_timer_completed_', 'course_completed_', 'screen_layout_', 'enrolled_courses_access_counter_', '_sfwd-quizzes_', '_uo-course-cert-', 'screen_options_per_page', 'gform_recent_forms_', '^manage.+columnshidden_', '^edit_.+_per_page', 'uo_timer_', '_screen_options_default', '_edd_download_limit_override', '_wcj_product_input_fields', 'seopress_pro_rich_snippets', 'seopress_analysis_data', '[a-zA-Z0-9]{28,}', 'yith_wcgpf_product_feed_configuration', '_wvs_product_attributes', 'wcml_sync_hash', 'product_tabel_', '_wp_attachment_backup_sizes', '_wp_attached_file', 'thb_postviews_count_'), $provider, $this);
 		}
 
 		function is_column_blacklisted($key, $provider) {
@@ -28,12 +29,43 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 			// We use preg_match to allow core and other plugins to use advanced 
 			// conditions and because some fields might have wp prefix
 			foreach ($blacklisted_keys as $blacklisted_field) {
+				// Make sure the blacklisted_field regex doesn't contain / to avoid breaking our regex delimiter
+				$blacklisted_field = str_replace('/', '\/', $blacklisted_field);
 				if (preg_match('/' . $blacklisted_field . '/', $key)) {
 					$out = true;
 					break;
 				}
 			}
 			return $out;
+		}
+
+		function get_rejections($provider, $key = null) {
+
+			if (!isset($this->rejected_items[$provider])) {
+				$this->rejected_items[$provider] = array();
+			}
+			if ($key) {
+				$out = isset($this->rejected_items[$provider][$key]) ? $this->rejected_items[$provider][$key] : array();
+			} else {
+				$out = $this->rejected_items[$provider];
+			}
+			return $out;
+		}
+
+		function add_rejection($key, $reason, $provider) {
+			if (empty($reason)) {
+				$reason = 'Unknown';
+			}
+
+			if (!isset($this->rejected_items[$provider])) {
+				$this->rejected_items[$provider] = array();
+			}
+			if (!isset($this->rejected_items[$provider][$key])) {
+				$this->rejected_items[$provider][$key] = array();
+			}
+			if (!in_array($reason, $this->rejected_items[$provider][$key], true)) {
+				$this->rejected_items[$provider][$key][] = $reason;
+			}
 		}
 
 		/**
@@ -57,18 +89,21 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 			// Enforce columns limit to avoid performance bottlenecks
 			// columns with allow_to_hide=false or columns already registered previously 
 			// are always allowed to avoid errors during saving.
-			if ($args['allow_to_hide'] && !$this->has_item($key, $provider) && !empty($this->registered_items[$provider]) && count($this->registered_items[$provider]) > VGSE()->helpers->get_columns_limit()) {
+			if ($args['allow_to_hide'] && !$this->has_item($key, $provider) && !empty($this->registered_items[$provider]) && count($this->registered_items[$provider]) > VGSE()->helpers->get_columns_limit() && !$args['skip_columns_limit']) {
+				$this->add_rejection($key, 'columns_limit_reached', $provider);
 				return;
 			}
 
 
 			$blacklisted = $this->is_column_blacklisted($key, $provider);
-			if ($args['allow_to_hide'] && $blacklisted) {
+			if ($args['allow_to_hide'] && $blacklisted && !$args['skip_blacklist']) {
+				$this->add_rejection($key, 'blacklisted_by_pattern', $provider);
 				return;
 			}
 
 			// Skip if column doesn't have title
 			if (empty($args['title'])) {
+				$this->add_rejection($key, 'empty_title', $provider);
 				return;
 			}
 			if (empty($provider)) {
@@ -76,6 +111,7 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 			}
 
 			if (!apply_filters('vg_sheet_editor/columns/can_add_item', true, $key, $args, $provider)) {
+				$this->add_rejection($key, 'can_not_add_item_filter', $provider);
 				return;
 			}
 			if (!isset($this->registered_items[$provider])) {
@@ -86,19 +122,46 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 
 		function remove_item($key, $provider) {
 			if (isset($this->registered_items[$provider][$key])) {
+				$this->add_rejection($key, 'removed_programmatically', $provider);
 				unset($this->registered_items[$provider][$key]);
 			}
 		}
 
 		function _register_item($key, $args = array()) {
 			$defaults = array(
-				'data_type' => 'post_data', //String (post_data,post_meta|meta_data)	
-				'unformatted' => array(), //Array (Valores admitidos por el plugin de handsontable)
-				'column_width' => 100, //int (Ancho de la columna)
-				'title' => ucwords(str_replace(array('-', '_'), ' ', $key)), //String (Titulo de la columna)
-				'type' => '', // String (Es para saber si será un boton que abre popup, si no dejar vacio) boton_gallery|boton_gallery_multiple|view_post|handsontable|metabox|(vacio)
+				'data_type' => 'post_data', // (post_data,post_meta|meta_data)	
+				'column_width' => 100,
+				'title' => ucwords(str_replace(array('-', '_'), ' ', $key)),
+				'type' => '', // String boton_gallery|boton_gallery_multiple|view_post|handsontable|metabox|(empty)
+				'unformatted' => array(), // column args allowed by handsontable
+				'formatted' => array(), // column args allowed by handsontable
+				'export_key' => $key,
+				'default_value' => '',
+				// Visibility
+				'allow_to_hide' => true,
+				'skip_blacklist' => false,
+				'skip_columns_limit' => false,
+				// Enable features
+				'allow_to_rename' => true,
+				'allow_to_save' => true,
+				'allow_to_save_sanitization' => true,
+				'allow_plain_text' => true,
+				'is_locked' => false, // We'll add a lock icon before the cell value and disable editing
+				'lock_template_key' => false, // We'll add a lock icon before the cell value and disable editing
+				'forced_allow_to_save' => null,
+				'forced_supports_formulas' => null,
+				'allow_custom_format' => false,
+				// Formulas
+				'supports_formulas' => false,
+				'supports_sql_formulas' => true,
+				'key_for_formulas' => $key,
+				'supported_formula_types' => array(),
+				// Callbacks
 				'get_value_callback' => '', // Callable. We'll use this to get the cell value during all contexts,
 				'save_value_callback' => '', // Callable. We'll use this to get the cell value during all contexts,
+				'prepare_value_for_database' => '', // Callable. Modify the cell value before it's saved using the normal saving process
+				'prepare_value_for_display' => '', // Callable. Modify the cell value before it's displayed using the normal display process
+				// Metabox and handsontable type
 				'edit_button_label' => null,
 				'edit_modal_id' => null,
 				'edit_modal_title' => null,
@@ -106,30 +169,16 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 				'edit_modal_local_cache' => true,
 				'edit_modal_save_action' => null, // js_function_name:<function name>, <wp ajax action>
 				'edit_modal_cancel_action' => null,
+				// Metabox type
 				'metabox_show_selector' => null,
 				'metabox_value_selector' => null,
+				// Handsontable type
 				'handsontable_columns' => array(), // array( 'product' => array( array( 'data' => 'name' ), ) ),
 				'handsontable_column_names' => array(), // array('product' => array('Column name'),),
 				'handsontable_column_widths' => array(), // array('product' => array(160),),
-				'supports_formulas' => false,
-				'supports_sql_formulas' => true,
-				'key_for_formulas' => $key,
-				'supported_formula_types' => array(),
-				'formatted' => array(), //Array (Valores admitidos por el plugin de handsontable)
-				'allow_to_hide' => true,
-				'allow_to_rename' => true,
-				'allow_to_save' => true,
-				'allow_to_save_sanitization' => true,
-				'allow_plain_text' => true,
-				'export_key' => $key,
-				'default_value' => '',
-				'is_locked' => false, // We'll add a lock icon before the cell value and disable editing
-				'lock_template_key' => false, // We'll add a lock icon before the cell value and disable editing
 				// Tmp. We use the new handsontable renderer only for _default_attributes for now
 				// we will use it for all in the future
 				'use_new_handsontable_renderer' => false,
-				'forced_allow_to_save' => null,
-				'forced_supports_formulas' => null,
 			);
 
 			$args = wp_parse_args($args, $defaults);
@@ -233,6 +282,7 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 				$args['formatted']['readOnly'] = true;
 				$args['unformatted']['renderer'] = 'wp_external_button';
 				$args['unformatted']['readOnly'] = true;
+				$args['data_type'] = null;
 			}
 			if ($args['is_locked']) {
 				$args['formatted']['readOnly'] = true;
@@ -273,6 +323,15 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 			}
 
 			$spreadsheet_columns = ( $skip_filters ) ? $this->registered_items : apply_filters('vg_sheet_editor/columns/all_items', $this->registered_items);
+
+			foreach ($this->registered_items as $post_type => $columns) {
+				foreach ($columns as $key => $column) {
+					if (!isset($spreadsheet_columns[$post_type]) || !isset($spreadsheet_columns[$post_type][$key])) {
+						$this->add_rejection($key, 'removed_with_filter:all_items', $post_type);
+					}
+				}
+			}
+
 			return $spreadsheet_columns;
 		}
 
@@ -352,7 +411,16 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 				}
 			}
 
+			$original = array_keys($out);
 			$out = apply_filters('vg_sheet_editor/columns/provider_items', $out, $provider, $run_callbacks, $this);
+
+			if (count($out) < $original) {
+				foreach ($original as $key) {
+					if (!isset($out[$key])) {
+						$this->add_rejection($key, 'removed_with_filter:provider_items', $provider);
+					}
+				}
+			}
 			return $out;
 		}
 

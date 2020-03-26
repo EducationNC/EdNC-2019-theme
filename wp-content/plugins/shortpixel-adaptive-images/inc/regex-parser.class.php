@@ -71,7 +71,7 @@ class ShortPixelRegexParser {
         );
 */
 
-        $this->logger->log("CHECK 1: " . strlen($content) );
+        SHORTPIXEL_AI_DEBUG && $this->logger->log("CHECK 1: " . strlen($content) );
 
         // Replace different cases of image URL usages
         // -------------------------------------------
@@ -115,7 +115,8 @@ class ShortPixelRegexParser {
         $this->logger->log("******** REGEX PARSER replace_background_image_from_tag *********");
 
         $content = preg_replace_callback(
-            '/\<([\w]+)(?:[^\<\>]*?)\b(background-image|background)(\s*:(?:[^;]*?[,\s]|\s*))url\((?:\'|")?([^\'"\)]*)(\'|")?\s*\).*?\>/s',
+            //we need to specify the list of tags because on some situations PHP regex implementation throws catastrophic backtracking if we use [\w]+ instead...
+            '/\<(div|span|body|article|section|i|p|h[1-6]|form|img|figure|a)(?:[^\<\>]*?)\b(background-image|background)(\s*:(?:[^;]*?[,\s]|\s*))url\((?:\'|")?([^\'"\)]*)(\'|")?\s*\).*?\>/s',
             array($this->cssParser, 'replace_background_image_from_tag'),
             $content
         );
@@ -131,7 +132,6 @@ class ShortPixelRegexParser {
             );
         }
 
-            $integrations = $this->ctrl->getActiveIntegrations();
         if($integrations['wp-bakery']) {
             $content = preg_replace_callback(
                 '/\<([\w]+)(?:[^\<\>]*?)\b(data-ultimate-bg)(=(?:"|\'|)[^"\']*?)url\((?:\'|")?([^\'"\)]*)(\'|")?\s*\)/s',
@@ -140,7 +140,7 @@ class ShortPixelRegexParser {
             );
         }
 
-        $this->logger->log("******** REGEX PARSER getActiveIntegrations returns:  ", $integrations);
+        SHORTPIXEL_AI_DEBUG && $this->logger->log("******** REGEX PARSER content len: " . strlen($content) . " getActiveIntegrations returns:  ", $integrations);
 
         if($this->ctrl->settings['type'] !== 1) { //srcset has to be checked too, in some cases the srcset wp hook isn't called...
             $regex = str_replace(array('{{TAG}}', '{{ATTR}}'), array('img', 'srcset'), $regexMasterSrcset);
@@ -307,7 +307,7 @@ class ShortPixelRegexParser {
             $content = str_replace('</body>', '<script>var spai_affectedTags = "' . addslashes(json_encode($this->ctrl->affectedTags)) . '";</script></body>', $content);
         }
 
-        $this->logger->log("******** REGEX PARSER RETURN *********");
+        SHORTPIXEL_AI_DEBUG && $this->logger->log("******** REGEX PARSER RETURN ********* " . strlen($content));
 
         return $content;
     }
@@ -439,7 +439,21 @@ class ShortPixelRegexParser {
     protected function _replace_images($tag, $attr, $text, $url, $q = '') {
         $this->logger->log("******** REPLACE IMAGE IN $tag ATTRIBUTE $attr: " . $url . ($this->extMeta ? " EXT" : " INT"));
 
-        $extMeta = $this->extMeta;
+        if(   !$this->ctrl->lazyNoticeThrown && substr($url, 0,  10) == 'data:image'
+            && (   strpos($text, 'data-lazy-src=') !== false
+                || strpos($text, 'data-layzr=') !== false
+                || strpos($text, 'data-src=') !== false
+                || (strpos($text, 'data-orig-src=') !== false && strpos($text, 'lazyload')) //found for Avada theme with Fusion Builder
+            )) {
+            set_transient("shortpixelai_thrown_notice", array('when' => 'lazy', 'extra' => false), 86400);
+            $this->ctrl->lazyNoticeThrown = true;
+        }
+        if($this->ctrl->lazyNoticeThrown) {
+            $this->logger->log("Lazy notice thrown");
+            return $text;
+        }
+
+        $extMeta = $this->extMeta; //TODO REMOVE OBSOLETE
         if($this->ctrl->urlIsApi($url)) {$this->logger->log('IS API');return $text;}
         if(!ShortPixelUrlTools::isValid($url)) {$this->logger->log('NOT VALID');return $text;}
         if($this->ctrl->urlIsExcluded($url)) {$this->logger->log('EXCLUDED');return $text;}
@@ -454,19 +468,6 @@ class ShortPixelRegexParser {
         //WP is encoding some characters, like & ( to &#038; )
         $url = html_entity_decode($url);
 
-        if(   !$this->ctrl->lazyNoticeThrown && substr($url, 0,  10) == 'data:image'
-            && (   strpos($text, 'data-lazy-src=') !== false
-                || strpos($text, 'data-layzr=') !== false
-                || strpos($text, 'data-src=') !== false
-                || (strpos($text, 'data-orig-src=') !== false && strpos($text, 'lazyload')) //found for Avada theme with Fusion Builder
-            )) {
-            set_transient("shortpixelai_thrown_notice", array('when' => 'lazy', 'extra' => false), 86400);
-            $this->ctrl->lazyNoticeThrown = true;
-        }
-        if($this->ctrl->lazyNoticeThrown) {
-            $this->logger->log("Lazy notice thrown");
-            return $text;
-        }
         //early check for the excluded selectors - only the basic cases when the selector is img.class
         if($this->ctrl->tagIs('excluded', $text)) {
             $this->logger->log("Excluding: " . $text);
@@ -654,7 +655,8 @@ class ShortPixelRegexParser {
         for($i = 0; $i < count($parsed); $i++) {
             if(isset($parsed[$i]->image->srcset)) {
                 $this->logger->log("VARIATIONS - srcset " . $parsed[$i]->image->srcset);
-                $parsed[$i]->image->srcset = preg_replace_callback('/data:image\/svg\+xml;u=[^\s]*/s',
+                // $parsed[$i]->image->srcset = preg_replace_callback('/data:image\/svg\+xml;u=[^\s]*/s', // old
+                $parsed[$i]->image->srcset = preg_replace_callback('/data:image\/svg\+xml;base64[^\s]*/s', // new
                     array($this, 'pseudo_url_to_api_url'),
                     $parsed[$i]->image->srcset
                 );
@@ -702,7 +704,8 @@ class ShortPixelRegexParser {
     //TODO make gallery specific
     public function replace_link_href($matches)
     {
-        if (count($matches) < 3 || strpos($matches[0], 'href=' . $matches[1] . 'data:image/svg+xml;u=')
+//        if (count($matches) < 3 || strpos($matches[0], 'href=' . $matches[1] . 'data:image/svg+xml;u=') // old implementation
+        if (count($matches) < 3 || strpos($matches[0], 'href=' . $matches[1] . 'data:image/svg+xml;') // I think "u=" can be removed too
             || strpos($matches[0], 'ngg-fancybox') === false) { //this is to limit replacing the href to NextGen's fancybox links
             //avoid duplicated replaces due to filters interference
             return $matches[0];

@@ -8,6 +8,10 @@ class ShortPixelUrlTools {
     const PX_ENCODED = 'R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
     const PX_SVG_ENCODED = 'PHN2ZyB2aWV3Qm94PSIwIDAgMSAxIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==';
     const PX_SVG_TPL = '<svg viewBox="0 0 %WIDTH% %HEIGHT%" width="%WIDTH%" height="%HEIGHT%" xmlns="http://www.w3.org/2000/svg"></svg>';
+
+    /* New constants */
+    const PX_SVG_TEMPLATE = '<svg viewBox="0 0 %WIDTH% %HEIGHT%" width="%WIDTH%" height="%HEIGHT%" data-u="%URL%" data-w="%WIDTH%" data-h="%HEIGHT%" xmlns="http://www.w3.org/2000/svg"></svg>';
+
     public static $PROCESSABLE_EXTENSIONS = array('jpg', 'jpeg', 'gif', 'png', 'pdf', 'svg'); //svg only stored for now.
 
     public static function isValid($url)
@@ -61,10 +65,10 @@ class ShortPixelUrlTools {
             return home_url() . $url;
         } else {
             if($cssPath) {
-                $homePath = get_home_path();
+                $homePath = self::get_home_path();
                 if(strpos($cssPath, $homePath) !== false) {
                     $url = self::normalizePath($cssPath . $url);
-                    return str_replace( get_home_path(), trailingslashit(get_home_url()), $url);
+                    return str_replace( $homePath, trailingslashit(get_home_url()), $url);
                 }
                 return $url;
             } else {
@@ -73,6 +77,26 @@ class ShortPixelUrlTools {
             }
         }
     }
+
+    /**
+     * this is a copy of the wp-admin/includes/file.php - we don't want to include it in the front-end
+     * @return string
+     */
+    static function get_home_path() {
+        $home    = set_url_scheme( get_option( 'home' ), 'http' );
+        $siteurl = set_url_scheme( get_option( 'siteurl' ), 'http' );
+        if ( ! empty( $home ) && 0 !== strcasecmp( $home, $siteurl ) ) {
+            $wp_path_rel_to_home = str_ireplace( $home, '', $siteurl ); /* $siteurl - $home */
+            $pos = strripos( str_replace( '\\', '/', $_SERVER['SCRIPT_FILENAME'] ), trailingslashit( $wp_path_rel_to_home ) );
+            $home_path = substr( $_SERVER['SCRIPT_FILENAME'], 0, $pos );
+            $home_path = trailingslashit( $home_path );
+        } else {
+            $home_path = ABSPATH;
+        }
+
+        return str_replace( '\\', '/', $home_path );
+    }
+
 
     /**
      * remove the a/b/../.. parts
@@ -263,21 +287,51 @@ class ShortPixelUrlTools {
         return array(1, 1);
     }
 
-    public static function generate_placeholder_svg($width = false, $height = false, $url = false) {
-        $ret = 'data:image/svg+xml;base64,' . self::PX_SVG_ENCODED;
-        if($width && $height && ($width > 1 || $height > 1)) {
-            $ret = self::_generate_placeholder_svg($width, $height, $url);
-        } elseif ($url) { //external images - we don't know the width...
-            $ret = 'data:image/svg+xml' . ';u=' . base64_encode(urlencode($url)) . ';base64,' . self::PX_SVG_ENCODED;
-        }
-        //self::log('GENERATE for ' . $url . ' : ' . $ret);
-        return $ret;
+    /**
+     * Method generates the SVG placeholder using new template
+     *
+     * @param bool|int    $width
+     * @param bool|int    $height
+     * @param bool|string $url
+     *
+     * @return string
+     */
+    public static function generate_placeholder_svg( $width = false, $height = false, $url = false ) {
+        echo '<pre style="background: white">';
+        var_dump(1);
+        echo '</pre>';
+        $defaults = array(
+            'width'  => 1,
+            'height' => 1,
+        );
+
+        $data = 'data:image/svg+xml;base64,';
+
+        return empty( $width ) && empty( $height ) && empty( $url ) ?
+            $data . self::PX_SVG_ENCODED :
+            ( $width > 1 || $height > 1 ?
+                $data . base64_encode( str_replace( array( '%WIDTH%', '%HEIGHT%', '%URL%' ), array( empty( $width ) ? $defaults[ 'width' ] : $width, empty( $height ) ? $defaults[ 'height' ] : $height, empty( $url ) ? '' : urlencode( $url ) ), self::PX_SVG_TEMPLATE ) ) :
+                $data . base64_encode( str_replace( array( '%WIDTH%', '%HEIGHT%', '%URL%' ), array( $defaults[ 'width' ], $defaults[ 'height' ], empty( $url ) ? '' : urlencode( $url ) ), self::PX_SVG_TEMPLATE ) ) );
     }
 
-    protected static function _generate_placeholder_svg($width, $height, $url) {
-        return 'data:image/svg+xml;u=' . base64_encode(urlencode($url)) . ";w=$width;h=$height;base64,"
-            . base64_encode(str_replace('%WIDTH%', $width, str_replace('%HEIGHT%', $height, self::PX_SVG_TPL)));
-    }
+    /**
+     * Method generates the SVG placeholder using new template
+     * OLD IMPLEMENTATION
+     * public static function generate_placeholder_svg($width = false, $height = false, $url = false) {
+     * $ret = 'data:image/svg+xml;base64,' . self::PX_SVG_ENCODED;
+     * if($width && $height && ($width > 1 || $height > 1)) {
+     * $ret = self::_generate_placeholder_svg($width, $height, $url);
+     * } elseif ($url) { //external images - we don't know the width...
+     * $ret = 'data:image/svg+xml' . ';u=' . base64_encode(urlencode($url)) . ';base64,' . self::PX_SVG_ENCODED;
+     * }
+     * //self::log('GENERATE for ' . $url . ' : ' . $ret);
+     * return $ret;
+     * }
+     *
+     * protected static function _generate_placeholder_svg($width, $height, $url) {
+     * return 'data:image/svg+xml;u=' . base64_encode(urlencode($url)) . ";w=$width;h=$height;base64,"
+     * . base64_encode(str_replace('%WIDTH%', $width, str_replace('%HEIGHT%', $height, self::PX_SVG_TPL)));
+     * }*/
 
     public static function generate_placeholder_svg_pair($width = false, $height = false, $url = false) {
         $ret = (object)array('image' => 'data:image/svg+xml;base64,' . self::PX_SVG_ENCODED, 'meta' => false);
@@ -316,16 +370,52 @@ class ShortPixelUrlTools {
         return 'data:image/gif' . $pseudoData . ';base64' . ',' . base64_encode($pxGif);
     }
 
-    public static function url_from_placeholder_svg($url) {
-        $parts = explode(',', $url);
-        if(count($parts) == 2) {
-            $url = $parts[0];
-            $subparts = explode(';', $url);
-            array_shift($subparts);
-            if(strpos($subparts[0], 'u=') == 0) {
-                $url = urldecode(base64_decode(substr($subparts[0], 2)));
-            }
+    /**
+     * OLD IMPLEMENTATION
+     *
+     */
+//    public static function url_from_placeholder_svg($url) {
+//        $parts = explode(',', $url);
+//        if(count($parts) == 2) {
+//            $url = $parts[0];
+//            $subparts = explode(';', $url);
+//            array_shift($subparts);
+//            if(strpos($subparts[0], 'u=') == 0) {
+//                $url = urldecode(base64_decode(substr($subparts[0], 2)));
+//            }
+//        }
+//        return $url;
+//    }
+
+    /**
+     * Method parses base64 encoded string and returns the url if it was specified
+     *
+     * @param string $encoded
+     *
+     * @return bool|string|string[]
+     */
+    public static function url_from_placeholder_svg( $encoded )
+    {
+        $reg_exes = array(
+            'base64' => '/(?:[A-Za-z0-9+]{4})*(?:[A-Za-z0-9+]{2}==|[A-Za-z0-9+]{3}=)?$/',
+            'url' => '/data-u="[^"]+/',
+        );
+
+        $matches = array();
+
+        preg_match($reg_exes['base64'], $encoded, $matches);
+
+        if (count($matches) !== 1) {
+            return false;
         }
-        return $url;
+
+        $decoded = base64_decode($matches[0]);
+        preg_match($reg_exes['url'], $decoded, $matches);
+
+        if (count($matches) !== 1) {
+            return false;
+        }
+
+        return urldecode(str_replace('data-u="', '', $matches[0]));
     }
 }

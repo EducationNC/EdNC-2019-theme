@@ -109,6 +109,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 				"_stock" => 'stock',
 				"_stock_status" => 'stock_status',
 				"_downloadable_files" => 'downloads',
+				"wpse_downloadable_file_names" => 'downloads',
+				"wpse_downloadable_file_urls" => 'downloads',
 				"_product_attributes" => 'attributes',
 				"_regular_price" => 'regular_price',
 				"_thumbnail_id" => 'images',
@@ -154,6 +156,27 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 			add_filter('vg_sheet_editor/formulas/execute/get_duplicate_ids', array($this, 'find_duplicate_skus_to_delete'), 10, 6);
 
 			add_filter('redux/options/' . VGSE()->options_key . '/sections', array($this, 'add_settings_page_options'));
+			add_filter('vg_sheet_editor/filteres/search_by_keyword_clauses', array($this, 'include_sku_in_search_by_keyword'), 10, 4);
+			add_filter('vg_sheet_editor/filters/search_by_keyword_clauses/keyword_check', array($this, 'include_sku_in_search_by_keyword_check'), 10, 6);
+		}
+
+		function include_sku_in_search_by_keyword_check($check, $single_keyword, $clauses, $raw_keywords, $operator, $internal_join) {
+			$post_type = VGSE()->helpers->get_provider_from_query_string();
+			if ($post_type === $this->post_type) {
+				$check .= " $internal_join lookup.sku LIKE '%" . esc_sql($single_keyword) . "%' ";
+			}
+
+			return $check;
+		}
+
+		function include_sku_in_search_by_keyword($clauses, $raw_keywords, $operator, $internal_join) {
+			global $wpdb;
+			if (strpos($clauses['where'], "post_type = 'product'") === false) {
+				return $clauses;
+			}
+
+			$clauses['join'] .= " INNER JOIN {$wpdb->wc_product_meta_lookup} AS lookup ON $wpdb->posts.ID = lookup.product_id ";
+			return $clauses;
 		}
 
 		/**
@@ -184,6 +207,12 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 						'type' => 'text',
 						'title' => __('Product attributes not used for variations', VGSE()->textname),
 						'desc' => __('The plugin will mark as used for variations all the attributes that DONT contain these keywords, enter multiple separated by comma. I.e. "car, airplane" would match "Car model, Car marker, Expensive Airplane, airplanes". This applies after editing a product in the spreadsheet cells.', VGSE()->textname),
+					),
+					array(
+						'id' => 'maximum_variations_combination',
+						'type' => 'text',
+						'title' => __('Maximum number of variations per combination of attributes', VGSE()->textname),
+						'desc' => __('The "Create variations" tool allows you to create variation based on the combination of attributes. The default limit is 200 variations to not overload your server. You can increase the limit here if you need more variations.', VGSE()->textname),
 					),
 				)
 			);

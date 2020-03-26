@@ -9,11 +9,14 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 	class WP_Sheet_Editor_Redux_Setup {
 
 		public $args = array();
-		public $sections = array();
+		static $sections = array();
 		public $pts;
 		public $ReduxFramework;
 
 		public function __construct() {
+
+			// Create the sections and fields
+			$this->setSections();
 
 			if (!class_exists('ReduxFramework')) {
 				return;
@@ -31,9 +34,6 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 			// Set a few help tabs so you can see how it's done
 			$this->setHelpTabs();
 
-			// Create the sections and fields
-			$this->setSections();
-
 			if (!isset($this->args['opt_name'])) { // No errors please
 				return;
 			}
@@ -44,7 +44,7 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 
 			add_action('redux/page/' . $this->args['opt_name'] . '/enqueue', array($this, 'add_custom_css_to_panel'));
 
-			$this->ReduxFramework = new ReduxFramework($this->sections, $this->args);
+			$this->ReduxFramework = new ReduxFramework(self::$sections, $this->args);
 		}
 
 		function add_custom_css_to_panel() {
@@ -70,31 +70,61 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 		public function setSections() {
 
 			$helpers = WP_Sheet_Editor_Helpers::get_instance();
-			$this->sections[] = array(
+			self::$sections[] = array(
 				'icon' => 'el-icon-cogs',
-				'title' => __('General settings', VGSE()->textname),
+				'title' => __('Speed and performance', VGSE()->textname),
 				'fields' => array(
-					array(
-						'id' => 'info_normal_234343',
-						'type' => 'info',
-						'desc' => __('In this page you can quickly set up the spreadsheet editor. This all you need to use the editor. The settings on the other tabs are completely optional and allow you to tweak the performance of the editor among other things.', VGSE()->textname),
-					),
-					array(
-						'id' => 'be_post_types',
-						'type' => 'select',
-						'title' => __('Post Types', VGSE()->textname),
-						'desc' => __('On which post types do you want to enable the editor?', VGSE()->textname),
-						'options' => $helpers->get_allowed_post_types(),
-						'multi' => true,
-						'default' => 'post',
-					),
 					array(
 						'id' => 'be_posts_per_page',
 						'type' => 'text',
 						'validate' => 'numeric',
-						'title' => __('How many rows do you want to display on the spreadsheet?', VGSE()->textname),
+						'title' => __('Load rows faster: Number of rows to load per batch', VGSE()->textname),
 						'desc' => __('We use pagination to use few server resources. We load 20 rows first and load 20 more every time you scroll down. You can increase this number to load more rows per page. CAREFUL. Loading more than 200 rows per page might overload your server. If we detect that the server is overloaded we will automatically reset to 10 rows per page.', VGSE()->textname),
 						'default' => 20,
+					),
+					array(
+						'id' => 'export_page_size',
+						'type' => 'text',
+						'validate' => 'numeric',
+						'title' => __('Export rows faster: Number of rows to export per batch', VGSE()->textname),
+						'desc' => __('Here you can control the batch size for the exports. If you use a high number the exports will finish faster. You can use a high number safely because we automatically fall back to a lower number if the server is overloaded during one export. For example, export 100 rows per batch and complete the exports super fast and if we detect slowness in one export we will automatically restart the export with 10 rows per batch', VGSE()->textname),
+						'default' => 100,
+					),
+					array(
+						'id' => 'be_posts_per_page_save',
+						'type' => 'text',
+						'validate' => 'numeric',
+						'title' => __('Save changes faster: Number of rows to save per batch', VGSE()->textname),
+						'desc' => __('When you edit a large amount of posts in the spreadsheet editor we can´t save all the changes at once, so we do it in batches. The recommended value is 4 , which means we will process only 4 posts at once. You can adjust it as it works best for you. If you get errors when saving you should lower the number', VGSE()->textname),
+						'default' => 4,
+					),
+				)
+			);
+
+			self::$sections[] = array(
+				'icon' => 'el-icon-cogs',
+				'title' => __('Increase Productivity', VGSE()->textname),
+				'fields' => array(
+					array(
+						'id' => 'enable_pagination',
+						'type' => 'switch',
+						'title' => __('Use pagination in the spreadsheet?', VGSE()->textname),
+						'desc' => __('By default we use an infinite list of rows and we load more rows every time you scroll down. You can activate this option to display pagination links and disable the infinite list.', VGSE()->textname),
+						'default' => false,
+					),
+					array(
+						'id' => 'be_disable_automatic_loading_rows',
+						'type' => 'switch',
+						'title' => __('Disable the automatic loading of rows?', VGSE()->textname),
+						'desc' => __('When you open the spreadsheet, we load the rows automatically so you can start editing right away. Activate this option if you want to search rows and load manually.', VGSE()->textname),
+						'default' => false,
+					),
+					array(
+						'id' => 'be_disable_full_screen_mode_on',
+						'type' => 'switch',
+						'title' => __('Disable the full screen mode?', VGSE()->textname),
+						'desc' => __('When the sheet loads, we open it in full screen and you have the option to exit the full screen mode. Activate this option and we wont open the sheet in full screen.', VGSE()->textname),
+						'default' => false,
 					),
 					array(
 						'id' => 'be_load_items_on_scroll',
@@ -103,27 +133,33 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 						'desc' => __('When this is enabled more items will be loaded to the bottom of the spreadsheet when you reach the end of the page. You can enable / disable in the spreadsheet too.', VGSE()->textname),
 						'default' => true,
 					),
-			));
-
-			$this->sections[] = array(
-				'icon' => 'el-icon-plane',
-				'title' => __('Advanced', VGSE()->textname),
+					array(
+						'id' => 'be_fix_first_columns',
+						'type' => 'switch',
+						'title' => __('Freeze first 2 columns at the left side?', VGSE()->textname),
+						'desc' => __('When this is enabled the first 2 columns will always be visible while scrolling horizontally. You can right click on any column to freeze or unfreeze it.', VGSE()->textname),
+						'default' => true,
+					),
+				)
+			);
+			self::$sections[] = array(
+				'icon' => 'el-icon-cogs',
+				'title' => __('Solution to weird errors', VGSE()->textname),
 				'fields' => array(
 					array(
-						'id' => 'export_page_size',
+						'id' => 'be_columns_limit',
 						'type' => 'text',
 						'validate' => 'numeric',
-						'title' => __('Export batch size', VGSE()->textname),
-						'desc' => __('Here you can control the batch size for the exports. If you use a high number the exports will finish faster. You can use a high number safely because we automatically fall back to a lower number if the server is overloaded during one export. For example, export 100 rows per batch and complete the exports super fast and if we detect slowness in one export we will automatically restart the export with 10 rows per batch', VGSE()->textname),
-						'default' => 100,
+						'title' => __('Columns limit', VGSE()->textname),
+						'desc' => __('We limit the spreadsheet columns for performance reasons to avoid loading thousands of columns on the spreadsheet. You can increase this limit if you want to display more columns. Default: 310', VGSE()->textname),
+						'default' => 310,
 					),
 					array(
-						'id' => 'be_posts_per_page_save',
+						'id' => 'be_taxonomy_terms_separator',
 						'type' => 'text',
-						'validate' => 'numeric',
-						'title' => __('How many posts do you want to save per batch?', VGSE()->textname),
-						'desc' => __('When you edit a large amount of posts in the spreadsheet editor we can´t save all the changes at once, so we do it in batches. The recommended value is 4 , which means we will process only 4 posts at once. You can adjust it as it works best for you. If you get errors when saving you should lower the number', VGSE()->textname),
-						'default' => 4,
+						'title' => __('Separator for taxonomy terms cells', VGSE()->textname),
+						'desc' => __('Taxonomy columns like post categories, post tags, etc. show terms separated by comma, if you use commas in your term names, use this option to change the separator', VGSE()->textname),
+						'default' => ',',
 					),
 					array(
 						'id' => 'be_timeout_between_batches',
@@ -141,69 +177,11 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 						'default' => false,
 					),
 					array(
-						'id' => 'be_fix_first_columns',
-						'type' => 'switch',
-						'title' => __('Freeze first 2 columns at the left side?', VGSE()->textname),
-						'desc' => __('When this is enabled the first 2 columns will always be visible while scrolling horizontally. You can right click on any column to freeze or unfreeze it.', VGSE()->textname),
-						'default' => true,
-					),
-					array(
-						'id' => 'be_disable_cells_lazy_loading',
-						'type' => 'switch',
-						'title' => __('Disable cells lazy loading?', VGSE()->textname),
-						'desc' => __('The spreadsheet loads only the "visible rows" for performance reasons, so when you scroll up or down the rows are loaded dynamically. This way you can "open" thousands of posts in the spreadshet and it will work fast. However, if you want to use the browser search to find a specific cell, you need to disable the lazy loading in order to load all the rows at once and the browser will be able to find the cells. The browser search doesn´t work by default because only the "visible rows" are actually created.', VGSE()->textname),
-						'default' => false,
-					),
-					array(
-						'id' => 'be_initial_rows_offset',
-						'type' => 'text',
-						'validate' => 'numeric',
-						'title' => __('Initial rows offset', VGSE()->textname),
-						'desc' => __('When you have 1000 posts , you might want to open the spreadsheet and start editing from post 200. This option lets you skip a lot of rows. IMPORTANT. We use the pagination, so we will display the page closest to that number. For example. If you load 10 rows per page and enter 1205 as offset, the sheet will start from page 120 (index 1200) because it is the page closest to the defined offset.', VGSE()->textname),
-						'default' => 0,
-					),
-					array(
-						'id' => 'be_disable_dashboard_widget',
-						'type' => 'switch',
-						'title' => __('Disable usage stats widget?', VGSE()->textname),
-						'desc' => __('If you enable this option, the usage stats widget shown in the wp-admin dashboard will be removed.', VGSE()->textname),
-						'default' => false,
-					),
-					array(
 						'id' => 'be_suspend_object_cache_invalidation',
 						'type' => 'switch',
 						'title' => __('Suspend object cache invalidation?', VGSE()->textname),
 						'desc' => __('Disable this if you are using a object/database cache plugin. We disable this by default to make the saving faster, when you edit a lot of posts WordPress tries to "clean up" the cache even if you are not using a cache plugin, making hundreds of unnecessary database queries.', VGSE()->textname),
 						'default' => !defined('WP_CACHE') || !WP_CACHE,
-					),
-					array(
-						'id' => 'be_taxonomy_terms_separator',
-						'type' => 'text',
-						'title' => __('Separator for taxonomy terms cells', VGSE()->textname),
-						'desc' => __('Taxonomy columns like post categories, post tags, etc. show terms separated by comma, you can change the separator character if you use commas in your term names.', VGSE()->textname),
-						'default' => ',',
-					),
-					array(
-						'id' => 'be_disable_serialized_columns',
-						'type' => 'switch',
-						'title' => __('Disable serialized columns support?', VGSE()->textname),
-						'desc' => __('The spreadsheet automatically generates columns for serialized fields, but this can use a lot of CPU cycles depending on the number of serialized fields. You can disable this feature if the sheet is too slow to load or you get errors when loading the rows or you dont want to see columns with prefix "SEIS".', VGSE()->textname),
-						'default' => false,
-					),
-					array(
-						'id' => 'be_disable_automatic_loading_rows',
-						'type' => 'switch',
-						'title' => __('Disable the automatic loading of rows?', VGSE()->textname),
-						'desc' => __('When you open the spreadsheet, we load the rows automatically so you can start editing right away. Activate this option if you want to search rows and load manually.', VGSE()->textname),
-						'default' => false,
-					),
-					array(
-						'id' => 'be_columns_limit',
-						'type' => 'text',
-						'validate' => 'numeric',
-						'title' => __('Columns limit', VGSE()->textname),
-						'desc' => __('We limit the spreadsheet columns for performance reasons to avoid loading thousands of columns on the spreadsheet. You can increase this limit if you want to display more columns. Default: 310', VGSE()->textname),
-						'default' => 310,
 					),
 					array(
 						'id' => 'be_disable_wpautop',
@@ -213,10 +191,43 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 						'default' => false,
 					),
 					array(
-						'id' => 'be_disable_full_screen_mode_on',
+						'id' => 'be_disable_data_prefetch',
 						'type' => 'switch',
-						'title' => __('Disable the full screen mode?', VGSE()->textname),
-						'desc' => __('When the sheet loads, we open it in full screen and you have the option to exit the full screen mode. Activate this option and we wont open the sheet in full screen.', VGSE()->textname),
+						'title' => __('Deactivate the data prefetch', VGSE()->textname),
+						'desc' => __('When you load the spreadsheet, we get all the columns at once from the database to make it faster, this is called prefetch. This can cause issues if you have thousands of columns or rare database setups.', VGSE()->textname),
+						'default' => false,
+					),
+					array(
+						'id' => 'keys_for_infinite_serialized_handler',
+						'type' => 'text',
+						'title' => __('Meta keys that should use the infinite serialized fields handler', VGSE()->textname),
+						'desc' => __('This is only for advanced users or if our support team asks you to use this option. We have 2 ways to handle serialized fields: the old handler (used by default, which has limitations) and the infinite serialization handler (better, it is not active by default to not break previous integrations). Use this option if you have serialized fields that save incorrectly or dont appear in the spreadsheet.', VGSE()->textname),
+					),
+				)
+			);
+			self::$sections[] = array(
+				'icon' => 'el-icon-cogs',
+				'title' => __('Customize features', VGSE()->textname),
+				'fields' => array(
+					array(
+						'id' => 'be_disable_cells_lazy_loading',
+						'type' => 'switch',
+						'title' => __('Disable cells lazy loading?', VGSE()->textname),
+						'desc' => __('The spreadsheet loads only the "visible rows" for performance reasons, so when you scroll up or down the rows are loaded dynamically. This way you can "open" thousands of posts in the spreadshet and it will work fast. However, if you want to use the browser search to find a specific cell, you need to disable the lazy loading in order to load all the rows at once and the browser will be able to find the cells. The browser search doesn´t work by default because only the "visible rows" are actually created.', VGSE()->textname),
+						'default' => false,
+					),
+					array(
+						'id' => 'be_disable_dashboard_widget',
+						'type' => 'switch',
+						'title' => __('Disable usage stats widget?', VGSE()->textname),
+						'desc' => __('If you enable this option, the usage stats widget shown in the wp-admin dashboard will be removed.', VGSE()->textname),
+						'default' => false,
+					),
+					array(
+						'id' => 'be_disable_serialized_columns',
+						'type' => 'switch',
+						'title' => __('Disable serialized columns support?', VGSE()->textname),
+						'desc' => __('The spreadsheet automatically generates columns for serialized fields, but this can use a lot of CPU cycles depending on the number of serialized fields. You can disable this feature if the sheet is too slow to load or you get errors when loading the rows or you dont want to see columns with prefix "SEIS".', VGSE()->textname),
 						'default' => false,
 					),
 					array(
@@ -231,13 +242,6 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 						'type' => 'switch',
 						'title' => __('Deactivate everything. Use the REST API only', VGSE()->textname),
 						'desc' => __('If you activate this option we will deactivate all the spreadsheets, settings pages, and the entire plugin will become invisible to the user. Only the REST API will remain active. This is useful for advanced scenarios when you only use our REST API to keep websites synchronized with external spreadsheets or systems. When this option is active, our settings page will moved under the general settings menu because our sheet editor menu will be removed', VGSE()->textname),
-						'default' => false,
-					),
-					array(
-						'id' => 'be_disable_data_prefetch',
-						'type' => 'switch',
-						'title' => __('Deactivate the data prefetch', VGSE()->textname),
-						'desc' => __('When you load the spreadsheet, we get all the columns at once from the database to make it faster, this is called prefetch. This can cause issues if you have thousands of columns or rare database setups.', VGSE()->textname),
 						'default' => false,
 					),
 					array(
@@ -263,19 +267,6 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 						'default' => false,
 					),
 					array(
-						'id' => 'delete_attached_images_when_post_delete',
-						'type' => 'switch',
-						'title' => __('Delete the attached images when deleting a post?', VGSE()->textname),
-						'desc' => __('For example, when deleting a post completely (not moving to the trash), delete the featured image and product gallery images from the media library. CAREFUL.If you use the same images on multiple posts, it will break the images on other posts', VGSE()->textname),
-						'default' => false,
-					),
-					array(
-						'id' => 'keys_for_infinite_serialized_handler',
-						'type' => 'text',
-						'title' => __('Meta keys that should use the infinite serialized fields handler', VGSE()->textname),
-						'desc' => __('This is only for advanced users or if our support team asks you to use this option. We have 2 ways to handle serialized fields: the old handler (used by default, which has limitations) and the infinite serialization handler (better, it is not active by default to not break previous integrations). Use this option if you have serialized fields that save incorrectly or dont appear in the spreadsheet.', VGSE()->textname),
-					),
-					array(
 						'id' => 'show_all_custom_statuses',
 						'type' => 'switch',
 						'title' => __('Show all the custom post statuses?', VGSE()->textname),
@@ -291,6 +282,49 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 					),
 				)
 			);
+			self::$sections[] = array(
+				'icon' => 'el-icon-cogs',
+				'title' => __('General settings', VGSE()->textname),
+				'fields' => array(
+					array(
+						'id' => 'info_normal_234343',
+						'type' => 'info',
+						'desc' => __('In this page you can quickly set up the spreadsheet editor. This all you need to use the editor. The settings on the other tabs are completely optional and allow you to tweak the performance of the editor among other things.', VGSE()->textname),
+					),
+					array(
+						'id' => 'be_post_types',
+						'type' => 'select',
+						'title' => __('Post Types', VGSE()->textname),
+						'desc' => __('On which post types do you want to enable the editor?', VGSE()->textname),
+						'options' => $helpers->get_allowed_post_types(),
+						'multi' => true,
+						'default' => 'post',
+					),
+			));
+
+			self::$sections[] = array(
+				'icon' => 'el-icon-plane',
+				'title' => __('Misc', VGSE()->textname),
+				'fields' => array(
+					array(
+						'id' => 'be_initial_rows_offset',
+						'type' => 'text',
+						'validate' => 'numeric',
+						'title' => __('Initial rows offset', VGSE()->textname),
+						'desc' => __('When you have 1000 posts , you might want to open the spreadsheet and start editing from post 200. This option lets you skip a lot of rows. IMPORTANT. We use the pagination, so we will display the page closest to that number. For example. If you load 10 rows per page and enter 1205 as offset, the sheet will start from page 120 (index 1200) because it is the page closest to the defined offset.', VGSE()->textname),
+						'default' => 0,
+					),
+					array(
+						'id' => 'delete_attached_images_when_post_delete',
+						'type' => 'switch',
+						'title' => __('Delete the attached images when deleting a post?', VGSE()->textname),
+						'desc' => __('For example, when deleting a post completely (not moving to the trash), delete the featured image and product gallery images from the media library. CAREFUL.If you use the same images on multiple posts, it will break the images on other posts', VGSE()->textname),
+						'default' => false,
+					),
+				)
+			);
+
+			self::$sections = apply_filters('redux/options/' . VGSE()->options_key . '/sections', self::$sections);
 		}
 
 		public function setHelpTabs() {

@@ -27,6 +27,23 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Attrs')) {
 			add_filter('vg_sheet_editor/save_rows/row_data_before_save', array($this, 'replace_all_terms_with_real_terms'), 10, 4);
 			add_filter('vg_sheet_editor/formulas/form_settings', array($this, 'add_formula_type_toggle_attribute_settings'), 10, 2);
 			add_filter('vg_sheet_editor/formulas/execute_formula', array($this, 'execute_formula_toggle_attribute_settings'), 10, 4);
+			add_filter('vg_sheet_editor/advanced_filters/taxonomy_labels', array($this, 'remove_attribute_labels_from_search'), 10, 2);
+		}
+
+		function remove_attribute_labels_from_search($labels, $post_type) {
+			if ($post_type === $this->post_type) {
+				$taxonomy_keys = VGSE()->helpers->get_post_type_taxonomies_single_data($post_type, 'name');
+				$final_labels = array();
+				foreach ($taxonomy_keys as $index => $taxonomy_key) {
+					if (strpos($taxonomy_key, 'pa_') !== 0) {
+						$final_labels[] = $labels[$index];
+					}
+				}
+				$final_labels[] = __('Product attributes', VGSE()->textname);
+				$labels = $final_labels;
+			}
+
+			return $labels;
 		}
 
 		function execute_formula_toggle_attribute_settings($update_count, $raw_form_data, $post_ids, $column_settings) {
@@ -123,7 +140,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Attrs')) {
 		}
 
 		function replace_all_terms_with_real_terms($item, $post_id, $post_type, $spreadsheet_columns) {
-			if ($post_type !== $this->post_type) {
+			if (is_wp_error($item) || $post_type !== $this->post_type) {
 				return $item;
 			}
 			$terms_columns = wp_list_filter($spreadsheet_columns, array('data_type' => 'post_terms'));
@@ -265,7 +282,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Attrs')) {
 				$attribute_taxonomies = array();
 			}
 			$editor->args['columns']->register_item('_vgse_create_attribute', $post_type, array(
-				'data_type' => 'meta_data',
+				'data_type' => null,
 				'unformatted' => array('data' => '_vgse_create_attribute', 'renderer' => 'html', 'readOnly' => true),
 				'column_width' => 150,
 				'title' => __('Product attributes', VGSE()->textname),

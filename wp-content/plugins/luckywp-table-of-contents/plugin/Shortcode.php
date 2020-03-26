@@ -100,6 +100,7 @@ class Shortcode extends BaseObject
                              'useNofollow',
                              'skipHeadingLevel',
                              'skipHeadingText',
+                             'containerClass',
                          ] as $var) {
                     if (!array_key_exists(strtolower($var), $attrs) &&
                         $postSettings->$var !== null

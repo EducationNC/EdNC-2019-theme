@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Sheet Editor plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Sheet Editor 2.17.0\n"
+"Project-Id-Version: WP Sheet Editor 2.18.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/posts-pages-products-sheet\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-02-18T20:23:59+00:00\n"
+"POT-Creation-Date: 2020-03-16T23:57:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.2.0\n"
 
@@ -182,14 +182,14 @@ msgstr ""
 msgid "<p>NEW - WOOCOMMERCE - Now we calculate the total inventory units and total inventory price of all the products in the spreadsheet and display it in the status bar.</p>"
 msgstr ""
 
-#: wp-sheet-editor.php:67
+#: wp-sheet-editor.php:69
 msgid "Please update the WP Sheet Editor plugin and all its extensions to the latest version. The features of the plugin \""
 msgstr ""
 
-#: wp-sheet-editor.php:140
+#: wp-sheet-editor.php:142
 msgid "My license"
 msgstr ""
 
-#: wp-sheet-editor.php:204
+#: wp-sheet-editor.php:206
 msgid "Disable extension offerings?"
 msgstr ""

@@ -270,7 +270,7 @@ WHERE pm.meta_key = '" . esc_sql($old_key) . "' ");
 	}
 
 	function set_object_terms($post_id, $terms_saved, $key) {
-		return update_item_meta($post_id, $key, $terms_saved);
+		return $this->update_item_meta($post_id, $key, $terms_saved);
 	}
 
 	function get_object_taxonomies($post_type = null) {
@@ -322,7 +322,11 @@ WHERE pm.meta_key = '" . esc_sql($old_key) . "' ");
 		$checks = array();
 		$keywords = array_map('trim', explode(';', $keyword));
 		foreach ($keywords as $single_keyword) {
-			$checks[] = " (user_email $operator '%" . esc_sql($single_keyword) . "%' OR user_login $operator '%" . esc_sql($single_keyword) . "%' OR user_nicename $operator '%" . esc_sql($single_keyword) . "%' OR display_name $operator '%" . esc_sql($single_keyword) . "%' )";
+			$checks[] = " user_email $operator '%" . esc_sql($single_keyword) . "%' OR user_login $operator '%" . esc_sql($single_keyword) . "%' OR user_nicename $operator '%" . esc_sql($single_keyword) . "%' OR display_name $operator '%" . esc_sql($single_keyword) . "%' ";
+			// Allow to search by ID
+			if (is_numeric($single_keyword)) {
+				$checks[count($checks) - 1] .= " OR $wpdb->users.ID = '" . intval($single_keyword) . "' ";
+			}
 		}
 
 		$ids = $wpdb->get_col("SELECT ID FROM $wpdb->users WHERE " . implode(' OR ', $checks));

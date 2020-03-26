@@ -752,7 +752,7 @@ if (!class_exists('WPSE_CSV_API')) {
 					file_put_contents($csv_file, $this->add_utf8_bom('sep=,' . PHP_EOL . $this->remove_utf8_bom($csv_contents)));
 				}
 				$this->remove_duplicates_from_file($csv_file);
-				$out['export_file_url'] = add_query_arg('wpseefn', sanitize_file_name($clean_data['export_key']), home_url());
+				$out['export_file_url'] = add_query_arg('wpseefn', sanitize_file_name($clean_data['export_key']), admin_url('index.php'));
 				$expiration_hours = (int) $this->file_expiration_hours();
 				$out['message'] .= sprintf(__('<br><br>The export finished.<br><br>The download should start automatically. If it doesn\'t start automatically you can find the file in the folder /wp-content/wp-sheet-editor-universal-sheet/exports/ on your server.<br><br>The export files are deleted automatically after %d hours.', VGSE()->textname), $expiration_hours);
 			}

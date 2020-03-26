@@ -13,6 +13,7 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 			}
 			$defaults = array(
 				'prefix' => 'seis_',
+				'column_settings' => array()
 			);
 			$this->settings = apply_filters('vg_sheet_editor/infinite_serialized_column/settings', wp_parse_args($settings, $defaults));
 
@@ -69,7 +70,7 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 				foreach ($fields as $field_key) {
 					$column_key = str_replace('.', '=', $field_key);
 					$title = vgse_custom_columns_init()->_convert_key_to_label(str_replace(array($this->settings['prefix'], '='), array($this->settings['prefix'] . ': ', ' : '), $column_key));
-					$editor->args['columns']->register_item($column_key, $post_type, apply_filters('vg_sheet_editor/infinite_serialized_column/column_settings', array(
+					$editor->args['columns']->register_item($column_key, $post_type, apply_filters('vg_sheet_editor/infinite_serialized_column/column_settings', array_merge(array(
 						'key' => $column_key,
 						'data_type' => 'meta_data',
 						'column_width' => 300,
@@ -81,7 +82,8 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 						'supports_sql_formulas' => false,
 						'allow_to_hide' => true,
 						'allow_to_rename' => true,
-									), $this));
+						'serialized_field_original_key' => $this->settings['sample_field_key']
+											), $this->settings['column_settings']), $this, $post_type));
 				}
 			}
 		}

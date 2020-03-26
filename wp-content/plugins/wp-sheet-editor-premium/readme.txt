@@ -1,8 +1,8 @@
 === Bulk Edit Posts and Products in Spreadsheet ===
 Contributors: wpsheeteditor,vegacorp,josevega
 Tags: woocommerce, easy digital downloads, events, bulk edit, spreadsheet
-Tested up to: 5.3
-Stable tag: 2.17.0
+Tested up to: 5.4
+Stable tag: 2.18.1
 Requires at least: 3.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -230,7 +230,50 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 2. settings page
 
 == Changelog ==
-= V 2.17.0 - 2020-02-19 =
+= V 2.18.1 - 2020-03-17 =
+* CHANGE - Small tweak to the display of advanced settings toolbar
+* CHANGE - WC Products - Keyword search by sku should allow partial matches
+
+
+= V 2.18.1 - 2020-03-16 =
+* NEW - CORE - Integrate with Elementor
+* NEW - ADVANCED FILTERS - Allow OR operators
+* NEW - FILTERS - Allow to save searches
+* NEW - COLUMNS - Improve the columns formatting
+* NEW - COLUMNS VISIBILITY - Allow to save groups
+* NEW - CORE - Improve the pagination
+* NEW - Add support for wpml
+* CHANGE - COLUMNS LOCATOR - Include field key in the search
+* CHANGE - ACF - Improve the support for repeater fields
+* CHANGE - ACF - Improve the detection of field group location parameters
+* CHANGE - ACF - Allow to rename fields
+* CHANGE - CORE - Improve the handling of full screen mode
+* CHANGE - CORE - Don't delete the manually created columns when the plugin is uninstalled
+* CHANGE - CORE - Improve the saving UI
+* CHANGE - WC Products - Improve the experience for editing downloadable files
+* CHANGE - FILTERS - Taxonomies field: If there are too many product attributes, don't show all the names
+* CHANGE - CORE - Improve the support for columns with autocomplete type in the search and bulk edit tools
+* CHANGE - WC Products - Improve the support for creating large numbers of variations
+* CHANGE - EXPORT - Improve the support for MS Excel
+* CHANGE - CORE - Allow to search by ID in all the dropdowns
+* CHANGE - COLUMNS - Improve the automatic format detection
+* CHANGE - CORE - Improve the advanced settings interface
+* CHANGE - WC Products - Notify when rare SKU errors happen
+* FIX - CUSTOM COLUMNS - Edit meta key - don't send ajax call unnecessarily
+* FIX - CORE - When we open the tinymce editor and the cell has a value with line breaks, the visual editor removes the line breaks
+* FIX - Posts table - The quick access button is duplicated when using multiple wpse plugins
+* FIX - EXPORT - The download URL breaks when the site uses https for backend and http for frontend
+* FIX - IMPORT - Columns with numbers in the names are not mapped automatically
+* FIX - COLUMNS VISIBILITY - Improve the deactivation of columns to avoid edge cases where some columns were not deactivated
+* FIX - WC Products - Improve the bulk edit support of the "variations enabled" column
+* FIX - Columns created manually sometimes don't appear
+* FIX - WC Products - Improve the process of copying variations
+* FIX - FILTERS - Column locator doesn't work sometimes.
+* FIX - ACF - The code for the dates columns interferes with date columns not coming from ACF
+* FIX - ADVANCED FILTERS - Sometimes the searches with empty values don't work
+
+
+= V 2.18.1 - 2020-02-19 =
 * NEW - FORMULAS - Allow to apply same bulk edit to multiple fields at once
 * NEW - FORMULAS - Allow to select individual rows with a checkbox and apply the bulk edit to those rows
 * NEW - CORE - Add support for custom post statuses
@@ -273,7 +316,7 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 * FIX - ACF - Repeater fields are saved correctly but the values are ignored by ACF
 
 
-= V 2.17.0 - 2020-01-13 =
+= V 2.18.1 - 2020-01-13 =
 * NEW - CORE - Add option to "settings" menu to reset all settings
 * NEW - FORMULAS - Add variable $current_value_capitalize_each_word$ and option "Capitalize each word" to the "type of edit" list
 * NEW - FORMULAS - Added variable tags: $uuid$, $uniqid$, $current_value_lowercase$

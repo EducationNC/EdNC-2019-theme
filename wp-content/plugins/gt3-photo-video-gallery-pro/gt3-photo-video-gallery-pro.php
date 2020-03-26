@@ -3,7 +3,7 @@
  ** Plugin Name: GT3 Photo & Video Gallery - Pro
  ** Plugin URI: https://gt3themes.com/
  ** Description: This is a Pro version of the most popular GT3 Photo & Video Gallery WordPress plugin. The Pro version comes with premium features which bring your galleries to the next high quality level.
- ** Version: 1.5.1.6
+ ** Version: 1.5.2.3
  ** Author: GT3 Themes
  ** Author URI: https://gt3themes.com/
  ** Text Domain: gt3pg_pro
