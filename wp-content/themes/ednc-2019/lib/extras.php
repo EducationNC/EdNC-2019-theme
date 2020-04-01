@@ -318,11 +318,13 @@ add_filter( 'facetwp_index_row', function( $params, $class ) {
     return $params;
 }, 10, 2 );
 
-
-// Relevanssi exclude posts in hide from archives
-// add_filter('relevanssi_do_not_index', function($exclude, $post_id) {
-//     if (has_term('hide-from-archives', 'appearance', $post_id )) {
-//       $exclude = true;
-//     }
-//     return $exclude;
-// }, 10, 2);
+// Exclude "Hide from archives" from search results
+add_filter( 'facetwp_query_args', function( $query_args, $class ) {
+    $query_args['tax_query'] = array(array(
+				'taxonomy' => 'appearance',
+				'field' => 'slug',
+				'terms' => 'hide-from-archives',
+				'operator' => 'NOT IN'
+			));
+    return $query_args;
+}, 10, 2 );
