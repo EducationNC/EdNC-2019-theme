@@ -27,7 +27,7 @@ if (!$img) {
       </header>
 
       <div class="excerpt">
-        <?php the_excerpt(); ?>
+        <?php echo get_truncated_excerpt(270); ?>
       </div>
     </div>
 </article>
