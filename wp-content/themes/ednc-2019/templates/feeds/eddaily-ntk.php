@@ -56,11 +56,11 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
           echo '<tr>';
             echo '<td valign="top" style="color: #2B2E34;font-size: 14px;font-weight: normal;text-align: left;">';
               echo '<h4 style="text-align: left;margin: 0 0 .5em;padding: 0;display: block;font-family: Helvetica;font-size: 16px;font-style: normal;font-weight: normal;line-height: 125%;color: #44474D !important; border-bottom: 1px solid #AAADB3;">What we\'re reading</h4>';
-              echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:normal;" href="' . $feature[0]['link'] . '" target="_blank">' . $feature[0]['title'] . '</a></h2>';
-              echo '<p style="margin: .5em 0;font-size:12px;">' . $feature[0]['source_name'] . ' | ' . $feature[0]['original_date'] . '</p>';
-              echo '<p style="margin: .5em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #666666;font-family: Georgia, Times, \'Times New Roman\', serif;font-size: 16px;line-height: 150%;text-align: left;">' . $feature[0]['intro_text'] . '</p>';
+              echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:normal;" href="' . $featured[0]['link'] . '" target="_blank">' . $featured[0]['title'] . '</a></h2>';
+              echo '<p style="margin: .5em 0;font-size:12px;">' . $featured[0]['source_name'] . ' | ' . $featured[0]['original_date'] . '</p>';
+              echo '<p style="margin: .5em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #666666;font-family: Georgia, Times, \'Times New Roman\', serif;font-size: 16px;line-height: 150%;text-align: left;">' . $featured[0]['intro_text'] . '</p>';
               echo '<p style="margin: .5em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #666666;font-family: Georgia, Times, \'Times New Roman\', serif;font-size: 16px;line-height: 150%;text-align: left;">';
-                echo '<a href="' . $feature[0]['link'] . '" style="color: #8b185e;font-weight: bold;word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: underline;" target="_blank">Continue reading&nbsp;&rarr;</a>';
+                echo '<a href="' . $featured[0]['link'] . '" style="color: #8b185e;font-weight: bold;word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: underline;" target="_blank">Continue reading&nbsp;&rarr;</a>';
               echo '</p>';
             echo '</td>';
           echo '</tr>';
@@ -69,8 +69,7 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
 
       echo '<table border="0" cellpadding="0" cellspacing="0" id="templateRows" width="100%">';
       	echo '<tbody>';
-        $i = 0;
-        foreach ($items as $item) {
+        foreach ($news_items as $item) {
       		echo '<tr>';
               echo '<td align="center" class="templateColumnContainer" valign="top" width="100%">';
                 echo '<table border="0" cellpadding="10" cellspacing="0" width="100%">';
@@ -85,7 +84,6 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
           			echo '</table>';
               echo '</td>';
       		echo '</tr>';
-          $i++;
         }
       	echo '</tbody>';
       echo '</table>';
