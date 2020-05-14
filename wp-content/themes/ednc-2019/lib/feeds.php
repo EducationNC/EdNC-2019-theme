@@ -18,6 +18,8 @@ function custom_rss() {
   add_feed('weekend', __NAMESPACE__ . '\\weekend');
   add_feed('digestspotlight', __NAMESPACE__ . '\\digestspotlight');
   add_feed('ednewstest', __NAMESPACE__ . '\\ednewstest');
+  add_feed('eddaily-posts', __NAMESPACE__ . '\\eddaily_posts');
+  add_feed('eddaily-ntk', __NAMESPACE__ . '\\eddaily_ntk');
 }
 add_action('init', __NAMESPACE__ . '\\custom_rss');
 
@@ -28,6 +30,14 @@ function ednews() {
 
 function ednewstest() {
   get_template_part('templates/feeds/ednews-new-test');
+}
+
+function eddaily_posts() {
+  get_template_part('templates/feeds/eddaily-posts');
+}
+
+function eddaily_ntk() {
+  get_template_part('templates/feeds/eddaily-ntk');
 }
 
 // Function for Board Notes feed

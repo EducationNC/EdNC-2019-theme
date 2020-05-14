@@ -67,15 +67,15 @@ function register_post_types() {
 
 	register_post_type( 'ednews',
 		array('labels' => array(
-				'name' => 'Editor\'s Picks',
-				'singular_name' => 'Editor\'s Picks',
+				'name' => 'EdDaily',
+				'singular_name' => 'EdDaily',
 				'add_new' => 'Add New',
-				'add_new_item' => 'Add New Editor\'s Picks',
+				'add_new_item' => 'Add New EdDaily',
 				'edit' => 'Edit',
-				'edit_item' => 'Edit Editor\'s Picks',
-				'new_item' => 'New Editor\'s Picks',
-				'view_item' => 'View Editor\'s Picks',
-				'search_items' => 'Search Editor\'s Picks',
+				'edit_item' => 'Edit EdDaily',
+				'new_item' => 'New EdDaily',
+				'view_item' => 'View EdDaily',
+				'search_items' => 'Search EdDaily',
 				'not_found' =>  'Nothing found in the Database.',
 				'not_found_in_trash' => 'Nothing found in Trash',
 				'parent_item_colon' => ''
