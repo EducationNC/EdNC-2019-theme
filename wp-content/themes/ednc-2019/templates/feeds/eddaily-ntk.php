@@ -47,20 +47,20 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
       <dc:creator><?php the_author(); ?></dc:creator>
       <guid isPermaLink="false"><?php the_guid(); ?></guid>
       <content:encoded><![CDATA[<?php
-      echo '<div style="font-size: 18px;">';
+      echo '<div class="editor-notes" style="font-size: 16px;padding:0px 18px 9px;font-family:merriweather,georgia,times new roman,serif;color:#222222;">';
+      echo '<style type="text/css">div.editor-notes p a {color: #8b185e !important;}</style>';
       echo preg_replace('/ style=("|\')(.*?)("|\')/','', $editor_notes); //Strips all inline styles
       echo '</div>';
 
-      echo '<table border="0" cellpadding="18" cellspacing="0" width="100%" style="min-width: 100%;background-color: #DCDFE5;margin-bottom: 1em;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">';
+      echo '<table border="0" cellpadding="18" cellspacing="0" width="100%" style="min-width: 100%;margin-bottom: 1em;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">';
         echo '<tbody>';
           echo '<tr>';
-            echo '<td valign="top" style="color: #2B2E34;font-size: 14px;font-weight: normal;text-align: left;">';
-              echo '<h4 style="text-align: left;margin: 0 0 .5em;padding: 0;display: block;font-family: Helvetica;font-size: 16px;font-style: normal;font-weight: normal;line-height: 125%;color: #44474D !important; border-bottom: 1px solid #AAADB3;">What we\'re reading</h4>';
-              echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:normal;" href="' . $featured[0]['link'] . '" target="_blank">' . $featured[0]['title'] . '</a></h2>';
-              echo '<p style="margin: .5em 0;font-size:12px;">' . $featured[0]['source_name'] . ' | ' . $featured[0]['original_date'] . '</p>';
-              echo '<p style="margin: .5em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #666666;font-family: Georgia, Times, \'Times New Roman\', serif;font-size: 16px;line-height: 150%;text-align: left;">' . $featured[0]['intro_text'] . '</p>';
-              echo '<p style="margin: .5em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #666666;font-family: Georgia, Times, \'Times New Roman\', serif;font-size: 16px;line-height: 150%;text-align: left;">';
-                echo '<a href="' . $featured[0]['link'] . '" style="color: #8b185e;font-weight: bold;word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: underline;" target="_blank">Continue reading&nbsp;&rarr;</a>';
+            echo '<td valign="top" style="padding:0px 18px 9px;"><div style="color:#222222;background-color:#e3e7ef;font-size:14px;padding:18px;font-weight: normal;text-align: left;">';
+              echo '<h4 style="text-align: left;margin: 0 0 1em;padding: 0;display: block;font-family:lato,helvetica neue,helvetica,arial,sans-serif;font-size: 16px;font-style: normal;font-weight: bold;line-height: 125%;color: #222222 !important; border-bottom: 1px solid #AAADB3;">Featured Read</h4>';
+              echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:bold;font-family:merriweather,georgia,times new roman,serif" href="' . $featured[0]['link'] . '" target="_blank">' . $featured[0]['title'] . '</a></h2>';
+              echo '<p style="margin: .5em 0;font-size:12px;font-family:lato,helvetica neue,helvetica,arial,sans-serif">' . $featured[0]['source_name'] . ' | ' . $featured[0]['original_date'] . '</p>';
+              echo '<p style="margin: .5em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #222222;font-family: merriweather,georgia,times new roman,serif;font-size: 15px;line-height: 150%;text-align: left;">' . $featured[0]['intro_text'];
+                echo ' <a href="' . $featured[0]['link'] . '" style="color: #8b185e;font-weight: bold;word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration:none;" target="_blank">Continue reading&nbsp;&rarr;</a>';
               echo '</p>';
             echo '</td>';
           echo '</tr>';
@@ -75,9 +75,9 @@ xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
                 echo '<table border="0" cellpadding="10" cellspacing="0" width="100%">';
           				echo '<tbody>';
           					echo '<tr>';
-          						echo '<td class="columnContent" style="padding:9px 10px 9px 0;">';
-                        echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:normal;" href="' . $item['link'] . '" target="_blank">' . $item['title'] . '</a></h2>';
-                        echo '<p style="color:#999999;font-size:12px;border-bottom:2px solid #eaeaea;padding-bottom:1em;">' . $item['source_name'] . ' | ' . $item['original_date'] . '</p>';
+          						echo '<td class="columnContent" style="padding:18px 18px 0;">';
+                        echo '<h2><a style="text-decoration:none;color:#8b185e;font-size:18px;font-weight:normal;font-family:lato,helvetica neue,helvetica,arial,sans-serif" href="' . $item['link'] . '" target="_blank">' . $item['title'] . '</a></h2>';
+                        echo '<p style="color:#222222;font-size:12px;font-family:lato,helvetica neue,helvetica,arial,sans-serifborder-bottom:2px solid #eaeaea;padding-bottom:1em;">' . $item['source_name'] . ' | ' . $item['original_date'] . '</p>';
                       echo '</td>';
           					echo '</tr>';
           				echo '</tbody>';
