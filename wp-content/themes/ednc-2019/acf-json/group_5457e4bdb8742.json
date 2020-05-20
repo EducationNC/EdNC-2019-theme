@@ -45,7 +45,7 @@
             "label": "Daily Articles to Include",
             "name": "daily_articles",
             "type": "relationship",
-            "instructions": "Select articles to include in the EdDaily email.",
+            "instructions": "Select up to 10 articles to include in the EdDaily email.",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
@@ -345,5 +345,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1589494191
+    "modified": 1590004768
 }
