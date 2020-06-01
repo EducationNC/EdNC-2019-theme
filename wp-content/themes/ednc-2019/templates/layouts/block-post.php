@@ -25,10 +25,6 @@ if ( function_exists( 'coauthors_posts_links' ) ) {
 $featured_image = Media\get_featured_image('medium');
 $title_overlay = get_field('title_overlay');
 
-$target = '';
-if (is_embed()) {
-  $target = 'target="_blank"';
-}
 ?>
 
 <article <?php post_class('block-post ' . implode($classes, ' ')); ?>>
@@ -64,5 +60,5 @@ if (is_embed()) {
     <?php get_template_part('templates/components/entry-meta'); ?>
   </header>
 
-  <a class="mega-link" href="<?php the_permalink(); ?>" <?php echo $target; ?>></a>
+  <a class="mega-link" href="<?php the_permalink(); ?>"></a>
 </article>
