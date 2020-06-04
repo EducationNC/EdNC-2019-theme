@@ -660,6 +660,31 @@ register_taxonomy( 'bill-status',
 	)
 );
 
+register_taxonomy( 'sector',
+	array('post', 'map', 'edtalk'), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
+	array('hierarchical' => true,     /* if this is true it acts like categories */
+		'labels' => array(
+			'name' => __( 'Sector' ),
+			'singular_name' => __( 'Sector' ),
+			'search_items' =>  __( 'Search Sectors' ),
+			'all_items' => __( 'All Sectors' ),
+			'parent_item' => __( 'Parent Sector' ),
+			'parent_item_colon' => __( 'Parent Sector:' ),
+			'edit_item' => __( 'Edit Sector' ),
+			'update_item' => __( 'Update Sector' ),
+			'add_new_item' => __( 'Add New Sector' ),
+			'new_item_name' => __( 'New Sector Name' )
+		),
+		'show_ui' => true,
+		'query_var' => true,
+		'show_in_rest' => true,
+		'public' => true,
+		'rewrite' => true,
+		'hierarchical' => true,
+		'show_in_rest' => true,
+	)
+);
+
 register_taxonomy( 'appearance',
 	array('post', 'map', 'edtalk', 'flash-cards'), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
 	array('hierarchical' => true,     /* if this is true it acts like categories */
@@ -713,16 +738,16 @@ register_taxonomy( 'column',
 	array('post', 'map', 'edtalk', 'flash-cards', 'reach-nc-poll', 'reach-question', ), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
 	array('hierarchical' => true,     /* if this is true it acts like categories */
 		'labels' => array(
-			'name' => __( 'Columns' ),
-			'singular_name' => __( 'Column' ),
-			'search_items' =>  __( 'Search Columns' ),
-			'all_items' => __( 'All Columns' ),
-			'parent_item' => __( 'Parent Column' ),
-			'parent_item_colon' => __( 'Parent Column:' ),
-			'edit_item' => __( 'Edit Column' ),
-			'update_item' => __( 'Update Column' ),
-			'add_new_item' => __( 'Add New Column' ),
-			'new_item_name' => __( 'New Column Name' )
+			'name' => __( 'Series' ),
+			'singular_name' => __( 'Series' ),
+			'search_items' =>  __( 'Search Series' ),
+			'all_items' => __( 'All Series' ),
+			'parent_item' => __( 'Parent Series' ),
+			'parent_item_colon' => __( 'Parent Series:' ),
+			'edit_item' => __( 'Edit Series' ),
+			'update_item' => __( 'Update Series' ),
+			'add_new_item' => __( 'Add New Series' ),
+			'new_item_name' => __( 'New Series Name' )
 		),
 		'show_ui' => true,
 		'query_var' => true,
@@ -820,7 +845,7 @@ register_taxonomy( 'map-column',
 	array('map'), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
 	array('hierarchical' => true,     /* if this is true it acts like categories */
 		'labels' => array(
-			'name' => __( 'Map Columns' ),
+			'name' => __( 'Map Series' ),
 			'singular_name' => __( 'Map Column' ),
 			'search_items' =>  __( 'Search Map Column' ),
 			'all_items' => __( 'All Map Column' ),
