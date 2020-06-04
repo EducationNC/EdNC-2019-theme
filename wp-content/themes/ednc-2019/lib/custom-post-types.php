@@ -735,6 +735,31 @@ register_taxonomy( 'appearance',
 	)
 );
 
+register_taxonomy( 'organization',
+	array('post', 'map', 'edtalk'), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
+	array('hierarchical' => true,     /* if this is true it acts like categories */
+		'labels' => array(
+			'name' => __( 'Organizations' ),
+			'singular_name' => __( 'Organization' ),
+			'search_items' =>  __( 'Search Organizations' ),
+			'all_items' => __( 'All Organizations' ),
+			'parent_item' => __( 'Parent Organization' ),
+			'parent_item_colon' => __( 'Parent Organization:' ),
+			'edit_item' => __( 'Edit Organization' ),
+			'update_item' => __( 'Update Organization' ),
+			'add_new_item' => __( 'Add New Organization' ),
+			'new_item_name' => __( 'New Organization Name' )
+		),
+		'show_ui' => true,
+		'query_var' => true,
+		'show_in_rest' => true,
+		'public' => true,
+		'rewrite' => true,
+		'hierarchical' => true,
+		'show_in_rest' => true,
+	)
+);
+
 register_taxonomy( 'podcast',
 	array('post', 'edtalk'), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
 	array('hierarchical' => true,     /* if this is true it acts like categories */
