@@ -845,7 +845,7 @@ register_taxonomy( 'map-column',
 	array('map'), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
 	array('hierarchical' => true,     /* if this is true it acts like categories */
 		'labels' => array(
-			'name' => __( 'Map Series' ),
+			'name' => __( 'Map Columns' ),
 			'singular_name' => __( 'Map Column' ),
 			'search_items' =>  __( 'Search Map Column' ),
 			'all_items' => __( 'All Map Column' ),
