@@ -664,7 +664,7 @@ register_taxonomy( 'sector',
 	array('post', 'map', 'edtalk'), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
 	array('hierarchical' => true,     /* if this is true it acts like categories */
 		'labels' => array(
-			'name' => __( 'Sector' ),
+			'name' => __( 'Sectors' ),
 			'singular_name' => __( 'Sector' ),
 			'search_items' =>  __( 'Search Sectors' ),
 			'all_items' => __( 'All Sectors' ),
@@ -674,6 +674,31 @@ register_taxonomy( 'sector',
 			'update_item' => __( 'Update Sector' ),
 			'add_new_item' => __( 'Add New Sector' ),
 			'new_item_name' => __( 'New Sector Name' )
+		),
+		'show_ui' => true,
+		'query_var' => true,
+		'show_in_rest' => true,
+		'public' => true,
+		'rewrite' => true,
+		'hierarchical' => true,
+		'show_in_rest' => true,
+	)
+);
+
+register_taxonomy( 'topic',
+	array('post', 'map', 'edtalk'), /* if you change the name of register_post_type( 'custom_type', then you have to change this */
+	array('hierarchical' => true,     /* if this is true it acts like categories */
+		'labels' => array(
+			'name' => __( 'Topics' ),
+			'singular_name' => __( 'Topic' ),
+			'search_items' =>  __( 'Search Topics' ),
+			'all_items' => __( 'All Topics' ),
+			'parent_item' => __( 'Parent Topic' ),
+			'parent_item_colon' => __( 'Parent Topic:' ),
+			'edit_item' => __( 'Edit Topic' ),
+			'update_item' => __( 'Update Topic' ),
+			'add_new_item' => __( 'Add New Topic' ),
+			'new_item_name' => __( 'New Topic Name' )
 		),
 		'show_ui' => true,
 		'query_var' => true,
