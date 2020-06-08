@@ -20,7 +20,7 @@ if (!class_exists('WPSE_CSV_API')) {
 		}
 
 		function init() {
-			$this->uploads_dir = apply_filters('vg_sheet_editor/csv/base_folder', WP_CONTENT_DIR . '/wp-sheet-editor-universal-sheet');
+			$this->uploads_dir = apply_filters('vg_sheet_editor/csv/base_folder', WP_CONTENT_DIR . '/uploads/wp-sheet-editor-universal-sheet');
 			$this->imports_dir = $this->uploads_dir . '/imports/';
 			$this->exports_dir = $this->uploads_dir . '/exports/';
 
@@ -42,19 +42,120 @@ if (!class_exists('WPSE_CSV_API')) {
 			if (!is_dir($this->uploads_dir)) {
 				return;
 			}
+			require_once ( ABSPATH . '/wp-admin/includes/class-wp-filesystem-base.php' );
 			require_once ( ABSPATH . '/wp-admin/includes/class-wp-filesystem-direct.php' );
 			$fileSystemDirect = new WP_Filesystem_Direct(false);
 			$fileSystemDirect->rmdir($this->uploads_dir, true);
 		}
 
+		function delete_old_directory() {
+			$old_directory = WP_CONTENT_DIR . '/wp-sheet-editor-universal-sheet';
+			if (!is_dir($old_directory)) {
+				return;
+			}
+			require_once ( ABSPATH . '/wp-admin/includes/class-wp-filesystem-base.php' );
+			require_once ( ABSPATH . '/wp-admin/includes/class-wp-filesystem-direct.php' );
+			$fileSystemDirect = new WP_Filesystem_Direct(false);
+			$fileSystemDirect->rmdir($old_directory, true);
+		}
+
+		function _get_ftp_file_id($ftp_path, $post_id = null) {
+			global $wpdb;
+			$out = null;
+			if (!current_user_can('manage_options')) {
+				return $out;
+			}
+
+
+//			ftp://user:password@host:port/path or ftp://user@host:port/path or ftp://user@host/path
+			preg_match('/^ftp:\/\/([^@:]*):?([^@]*)@([^:\/]*)(:[^\/]*)?(.*)$/', $ftp_path, $ftp_parts);
+
+			if (count($ftp_parts) !== 6) {
+				return $out;
+			}
+
+			$user = $ftp_parts[1];
+			$pass = $ftp_parts[2];
+			$host = $ftp_parts[3];
+			$port = (int) $ftp_parts[4];
+			$file_path = $ftp_parts[5];
+
+			if (empty($file_path) || empty($host) || empty($user)) {
+				return $out;
+			}
+
+			// Only allow image files
+			if (!preg_match('/\.(png|jpg|jpeg|gif)$/', strtolower($file_path))) {
+				return $out;
+			}
+
+			if (empty(VGSE()->options['allow_ftp_images_duplication'])) {
+				$attachment_id = (int) $wpdb->get_var("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'wpse_original_ftp_path' AND meta_value = '" . esc_sql($file_path) . "' ");
+				if ($attachment_id) {
+					return $attachment_id;
+				}
+			}
+
+			require_once(ABSPATH . 'wp-admin/includes/media.php');
+			require_once(ABSPATH . 'wp-admin/includes/file.php');
+			require_once(ABSPATH . 'wp-admin/includes/image.php');
+			$url_filename = basename(parse_url($file_path, PHP_URL_PATH));
+			$tmp_file_path = wp_tempnam($url_filename);
+
+			$conn_id = ftp_connect($host, $port ? $port : 21, 5);
+			if (!$conn_id) {
+				return $out;
+			}
+			$login_status = ftp_login($conn_id, $user, $pass);
+			if (!$login_status) {
+				return $out;
+			}
+			$handle = fopen($tmp_file_path, 'w');
+			$mode = ftp_pasv($conn_id, TRUE);
+			ftp_fget($conn_id, $handle, $file_path, FTP_BINARY, 0);
+			ftp_close($conn_id);
+
+			$attachment_id = VGSE()->helpers->add_file_to_gallery_from_path($tmp_file_path, $url_filename, $post_id);
+
+			if ($attachment_id) {
+				update_post_meta($attachment_id, 'wpse_original_ftp_path', $file_path);
+			}
+			return $attachment_id;
+		}
+
 		function late_init() {
 
+			add_filter('redux/options/' . VGSE()->options_key . '/sections', array($this, 'add_settings_page_options'));
 			add_action('vg_sheet_editor/on_uninstall', array($this, 'remove_directory'));
 			add_filter('vg_sheet_editor/load_rows/full_output', array($this, 'export_csv'), 10, 4);
 			add_action('wp_ajax_vgse_import_csv', array($this, 'import_csv'));
 			add_action('wp_ajax_vgse_upload_file_for_import', array($this, 'upload_data_for_import'));
 			do_action('wpse_delete_old_csvs', array($this, 'delete_old_csvs'));
 			$this->delete_old_csvs();
+			$this->delete_old_directory();
+		}
+
+		/**
+		 * Add fields to options page
+		 * @param array $sections
+		 * @return array
+		 */
+		function add_settings_page_options($sections) {
+			$sections['customize_features']['fields'][] = array(
+				'id' => 'allow_ftp_images_support',
+				'type' => 'switch',
+				'title' => __('Allow to import images from FTP servers?', VGSE()->textname),
+				'desc' => __('By default, the importer allows to save images using full internal URLs, external URLs, file name (from the media library), and file ID. If you activate this option, it will support FTP urls like this: ftp://user:password@host:port/path/to/image.png. This will make the import slower', VGSE()->textname),
+				'default' => false,
+			);
+			$sections['customize_features']['fields'][] = array(
+				'id' => 'allow_ftp_images_duplication',
+				'type' => 'switch',
+				'title' => __('FTP Images: Skip images with same file name?', VGSE()->textname),
+				'desc' => __('When you import an image using FTP urls, the image is imported every time and you might end up with duplicates in the media library. Activate this option to reuse images in the media library with same file name and avoid downloading the FTP image again on future imports. Deactivate this option if you want to keep the images updated on future imports.', VGSE()->textname),
+				'default' => false,
+			);
+			return $sections;
 		}
 
 // Read a file and display its content chunk by chunk
@@ -92,7 +193,7 @@ if (!class_exists('WPSE_CSV_API')) {
 				return;
 			}
 
-			if (strpos($_GET['wpseefn'], '.') !== false || strpos($_GET['wpseefn'], '/') !== false) {
+			if (strpos($_GET['wpseefn'], '.') !== false || strpos($_GET['wpseefn'], '/') !== false || strpos($_GET['wpseefn'], '\\') !== false) {
 				die();
 			}
 			$file_name = sanitize_file_name($_GET['wpseefn']);
@@ -209,7 +310,7 @@ if (!class_exists('WPSE_CSV_API')) {
 			}
 
 			if ($decode_quotes) {
-				$this->replace_in_file($file_path, '&quot;', '"');
+				$this->replace_file($file_path, '&quot;', '"');
 			}
 			$handle = fopen($file_path, 'r');
 			$headers = fgetcsv($handle, 0, $separator);
@@ -453,6 +554,12 @@ if (!class_exists('WPSE_CSV_API')) {
 					if (count($search_args) === count($check_wp_fields) && !empty($check_wp_fields)) {
 						$rows[$row_index]['ID'] = null;
 						foreach ($check_wp_fields as $field_key) {
+							// Allow to search by post name for the update
+							if ($field_key === 'post_name__in' && !empty($row[$field_key])) {
+								$search_value = basename($row[$field_key]);
+								$field_key = 'post_name';
+								$row[$field_key] = $search_value;
+							}
 							$meta_query['meta_query'][] = array(
 								'key' => $field_key,
 								'value' => $row[$field_key],
@@ -480,8 +587,20 @@ if (!class_exists('WPSE_CSV_API')) {
 								$found_post_id = $found[0];
 							}
 						}
+
+						// The find_post_id filter can return a single ID or array of IDs (in case we use a wp_check field
+						// that uses a search to match existing rows, so we might need to update multiple IDs
+						// In this case we duplicate the import row for every ID found
 						if (!empty($found_post_id)) {
-							$rows[$row_index]['ID'] = $found_post_id;
+							if (is_int($found_post_id)) {
+								$rows[$row_index]['ID'] = $found_post_id;
+							} elseif (is_array($found_post_id)) {
+								unset($rows[$row_index]);
+								foreach ($found_post_id as $found_post_id_single) {
+									$row['ID'] = $found_post_id_single;
+									$rows[] = $row;
+								}
+							}
 						}
 					}
 				}
@@ -500,6 +619,11 @@ if (!class_exists('WPSE_CSV_API')) {
 			// If writing_type allows to create (either only new or both)
 			$total_updated = count($rows);
 			$created = count(wp_list_filter($rows, array('ID' => null)));
+
+			if (!empty(VGSE()->options['allow_ftp_images_support'])) {
+				add_filter('vg_sheet_editor/save/url_to_file_id', array($this, 'import_ftp_images'), 10, 3);
+				$settings['skip_broken_images'] = 'yes';
+			}
 
 			$save_result = VGSE()->helpers->save_rows(apply_filters('vg_sheet_editor/import/save_rows_args', array(
 				'nonce' => $nonce,
@@ -524,6 +648,11 @@ if (!class_exists('WPSE_CSV_API')) {
 			);
 
 			return $out;
+		}
+
+		function import_ftp_images($new_id, $url, $post_id) {
+			$new_id = $this->_get_ftp_file_id($url, $post_id);
+			return $new_id;
 		}
 
 		function upload_data_for_import() {
@@ -754,14 +883,14 @@ if (!class_exists('WPSE_CSV_API')) {
 				$this->remove_duplicates_from_file($csv_file);
 				$out['export_file_url'] = add_query_arg('wpseefn', sanitize_file_name($clean_data['export_key']), admin_url('index.php'));
 				$expiration_hours = (int) $this->file_expiration_hours();
-				$out['message'] .= sprintf(__('<br><br>The export finished.<br><br>The download should start automatically. If it doesn\'t start automatically you can find the file in the folder /wp-content/wp-sheet-editor-universal-sheet/exports/ on your server.<br><br>The export files are deleted automatically after %d hours.', VGSE()->textname), $expiration_hours);
+				$out['message'] .= sprintf(__('<br><br>The export finished.<br><br>The download should start automatically. If it doesn\'t start automatically you can find the file in the folder /wp-content/uploads/wp-sheet-editor-universal-sheet/exports/ on your server.<br><br>The export files are deleted automatically after %d hours.', VGSE()->textname), $expiration_hours);
 			}
 
 			return $out;
 		}
 
 		function file_expiration_hours() {
-			return apply_filters('vg_sheet_editor/csv/file_expiration_hours', 6);
+			return apply_filters('vg_sheet_editor/csv/file_expiration_hours', 48);
 		}
 
 		function _array_to_csv($data, $filepath, $csv_headers = null, $delimiter = ',') {

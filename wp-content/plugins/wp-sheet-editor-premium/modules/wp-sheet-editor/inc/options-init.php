@@ -70,7 +70,7 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 		public function setSections() {
 
 			$helpers = WP_Sheet_Editor_Helpers::get_instance();
-			self::$sections[] = array(
+			self::$sections['speed'] = array(
 				'icon' => 'el-icon-cogs',
 				'title' => __('Speed and performance', VGSE()->textname),
 				'fields' => array(
@@ -101,7 +101,7 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 				)
 			);
 
-			self::$sections[] = array(
+			self::$sections['productivity'] = array(
 				'icon' => 'el-icon-cogs',
 				'title' => __('Increase Productivity', VGSE()->textname),
 				'fields' => array(
@@ -134,15 +134,16 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 						'default' => true,
 					),
 					array(
-						'id' => 'be_fix_first_columns',
-						'type' => 'switch',
-						'title' => __('Freeze first 2 columns at the left side?', VGSE()->textname),
-						'desc' => __('When this is enabled the first 2 columns will always be visible while scrolling horizontally. You can right click on any column to freeze or unfreeze it.', VGSE()->textname),
-						'default' => true,
+						'id' => 'be_fix_columns_left',
+						'type' => 'text',
+						'validate' => 'numeric',
+						'title' => __('Freeze first columns at the left side?', VGSE()->textname),
+						'desc' => __('Enter a number and those columns will be frozen while scrolling horizontally. You can right click on any column to freeze or unfreeze it. For example, enter 2 to freeze the first 2 columns', VGSE()->textname),
+						'default' => 2,
 					),
 				)
 			);
-			self::$sections[] = array(
+			self::$sections['solution_errors'] = array(
 				'icon' => 'el-icon-cogs',
 				'title' => __('Solution to weird errors', VGSE()->textname),
 				'fields' => array(
@@ -203,12 +204,39 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 						'title' => __('Meta keys that should use the infinite serialized fields handler', VGSE()->textname),
 						'desc' => __('This is only for advanced users or if our support team asks you to use this option. We have 2 ways to handle serialized fields: the old handler (used by default, which has limitations) and the infinite serialization handler (better, it is not active by default to not break previous integrations). Use this option if you have serialized fields that save incorrectly or dont appear in the spreadsheet.', VGSE()->textname),
 					),
+					array(
+						'id' => 'blacklist_columns',
+						'type' => 'text',
+						'title' => __('Blacklist these columns', VGSE()->textname),
+						'desc' => __('Enter the list of field keys separated by commas, you can enter the full meta field key or partial keywords or prefixes. This is useful because some plugins add thousands of unnecessary fields to the database and they clutter the spreadsheet', VGSE()->textname),
+					),
 				)
 			);
-			self::$sections[] = array(
+			self::$sections['customize_features'] = array(
 				'icon' => 'el-icon-cogs',
 				'title' => __('Customize features', VGSE()->textname),
 				'fields' => array(
+					array(
+						'id' => 'enable_spreadsheet_views_restrictions',
+						'type' => 'switch',
+						'title' => __('Enable option to restrict spreadsheet views per user?', VGSE()->textname),
+						'desc' => __('If you enable this option, we will add fields to the user profiles where you can specify which spreadsheet views they can use, they can use all the spreadsheet views if this is deactivated.', VGSE()->textname),
+						'default' => false,
+					),
+					array(
+						'id' => 'enable_simple_mode',
+						'type' => 'switch',
+						'title' => __('Enable simple mode?', VGSE()->textname),
+						'desc' => __('If you enable this option, we will simplify the spreadsheet options and remove advanced examples, tips, and options rarely used in the search tool, bulk edit tool, import tool, export tool, and other places.', VGSE()->textname),
+						'default' => false,
+					),
+					array(
+						'id' => 'disable_automatic_formatting_detection',
+						'type' => 'switch',
+						'title' => __('Disable the automatic formatting detection?', VGSE()->textname),
+						'desc' => __('If you enable this option, some columns will appear as text. Normally we detect the date fields, image fields.', VGSE()->textname),
+						'default' => false,
+					),
 					array(
 						'id' => 'be_disable_cells_lazy_loading',
 						'type' => 'switch',
@@ -276,13 +304,20 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 					array(
 						'id' => 'hide_cell_comments',
 						'type' => 'switch',
-						'title' => __('Hide cell comments?', VGSE()->textname),
+						'title' => __('Remove help messages from the cells?', VGSE()->textname),
 						'desc' => __('By default we show comments in some columns indicating the value format or why they are locked. for example, the category column shows a tip indicating to separate terms with a comma and how to add child categories, variation columns have a tip indicating why they are locked for parent products. You can activate this option to disable those tips.', VGSE()->textname),
+						'default' => false,
+					),
+					array(
+						'id' => 'manage_taxonomy_columns_term_ids',
+						'type' => 'switch',
+						'title' => __('Manage taxonomy column values as term ids?', VGSE()->textname),
+						'desc' => __('By default we show the categories as names separated by commas. Activate this option to display and save term ids separated by commas.', VGSE()->textname),
 						'default' => false,
 					),
 				)
 			);
-			self::$sections[] = array(
+			self::$sections['general'] = array(
 				'icon' => 'el-icon-cogs',
 				'title' => __('General settings', VGSE()->textname),
 				'fields' => array(
@@ -302,7 +337,7 @@ if (!class_exists('WP_Sheet_Editor_Redux_Setup')) {
 					),
 			));
 
-			self::$sections[] = array(
+			self::$sections['misc'] = array(
 				'icon' => 'el-icon-plane',
 				'title' => __('Misc', VGSE()->textname),
 				'fields' => array(

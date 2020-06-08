@@ -42,6 +42,7 @@ add_action('enqueue_block_editor_assets', function(){
 			'defaults' => $settings->getSettings(),
 			'blocks'   => array_map('strtolower', $settings->getBlocks()),
 			'plugins'  => Assets::instance()->getPlugins(),
+			'_watermark_nonce' => wp_create_nonce('process_watermarks'),
 		)
 	);
 

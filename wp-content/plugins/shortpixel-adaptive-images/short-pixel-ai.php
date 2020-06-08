@@ -3,7 +3,7 @@
  * Plugin Name: ShortPixel Adaptive Images
  * Plugin URI: https://shortpixel.com/
  * Description: Display properly sized, smart cropped and optimized images on your website. Images are processed on the fly and served from our CDN.
- * Version: 1.8.4
+ * Version: 1.8.8
  * Author: ShortPixel
  * Author URI: https://shortpixel.com
  * Text Domain: shortpixel-adaptive-images
@@ -11,7 +11,7 @@
 ! defined( 'ABSPATH' ) and exit;
 
 if(!class_exists('ShortPixelAI') ) {
-    define( 'SHORTPIXEL_AI_VERSION', '1.8.4' );
+    define( 'SHORTPIXEL_AI_VERSION', '1.8.8' );
     define('SHORTPIXEL_AI_PLUGIN_FILE', __FILE__);
 
     require_once(__DIR__ . '/inc/logger.class.php');
@@ -35,27 +35,28 @@ if(!class_exists('ShortPixelAI') ) {
     if(is_numeric(SHORTPIXEL_AI_DEBUG) && (SHORTPIXEL_AI_DEBUG & 2)) {
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
+
+        function shortPixelDebugErrorHandler($errno, $errstr, $errfile, $errline)
+        {
+            $type = 'UNKNOWN';
+            switch ($errno) {
+                case E_USER_ERROR:
+                    $type = 'ERROR';
+                    break;
+                case E_USER_WARNING:
+                    $type = 'WARNING';
+                    break;
+                case E_USER_NOTICE:
+                    $type = 'NOTICE';
+                    break;
+            }
+            $upload_dir = wp_upload_dir();
+            $logPath = $upload_dir['basedir'] . '/' . 'shortpixel_ai_log';
+            file_put_contents($logPath, '[' . date('Y-m-d H:i:s') . "] Got $type $errstr in $errfile at $errline " . json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), JSON_PRETTY_PRINT) . "\n\n", FILE_APPEND);
+        }
         $old_error_handler = set_error_handler("shortPixelDebugErrorHandler");
     }
 
-    function shortPixelDebugErrorHandler($errno, $errstr, $errfile, $errline)
-    {
-        $type = 'UNKNOWN';
-        switch ($errno) {
-            case E_USER_ERROR:
-                $type = 'ERROR';
-                break;
-            case E_USER_WARNING:
-                $type = 'WARNING';
-                break;
-            case E_USER_NOTICE:
-                $type = 'NOTICE';
-                break;
-        }
-        $upload_dir = wp_upload_dir();
-        $logPath = $upload_dir['basedir'] . '/' . 'shortpixel_ai_log';
-        file_put_contents($logPath, '[' . date('Y-m-d H:i:s') . "] Got $type $errstr in $errfile at $errline " . json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), JSON_PRETTY_PRINT) . "\n\n", FILE_APPEND);
-    }
 
     register_activation_hook( __FILE__, array( 'ShortPixelAI', 'activate' ) );
     register_deactivation_hook( __FILE__, array( 'ShortPixelAI', 'deactivate' ) );

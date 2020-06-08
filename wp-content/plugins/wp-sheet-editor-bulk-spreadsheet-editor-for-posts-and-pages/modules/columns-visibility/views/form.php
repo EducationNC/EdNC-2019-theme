@@ -3,21 +3,33 @@
 
 	<div class="modal-content">
 		<?php if (!$partial_form) { ?>
-			<form action="<?php echo admin_url('admin-ajax.php'); ?>" method="POST" class="vgse-modal-form" data-nonce="<?php echo wp_create_nonce('bep-nonce'); ?>">
+			<form action="<?php echo admin_url('admin-ajax.php'); ?>" method="POST" class="vgse-modal-form" data-nonce="<?php echo wp_create_nonce('bep-nonce'); ?>" id="columns-manager-form">
 			<?php } ?>
 			<h3><?php _e('Columns manager', VGSE()->textname); ?></h3>
 			<ul class="unstyled-list">
 				<li>
 					<p><?php _e('Drag the columns to the left or right side to enable/disable them, drag them to the top or bottom to sort them, click on the "edit" button to rename them, click on the "x" button to delete them completely (only when they are disabled previously).', VGSE()->textname); ?><?php do_action('vg_sheet_editor/columns_visibility/after_instructions', $post_type, $visible_columns, $options[$post_type], $editor); ?></p> 
 
-					<button class="button vgse-change-all-states" data-to="enabled"><?php _e('Enable all', VGSE()->textname); ?></button> - 
-					<button class="button vgse-change-all-states" data-to="disabled"><?php _e('Disable all', VGSE()->textname); ?></button>
+					<!--These options were replaced with the "bulk actions" added to each list-->
+					<!--<button class="button vgse-change-all-states" data-to="enabled"><?php _e('Enable all', VGSE()->textname); ?></button> ---> 
+					<!--<button class="button vgse-change-all-states" data-to="disabled"><?php _e('Disable all', VGSE()->textname); ?></button>-->
 
 				</li>
 				<li>
 					<div class="vgse-sorter-section">
 
-						<h3><?php _e('Enabled', VGSE()->textname); ?></h3>
+						<h3><?php _e('Enabled', VGSE()->textname); ?> <button type="button" class="toggle-search-button"><i class="fa fa-edit"></i> <?php _e('Bulk', VGSE()->textname); ?></button></h3>
+						<div class="wpse-columns-bulk-actions">
+							<input type="search" class="wpse-filter-list" placeholder="<?php _e('Enter a search term...', VGSE()->textname); ?>">
+							<select class="wpse-bulk-action">
+								<option value=""><?php _e('Bulk actions', VGSE()->textname); ?></option>
+								<option value="disable"><?php _e('Disable all', VGSE()->textname); ?></option>
+								<option value="sort_alphabetically_asc"><?php _e('Sort alphabetically ASC', VGSE()->textname); ?></option>
+								<option value="sort_alphabetically_desc"><?php _e('Sort alphabetically DESC', VGSE()->textname); ?></option>
+							</select>
+						</div>
+
+
 						<ul class="vgse-sorter columns-enabled" id="vgse-columns-enabled">
 							<?php
 							foreach ($visible_columns as $column_key => $column) {
@@ -48,7 +60,18 @@
 						</ul>
 					</div>
 					<div class="vgse-sorter-section">
-						<h3><?php _e('Disabled', VGSE()->textname); ?></h3>
+						<h3><?php _e('Disabled', VGSE()->textname); ?> <button type="button" class="toggle-search-button"><i class="fa fa-edit"></i> <?php _e('Bulk', VGSE()->textname); ?></button></h3>
+
+						<div class="wpse-columns-bulk-actions">
+							<input type="search" class="wpse-filter-list" placeholder="<?php _e('Enter a search term...', VGSE()->textname); ?>">
+							<select class="wpse-bulk-action">
+								<option value=""><?php _e('Bulk actions', VGSE()->textname); ?></option>
+								<option value="enable"><?php _e('Enable all', VGSE()->textname); ?></option>
+								<option value="delete"><?php _e('Delete all', VGSE()->textname); ?></option>
+								<option value="sort_alphabetically_asc"><?php _e('Sort alphabetically ASC', VGSE()->textname); ?></option>
+								<option value="sort_alphabetically_desc"><?php _e('Sort alphabetically DESC', VGSE()->textname); ?></option>
+							</select>
+						</div>
 						<ul class="vgse-sorter columns-disabled" id="vgse-columns-disabled"><?php
 							if (isset($options[$post_type]['disabled'])) {
 								foreach ($options[$post_type]['disabled'] as $column_key => $column_title) {

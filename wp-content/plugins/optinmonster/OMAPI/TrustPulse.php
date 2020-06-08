@@ -80,6 +80,14 @@ class OMAPI_TrustPulse {
 	 * @since 1.9.0
 	 */
 	public function __construct() {
+		if ( ! defined( 'TRUSTPULSE_APP_URL' ) ) {
+			define( 'TRUSTPULSE_APP_URL', 'https://app.trustpulse.com/' );
+		}
+
+		if ( ! defined( 'TRUSTPULSE_URL' ) ) {
+			define( 'TRUSTPULSE_URL', 'https://trustpulse.com/' );
+		}
+
 		// If we are not in admin or admin ajax, return.
 		if ( ! is_admin() ) {
 			return;
@@ -98,14 +106,6 @@ class OMAPI_TrustPulse {
 		// If user cannot manage_options, return.
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
-		}
-
-		if ( ! defined( 'TRUSTPULSE_APP_URL' ) ) {
-			define( 'TRUSTPULSE_APP_URL', 'https://app.trustpulse.com/' );
-		}
-
-		if ( ! defined( 'TRUSTPULSE_URL' ) ) {
-			define( 'TRUSTPULSE_URL', 'https://trustpulse.com/' );
 		}
 
 		// Set our object.
@@ -142,7 +142,7 @@ class OMAPI_TrustPulse {
 				? 'optin-monster-api-settings-no-menu'
 				: 'optin-monster-api-settings', // Parent slug
 			__( 'TrustPulse', 'optin-monster-api' ), // Page title
-			__( 'TrustPulse', 'optin-monster-api' ),
+			__( 'Social Proof Widget', 'optin-monster-api' ),
 			apply_filters( 'optin_monster_api_menu_cap', 'manage_options', 'optin-monster-trustpulse' ), // Cap
 			'optin-monster-trustpulse', // Slug
 			array( $this, 'display_page' ) // Callback

@@ -55,6 +55,11 @@ wp_enqueue_script('gt3pg_admin_js');
 				wp_enqueue_style('wp-components');
 				wp_enqueue_style('wp-element');
 				wp_enqueue_style('wp-blocks-library');
+				wp_enqueue_media();
+				wp_enqueue_script('media-grid');
+				wp_enqueue_script('media');
+
+
 				wp_enqueue_script('gt3pg_settings', GT3PG_PLUGINROOTURL.'/dist/js/admin/settings.js', null, GT3PG_PLUGIN_VERSION);
 				wp_enqueue_style('gt3pg_settings', GT3PG_PLUGINROOTURL.'/dist/css/admin/settings.css', null, GT3PG_PLUGIN_VERSION);
 				wp_enqueue_style('gt3pg_admin_css', GT3PG_PLUGINROOTURL.'/dist/css/admin/admin.css', null, GT3PG_PLUGIN_VERSION);

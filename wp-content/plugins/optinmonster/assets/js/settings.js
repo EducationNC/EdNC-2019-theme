@@ -59,7 +59,7 @@ jQuery(document).ready(function ($) {
 				return;
 			}
 
-			if ( ! msg.data || 'string' !== typeof msg.data ) {
+			if (!msg.data || 'string' !== typeof msg.data) {
 				console.error('Messages from "' + OMAPI.app_url + '" must contain an api key string.');
 				return;
 			}
@@ -112,41 +112,37 @@ jQuery(document).ready(function ($) {
 	 * @since 1.1.4
 	 */
 	function omapiToggleSettings() {
-		var shortcode_val = $('#omapi-field-shortcode').is(':checked');
-		if (!shortcode_val) {
-			$('.omapi-field-box-shortcode_output').hide();
-		}
-		$(document).on('change', '#omapi-field-shortcode', function (e) {
-			if ($(this).is(':checked')) {
-				$('.omapi-field-box-shortcode_output').show(0);
-			} else {
-				$('.omapi-field-box-shortcode_output').hide(0);
-			}
-		});
+		var $automatic = $('#omapi-field-automatic');
+		var $mpSetting = $('#omapi-field-mailpoet');
+		var $mpPhone   = $('#omapi-field-mailpoet_use_phone');
 
-		var mailpoet_val = $('#omapi-field-mailpoet').is(':checked');
-		if (!mailpoet_val) {
-			$('.omapi-field-box-mailpoet_list').hide();
-		}
-		$(document).on('change', '#omapi-field-mailpoet', function (e) {
-			if ($(this).is(':checked')) {
-				$('.omapi-field-box-mailpoet_list').show(0);
-			} else {
-				$('.omapi-field-box-mailpoet_list').hide(0);
-			}
-		});
+		var toggleAutoSetting = function() {
+			var method = $automatic.is(':checked') ? 'show' : 'hide';
+			$('.omapi-field-box-automatic_shortcode')[method]();
+		};
 
-		var automatic_val = $('#omapi-field-automatic').is(':checked');
-		if (automatic_val) {
-			$('.omapi-field-box-automatic_shortcode').hide();
-		}
-		$(document).on('change', '#omapi-field-automatic', function (e) {
-			if ($(this).is(':checked')) {
-				$('.omapi-field-box-automatic_shortcode').hide(0);
-			} else {
-				$('.omapi-field-box-automatic_shortcode').show(0);
+		var toggleMpPhoneSetting = function() {
+			var method = $mpPhone.is(':checked') ? 'show' : 'hide';
+			$('.omapi-field-box-mailpoet_phone_field')[method]();
+		};
+
+		var toggleMpSettings = function() {
+			var show = $mpSetting.is(':checked');
+			var method = show ? 'show' : 'hide';
+			$('.omapi-field-box-mailpoet_list')[method]();
+			$('.omapi-field-box-mailpoet_use_phone')[method]();
+			$('.omapi-field-box-mailpoet_phone_field')[method]();
+
+			if ( show ) {
+				toggleMpPhoneSetting();
 			}
-		});
+		};
+
+		toggleAutoSetting();
+		toggleMpSettings();
+		$(document).on('change', '#omapi-field-automatic', toggleAutoSetting);
+		$(document).on('change', '#omapi-field-mailpoet', toggleMpSettings);
+		$(document).on('change', '#omapi-field-mailpoet_use_phone', toggleMpPhoneSetting);
 	}
 
 	/**
@@ -212,7 +208,7 @@ jQuery(document).ready(function ($) {
 				$.each(value, function (key, value) {
 
 					// Keep from outputing ugly Object text
-					output = ( $.isPlainObject(value) ? '' : value );
+					output = ($.isPlainObject(value) ? '' : value);
 					// new line
 					i += 10;
 					doc.text(10, i, key + ' : ' + output);

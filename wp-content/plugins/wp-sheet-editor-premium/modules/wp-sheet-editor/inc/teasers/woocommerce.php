@@ -48,7 +48,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 			));
 			$this->variation_only_columns = array(
 			);
-			$this->variation_columns = array(
+			$this->variation_columns = apply_filters('vg_sheet_editor/woocommerce/teasers/allowed_variation_columns', array(
 				'ID',
 				'_sku',
 				'_regular_price',
@@ -60,7 +60,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Teaser')) {
 				'_height',
 				'_width',
 				'_weight',
-			);
+			));
 
 
 			add_filter('vg_sheet_editor/allowed_post_types', array($this, 'allow_product_post_type'));

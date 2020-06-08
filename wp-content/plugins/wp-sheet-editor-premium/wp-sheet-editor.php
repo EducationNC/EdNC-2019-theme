@@ -2,15 +2,15 @@
 /*
   Plugin Name: WP Sheet Editor (Premium)
   Description: Bulk edit posts and pages easily using a beautiful spreadsheet inside WordPress.
-  Version: 2.18.1
+  Version: 2.20.0
   Author: WP Sheet Editor
   Author URI: https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts
   Plugin URI: https://wpsheeteditor.com/extensions/posts-pages-post-types-spreadsheet/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=posts
   License:     GPL2
   License URI: https://www.gnu.org/licenses/gpl-2.0.html
   WC requires at least: 3.0
-WC tested up to: 4.0
-Text Domain: vg_sheet_editor_posts
+  WC tested up to: 4.1
+  Text Domain: vg_sheet_editor_posts
   Domain Path: /lang
   @fs_premium_only /modules/user-path/send-user-path.php, /modules/acf/, /modules/advanced-filters/, /modules/columns-renaming/, /modules/custom-post-types/, /modules/formulas/, /modules/custom-columns/, /modules/spreadsheet-setup/, /modules/woocommerce/, /modules/universal-sheet/, /modules/yoast-seo/, /modules/wpml/, /modules/posts-templates/, /modules/columns-manager/,  /whats-new/
   @fs_free_only /inc/custom-post-types.php
@@ -200,7 +200,7 @@ if (!class_exists('WP_Sheet_Editor_Dist')) {
 		}
 
 		function allow_to_disable_extension_offerings__premium_only($sections) {
-			$sections[1]['fields'][] = array(
+			$sections['misc']['fields'][] = array(
 				'id' => 'be_disable_extension_offerings',
 				'type' => 'switch',
 				'title' => __('Disable extension offerings?', WP_Sheet_Editor_Dist::get_instance()->textname),

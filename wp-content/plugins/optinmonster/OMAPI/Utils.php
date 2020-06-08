@@ -66,4 +66,15 @@ class OMAPI_Utils {
 		return 'post_tag' === $taxonomy && is_tag( $term_id ) || is_tax( $taxonomy, $term_id );
 	}
 
+	/**
+	 * Determines if AMP is enabled on the site or not.
+	 * 
+	 * @since 1.9.8
+	 *
+	 * @return bool True if AMP is enabled, false otherwise.
+	 */
+	public static function is_amp_enabled() {
+		return function_exists( 'is_amp_endpoint' ) && is_amp_endpoint();
+	}
+
 }

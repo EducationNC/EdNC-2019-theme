@@ -130,6 +130,13 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 					'normal' => array()
 				);
 				foreach ($meta_keys as $meta_key) {
+					// Fields with numbers as keys are not compatible because PHP
+					// messes up the number indexes when arrays are merged
+					if (is_numeric($meta_key)) {
+						continue;
+					}
+
+
 					$label = $this->_convert_key_to_label($meta_key);
 					$this->found_columns[$post_type][$label] = $meta_key;
 
@@ -208,23 +215,41 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 					$editor->args['columns']->register_item($column_key, $post_type, $column_settings);
 				}
 			}
-
-			if (!empty($columns_detected['serialized'])) {
+			if (!empty($columns_detected['serialized']) && method_exists($editor->args['columns'], 'columns_limit_reached') && !$editor->args['columns']->columns_limit_reached($post_type)) {
 				foreach ($columns_detected['serialized'] as $column_key => $column_settings) {
 					new WP_Sheet_Editor_Serialized_Field($column_settings);
 				}
+			} else {
+				foreach ($columns_detected['serialized'] as $column_key => $column_settings) {
+					$editor->args['columns']->add_rejection($column_key, 'columns_limit_reached', $post_type);
+				}
 			}
-			if (!empty($columns_detected['infinite_serialized'])) {
+			if (!empty($columns_detected['infinite_serialized']) && method_exists($editor->args['columns'], 'columns_limit_reached') && !$editor->args['columns']->columns_limit_reached($post_type)) {
 				foreach ($columns_detected['infinite_serialized'] as $column_key => $column_settings) {
 					new WP_Sheet_Editor_Infinite_Serialized_Field($column_settings);
 				}
+			} else {
+				foreach ($columns_detected['serialized'] as $column_key => $column_settings) {
+					$editor->args['columns']->add_rejection($column_key, 'columns_limit_reached', $post_type);
+				}
 			}
+
 			VGSE()->helpers->profile_record("End " . __FUNCTION__);
+		}
+
+		function _is_not_object($value) {
+			return !is_object($value);
 		}
 
 		function detect_column_type($meta_key, $editor) {
 			$post_type = $editor->args['provider'];
 			$values = array_map('maybe_unserialize', $editor->provider->get_meta_field_unique_values($meta_key, $post_type));
+			$values_without_objects = array_filter($values, array($this, '_is_not_object'));
+
+			// Don't register columns that have objects as values
+			if (count($values) > count($values_without_objects)) {
+				return false;
+			}
 
 			$out = array(
 				'type' => 'text',
@@ -238,6 +263,9 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 			foreach ($values as $value) {
 
 				if (is_array($value)) {
+					if (!empty(VGSE()->options['be_disable_serialized_columns']) || !apply_filters('vg_sheet_editor/serialized_addon/is_enabled', true)) {
+						continue;
+					}
 					$array_level = $this->_array_depth($value);
 					if (!empty($value)) {
 						if ($array_level < 3 && $this->_array_depth_uniform($value) && !in_array($meta_key, $forced_infinite_serialized_handler, true)) {
@@ -336,6 +364,9 @@ if (!class_exists('WP_Sheet_Editor_Custom_Columns')) {
 		 */
 		function register_toolbar_items($editor) {
 
+			if (!current_user_can('manage_options')) {
+				return;
+			}
 			$post_types = $editor->args['enabled_post_types'];
 			foreach ($post_types as $post_type) {
 				$editor->args['toolbars']->register_item('add_columns', array(

@@ -264,8 +264,8 @@ SPAI.prototype.updateImageUrl = function(elm, hasMutationObserver, fromIntersect
         try {
             var sizeInfo = ShortPixelAI.getSizesRecursive(elm, hasMutationObserver);
             //TODO if practice proves the need - discrete function for widths: Math.ceil( w / Math.ceil( w / 20 ) ) * Math.ceil( w / 20 )
-            w = Math.ceil(sizeInfo.width);
-            h = Math.ceil(sizeInfo.height);
+            w = sizeInfo.width;
+            h = sizeInfo.height;
         } catch (err) {
             if(!elm[0].complete) {
                 //on iPhone on first page load, the placeholders are not rendered when it gets here, so defer the parsing of the page altogether
@@ -336,8 +336,8 @@ SPAI.prototype.updateWpBakeryTestimonial = function(elm) {
         try {
             //TODO if practice proves the need - discrete function for widths: Math.ceil( w / Math.ceil( w / 20 ) ) * Math.ceil( w / 20 )
             sizes = ShortPixelAI.getSizesRecursive(elm, hasMutationObserver);
-            w = Math.ceil(sizes.width);
-            h = Math.ceil(sizes.height);
+            w = sizeInfo.width;
+            h = sizeInfo.height;
         } catch (err) {
             if(typeof err.type !== 'undefined' && err.type == 'defer' && hasMutationObserver && !(isExcluded & 4)) {
                 return;
@@ -367,8 +367,8 @@ SPAI.prototype.updateDivUrl = function(elm, hasMutationObserver, fromIntersectio
         try {
             //TODO if practice proves the need - discrete function for widths: Math.ceil( w / Math.ceil( w / 20 ) ) * Math.ceil( w / 20 )
             sizes = ShortPixelAI.getSizesRecursive(elm, hasMutationObserver);
-            w = Math.ceil(sizes.width);
-            h = Math.ceil(sizes.height);
+            w = sizeInfo.width;
+            h = sizeInfo.height;
         } catch (err) {
             if(typeof err.type !== 'undefined' && err.type == 'defer' && hasMutationObserver && !(isExcluded & 4)) {
                 return;
@@ -612,8 +612,8 @@ SPAI.prototype.setupIntersectionObserverAndParse = function() {
 SPAI.prototype.replaceBackgroundPseudoSrc = function(text){
     var replaced = false;
     //regexps are identical, need to duplicate them because the first will use is internal pointer to replace all
-    text.replace(        /background(-image|)\s*:([^;]*[,\s]|\s*)url\(['"]?(data:image\/svg\+xml;u=[^'"\)]*?)(['"]?)\)/gm, function(item){
-        var oneMatcher = /background(-image|)\s*:([^;]*[,\s]|\s*)url\(['"]?(data:image\/svg\+xml;u=[^'"\)]*?)(['"]?)\)/m;
+    text.replace(        /background(-image|)\s*:([^;]*[,\s]|\s*)url\(['"]?(data:image\/svg\+xml[^'"\)]*?)(['"]?)\)/gm, function(item){
+        var oneMatcher = /background(-image|)\s*:([^;]*[,\s]|\s*)url\(['"]?(data:image\/svg\+xml[^'"\)]*?)(['"]?)\)/m;
         var match = oneMatcher.exec(item);
         var parsed = ShortPixelAI.parsePseudoSrc(match[3]);
         //devicePixelRatio is applied in composeApiUrl
@@ -880,13 +880,13 @@ SPAI.prototype.updateSrc = function(elm, attr, w, h, isApi, maxHeight) {
             if(spai_settings.crop === "1") {
                 data.crop = true;
             } else {
-                w = Math.ceil(data.origWidth * h / data.origHeight);
+                w = Math.round(data.origWidth * h / data.origHeight);
             }
         }
     } else {
         //make sure that if the image container has an imposed (max)height, it's taken into account
         if( h < data.origHeight * w / data.origWidth ) {
-            w = Math.ceil(data.origWidth * h / data.origHeight);
+            w = Math.round(data.origWidth * h / data.origHeight);
         }
     }
     data.newWidth = data.origWidth > 1 ? Math.min(data.origWidth, w) : w;
@@ -920,7 +920,8 @@ SPAI.prototype.parsePseudoSrcSet = function(srcSet, sizes, w, origData) {
         for(var i = 0; i < srcList.length; i++) {
             var item = srcList[i].replace(/,$/, '').trim();
             var newItem = '';
-            if(ShortPixelAI.isFullPseudoSrc(item)) {
+            var itemParts = item.split(/\s+/);
+            if(this.isFullPseudoSrc(itemParts[0])) {
                 var itemParts = item.split(/\s+/);
                 if(itemParts.length >= 2) {
                     var itemData = ShortPixelAI.parsePseudoSrc(itemParts[0]);
@@ -945,7 +946,7 @@ SPAI.prototype.parsePseudoSrcSet = function(srcSet, sizes, w, origData) {
     }
     else if (origData && (spai_settings.method == 'srcset') && w < origData.origWidth * 0.9) {
         newSrcSet = ShortPixelAI.composeApiUrl(false, origData.src, w, false) + " " + w + 'w, ' + origData.src + " " + origData.origWidth + "w";
-        newSizes = Math.ceil(100 * w / origData.origWidth) + "vw, 100vw";
+        newSizes = Math.round(100 * w / origData.origWidth) + "vw, 100vw";
     }
     return {srcSet: newSrcSet, sizes: newSizes};
 }
@@ -1046,8 +1047,8 @@ SPAI.prototype.getSizesRecursive = function(elm, deferHidden) {
     var computedStyle = window.getComputedStyle(elm[0]);
     var width = computedStyle['width'];
     var height = computedStyle['height'];
-    var w = Math.round(parseFloat(width));
-    var h = Math.round(parseFloat(height));
+    var w = parseFloat(width);
+    var h = parseFloat(height);
     if(width == '0px' && elm[0].nodeName !== 'A') {
         //will need to delay the URL replacement as the element will probably be rendered by JS later on...
         //but skip <a>'s because these haven't got any size
@@ -1069,6 +1070,8 @@ SPAI.prototype.getSizesRecursive = function(elm, deferHidden) {
         w = parentSizes.width - parentSizes.padding - ShortPixelAI.percent2px(elm.css('margin-left'), w) - ShortPixelAI.percent2px(elm.css('margin-right'), w);
         h = parentSizes.height - parentSizes.padding_height - ShortPixelAI.percent2px(elm.css('margin-top'), h) - ShortPixelAI.percent2px(elm.css('margin-bottom'), h);
     }
+    w = Math.round(w);
+    h = Math.round(h);
     return {
         status: 'success',
         width: w,
@@ -1221,17 +1224,56 @@ function shortPixelAIonDOMLoaded() {
             };
 
             return function(feature) {
-                var deferred = jQuery.Deferred();
+                function Deferred(){
+                    this._done = [];
+                    this._fail = [];
+                }
+                Deferred.prototype = {
+                    execute: function(list, args){
+                        var i = list.length;
 
-                jQuery("<img>").on("load", function() {
+                        // convert arguments to an array
+                        // so they can be sent to the
+                        // callbacks via the apply method
+                        args = Array.prototype.slice.call(args);
+
+                        while(i--) list[i].apply(null, args);
+                    },
+                    promise: function(){
+                        return this;
+                    },
+                    resolve: function(){
+                        this.execute(this._done, arguments);
+                    },
+                    reject: function(){
+                        this.execute(this._fail, arguments);
+                    },
+                    then: function(doneFilter, failFilter) {
+                        this._done.push(doneFilter);
+                        this._fail.push(failFilter);
+                    },
+                    done: function(callback){
+                        this._done.push(callback);
+                        return this;
+                    },
+                    fail: function(callback){
+                        this._fail.push(callback);
+                        return this;
+                    }
+                }
+
+                var deferred = new Deferred();
+
+                var image = new Image();
+                image.onload = function() {
                     if(this.width === 2 && this.height === 1) {
                         deferred.resolve();
                     } else {
                         deferred.reject();
                     }
-                }).on("error", function() {
-                    deferred.reject();
-                }).attr("src", images[feature || "basic"]);
+                };
+                image.onerror = deferred.reject;
+                image.src = images[feature || "basic"];
 
                 return deferred.promise();
             }

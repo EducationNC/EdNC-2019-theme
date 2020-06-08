@@ -94,16 +94,42 @@ $subtle_lock = in_array(date('Y-m-d'), array('2019-10-22', '2019-10-24', '2019-1
 
 					<div class="clear"></div>
 				</div>
+				<div id="responseConsole" class="console">
+					<span class="be-total-rows"><?php _e('0 rows', VGSE()->textname); ?></span> 
+					<?php
+					do_action('vg_sheet_editor/editor_page/after_console_text', $current_post_type);
+					// WP memory limit.
+					$wp_memory_limit = VGSE()->helpers->let_to_num(WP_MEMORY_LIMIT);
+					if (function_exists('memory_get_usage')) {
+						$wp_memory_limit = max($wp_memory_limit, VGSE()->helpers->let_to_num(@ini_get('memory_limit')));
+					}
+					if ($wp_memory_limit < 256000000) {
+						echo '<span class="notice-text" style="color: red;">' . __('. We recommend you increase the server memory to at least 256mb to prevent server errors. <a href="https://docs.woocommerce.com/document/increasing-the-wordpress-memory-limit/" target="_blank">Tutorial</a>', VGSE()->textname) . '</span>';
+					}
+					?>
+				</div>
+				<div class="vgse-current-filters"><?php _e('Active filters:', VGSE()->textname); ?> </div>
 				<div class="clear"></div>
 			</div>
 
 		</div>
 		<div>
-			<div id="responseConsole" class="console"><span class="be-total-rows"><?php _e('0 rows', VGSE()->textname); ?></span> <?php do_action('vg_sheet_editor/editor_page/after_console_text', $current_post_type); ?></div>
-			<div class="vgse-current-filters"><?php _e('Active filters:', VGSE()->textname); ?> </div>
 
 			<?php do_action('vg_sheet_editor/editor_page/before_spreadsheet', $current_post_type); ?>
 
+			<?php
+			if (!empty(VGSE()->options['be_disable_automatic_loading_rows'])) {
+				?>
+				<div class="automatic-loading-rows-disabled">
+					<h3><?php _e('Welcome to WP Sheet Editor', VGSE()->textname); ?></h3>
+					<p><?php _e('Please make a search to load the rows and start editing (use the "search" option in the top toolbar).', VGSE()->textname); ?></p>
+					<?php if (current_user_can('manage_options')) { ?>
+						<p><small><?php _e('You need to load the rows manually because you deactivated the automatic loading of rows. <a href="#" data-remodal-target="modal-advanced-settings">Change the settings</a>', VGSE()->textname); ?></small></p>
+					<?php } ?>
+				</div>
+				<?php
+			}
+			?>
 			<!--Spreadsheet container-->
 			<div id="post-data" data-post-type="<?php echo $current_post_type; ?>" class="be-spreadsheet-wrapper"></div>
 
@@ -239,5 +265,6 @@ $subtle_lock = in_array(date('Y-m-d'), array('2019-10-22', '2019-10-24', '2019-1
 
 	<?php do_action('vg_sheet_editor/editor_page/after_content', $current_post_type); ?>
 </div>
+<?php do_action('vg_sheet_editor/editor_page/after_editor_page', $current_post_type); ?>
 			<?php
 		

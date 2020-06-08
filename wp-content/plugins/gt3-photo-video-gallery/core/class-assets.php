@@ -157,7 +157,8 @@ class Assets {
 				'plugins'  => array(
 					'io'  => $this->optimizer_enabled,
 					'pro' => $this->pro_enabled,
-				)
+				),
+				'_watermark_nonce' => wp_create_nonce('process_watermarks'),
 			)
 		);
 		// Styles.

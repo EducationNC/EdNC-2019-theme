@@ -188,21 +188,22 @@ class OMAPI_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id( 'optin_monster_id' ); ?>"><?php _e( 'Campaign', 'optin-monster-api' ); ?></label>
 			<select id="<?php echo esc_attr( $this->get_field_id( 'optin_monster_id' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'optin_monster_id' ) ); ?>" style="width: 100%;">
-				<?php
-				foreach ( $optins as $optin ) {
-					$type    = get_post_meta( $optin->ID, '_omapi_type', true );
-					$enabled = (bool) get_post_meta( $optin->ID, '_omapi_enabled', true );
+				<?php if ( ! empty( $optins ) ) {
+					foreach ( $optins as $optin ) {
+						$type    = get_post_meta( $optin->ID, '_omapi_type', true );
+						$enabled = (bool) get_post_meta( $optin->ID, '_omapi_enabled', true );
 
-					// Only allow sidebar types.
-					if ( 'sidebar' !== $type && 'inline' !== $type ) {
-						continue;
-					}
+						// Only allow sidebar types.
+						if ( 'sidebar' !== $type && 'inline' !== $type ) {
+							continue;
+						}
 
-					// Display disabled or enabled selection.
-					if ( $enabled ) {
-						echo '<option value="' . $optin->ID . '"' . selected( $optin->ID, $optin_id, false ) . '>' . $optin->post_title . '</option>';
-					} else {
-						echo '<option value="' . $optin->ID . '" disabled="disabled"' . selected( $optin->ID, $optin_id, false ) . '>' . $optin->post_title . ' (' . __( 'Not Enabled', 'optin-monster-api' ) . ')</option>';
+						// Display disabled or enabled selection.
+						if ( $enabled ) {
+							echo '<option value="' . $optin->ID . '"' . selected( $optin->ID, $optin_id, false ) . '>' . $optin->post_title . '</option>';
+						} else {
+							echo '<option value="' . $optin->ID . '" disabled="disabled"' . selected( $optin->ID, $optin_id, false ) . '>' . $optin->post_title . ' (' . __( 'Not Enabled', 'optin-monster-api' ) . ')</option>';
+						}
 					}
 				}
 				?>

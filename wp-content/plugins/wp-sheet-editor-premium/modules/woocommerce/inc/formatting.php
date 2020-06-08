@@ -626,7 +626,7 @@ if (!class_exists('WPSE_WC_Products_Data_Formatting')) {
 				return;
 			}
 
-			$this->_sync_product_terms($post_id, $new_value, $key, $cell_args['data_type'], $row);
+			vgse_init_WooCommerce_Attrs()->_sync_product_terms($post_id, $new_value, $key, $cell_args['data_type'], $row);
 		}
 
 		/**
@@ -646,11 +646,12 @@ if (!class_exists('WPSE_WC_Products_Data_Formatting')) {
 				return;
 			}
 
-			$this->_sync_product_terms($post_id, $modified_data, $column, $cell_args['data_type']);
+			vgse_init_WooCommerce_Attrs()->_sync_product_terms($post_id, $modified_data, $column, $cell_args['data_type']);
 			$this->_sync_product_price($post_id, array($column));
 			$this->_sync_product_lookup_table($post_id, array($column));
 			$this->_sync_subscription_prices($post_id, array($column));
 			$this->_maybe_migrate_variation_to_product($post_id, array($column => $modified_data));
+			$this->_maybe_migrate_product_to_variation($post_id, array($column => $modified_data));
 		}
 
 		function product_updated_on_spreadsheet($product_id, $item, $data, $post_type, $spreadsheet_columns, $settings) {
@@ -661,73 +662,37 @@ if (!class_exists('WPSE_WC_Products_Data_Formatting')) {
 			$this->_sync_product_lookup_table($product_id, array_keys($item));
 			$this->_sync_subscription_prices($product_id, array_keys($item));
 			$this->_maybe_migrate_variation_to_product($product_id, $item);
+			$this->_maybe_migrate_product_to_variation($product_id, $item);
+		}
 
-			// When we convert a product into a variation and the product has a status not supported by variations, automatically change it to "enabled variation"
-			if (get_post_type($product_id) === 'product_variation' && !in_array(get_post_status($product_id), array('trash', 'publish', 'private'), true)) {
+		function _maybe_migrate_product_to_variation($product_id, $row) {
+			global $wpdb;
+
+			if (empty($row['post_type']) || $row['post_type'] !== 'product_variation') {
+				return;
+			}
+
+			// When we convert a product into a variation and the product has a status not supported by variations, automatically change it to "enabled variation" (publish)
+			if (!in_array(get_post_status($product_id), array('trash', 'publish', 'private'), true)) {
 				wp_update_post(array(
 					'ID' => $product_id,
 					'post_status' => 'publish'
 				));
 			}
-		}
 
-		/**
-		 * Callback when the product was updated.
-		 * @param int $product_id
-		 * @param mixed $new_value
-		 * @param string $key
-		 * @param string $data_source
-		 */
-		function _sync_product_terms($product_id, $new_value, $key, $data_source, $row = array()) {
-
-
-			// sync woocommerce attributes
-			if ($data_source === 'post_terms' && strpos($key, 'pa_') !== false) {
-				// We can't use the provider's get_item_meta function because it uses the object cache
-				// and we need to read the real value from the database everytime otherwise it won't save 
-				// all attributes on next calls from the same ajax call
-				$attributes = maybe_unserialize(get_post_meta($product_id, '_product_attributes', true));
-				if (empty($attributes) || !is_array($attributes)) {
-					$attributes = array();
-				}
-				$attribute_key = sanitize_title($key);
-				$product_type = (is_array($row) && isset($row['product_type']) ) ? $row['product_type'] : VGSE()->WC->get_product_type($product_id);
-
-				$new_attribute_settings = array();
-				if ($product_type === 'variable') {
-					$new_attribute_settings['is_variation'] = 1;
-					if (!empty(VGSE()->options['wc_product_attributes_not_variation'])) {
-						$attributes_used_for_variations = array_filter(array_map('trim', explode(',', VGSE()->options['wc_product_attributes_not_variation'])));
-						foreach ($attributes_used_for_variations as $attribute_used_for_variations) {
-							if (stripos($attribute_key, $attribute_used_for_variations) !== false) {
-								$new_attribute_settings['is_variation'] = 0;
-								break;
-							}
-						}
+			$product_attributes = get_post_meta($product_id, '_product_attributes', true);
+			$variation_attributes = (int) $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->postmeta WHERE post_id = " . (int) $product_id . " AND meta_key LIKE 'attribute_%' AND meta_value <> ''");
+			if (!empty($product_attributes) && !$variation_attributes) {
+				foreach ($product_attributes as $attribute_key => $attribute_settings) {
+					if (strpos($attribute_key, 'pa_') === 0) {
+						$terms = wp_get_object_terms($product_id, $attribute_key, array('fields' => 'slugs', 'number' => 1));
+					} else {
+						$terms = explode(WC_DELIMITER, $attribute_settings['value']);
 					}
+					$term_value = (!empty($terms)) ? current($terms) : '';
+					update_post_meta($product_id, 'attribute_' . $attribute_key, $term_value);
 				}
-				if (!empty(VGSE()->options['wc_product_attributes_is_not_visible'])) {
-					$attributes_visible = array_filter(array_map('trim', explode(',', VGSE()->options['wc_product_attributes_is_not_visible'])));
-					$new_attribute_settings['is_visible'] = 1;
-					foreach ($attributes_visible as $attribute_visible) {
-						if (stripos($attribute_key, $attribute_visible) !== false) {
-							$new_attribute_settings['is_visible'] = 0;
-							break;
-						}
-					}
-				}
-
-				$current_attribute_settings = isset($attributes[$attribute_key]) ? $attributes[$attribute_key] : array(
-					'name' => wc_clean($key),
-					'value' => '',
-					'is_taxonomy' => 1,
-					'position' => count($attributes),
-					'is_visible' => 1
-				);
-
-				// Add attribute association only if it doesn´t exist.
-				$attributes[$attribute_key] = array_merge($current_attribute_settings, $new_attribute_settings);
-				update_post_meta($product_id, '_product_attributes', $attributes);
+				delete_post_meta($product_id, '_product_attributes');
 			}
 		}
 

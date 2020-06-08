@@ -108,7 +108,7 @@ if (!class_exists('WP_Sheet_Editor_Post_Templates')) {
 			}
 		}
 
-		function _duplicate_post($post_id = null, $custom_post_data = array()) {
+		function _duplicate_post($post_id = null, $custom_post_data = array(), $extra_data = array()) {
 
 			if (empty($post_id)) {
 				return new WP_Error('wpse', 'Empty $post_id');
@@ -133,7 +133,7 @@ if (!class_exists('WP_Sheet_Editor_Post_Templates')) {
 			unset($post_data['post_modified_gmt']);
 
 
-			$new_post_id = wp_insert_post(apply_filters('vg_sheet_editor/duplicate/new_post_data', $post_data));
+			$new_post_id = wp_insert_post(apply_filters('vg_sheet_editor/duplicate/new_post_data', $post_data, $extra_data));
 			// Copy post metadata
 			foreach ($post_meta as $key => $values) {
 
@@ -153,27 +153,31 @@ if (!class_exists('WP_Sheet_Editor_Post_Templates')) {
 
 		function duplicate_post($post_ids, $post_type, $rows) {
 
-			if (empty($_REQUEST['extra_data']) || strpos($_REQUEST['extra_data'], 'duplicate:') === false) {
+			if (empty($_REQUEST['extra_data']) || strpos($_REQUEST['extra_data'], 'duplicate_this=') === false) {
 				return $post_ids;
 			}
-			$template_id = VGSE()->helpers->_get_post_id_from_search(str_replace('duplicate:', '', VGSE()->helpers->clean_data($_REQUEST['extra_data'])));
+			parse_str(urldecode(html_entity_decode(VGSE()->helpers->clean_data($_REQUEST['extra_data']))), $extra_data);
+			if (empty($extra_data['duplicate_this'])) {
+				return $post_ids;
+			}
+			$template_id = VGSE()->helpers->_get_post_id_from_search($extra_data['duplicate_this']);
 
 			if (empty($template_id) || get_post_type($template_id) !== $post_type || !VGSE()->helpers->user_can_edit_post_type($post_type)) {
 				return new WP_Error('wpse', __('Template item not found or not allowed to be duplicated.', VGSE()->textname));
 			}
 
 			for ($i = 0; $i < $rows; $i++) {
-				$new_post_id = apply_filters('vg_sheet_editor/duplicate/new_post_id', null, $template_id, $post_type);
+				$new_post_id = apply_filters('vg_sheet_editor/duplicate/new_post_id', null, $template_id, $post_type, $extra_data);
 
 				if (!is_int($new_post_id)) {
 					$new_post_id = $this->_duplicate_post($template_id, array(
 						'post_status' => 'draft',
 						'post_title' => get_the_title($template_id) . ' (Copy)'
-					));
+							), $extra_data);
 				}
 
 				if (is_int($new_post_id)) {
-					$post_ids[] = apply_filters('vg_sheet_editor/duplicate/final_post_id', $new_post_id, $template_id, $post_type);
+					$post_ids[] = apply_filters('vg_sheet_editor/duplicate/final_post_id', $new_post_id, $template_id, $post_type, $extra_data);
 				}
 			}
 

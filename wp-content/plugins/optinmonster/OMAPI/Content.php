@@ -206,7 +206,7 @@ class OMAPI_Content {
 	public function api( $panel, $object ) {
 
 		$link = $this->base->menu->get_action_link();
-		$text = $this->base->menu->has_trial_link() ? 'Click here to start your free 30-day trial!' : 'Click here to learn more about OptinMonster!';
+		$text = $this->base->menu->has_trial_link() ? __(  'Click here to start your free 30-day trial!', 'optin-monster-api' ) : __( 'Click here to learn more about OptinMonster!', 'optin-monster-api' );
 
 		$credentials = $this->base->get_api_credentials();
 
@@ -220,7 +220,7 @@ class OMAPI_Content {
 		<?php // If we have credentials only show the old stuff if it is saved ?>
 		<?php if ( $credentials ) : ?>
 			<?php if ( isset( $credentials['api'] ) && '' != $credentials['api'] || isset( $credentials['key'] ) && '' != $credentials['key'] ) : ?>
-				<p>The Legacy API Username and Key below will be deprecated soon. Please <a href="<?php echo OPTINMONSTER_APP_URL; ?>/account/api/" target="_blank">generate a new API key</a> and paste it above to authenticate using our new and improved REST API.</p>
+				<p><?php printf( __( 'The Legacy API Username and Key below will be deprecated soon. Please <a href="%s" target="_blank">generate a new API key</a> and paste it above to authenticate using our new and improved REST API.', 'optin-monster-api' ), esc_url( OPTINMONSTER_APP_URL . '/account/api/' ) ); ?></p>
 				<?php echo $object->get_setting_ui( 'api', 'user' ); ?>
 				<?php echo $object->get_setting_ui( 'api', 'key' ); ?>
 			<?php endif; ?>
@@ -264,7 +264,7 @@ class OMAPI_Content {
 
 		$optins = $this->base->get_optins();
 		$i      = 0;
-		if ( $optins ) :
+		if ( ! empty( $optins ) ) :
 		?>
 		<?php foreach ( $optins as $optin ) : $class = 0 == $i ? ' omapi-optin-first' : '';
 			if ( (bool) get_post_meta( $optin->ID, '_omapi_enabled', true ) ) {
@@ -347,13 +347,12 @@ class OMAPI_Content {
 				echo $object->get_setting_ui( 'optins', 'users' );
 			}
 
-			echo $object->get_setting_ui( 'optins', 'shortcode' );
-			echo $object->get_setting_ui( 'optins', 'shortcode_output' );
-
 			// Add support for MailPoet if the plugin is active.
 			if ( $this->base->is_mailpoet_active() ) {
 				echo $object->get_setting_ui( 'optins', 'mailpoet' );
 				echo $object->get_setting_ui( 'optins', 'mailpoet_list' );
+				echo $object->get_setting_ui( 'optins', 'mailpoet_use_phone' );
+				echo $object->get_setting_ui( 'optins', 'mailpoet_phone_field' );
 			}
 			if ( 'sidebar' !== $type ) {
 
@@ -422,8 +421,8 @@ class OMAPI_Content {
 		$status_link = $status ? __( 'Disable', 'optin-monster-api' ) : __( 'Go Live', 'optin-monster-api' );
 		$status_desc = $status ? esc_attr__( 'Disable this campaign', 'optin-monster-api' ) : esc_attr__( 'Go live with this campaign', 'optin-monster-api' );
 		$links       = array();
-		$links['editd']  = '<a href="' . esc_url_raw( OPTINMONSTER_APP_URL . '/campaigns/' . $slug . '/edit/' ) . '" title="' . esc_attr__( 'Edit this campaign on the OptinMonster App', 'optin-monster-api' ) . '" target="_blank">Edit Design</a>';
-		$links['edito']  = '<a href="' . esc_url_raw( add_query_arg( array( 'optin_monster_api_view' => $this->view, 'optin_monster_api_action' => 'edit', 'optin_monster_api_id' => $optin_id ), admin_url( 'admin.php?page=optin-monster-api-settings' ) ) ) . '" title="' . esc_attr__( 'Edit the output settings for this campaign', 'optin-monster-api' ) . '">Edit Output Settings</a>';
+		$links['editd']  = '<a href="' . esc_url_raw( OPTINMONSTER_APP_URL . '/campaigns/' . $slug . '/edit/' ) . '" title="' . esc_attr__( 'Edit this campaign on the OptinMonster App', 'optin-monster-api' ) . '" target="_blank">' . __( 'Edit Design', 'optin-monster-api' ) . '</a>';
+		$links['edito']  = '<a href="' . esc_url_raw( add_query_arg( array( 'optin_monster_api_view' => $this->view, 'optin_monster_api_action' => 'edit', 'optin_monster_api_id' => $optin_id ), admin_url( 'admin.php?page=optin-monster-api-settings' ) ) ) . '" title="' . esc_attr__( 'Edit the output settings for this campaign', 'optin-monster-api' ) . '">' . __( 'Edit Output Settings', 'optin-monster-api' ) . '</a>';
 		$links['status'] = '<a href="' . wp_nonce_url( esc_url_raw( add_query_arg( array( 'optin_monster_api_view' => $this->view, 'optin_monster_api_action' => 'status', 'optin_monster_api_id' => $optin_id ), admin_url( 'admin.php?page=optin-monster-api-settings' ) ) ), 'omapi-action' ) . '" title="' . $status_desc . '">' . $status_link . '</a>';
 
 		$links = apply_filters( 'optin_monster_api_action_links', $links, $optin_id );
@@ -434,7 +433,7 @@ class OMAPI_Content {
 	public function migrate() {
 		?>
 		<p><?php _e( 'Your campaigns created within WordPress using the original OptinMonster plugin can be recreated manually in your OptinMonster account.', 'optin-monster-api' ); ?></p>
-		<p><a href="https://optinmonster.com/docs/old-wordpress-customers-migrating-to-the-new-optinmonster-app/"><?php _e( 'Read the full post about the changes.')?></a></p>
+		<p><a href="https://optinmonster.com/docs/old-wordpress-customers-migrating-to-the-new-optinmonster-app/"><?php _e( 'Read the full post about the changes.', 'optin-monster-api' ); ?></a></p>
 		<?php
 	}
 

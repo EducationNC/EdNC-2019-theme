@@ -2,23 +2,23 @@
 Contributors: gt3themes
 Tags: gallery, photo gallery, gallery block, image gallery, gutenberg block, wordpress photo gallery plugin, gutenberg gallery block, responsive gallery, image gallery block, instagram gallery, photo album, video gallery
 Requires at least: 4.6
-Tested up to: 5.3
-Stable tag: 2.4.1.7
+Tested up to: 5.4
+Stable tag: 2.4.1.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-GT3 Photo Gallery & Video plugin lets you extend the functionality of the default WordPress image gallery. You can easily create photo gallery, video gallery, slider and much more...
+GT3 Photo & Video WordPress Gallery plugin is a new way to build your galleries with ease. Create awesome grid, masonry, packery and other galleries.
 
 == Description ==
 
 <h3>Why GT3 Photo & Video Gallery?</h3>
 
-[GT3 Photo Gallery](https://gt3themes.com/gt3-photo-video-gallery-pro-is-live-now/) is fully compatible with Gutenberg editor having its custom Gutenberg blocks. It's absolutely free WordPress photo gallery plugin which allows you to extend the functionality of the classic WordPress image gallery. You can easily customize the look and feel of any photo or video gallery using the global GT3 photo gallery settings panel along with the custom settings of each gallery.
+[GT3 Photo Gallery](https://gt3themes.com/gt3-photo-video-gallery-pro-is-live-now/) is fully compatible with Gutenberg block editor having its custom Gutenberg blocks. It's absolutely free WordPress plugin, which allows you to extend the functionality of the classic WordPress image gallery. You can easily customize the look and feel of any photo or video gallery using the advanced options panel along with the custom settings.
 
-Create an awesome look for your photo galleries with ease. The current version of the GT3 photo & video gallery plugin works with latest versions the Gutenberg blocks editor. You can easily use GT3 Gutenberg blocks to add image and video galleries on your website.
+Create a creative look for your photo galleries in no time. The current version of the GT3 photo & video plugin works with latest versions the Gutenberg blocks editor. You can easily use GT3 Gutenberg blocks to add image and video galleries on your website.
 
 <h3>How to Add GT3 Photo & Video Gallery Block in Gutenberg</h3>
-In this video you will see how easily you can create a photo gallery using GT3 Gutenberg photo & video gallery blocks.
+In this video you will see how easily you can create the photo gallery using the custom GT3 Photo & Video Gutenberg blocks.
 
 [youtube https://www.youtube.com/watch?v=f-NW-3lSO0s]
 
@@ -43,15 +43,15 @@ You can get Pro version of this plugin directly on our website, click the link b
 * Thumbnails layout
 * Masonry layout
 * Fullscreen slider
-* Instagram gallery
+* Instagram
 * Kenburns photo slider
 * Shift slider
-* Flow gallery
+* Flow
 * Ribbon slider
-* Justified gallery
+* Justified
 * Photo galleries with a filter by categories
 * Video settings for each video item
-* Convert any gallery into other gallery layouts
+* Convert any gallery into other layouts
 * Convert any gallery into Gutenberg block
 * Advanced options for the lightbox
 * Custom lazy loading option
@@ -74,29 +74,29 @@ You can get Pro version of this plugin directly on our website, click the link b
 
 * Gutenberg photo gallery blocks and latest WordPress compatibility
 * Elementor page builder photo gallery widgets
-* Absolutely FREE WordPress gallery plugin (Lite Version)
+* Absolutely FREE WordPress plugin (Lite Version)
 * Intuitive and easy to use photo & video gallery
-* Extending the native WordPress gallery functionality
+* Extending the native Gutenberg gallery blocks
 * Gutenberg gallery blocks with custom settings on board
 * Special video settings for each video item
-* If you disable the plugin the default WP gallery still works
 * The plugin works with WordPress media including meta data
 * The photo and video galleries are 100% fully responsive
-* The gallery works within the pages, blog posts etc.
+* The image gallery works within the pages, blog posts etc.
 * You can choose different style options in the settings
-* Custom photo and video GT3 gallery settings panel
+* Custom and advanced plugin settings panel
 * You can choose from 1-9 columns to display photos
-* Create a simple thumbnails gallery preview
-* Create awesome masonry style gallery preview
-* Create classic grid style gallery preview
-* Create cool circle style gallery preview
+* Create a simple thumbnails layout
+* Create awesome masonry style layout
+* Create classic grid style layout
+* Create cool circle style layout
 * Stylish and responsive image lightbox
 * Image gallery lightbox custom options
-* Youtube and Vimeo video gallery support
+* Youtube and Vimeo video support
 * Customize the gallery styles with CSS option
 * SEO and high performance optimized
 * Advanced options panel
-* Facebook GT3 Photo & Video gallery plugin group
+* Watermark option for Gutenberg gallery blocks
+* Facebook GT3 Photo & Video plugin group
 * Plugin support from GT3themes team
 * Fully compatible with GT3 WordPress themes
 * And much more...
@@ -163,6 +163,16 @@ Yes, the plugin has a built-in lazy loading functionality. You can enable or dis
 == Upgrade Notice ==
 
 == Changelog ==
+
+= 2.4.1.9 =
+
+* Fixed: Minor bug fixes
+
+= 2.4.1.8 =
+
+* Added: Watermark option for Gutenberg block galleries
+* Improved: Gallery options panel
+* Fixed: Minor bug fixes
 
 = 2.4.1.7 =
 

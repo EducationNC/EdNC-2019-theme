@@ -89,6 +89,11 @@ class OMAPI_Shortcode {
 	 */
 	public function shortcode( $atts ) {
 
+		// Checking if AMP is enabled.
+		if ( OMAPI_Utils::is_amp_enabled() ) {
+		    return;
+		}
+
 		global $post;
 
 		// Merge default attributes with passed attributes.
@@ -153,6 +158,11 @@ class OMAPI_Shortcode {
 	 * @return string     The optin output.
 	 */
 	public function shortcode_v1( $atts ) {
+
+		// Checking if AMP is enabled.
+		if ( OMAPI_Utils::is_amp_enabled() ) {
+		    return;
+		}
 
 		// Run the v2 implementation.
 		$atts['slug'] = $atts['id'];

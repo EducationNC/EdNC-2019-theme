@@ -5,13 +5,13 @@
  * Description: OptinMonster is the best WordPress popup plugin that helps you grow your email list and sales with email popups, exit intent popups, floating bars and more!
  * Author:      OptinMonster Team
  * Author URI:  https://optinmonster.com
- * Version:     1.9.6
+ * Version:     1.9.8
  * Text Domain: optin-monster-api
  * Domain Path: languages
  * WC requires at least: 3.2.0
- * WC tested up to:      3.8.1
+ * WC tested up to:      4.0.0
  *
- * OptinMonster is is free software: you can redistribute it and/or modify
+ * OptinMonster is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
@@ -62,7 +62,7 @@ class OMAPI {
 	 *
 	 * @var string
 	 */
-	public $version = '1.9.6';
+	public $version = '1.9.8';
 
 	/**
 	 * The name of the plugin.
@@ -233,6 +233,9 @@ class OMAPI {
 		// Load the plugin.
 		add_action( 'init', array( $this, 'init' ) );
 
+		// Hide the unrelated admin notices.
+		add_action( 'admin_print_scripts', array( $this, 'hide_unrelated_admin_notices' ) );
+
 		// Filter the WooCommerce category/tag REST API responses.
 		add_filter( 'woocommerce_rest_prepare_product_cat', 'OMAPI_WooCommerce::add_category_base_to_api_response' );
 		add_filter( 'woocommerce_rest_prepare_product_tag', 'OMAPI_WooCommerce::add_tag_base_to_api_response' );
@@ -273,12 +276,18 @@ class OMAPI {
 	public function init() {
 
 		// Define necessary plugin constants.
-		if ( ! defined( 'OPTINMONSTER_APIJS_URL' ) ) {
-			define( 'OPTINMONSTER_APIJS_URL', 'https://a.opmnstr.com/app/js/api.min.js' );
-		}
-
 		if ( ! defined( 'OPTINMONSTER_APP_URL' ) ) {
 			define( 'OPTINMONSTER_APP_URL', 'https://app.optinmonster.com' );
+		}
+
+		if ( ! defined( 'OPTINMONSTER_CDN_URL' ) ) {
+			define( 'OPTINMONSTER_CDN_URL', is_admin()
+					? 'https://a.omwpapi.com'
+					: 'https://a.omappapi.com' );
+		}
+
+		if ( ! defined( 'OPTINMONSTER_APIJS_URL' ) ) {
+			define( 'OPTINMONSTER_APIJS_URL', OPTINMONSTER_CDN_URL . '/app/js/api.min.js' );
 		}
 
 		// Load our global option.
@@ -296,22 +305,45 @@ class OMAPI {
 
 		// Run hook once OptinMonster has been fully loaded.
 		do_action( 'optin_monster_api_loaded' );
-
 	}
 
 	/**
-	 * Sets our global option if it is not found in the DB.
+	 * Sets our options if not found in the DB.
 	 *
 	 * @since 1.0.0
 	 */
 	public function load_option() {
 
+		// Check/set the plugin options.
 		$option = get_option( 'optin_monster_api' );
-		if ( ! $option || empty( $option ) ) {
+		if ( empty( $option ) ) {
 			$option = OMAPI::default_options();
 			update_option( 'optin_monster_api', $option );
 		}
 
+		$review           = get_option( 'omapi_review' );
+		$review_installed = ! empty( $review['time'] ) && is_numeric( $review['time'] );
+		$review_dismissed = ! empty( $review['dismissed'] );
+
+		if ( ! $review_installed ) {
+			$review = array(
+				'time'      => time(),
+				'dismissed' => $review_dismissed,
+			);
+			update_option( 'omapi_review', $review );
+		}
+
+		// Check/set the installation date.
+		if ( empty( $option['installed'] ) ) {
+
+			// If the review was dismissed, we know the plugin was installed at least a day
+			// before the notice was shown and dismissed. Otherwise, the review timestamp
+			// should be pretty close to the install date.
+			$option['installed'] = $review_dismissed ? $review['time'] - DAY_IN_SECONDS : $review['time'];
+
+			// Store the plugin install date.
+			update_option( 'optin_monster_api', $option );
+		}
 	}
 
 	/**
@@ -697,14 +729,14 @@ class OMAPI {
 			'is_expired'  => false,
 			'is_disabled' => false,
 			'is_invalid'  => false,
+			'installed'   => time(),
+			'connected'   => '',
 			'welcome'     => array(
-				'status'  => 'none', //none, welcomed
-				'review'    => 'ask', //ask, asked, dismissed
-				'version'   => '1141', //base to check against
-			)
+				'status' => 'none',
+			),
 		);
-		return apply_filters( 'optin_monster_api_default_options', $options );
 
+		return apply_filters( 'optin_monster_api_default_options', $options );
 	}
 
 	/**
@@ -727,6 +759,51 @@ class OMAPI {
 			require $filename;
 		}
 
+	}
+
+	/**
+	 * Hides unrelated admin notices.
+	 *
+	 * @since 1.9.7
+	 */
+	public function hide_unrelated_admin_notices() {
+		// Bail if we're not on a OptinMonster screen.
+		if ( empty( $_REQUEST['page'] ) || ! preg_match( '/optin-monster-/', esc_html( $_REQUEST['page'] ) ) ) {
+			return;
+		}
+
+		global $wp_filter;
+
+		$notices_type = array(
+			'user_admin_notices',
+			'admin_notices',
+			'all_admin_notices',
+		);
+
+		foreach ( $notices_type as $type ) {
+			if ( empty( $wp_filter[ $type ]->callbacks ) || ! is_array( $wp_filter[ $type ]->callbacks ) ) {
+				continue;
+			}
+
+			foreach ( $wp_filter[ $type ]->callbacks as $priority => $hooks ) {
+				foreach ( $hooks as $name => $arr ) {
+					if ( is_object( $arr['function'] ) && $arr['function'] instanceof Closure ) {
+						unset( $wp_filter[ $type ]->callbacks[ $priority ][ $name ] );
+						continue;
+					}
+
+					$class = ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) ? strtolower( get_class( $arr['function'][0] ) ) : '';
+
+					if ( ! empty( $class ) && preg_match( '/^(?:omapi|am_notification)/', $class ) ) {
+						continue;
+					}
+
+					if ( ! empty( $name ) && ! preg_match( '/^(?:omapi|am_notification)/', $name ) ) {
+						unset( $wp_filter[ $type ]->callbacks[ $priority ][ $name ] );
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -775,19 +852,13 @@ function optin_monster_api_activation_hook( $network_wide ) {
 			switch_to_blog( $site->blog_id );
 
 			// Set default option.
-			$option = get_option( 'optin_monster_api' );
-			if ( ! $option || empty( $option ) ) {
-				update_option( 'optin_monster_api', OMAPI::default_options() );
-			}
+			$instance->load_option();
 
 			restore_current_blog();
 		}
 	} else {
 		// Set default option.
-		$option = get_option( 'optin_monster_api' );
-		if ( ! $option || empty( $option ) ) {
-			update_option( 'optin_monster_api', OMAPI::default_options() );
-		}
+		$instance->load_option();
 	}
 
 	// If we don't have api credentials, set up the redirect on plugin activation.

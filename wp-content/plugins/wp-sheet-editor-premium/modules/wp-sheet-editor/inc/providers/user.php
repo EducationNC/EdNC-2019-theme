@@ -259,6 +259,7 @@ WHERE pm.meta_key = '" . esc_sql($old_key) . "' ");
 			wp_delete_user($user_id);
 			VGSE()->deleted_rows_ids[] = (int) $user_id;
 		}
+		do_action('vg_sheet_editor/provider/user/data_updated', $user_id, $values);
 		return $user_id;
 	}
 

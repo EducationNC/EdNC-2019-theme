@@ -3,6 +3,39 @@
 namespace Easy_Plugins\Table_Of_Contents\String;
 
 /**
+ * Replace `<br />` tags with parameter.
+ *
+ * @since 2.0.8
+ *
+ * @param string $string
+ * @param string $to
+ *
+ * @return string
+ */
+function br2( $string, $to = "\r\n" ) {
+
+	$string = preg_replace( '`<br[/\s]*>`i', $to, $string );
+
+	return $string;
+}
+
+/**
+ * Replace `<br />` tags with new lines.
+ *
+ * @link https://stackoverflow.com/a/27509016/5351316
+ *
+ * @since 2.0.8
+ *
+ * @param string $string
+ *
+ * @return string
+ */
+function br2nl( $string ) {
+
+	return br2( $string );
+}
+
+/**
  * Pulled from WordPress formatting functions.
  *
  * Edited to add space before self closing tags.
@@ -261,14 +294,27 @@ function mb_find_replace( &$find = false, &$replace = false, &$string = '' ) {
 
 			for ( $i = 0; $i < count( $find ); $i ++ ) {
 
-				$start  = mb_strpos( $string, $find[ $i ] );
-				$length = mb_strlen( $find[ $i ] );
+				$needle = $find[ $i ];
+				$start  = mb_strpos( $string, $needle );
+
+				// If heading can not be found, let try decoding entities to see if it can be found.
+				if ( false === $start ) {
+
+					$needle = html_entity_decode(
+						$needle,
+						ENT_QUOTES,
+						get_option( 'blog_charset' )
+					);
+
+					$start = mb_strpos( $string, $needle );
+				}
 
 				/*
 				 * `mb_strpos()` can return `false`. Only process `mb_substr_replace()` if position in string is found.
 				 */
 				if ( is_int( $start ) ) {
 
+					$length = mb_strlen( $needle );
 					$string = mb_substr_replace( $string, $replace[ $i ], $start, $length );
 				}
 

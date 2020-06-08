@@ -280,7 +280,12 @@ if ( !class_exists( 'WPSE_Sheet_Factory' ) ) {
                 }
             
             }
-            return $allowed;
+            return apply_filters(
+                'vg_sheet_editor/factory/is_column_allowed',
+                $allowed,
+                $column_key,
+                $this
+            );
         }
         
         function __set( $name, $value )

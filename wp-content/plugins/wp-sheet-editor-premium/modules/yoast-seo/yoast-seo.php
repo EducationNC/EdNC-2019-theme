@@ -154,7 +154,10 @@ if (!class_exists('WP_Sheet_Editor_YOAST_SEO')) {
 			);
 
 			foreach ($post_types as $post_type) {
-
+				// Register SEO columns for post types, taxonomies, and users only
+				if (!post_type_exists($post_type) && !taxonomy_exists($post_type) && $post_type !== 'user') {
+					continue;
+				}
 				if ($this->is_yoast_metabox_hidden($post_type)) {
 					continue;
 				}

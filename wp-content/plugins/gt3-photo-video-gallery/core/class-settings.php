@@ -70,6 +70,7 @@ class Settings {
 		$this->defaults['grid'] = array_merge(
 			$borderSettings,
 			array(
+				'watermark'   => '0',
 				'gridType'    => 'square',
 				'showTitle'   => '0',
 				'linkTo'      => 'lightbox',
@@ -84,6 +85,7 @@ class Settings {
 		$this->defaults['masonry'] = array_merge(
 			$borderSettings,
 			array(
+				'watermark'   => '0',
 				'showTitle'   => '0',
 				'linkTo'      => 'lightbox',
 				'showCaption' => '0',
@@ -97,6 +99,7 @@ class Settings {
 		$this->defaults['packery'] = array_merge(
 			$borderSettings,
 			array(
+				'watermark'   => '0',
 				'packery'     => 2,
 				'linkTo'      => 'lightbox',
 				'imageSize'   => 'thumbnail',
@@ -152,7 +155,6 @@ class Settings {
 			)
 		);
 
-
 		$this->defaults['kenburns'] = array_merge(
 			array(
 				'moduleHeight'   => '100%',
@@ -207,6 +209,30 @@ class Settings {
 				'image_after'  => '',
 				'moduleHeight' => '100%',
 			)
+		);
+
+		$this->defaults['basic']['watermark'] = array(
+			'enable'    => false,
+			'upload'    => false,
+			'alignment' => 'right_bottom',
+			'position'  => array(
+				'x' => 100,
+				'y' => 100,
+			),
+			'image'     => array(
+				'id'    => 0,
+				'url'   => '',
+				'ratio' => 1
+			),
+			'sizes'     => array(
+				'medium_large' => true,
+				'large'        => true,
+				'full'         => true,
+			),
+//			'width'     => 100,
+//			'height'    => 100,
+			'opacity'   => 100,
+			'quality'   => 95,
 		);
 
 	}
@@ -357,6 +383,12 @@ class Settings {
 				/** @var Block\Basic $block */
 				$block::instance();
 			};
+		}
+
+		$watermark_settings = $this->settings['basic']['watermark'];
+		add_action('delete_attachment', array( Watermark::class, 'delete_attachment_handler' ));
+		if(!!$watermark_settings['enable'] && !!$watermark_settings['upload']) {
+			add_filter('wp_handle_upload', array( Watermark::class, 'wp_handle_upload_handler' ), 10, 2);
 		}
 	}
 

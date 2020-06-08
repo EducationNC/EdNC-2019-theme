@@ -203,7 +203,8 @@ m1.$post_meta_post_id_key IN (" . implode(',', $post_ids) . ")  AND
 		$taxonomy_columns = apply_filters('vgse_sheet_editor/provider/post/prefetch/taxonomy_keys', array_keys(wp_list_filter($spreadsheet_columns, array('data_type' => 'post_terms'))), $post_type);
 
 		$separator = (!empty(VGSE()->options['be_taxonomy_terms_separator']) ) ? esc_sql(VGSE()->options['be_taxonomy_terms_separator']) : ',';
-		$post_terms_sql = "SELECT tr.object_id, tt.taxonomy, GROUP_CONCAT(t.name SEPARATOR '$separator ') as terms, GROUP_CONCAT(tt.parent SEPARATOR '') as parents
+		$field_key_to_concatenate = (!empty(VGSE()->options['manage_taxonomy_columns_term_ids'])) ? 't.term_id' : 't.name';
+		$post_terms_sql = "SELECT tr.object_id, tt.taxonomy, GROUP_CONCAT($field_key_to_concatenate SEPARATOR '$separator ') as terms, GROUP_CONCAT(tt.parent SEPARATOR '') as parents
 FROM $wpdb->terms AS t 
 INNER JOIN $wpdb->term_taxonomy AS tt
 ON t.term_id = tt.term_id
@@ -365,6 +366,15 @@ ORDER BY t.name ASC";
 			$values['edit_date'] = true;
 		}
 
+		// If converting from post to product, migrate the tags and categories too
+		$product_type = apply_filters('vg_sheet_editor/woocommerce/product_post_type_key', 'product');
+		if (function_exists('WC') && !empty($values['post_type']) && $values['post_type'] === $product_type && get_post_type($post_id) === 'post') {
+			$post_tags = $this->get_item_terms($post_id, 'post_tag');
+			$categories = $this->get_item_terms($post_id, 'category');
+			// @todo wpml is not working
+			do_action('vg_sheet_editor/provider/post/post_converted_to_product', $post_id, $values);
+		}
+
 
 		if (!empty($values['post_modified'])) {
 			$mysql_time_format = "Y-m-d H:i:s";
@@ -416,8 +426,15 @@ ORDER BY t.name ASC";
 				$out = true;
 			} else {
 				$out = wp_update_post($values, $wp_error);
+
+				if (!empty($post_tags) || !empty($categories)) {
+					$this->set_object_terms($post_id, VGSE()->data_helpers->prepare_post_terms_for_saving($post_tags, 'product_tag'), 'product_tag');
+					$this->set_object_terms($post_id, VGSE()->data_helpers->prepare_post_terms_for_saving($categories, 'product_cat'), 'product_cat');
+				}
 			}
 		}
+
+		do_action('vg_sheet_editor/provider/post/data_updated', $post_id, $values);
 
 		return $out;
 	}
@@ -494,6 +511,13 @@ ORDER BY t.name ASC";
 		$post_meta_post_id_key = $this->get_meta_table_post_id_key($post_type);
 		$sql = "SELECT m.meta_value FROM $wpdb->posts p LEFT JOIN $post_meta_table m ON p.ID = m.$post_meta_post_id_key WHERE p.post_type = '" . esc_sql($post_type) . "' AND m.meta_key = '" . esc_sql($meta_key) . "' GROUP BY m.meta_value ORDER BY LENGTH(m.meta_value) DESC LIMIT 4";
 		$values = apply_filters('vg_sheet_editor/provider/post/meta_field_unique_values', $wpdb->get_col($sql), $meta_key, $post_type);
+
+		// Remove any field value with extremely long length (5mb) to avoid high memory usage
+		foreach ($values as $index => $value) {
+			if (is_string($value) && strlen($value) > 5000000) {
+				unset($values[$index]);
+			}
+		}
 		return $values;
 	}
 

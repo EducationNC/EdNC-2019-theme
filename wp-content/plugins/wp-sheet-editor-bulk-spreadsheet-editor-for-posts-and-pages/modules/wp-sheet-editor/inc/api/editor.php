@@ -48,8 +48,11 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'import_failed_retry_server_error' => __('Your server was not able to process this batch. Do you want to try again? You can retry 3 times, If 3 attempts fail we will stop the import completely.', VGSE()->textname),
 				'import_data_issue_correct_restart' => __('Please correct the error in the file and start a new import. You can use the "Advanced options" in the step 1 of the import to start from this specific row.', VGSE()->textname),
 				'import_finished' => __('<p>The import has finished</p>', VGSE()->textname),
+				'process_finished' => __('<p>The process has finished</p>', VGSE()->textname),
 				'product_without_variations' => __('The selected product does not have variations', VGSE()->textname),
 				'empty' => __('empty', VGSE()->textname),
+				'clicks_that_will_be_saved' => __('This will save you {clicks_count} clicks :)', VGSE()->textname),
+				'apply_action_to_similar_columns' => __('We found similar columns. Do you want to apply the same action to them? {columns}', VGSE()->textname),
 				'column_for_variations_only' => ( empty(VGSE()->options['hide_cell_comments']) ) ? __('This column is only for variation rows, parent products don\'t use this field', VGSE()->textname) : '',
 				'formulas_starting_edit_single_field' => __('<b>Editing the field: {field_label}</b>', VGSE()->textname),
 				'column_not_found' => __('Column not found. Try with another search criteria.', VGSE()->textname),
@@ -82,6 +85,7 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'save_changes_before_remove_column' => __('You have modified rows. Please save the changes before removing columns from the spreadsheet.', VGSE()->textname),
 				'save_changes_before_we_reload' => __('You have modified posts. Please save the changes because we will refresh the spreadsheet. Do you want to refresh now?', VGSE()->textname),
 				'save_changes_reload_optional' => __('Some rows were modified in the background. Please save the changes and reload the spreadsheet to see the changes', VGSE()->textname),
+				'save_changes_before_using_tool' => __('Some rows were modified in the spreadsheet. Please save the changes before using this feature.', VGSE()->textname),
 				'no_rows_for_formula' => __("We didn't find rows to update from the search query. Please try another search query.", VGSE()->textname),
 				'settings_moved_submenu' => __('You can find all the settings here, like columns visibility, etc.', VGSE()->textname),
 				'posts_not_found' => __('Oops, nothing found', VGSE()->textname),
@@ -94,6 +98,7 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'formula_applied' => __('The bulk edit has been executed. ¿Do you want to reload the page to see the changes?', VGSE()->textname),
 				'saving_stop_error' => __('<p>The changes were not saved completely. The process was canceled due to an error .</p><p>You can close this popup.</p>', VGSE()->textname),
 				'paged_batch_saved' => __('{updated} items saved of {total} items that need saving.', VGSE()->textname),
+				'duplicates_removed_text' => __('{deleted} duplicates have been removed.', VGSE()->textname),
 				'everything_saved' => __('All items have been saved.', VGSE()->textname),
 				'save_changes_on_leave' => __('Please check if you have unsaved changes. If you have, please save them or they will be dismissed.', VGSE()->textname),
 				'no_changes_to_save' => __('Everything is already saved.', VGSE()->textname),
@@ -173,7 +178,8 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'ced_wovpe_js',
 				'ced-wovpr-custom-script',
 				'datepicker-style',
-				'iccategoryjs'
+				'iccategoryjs',
+				'plugins'
 			);
 
 
@@ -217,6 +223,14 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				$columsFormat = wp_list_pluck($spreadsheet_columns, 'formatted');
 				$columsUnformat = wp_list_pluck($spreadsheet_columns, 'unformatted');
 			}
+
+			// Indicate that help comments can be deactivated
+			foreach ($columsFormat as $key => $column) {
+				if (!empty($column['comment']) && !empty($column['comment']['value'])) {
+					$columsFormat[$key]['comment']['value'] .= __("\n(You can remove these help messages in the advanced settings)", VGSE()->textname);
+				}
+			}
+
 			$unfiltered_original_columns = $this->args['columns']->get_items(true);
 			$unfiltered_original_columns[$current_provider_in_page] = $this->args['columns']->_remove_callbacks_on_items($unfiltered_original_columns[$current_provider_in_page]);
 
@@ -227,10 +241,17 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 					if (is_object($setting_value) || in_array($setting_key, array('get_value_callback', 'save_value_callback', 'prepare_value_for_database', 'prepare_value_for_display'))) {
 						unset($all_spreadsheet_columns_settings[$column_key][$setting_key]);
 					}
+					if ($setting_key === 'serialized_field_settings' && !empty($setting_value['level'])) {
+						unset($all_spreadsheet_columns_settings[$column_key][$setting_key]['level']);
+					}
+					if ($setting_key === 'serialized_field_settings' && !empty($setting_value['detected_type'])) {
+						unset($all_spreadsheet_columns_settings[$column_key][$setting_key]['detected_type']['sample_values']);
+					}
 				}
 			}
 
 			$settings = array(
+				'allow_cell_comments' => empty(VGSE()->options['hide_cell_comments']),
 				'user_has_saved_sheet' => (int) get_user_meta(get_current_user_id(), 'wpse_has_saved_sheet', true),
 				'tinymce_cell_template' => VGSE()->helpers->get_tinymce_cell_content(),
 				'gutenberg_cell_template' => VGSE()->helpers->get_gutenberg_cell_content(),
@@ -260,7 +281,12 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 				'is_editor_page' => VGSE()->helpers->is_editor_page(),
 				'is_premium' => VGSE()->helpers->get_plugin_mode() === 'pro-plugin',
 				'is_post_type' => $this->provider->is_post_type,
-				'is_administrator' => current_user_can('manage_options')
+				'is_administrator' => current_user_can('manage_options'),
+				'media_cell_preview_template' => '<div class="vi-inline-preview-wrapper" style="height: {height}; width: {width_with_padding};"><img class="vi-preview-img" src="{url}" width="{width}" style="max-width: {width};"></div>',
+				'media_cell_preview_width' => 25,
+				'media_cell_preview_width_with_padding' => 45,
+				'media_cell_preview_max_height' => 22,
+				'nonce' => wp_create_nonce('bep-nonce')
 			);
 
 			$all_settings = wp_parse_args($settings, $this->args);
@@ -277,8 +303,20 @@ if (!class_exists('WP_Sheet_Editor_Factory')) {
 			if (!empty($all_settings['fixed_columns_left'])) {
 				$all_settings['custom_handsontable_args']['fixedColumnsLeft'] = $all_settings['fixed_columns_left'];
 			}
-			$all_settings['custom_handsontable_args'] = json_encode(apply_filters('vg_sheet_editor/handsontable/custom_args', $all_settings['custom_handsontable_args'], $this->args['provider']), JSON_FORCE_OBJECT);
+			$all_settings['custom_handsontable_args'] = json_encode(apply_filters('vg_sheet_editor/handsontable/custom_args', $all_settings['custom_handsontable_args'], $this->args['provider'], $current_provider_in_page), JSON_FORCE_OBJECT);
 			$final_settings = apply_filters('vg_sheet_editor/js_data', $all_settings, $current_provider_in_page);
+
+
+			$final_settings['media_cell_preview_template'] = str_replace(array(
+				'{height}',
+				'{width}',
+				'{width_with_padding}',
+					), array(
+				$final_settings['media_cell_preview_max_height'] . 'px',
+				$final_settings['media_cell_preview_width'] . 'px',
+				($final_settings['media_cell_preview_width'] + 20) . 'px',
+					), $final_settings['media_cell_preview_template']);
+
 			return $final_settings;
 		}
 

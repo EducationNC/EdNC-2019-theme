@@ -32,7 +32,7 @@ if (!class_exists('WP_Sheet_Editor')) {
 	class WP_Sheet_Editor {
 
 		private $post_type;
-		var $version = '2.18.1';
+		var $version = '2.20.0';
 		var $textname = 'vg_sheet_editor';
 		var $options_key = 'vg_sheet_editor';
 		var $plugin_url = null;
@@ -120,7 +120,7 @@ if (!class_exists('WP_Sheet_Editor')) {
 				),
 				'be_posts_per_page' => 20,
 				'be_load_items_on_scroll' => 1,
-				'be_fix_first_columns' => 1,
+				'be_fix_columns_left' => 2,
 				'be_posts_per_page_save' => 4,
 				'be_timeout_between_batches' => 6,
 				'be_disable_post_actions' => 0,
@@ -1014,6 +1014,7 @@ if (!class_exists('WP_Sheet_Editor')) {
 				wp_enqueue_script('chosen-editor', $this->plugin_url . 'assets/vendor/handsontable-chosen-editor/handsontable-chosen-editor.js', array(), $this->version, false);
 				wp_enqueue_script('text_editor_js', $this->plugin_url . 'assets/vendor/jqueryte/dist/jquery-te-1.4.0.min.js', array(), $this->version, false);
 				wp_enqueue_script('bep_nanobar', $this->plugin_url . 'assets/vendor/nanobar/nanobar.js', array(), $this->version, false);
+				wp_enqueue_script('bep-form-to-object', $this->plugin_url . 'assets/vendor/formToObject/dist/formToObject.js', array(), $this->version, false);
 
 				wp_enqueue_script('bep_global', $this->plugin_url . 'assets/js/global.js', array(), $this->version, false);
 

@@ -103,6 +103,7 @@ if (!class_exists('WPSE_Taxonomy_Terms_Spreadsheet_Bootstrap')) {
 							'taxonomy_key' => $post_type
 						),
 						'supports_formulas' => true,
+						'supports_sql_formulas' => false,
 					));
 				}
 				$this->columns->register_item('wpse_status', $post_type, array(

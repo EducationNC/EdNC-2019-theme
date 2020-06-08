@@ -148,18 +148,17 @@ class OMAPI_Welcome {
 		$options = $this->base->get_option();
 
 		//Check for the new option
-		if ( isset( $options['welcome']['status'] ) ){
+		if ( ! empty( $options['welcome']['status'] ) ){
 
-			//Check if they have been welcomed
-			if ( $options['welcome']['status'] === 'none'  ) {
+			// Check if they have been welcomed
+			if ( 'none' === $options['welcome']['status'] ) {
 
 				// Update the option.
 				$options['welcome']['status'] = 'welcomed';
 				update_option('optin_monster_api', $options );
 
-				//If this was not a bulk activate send them to the page
-				if(!isset($_GET['activate-multi']))
-				{
+				// If this was not a bulk activate send them to the page
+				if ( ! isset( $_GET['activate-multi'] ) ) {
 					// Only redirect if no trial is found.
 					$trial = $this->base->menu->has_trial_link();
 					if ( ! $trial ) {

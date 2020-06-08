@@ -23,7 +23,9 @@ if (!class_exists('WPSE_Formulas_UI')) {
 			$new_columns = array(
 				'wpseBulkSelector' => array(
 					'type' => 'checkbox',
-					'columnSorting' => false
+					'columnSorting' => false,
+					'checkedTemplate' => '1',
+					'uncheckedTemplate' => '',
 				)
 			);
 
@@ -71,7 +73,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'post_type' => $current_post_type,
 							), admin_url('admin.php'));
 					?>" method="POST" class="vgse-modal-form be-formulas vgse-simple-tab-content active" onsubmit="setFormSubmitting();" id="vgse-create-formula">
-						<p class="formula-tool-description"><?php _e('Using this tool you can update thousands of posts at once', VGSE()->textname); ?> <?php if (is_admin() && current_user_can('manage_options')) { ?>
+						<p class="formula-tool-description"><?php _e('Using this tool you can update thousands of rows at once', VGSE()->textname); ?> <?php if (is_admin() && current_user_can('manage_options')) { ?>
 								<a class="help-button" href="<?php echo esc_url($tutorials_url); ?>" target="_blank" ><?php _e('Need help? Check our tutorials', VGSE()->textname); ?></a>
 							<?php } ?></p>
 
@@ -99,10 +101,10 @@ if (!class_exists('WPSE_Formulas_UI')) {
 														'conditions' => array(
 															'supports_formulas' => true
 														),
-															), false, false)), $current_post_type);
+															), false, false), $current_post_type));
 									?>
 								</select>
-								<?php if (is_admin() && current_user_can('manage_options')) { ?>
+								<?php if (is_admin() && current_user_can('manage_options') && empty(VGSE()->options['enable_simple_mode'])) { ?>
 									<br/><span class="formula-tool-missing-column-tip"><small><?php _e('A column is missing? <a href="#" data-remodal-target="modal-columns-visibility">Enable it</a>', VGSE()->textname); ?></small></span>
 								<?php } ?>
 								<div class="column-selector hidden">
@@ -124,9 +126,11 @@ if (!class_exists('WPSE_Formulas_UI')) {
 								<label><?php _e('Generated formula:', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="Formulas available:<br/>=REPLACE(&quot;&quot;Search&quot;&quot;, &quot;&quot;Replace&quot;&quot;) <br/>=MATH( &quot;5 + 6 - $current_value&quot; )">( ? )</a></label>								
 								<textarea required class="be-txt-input" name="be-formula" readonly="readonly"></textarea>
 							</li>
-							<li class="use-slower-execution-field">
-								<label><input type="checkbox" value="yes" name="use_slower_execution"><?php _e('Use slower execution method?', VGSE()->textname); ?> <a href="#" class="tipso tipso_style" data-tipso="<?php _e('The default way uses a faster execution method, but it might not work in all the cases. Use this option when the default way doesn´t work or doesn´t update all the posts.', VGSE()->textname); ?>">( ? )</a></label>		
-							</li>
+							<?php if (empty(VGSE()->options['enable_simple_mode'])) { ?>
+								<li class="use-slower-execution-field">
+									<label><input type="checkbox" value="yes" name="use_slower_execution"><?php _e('Use slower execution method?', VGSE()->textname); ?> <a href="#" class="tipso tipso_style" data-tipso="<?php _e('The default way uses a faster execution method, but it might not work in all the cases. Use this option when the default way doesn´t work or doesn´t update all the posts.', VGSE()->textname); ?>">( ? )</a></label>		
+								</li>
+							<?php } ?>
 							<li class="apply-to-future-posts-field">
 								<label><input type="checkbox" value="yes" name="apply_to_future_posts"><?php _e('Execute formula on future posts automatically (Advanced users only)', VGSE()->textname); ?> <a href="#" class="tipso tipso_style" data-tipso="<?php _e('If you mark this option , when you create or update a post in the spreadsheet, we will check if the post matches the formula parameters and execute the formula automatically on that post. For example. When you create a product with category apples we can set the description automatically, or when you change the SKU we can update the downloadable files URLs automatically.', VGSE()->textname); ?>">( ? )</a></label>		
 							</li>
@@ -149,7 +153,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 								<button class="remodal-secundario save-formula"><?php _e('Execute on future posts only', VGSE()->textname); ?></button> 
 								<button data-remodal-action="confirm" class="remodal-cancel"><?php _e('Cancel', VGSE()->textname); ?></button>
 								<br/>
-								<?php if (is_admin() && current_user_can('manage_options')) { ?>
+								<?php if (is_admin() && current_user_can('manage_options') && empty(VGSE()->options['enable_simple_mode'])) { ?>
 									<div class="alert alert-blue"><?php _e('<p>1- Please backup your database before executing, the changes are not reversible.</p><p>2- Make sure the bulk edit settings are correct before executing.</p>', VGSE()->textname); ?></div>
 								<?php } else { ?>
 									<div class="alert alert-blue"><?php _e('Careful. The changes are not reversible. Please double check proceeding.', VGSE()->textname); ?></div>
@@ -175,7 +179,8 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						<p><?php _e('Here you can view all the formulas saved for ongoing execution. These formulas will be executed on posts matching the filters when they are created or updated in the spreadsheet.', VGSE()->textname); ?></p>
 						<p><?php _e('Note. If you want to modify saved formulas you have to delete the formula and create it again in the formulas builder.', VGSE()->textname); ?></p>
 						<?php
-						$saved_formulas = get_option(vgse_formulas_init()->future_posts_formula_key, array());
+//						$saved_formulas = get_option(vgse_formulas_init()->future_posts_formula_key, array());
+						$saved_formulas = false;
 						if (empty($saved_formulas)) {
 							?>
 							<p><?php _e('You haven´t saved formulas yet.', VGSE()->textname); ?></p>
@@ -251,12 +256,91 @@ if (!class_exists('WPSE_Formulas_UI')) {
 				$editor->args['toolbars']->register_item('run_formula', array(
 					'type' => 'button',
 					'allow_in_frontend' => true,
-					'help_tooltip' => __('Edit thousands of rows at once in seconds', VGSE()->textname),
+					// Removed tooltip because there's no position that works well
+					// Top: it displays it below on top of the dropdown when the header is fixed
+					// At the sides, it hides the other toolbar items
+//					'help_tooltip' => __('Edit thousands of rows at once', VGSE()->textname),
 					'content' => __('Bulk Edit', VGSE()->textname),
 					'icon' => 'fa fa-terminal',
 					'extra_html_attributes' => 'data-remodal-target="modal-formula"',
-					'footer_callback' => array($this, 'render_formulas_form')
+					'footer_callback' => array($this, 'render_formulas_form'),
+					'css_class' => 'wpse-disable-if-unsaved-changes',
 						), $post_type);
+
+				$quick_actions = array(
+					'edit' => array(
+						'label' => __('Edit', VGSE()->textname),
+						'columns' => null,
+						'allow_to_select_column' => true,
+						'type_of_edit' => null,
+						'values' => array(),
+						'wp_handler' => false,
+					),
+					'delete' => array(
+						'label' => __('Delete', VGSE()->textname),
+						'columns' => array('post_status', 'comment_approved', 'wpse_status'),
+						'allow_to_select_column' => false,
+						'type_of_edit' => 'set_value',
+						'values' => array('delete'),
+						'wp_handler' => false,
+					),
+				);
+
+				if ($editor->provider->is_post_type) {
+					$quick_actions['remove_duplicates_by_title_latest'] = array(
+						'label' => __('Remove duplicates by title (delete the latest)', VGSE()->textname),
+						'columns' => array('post_title'),
+						'allow_to_select_column' => false,
+						'type_of_edit' => 'remove_duplicates',
+						'values' => array('delete_latest'),
+						'wp_handler' => false,
+					);
+					$quick_actions['remove_duplicates_by_title_oldest'] = array(
+						'label' => __('Remove duplicates by title (delete the oldest)', VGSE()->textname),
+						'columns' => array('post_title'),
+						'allow_to_select_column' => false,
+						'type_of_edit' => 'remove_duplicates',
+						'values' => array('delete_oldest'),
+						'wp_handler' => false,
+					);
+				}
+
+				// We could add support for bulk actions registered for the wp tables
+				// but some of them require JS for custom handling and they would be broken
+				// so we will enable specific actions through extensions as needed
+				/* $actions_from_wp_list = apply_filters('bulk_actions-edit-' . $post_type, array());
+				  foreach ($actions_from_wp_list as $bulk_action => $label) {
+				  $quick_actions[$bulk_action] = array(
+				  'label' => sprintf(__('%s (third party)', VGSE()->textname), $label),
+				  'columns' => array(),
+				  'allow_to_select_column' => false,
+				  'type_of_edit' => null,
+				  'values' => array(),
+				  'wp_handler' => true,
+				  );
+				  } */
+				$quick_actions = apply_filters('vg_sheet_editor/formulas/quick_actions', $quick_actions, $post_type, $editor);
+				$quick_actions['more'] = array(
+					'label' => __('More options', VGSE()->textname),
+					'columns' => null,
+					'allow_to_select_column' => true,
+					'type_of_edit' => null,
+					'values' => array(),
+					'wp_handler' => false,
+				);
+				$action_links = array();
+				foreach ($quick_actions as $bulk_action => $action) {
+					$action_links[] = '<div class="button-container"><button class="quick-bulk-action button" type="button" data-action="' . htmlentities(json_encode($action), ENT_QUOTES, 'UTF-8') . '"  data-action="' . esc_attr($bulk_action) . '">' . esc_html($action['label']) . '</button></div>';
+				}
+
+				if (!empty($action_links)) {
+					$editor->args['toolbars']->register_item('quick_bulk_edits', array(
+						'type' => 'html',
+						'content' => implode('', $action_links),
+						'allow_in_frontend' => false,
+						'parent' => 'run_formula',
+							), $post_type);
+				}
 			}
 		}
 
@@ -283,6 +367,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateMathFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
@@ -302,12 +387,14 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateDecreasePercentageFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
 								'tag' => 'input',
 								'html_attrs' => array(
 									'type' => 'number',
+									'step' => '0.01'
 								),
 								'label' => __('Decrease by', VGSE()->textname),
 								'description' => __('Enter the percentage number.', VGSE()->textname),
@@ -321,12 +408,14 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateDecreaseFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
 								'tag' => 'input',
 								'html_attrs' => array(
 									'type' => 'number',
+									'step' => '0.01'
 								),
 								'label' => __('Decrease by', VGSE()->textname),
 								'description' => __('Enter the number.', VGSE()->textname),
@@ -340,12 +429,14 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateIncreasePercentageFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
 								'tag' => 'input',
 								'html_attrs' => array(
 									'type' => 'number',
+									'step' => '0.01'
 								),
 								'label' => __('Increase by', VGSE()->textname),
 								'description' => __('Enter the percentage number.', VGSE()->textname),
@@ -359,12 +450,14 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateIncreaseFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
 								'tag' => 'input',
 								'html_attrs' => array(
 									'type' => 'number',
+									'step' => '0.01'
 								),
 								'label' => __('Increase by', VGSE()->textname),
 								'description' => __('Enter the number.', VGSE()->textname),
@@ -378,6 +471,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateSetValueFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
@@ -392,6 +486,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateReplaceFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
@@ -404,6 +499,28 @@ if (!class_exists('WPSE_Formulas_UI')) {
 							),
 						),
 					),
+					'generate_excerpt' =>
+					array(
+						'label' => __('Generate excerpt', VGSE()->textname),
+						'description' => sprintf(__('If the column has a very long text, we will remove the html and shorten it to a number of words.', VGSE()->textname), vgse_formulas_init()->documentation_url),
+						'fields_relationship' => 'AND',
+						'jsCallback' => 'vgseGenerateExcerptFormula',
+						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
+						'input_fields' =>
+						array(
+							array(
+								'tag' => 'input',
+								'html_attrs' => array(
+									'type' => 'number',
+									'step' => '1',
+									'min' => 1
+								),
+								'label' => __('Maximum number of words', VGSE()->textname),
+								'description' => __('Enter the number.', VGSE()->textname),
+							),
+						),
+					),
 					'capitalize_words' =>
 					array(
 						'label' => __('Capitalize words', VGSE()->textname),
@@ -411,6 +528,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateCapitalizeWordsFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
@@ -430,6 +548,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateClearValueFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
@@ -445,19 +564,17 @@ if (!class_exists('WPSE_Formulas_UI')) {
 					'remove_duplicates' =>
 					array(
 						'label' => __('Remove duplicates', VGSE()->textname),
-						'description' => sprintf(__('Delete all the items containing duplicate values in the column, we only leave one item per unique value. <a class="formulas-action-tip-link" href="%s" target="_blank">Read more</a>', VGSE()->textname), 'https://wpsheeteditor.com/blog/?vg_tax%5Bfeature%5D=44'),
+						'description' => sprintf(__('<a class="formulas-action-tip-link" href="%s" target="_blank">Read more</a>', VGSE()->textname), 'https://wpsheeteditor.com/blog/?s=duplicate'),
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateClearValueFormula',
 						'allowed_column_keys' => array('post_title', 'post_author', 'post_content', 'post_date', 'post_excerpt', '_sku'),
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
-								'tag' => 'input',
-								'html_attrs' => array(
-									// We hide the input because we dont need user input
-									// and the JS requires at least one html input to generate the formula
-									'style' => 'display: none;',
-								),
+								'label' => __('Which duplicates do you want to delete?', VGSE()->textname),
+								'tag' => 'select',
+								'options' => '<option value="delete_latest">' . __('Delete the newest items and keep the oldest item', VGSE()->textname) . '</option>' . '<option value="delete_oldest">' . __('Delete the old items and keep the newest item', VGSE()->textname) . '</option>',
 							),
 						),
 					),
@@ -467,6 +584,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateAppendFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
@@ -484,6 +602,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGeneratePrependFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
@@ -501,6 +620,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'AND',
 						'jsCallback' => 'vgseGenerateCustomFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'input_fields' =>
 						array(
 							array(
@@ -518,6 +638,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						'fields_relationship' => 'OR',
 						'jsCallback' => 'vgseGenerateMergeFormula',
 						'allowed_column_keys' => null,
+						'disallowed_column_keys' => array(),
 						'description' => __('Copy the value of other fields into this field.<br/>Example, copy "sale price" into the "regular price" field.', VGSE()->textname),
 						'input_fields' =>
 						array(
@@ -535,11 +656,12 @@ if (!class_exists('WPSE_Formulas_UI')) {
 										), true),
 								'label' => __('Copy from this column', VGSE()->textname),
 							),
-							array(
-								'tag' => 'textarea',
-								'label' => __('Copy from multiple columns', VGSE()->textname),
-								'description' => __("Example: 'Articles written by \$post_author\$ on \$post_date\$' = 'Articles written by Adam on 24-12-2017'.<br/>Another example: '\$category\$-\$_regular_price\$ EUR' would be 'Videos - 25 EUR'", VGSE()->textname),
-							),
+						// Removed to simplify the form and move this to a separate "type of edit" in the future
+						/* array(
+						  'tag' => 'textarea',
+						  'label' => __('Copy from multiple columns', VGSE()->textname),
+						  'description' => __("Example: 'Articles written by \$post_author\$ on \$post_date\$' = 'Articles written by Adam on 24-12-2017'.<br/>Another example: '\$category\$-\$_regular_price\$ EUR' would be 'Videos - 25 EUR'", VGSE()->textname),
+						  ), */
 						),
 					),
 				),
@@ -553,6 +675,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						"append" => 'default',
 						"prepend" => 'default',
 						"capitalize_words" => 'default',
+						"generate_excerpt" => 'default',
 						"merge_columns" => 'default',
 						'custom' => 'default',
 					),
@@ -563,6 +686,7 @@ if (!class_exists('WPSE_Formulas_UI')) {
 						"append" => 'default',
 						"prepend" => 'default',
 						"capitalize_words" => 'default',
+						"generate_excerpt" => 'default',
 						"merge_columns" => 'default',
 						'custom' => 'default',
 					),

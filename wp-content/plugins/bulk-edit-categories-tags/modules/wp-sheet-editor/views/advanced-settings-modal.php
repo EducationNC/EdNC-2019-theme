@@ -32,7 +32,8 @@
 						<div class="field-wrapper">
 							<label for="<?php echo esc_attr($field['id']); ?>">
 								<?php if ($field['type'] === 'switch') { ?>
-									<input name="<?php echo esc_attr($field['id']); ?>" type="checkbox" value="1" <?php checked(1, (int) $value); ?> />
+									<input name="<?php echo esc_attr($field['id']); ?>" type="hidden" value=""/>
+									<input id="<?php echo esc_attr($field['id']); ?>"  name="<?php echo esc_attr($field['id']); ?>" type="checkbox" value="1" <?php checked(1, (int) $value); ?> />
 								<?php } ?> 
 								<?php echo esc_html($field['title']); ?>
 

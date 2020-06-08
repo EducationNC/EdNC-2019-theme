@@ -13,10 +13,16 @@ class ShortPixelAI
     const SEP = '+'; //can be + or ,
     const LOG_NAME = 'shortpixel_ai_log';
     public static $SHOW_STOPPERS = array('ao', 'avadalazy', 'ginger');
-    //                                          Add Media popup      Image to editor              Woo product variations         avia layout builder AJAX call
-    public static $excludedAjaxActions = array('query-attachments', 'send-attachment-to-editor', 'woocommerce_load_variations', 'avia_ajax_text_to_interface', 'avia_ajax_text_to_preview',
+    public static $excludedAjaxActions = array(
+        //Add Media popup     Image to editor              Woo product variations
+        'query-attachments', 'send-attachment-to-editor', 'woocommerce_load_variations',
+        //avia layout builder AJAX calls
+        'avia_ajax_text_to_interface', 'avia_ajax_text_to_preview',
         //My Listing theme
-          'mylisting_upload_file');
+        'mylisting_upload_file',
+        //Oxygen stuff
+        'ct_get_components_tree', 'ct_exec_code'
+    );
 
     public $settings;
     public $cssCacheVer;
@@ -215,9 +221,153 @@ class ShortPixelAI
             add_action('admin_head', array(&$this, 'enqueue_admin_styles'), 1);
             add_action('admin_footer', array(&$this, 'enqueue_admin_script'), 11);
 
+	        add_action( 'in_plugin_update_message-' . str_replace( WP_PLUGIN_DIR . '/', '', SHORTPIXEL_AI_PLUGIN_FILE ), array( &$this, 'in_plugin_update_message' ), 10, 2 );
+
             add_filter('plugin_action_links_' . plugin_basename($this->file), array(&$this, 'generate_plugin_links'));//for plugin settings page
         }
     }
+
+	public function in_plugin_update_message( $data, $response ) {
+		$version_parts = explode( '.', $response->new_version );
+
+		$notice = '';
+
+		if ( version_compare( PHP_VERSION, $response->requires_php, '<' ) ) {
+			$notice .= '<span>' . sprintf( __( '<strong>Heads up! We do not recommend to update!</strong> ShortPixel Adaptive Images version <strong>%s</strong> is not compatible with your PHP version.', 'shortpixel-adaptive-images' ), $response->new_version ) . '</span>';
+			$notice .= '<span>' . sprintf( __( 'The new ShortPixel Adaptive Images version requires at least PHP <strong>%s</strong> and your PHP version is <strong>%s</strong>', 'shortpixel-adaptive-images' ), $response->requires_php, PHP_VERSION ) . '</span>';
+
+			echo wp_kses_post( $notice );
+
+			return;
+		}
+
+		// Major
+		if ( $version_parts[ 1 ] == '0' && ( isset( $version_parts[ 2 ] ) ? $version_parts[ 2 ] == '0' : true ) && version_compare( $version_parts[ 0 ] . '.' . $version_parts[ 1 ], SHORTPIXEL_AI_VERSION, '>' ) ) {
+			$notice .= '<span>' . sprintf( __( '<strong>Heads up!</strong> %s is a %s update.', 'shortpixel-adaptive-images' ), $response->new_version, __( 'major', 'shortpixel-adaptive-images' ) ) . '</span>';
+		}
+		// Minor update message
+		else if ( $version_parts[ 1 ] != '0' && ( isset( $version_parts[ 2 ] ) ? $version_parts[ 2 ] == '0' : true ) && version_compare( $version_parts[ 0 ] . '.' . $version_parts[ 1 ], SHORTPIXEL_AI_VERSION, '>' ) ) {
+			$notice .= '<span>' . sprintf( __( '<strong>Heads up!</strong> %s is a %s update.', 'shortpixel-adaptive-images' ), $response->new_version, __( 'minor', 'shortpixel-adaptive-images' ) ) . '</span>';
+		}
+
+		$notice .= $this->get_update_notice( $response );
+
+		echo wp_kses_post( $notice );
+	}
+
+	/**
+	 * Get the upgrade notice from WordPress.org.
+	 *
+	 * @param object $response WordPress response
+	 *
+	 * @return string
+	 */
+	private function get_update_notice( $response ) {
+		$transient_name = 'spai_update_notice_' . $response->new_version;
+		$update_notice  = get_transient( $transient_name );
+
+		if ( $update_notice === false ) {
+			$readme_response = wp_safe_remote_get( 'https://plugins.svn.wordpress.org/shortpixel-adaptive-images/trunk/readme.txt' );
+
+			if ( !is_wp_error( $readme_response ) && !empty( $readme_response[ 'body' ] ) ) {
+				$update_notice = $this->parse_update_notice( $readme_response[ 'body' ], $response );
+				set_transient( $transient_name, $update_notice, DAY_IN_SECONDS );
+			}
+		}
+
+		return $update_notice;
+	}
+
+	/**
+	 * Parse update notice from readme file.
+	 *
+	 * @param string $content  ShortPixel AI readme file content
+	 * @param object $response WordPress response
+	 *
+	 * @return string
+	 */
+	private function parse_update_notice( $content, $response ) {
+		$version_parts     = explode( '.', $response->new_version );
+		$check_for_notices = [
+			$version_parts[ 0 ] . '.' . $version_parts[ 1 ] . '.' . $version_parts[ 2 ] . '.' . $version_parts[ 3 ], // build
+			$version_parts[ 0 ] . '.' . $version_parts[ 1 ] . '.' . $version_parts[ 2 ], // patch (micro)
+			$version_parts[ 0 ] . '.' . $version_parts[ 1 ] . '.0', // minor
+			$version_parts[ 0 ] . '.' . $version_parts[ 1 ], // minor
+			$version_parts[ 0 ] . '.0.0', // major
+			$version_parts[ 0 ] . '.0', // major
+		];
+
+		$update_notice = '';
+
+		foreach ( $check_for_notices as $id => $check_version ) {
+			if ( version_compare( SHORTPIXEL_AI_VERSION, $check_version, '>' ) ) {
+				continue;
+			}
+
+			$result = $this->parse_readme_content( $content, $check_version, $response );
+
+			if ( !empty( $result ) ) {
+				$update_notice .= $result;
+				break;
+			}
+		}
+
+		return wp_kses_post( $update_notice );
+	}
+
+	/**
+	 * Parses readme file's content to find notice related to passed version
+	 *
+	 * @param string $content Readme file content
+	 * @param string $version Checked version
+	 * @param object $response WordPress response
+	 *
+	 * @return string
+	 */
+	private function parse_readme_content( $content, $version, $response ) {
+		$notice_regexp = '/==\s*Upgrade Notice\s*==.*=\s*(' . preg_quote( $version ) . ')\s*=(.*)(=\s*' . preg_quote( $version . ':END' ) . '\s*=|$)/Uis';
+
+		$notice = '';
+		$matches = null;
+		if ( preg_match( $notice_regexp, $content, $matches ) ) {
+			$notices = (array) preg_split( '/[\r\n]+/', trim( $matches[ 2 ] ) );
+
+			if ( version_compare( trim( $matches[ 1 ] ), $version, '=' ) ) {
+				foreach ( $notices as $index => $line ) {
+					$notice .= '<span>';
+					$notice .= $this->replace_readme_constants( $this->markdown2html( $line ), $response );
+					$notice .= '</span>';
+				}
+			}
+		}
+
+		return $notice;
+	}
+
+	private function replace_readme_constants( $content, $response ) {
+		$constants    = [ '{{ NEW VERSION }}', '{{ CURRENT VERSION }}', '{{ PHP VERSION }}', '{{ REQUIRED PHP VERSION }}' ];
+		$replacements = [ $response->new_version, SHORTPIXEL_AI_VERSION, PHP_VERSION, $response->requires_php ];
+
+		return str_replace( $constants, $replacements, $content );
+	}
+
+	public function markdown2html( $content ) {
+		$patterns = [
+			'/\*\*(.+)\*\*/U', // bold
+			'/__(.+)__/U', // italic
+			'/\[([^\]]*)\]\(([^\)]*)\)/U', // link
+		];
+
+		$replacements = [
+			'<strong>${1}</strong>',
+			'<em>${1}</em>',
+			'<a href="${2}" target="_blank">${1}</a>',
+		];
+
+		$prepared_content = preg_replace( $patterns, $replacements, $content );
+
+		return isset( $prepared_content ) ? $prepared_content : $content;
+	}
 
     public function admin_enqueue_scripts()
     {
@@ -299,17 +449,21 @@ class ShortPixelAI
             wp_enqueue_style('spai-fadein');
             //Exclude the .zoomImg's as it conflicts with rules of WooCommerce.
             wp_add_inline_style('spai-fadein',
-            'img[data-spai]:not(div.woocommerce-product-gallery img) {'
+                'img[data-spai]{'
                     . 'opacity: 0;'
                 . '} '
-                . 'img[data-spai-eager]:not(div.woocommerce-product-gallery img),'
-                . 'img[data-spai-upd]:not(div.woocommerce-product-gallery img) {'
-                    . '-webkit-transition: opacity .5s linear 0.2s;'
-                    . '-moz-transition: opacity .5s linear 0.2s;'
-                    . 'transition: opacity .5s linear 0.2s; opacity: 1; '
+                . 'div.woocommerce-product-gallery img[data-spai]{' //exclusions
+                    . 'opacity: 1;'
+                . '} '
+                    . 'img[data-spai-eager],'
+                    . 'img[data-spai-upd] {'
+                    . 'transition: opacity .5s linear .2s;'
+                    . '-webkit-transition: opacity .5s linear .2s;'
+                    . '-moz-transition: opacity .5s linear .2s;'
+                    . '-o-transition: opacity .5s linear .2s;'
+                    . ' opacity: 1;'
                 . '}');
         }
-
         wp_register_script('spai-scripts', $this->plugin_url . 'js/ai.min.js', array('jquery'), SHORTPIXEL_AI_VERSION, true);
         wp_localize_script('spai-scripts', 'spai_settings', array(
             'api_url' => $this->get_api_url(),
@@ -346,10 +500,11 @@ class ShortPixelAI
         if (function_exists('get_current_screen')) {
             $screen = get_current_screen();
             if ($screen && ($screen->id == 'settings_page_shortpixel_ai_settings_page')) {
-                wp_enqueue_style('spai-admin-style', $this->plugin_url . 'css/style.css');
                 wp_enqueue_script('spai-quriobot', 'https://quriobot.com/qb/widget/KoPqxmzqzjbg5eNl/5doqer3ZpnmR6ZL0', null, false, true);
             }
         }
+
+	    wp_enqueue_style('spai-admin-style', $this->plugin_url . 'css/style.css');
     }
 
     public function enqueue_admin_script()
@@ -541,6 +696,7 @@ class ShortPixelAI
                     $this->display_notice($thrown['when'], $thrown['extra'], '-scared');
                 }
             }
+            delete_transient("shortpixelai_thrown_notice");
         }
         if (!isset($dismissed['key'])) {
             $account = $this->get_shortpixel_account();
@@ -640,7 +796,7 @@ class ShortPixelAI
     {
         $email = array();
         $resp = new stdClass();
-        if (($spKey = get_option('wp-short-pixel-apiKey', false)) && !get_option('spai_settings_account', false)) {
+        if (!get_option('spai_settings_account', false) && ($spKey = get_option('wp-short-pixel-apiKey', false))) {
             $resp = $this->get_domain_status();
             if ($resp->Status == -3) {
                 return $resp;

@@ -68,7 +68,9 @@
 							</div>
 							<?php do_action('vg_sheet_editor/import/after_advanced_options', $post_type); ?>
 						</div>
-						<p><?php printf(__('Tip. You can use the "export" tool to download a CSV and see the available columns and format.<br>You can read our <a href="%s" target="_blank">documentation here</a>.', VGSE()->textname), VGSE()->get_site_link('https://wpsheeteditor.com/blog/?s=import', 'importer-documentation')); ?></p>
+						<?php if (empty(VGSE()->options['enable_simple_mode'])) { ?>
+							<p><?php printf(__('Tip. You can use the "export" tool to download a CSV and see the available columns and format.<br>You can read our <a href="%s" target="_blank">documentation here</a>.', VGSE()->textname), VGSE()->get_site_link('https://wpsheeteditor.com/blog/?s=import', 'importer-documentation')); ?></p>
+						<?php } ?>
 
 						<?php do_action('vg_sheet_editor/import/after_data_sources', $post_type); ?>
 					</li>
@@ -76,7 +78,9 @@
 						<h3><?php _e('Select columns to import', VGSE()->textname); ?></h3>
 						<p class="one-column-detected-tip alert alert-blue"><?php printf(__('Important. We only detected one column in the CSV file. If this is incorrect, follow <a href="%s" target="_blank">these steps</a> to fix it', VGSE()->textname), 'https://wpsheeteditor.com/documentation/faq/#1572924330879-e05ed559-f740234'); ?></p>
 						<p class="import-auto-map-notice"><?php _e('We automatically detected all the columns.', VGSE()->textname); ?><br/><button class="button  next-step step-nav"><?php _e('Import all the columns', VGSE()->textname); ?></button> <?php _e('or', VGSE()->textname); ?> <button class="button import-map-select-columns"><?php _e('Select individual columns to import', VGSE()->textname); ?></button></p>
-						<p><?php _e('Tip. If you edited information from this site, you should import the columns edited and record_id. Don\'t import columns that weren\'t modified', VGSE()->textname); ?></p>
+						<?php if (empty(VGSE()->options['enable_simple_mode'])) { ?>
+							<p><?php _e('Tip. If you edited information from this site, you should import the columns edited and record_id. Don\'t import columns that weren\'t modified', VGSE()->textname); ?></p>
+						<?php } ?>
 						<p class="import-column-bulk-actions"><span class="csv-column-list-header"></span><span class="wp-column-list-header"><select><option value=""><?php _e('Bulk actions', VGSE()->textname); ?></option><option value="unselect"><?php _e('Unselect all columns', VGSE()->textname); ?></option></select></span></p>
 						<p class="import-column-list-headers"><span class="csv-column-list-header"><?php _e('CSV Column', VGSE()->textname); ?></span><span class="wp-column-list-header"><?php _e('WordPress field', VGSE()->textname); ?></span></p>
 						<div class="map-template hidden">
@@ -112,16 +116,18 @@
 							</div>
 							<div class="field-wrapper">
 								<label><?php _e('WordPress Field', VGSE()->textname); ?></label>
-								<select name="existing_check_wp_field[]" class="select2">
+								<select name="existing_check_wp_field[]" class="select2 existing-check-wp-field">
 									<option value="">- -</option>
 									<?php
 									$wp_columns_to_search = implode(apply_filters('vg_sheet_editor/import/wp_check/available_columns_options', VGSE()->helpers->get_post_type_columns_options($post_type, array(
 														'conditions' => array(
-															'data_type' => 'post_terms'
+															'allow_search_during_import' => true
 														),
-														'operator' => 'NOT'
 															), false, false), $post_type));
 									echo $wp_columns_to_search;
+									if (post_type_exists($post_type)) {
+										echo '<option value="post_name__in">' . __('Full URL', VGSE()->textname) . '</option>';
+									}
 									?>
 								</select>	
 							</div>

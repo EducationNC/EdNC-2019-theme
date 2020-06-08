@@ -14,6 +14,7 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 		var $toolbars = null;
 		var $quick_access_rendered = false;
 		var $settings = array();
+		static $initialized_post_types = array();
 
 		function __construct($args = array()) {
 			$defaults = array(
@@ -47,6 +48,15 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 				wp_die(__('Error 8391. You dont have enough permissions to view this page.', VGSE()->textname));
 			}
 
+			// Only initialize spreadsheets once, don't initialize twice
+			// This fix was added because the frontend sheet and backend sheets were initialized and
+			// some columns were registered in one instance and not on the other, so we had some missing columns
+			// But the fix was removed because the backend sheet would not initialize and it would not be accesible anymore
+//			$this->enabled_post_types = array_diff($this->enabled_post_types, self::$initialized_post_types);
+//			if (empty($this->enabled_post_types)) {
+//				return;
+//			}
+//			self::$initialized_post_types = array_merge(self::$initialized_post_types, $this->enabled_post_types);
 
 			$this->columns = ( $this->settings['register_columns'] ) ? new WP_Sheet_Editor_Columns() : null;
 			$this->toolbars = ( $this->settings['register_toolbars'] ) ? clone($this->_register_toolbars($this->enabled_post_types, new WP_Sheet_Editor_Toolbar())) : null;
@@ -54,11 +64,16 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 			if (!empty($this->enabled_post_types) && $this->settings['register_spreadsheet_editor']) {
 				$this->_register_columns();
 
+				$freezed_columns = false;
+				if (isset(VGSE()->options['be_fix_columns_left'])) {
+					$freezed_columns = (!empty(VGSE()->options['be_fix_columns_left'])) ? (int) VGSE()->options['be_fix_columns_left'] : 2;
+				}
+
 				new WP_Sheet_Editor_Factory(array(
 					'posts_per_page' => (!empty(VGSE()->options) && !empty(VGSE()->options['be_posts_per_page']) ) ? (int) VGSE()->options['be_posts_per_page'] : 20,
 					'save_posts_per_page' => (!empty(VGSE()->options) && !empty(VGSE()->options['be_posts_per_page_save']) ) ? (int) VGSE()->options['be_posts_per_page_save'] : 4,
 					'wait_between_batches' => (!empty(VGSE()->options) && !empty(VGSE()->options['be_timeout_between_batches']) ) ? (int) VGSE()->options['be_timeout_between_batches'] : 6,
-					'fixed_columns_left' => (!empty(VGSE()->options['be_fix_first_columns']) ) ? 2 : false,
+					'fixed_columns_left' => $freezed_columns ? $freezed_columns : null,
 					'provider' => $current_post_type,
 					'provider_key' => 'post_type',
 					'admin_menu' => ( $this->settings['register_admin_menus'] ) ? $this->_register_admin_menu() : null,
@@ -610,9 +625,7 @@ if (!class_exists('WP_Sheet_Editor_Bootstrap')) {
 									'source' => 'loadTaxonomyTerms'
 								);
 
-								if (empty(VGSE()->options['hide_cell_comments'])) {
-									$formatted['comment'] = array('value' => __('Enter multiple terms separated by commas', VGSE()->textname) . $hierarchy_tip);
-								}
+								$formatted['comment'] = array('value' => __('Enter multiple terms separated by commas', VGSE()->textname) . $hierarchy_tip);
 							}
 
 							$this->columns->register_item($taxonomy->name, $post_type, array(

@@ -4,7 +4,7 @@
  ** Plugin URI: https://gt3themes.com/
  ** Description: This powerful plugin lets you extend the functionality of the default WordPress gallery. You can easily customize the look and feel of the photo or video gallery.
  ** Discover the power of GT3themes products.
- ** Version: 2.4.1.7
+ ** Version: 2.4.1.9
  ** Author: GT3 Photo Gallery
  ** Author URI: https://gt3themes.com/
  ** Text Domain: gt3pg
@@ -18,7 +18,6 @@ if(!defined('ABSPATH')) {
 if(!version_compare(PHP_VERSION, '5.6', '>=')) {
 	add_action('admin_notices', 'gt3pg__fail_php_version');
 } else {
-
 	define('GT3PG_LITE_PLUGIN_ROOT_FILE', __FILE__);
 	define('GT3PG_LITE_PLUGIN_ROOT_URL', plugins_url('/', __FILE__));
 	define('GT3PG_LITE_PLUGIN_ROOT_PATH', plugin_dir_path(__FILE__).'/');

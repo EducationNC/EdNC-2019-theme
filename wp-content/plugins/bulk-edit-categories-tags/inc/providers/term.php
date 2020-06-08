@@ -377,6 +377,10 @@ WHERE tt.taxonomy = '" . esc_sql($post_type) . "' AND pm.meta_key = '" . esc_sql
 			}
 		}
 
+		// The term can't use itself as parent
+		if (isset($values['parent']) && $values['ID'] === $values['parent']) {
+			unset($values['parent']);
+		}
 		if ($values['ID'] === PHP_INT_MAX) {
 			$values['ID'] = $this->create_item(array('post_type' => $taxonomy));
 		}
@@ -414,6 +418,7 @@ WHERE tt.taxonomy = '" . esc_sql($post_type) . "' AND pm.meta_key = '" . esc_sql
 		}
 
 		wp_cache_set('last_changed', microtime(), 'terms');
+		do_action('vg_sheet_editor/provider/term/data_updated', $term_id, $values);
 
 		return $result;
 	}

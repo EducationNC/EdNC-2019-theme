@@ -19,7 +19,11 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 		}
 
 		function get_blacklisted_column_keywords($provider) {
-			return $blacklisted_keys = apply_filters('vg_sheet_editor/columns/blacklisted_columns', array('_nxs_snap', '_edit_lock', '_edit_last', '_wp_old_slug', '_wpcom_is_markdown', 'vgse_column_sizes', 'wxr_import', '_oembed', '^\d+_\d+_\d+$', '_user_wished_', '_user_wished_user', '_rehub_views_date', '-wpfoof-', '^_transient_tribe', '_learndash_memberpress_enrolled_courses_access', 'course_\d+_access_from', 'ld_sent_notification_enroll_course_', 'learndash_last_known_course_', 'learndash_group_users_', '_badgeos_achievements_', 'learndash_group_leaders_', 'course_timer_completed_', 'course_completed_', 'screen_layout_', 'enrolled_courses_access_counter_', '_sfwd-quizzes_', '_uo-course-cert-', 'screen_options_per_page', 'gform_recent_forms_', '^manage.+columnshidden_', '^edit_.+_per_page', 'uo_timer_', '_screen_options_default', '_edd_download_limit_override', '_wcj_product_input_fields', 'seopress_pro_rich_snippets', 'seopress_analysis_data', '[a-zA-Z0-9]{28,}', 'yith_wcgpf_product_feed_configuration', '_wvs_product_attributes', 'wcml_sync_hash', 'product_tabel_', '_wp_attachment_backup_sizes', '_wp_attached_file', 'thb_postviews_count_'), $provider, $this);
+			$blacklisted_keys = apply_filters('vg_sheet_editor/columns/blacklisted_columns', array('_nxs_snap', '_edit_lock', '_edit_last', '_wp_old_slug', '_wpcom_is_markdown', 'vgse_column_sizes', 'wxr_import', '_oembed', '^\d+_\d+_\d+$', '_user_wished_', '_user_wished_user', '_rehub_views_date', '-wpfoof-', '^_transient_tribe', '_learndash_memberpress_enrolled_courses_access', 'course_\d+_access_from', 'ld_sent_notification_enroll_course_', 'learndash_last_known_course_', 'learndash_group_users_', '_badgeos_achievements_', 'learndash_group_leaders_', 'course_timer_completed_', 'course_completed_', 'screen_layout_', 'enrolled_courses_access_counter_', '_sfwd-quizzes_', '_uo-course-cert-', 'screen_options_per_page', 'gform_recent_forms_', '^manage.+columnshidden_', '^edit_.+_per_page', 'uo_timer_', '_screen_options_default', '_edd_download_limit_override', '_wcj_product_input_fields', 'seopress_pro_rich_snippets', 'seopress_analysis_data', '[a-zA-Z0-9]{28,}', 'yith_wcgpf_product_feed_configuration', '_wvs_product_attributes', 'wcml_sync_hash', 'product_tabel_', '_wp_attachment_backup_sizes', '_wp_attached_file', 'thb_postviews_count_', '_wcct_goaldeal_', 'amazonS3_cache_', '_wcct_product_taxonomy_term_ids', '_eg_gallery_data_gallery', '_eg_gallery_data_config'), $provider, $this);
+			if (!empty(VGSE()->options['blacklist_columns'])) {
+				$blacklisted_keys = array_merge($blacklisted_keys, array_map('trim', explode(',', VGSE()->options['blacklist_columns'])));
+			}
+			return $blacklisted_keys;
 		}
 
 		function is_column_blacklisted($key, $provider) {
@@ -68,6 +72,15 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 			}
 		}
 
+		function columns_limit_reached($provider) {
+			$out = false;
+			if (!empty($this->registered_items[$provider]) && count($this->registered_items[$provider]) > VGSE()->helpers->get_columns_limit()) {
+
+				$out = true;
+			}
+			return $out;
+		}
+
 		/**
 		 * Register spreadsheet column 
 		 * @param string $key
@@ -89,7 +102,7 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 			// Enforce columns limit to avoid performance bottlenecks
 			// columns with allow_to_hide=false or columns already registered previously 
 			// are always allowed to avoid errors during saving.
-			if ($args['allow_to_hide'] && !$this->has_item($key, $provider) && !empty($this->registered_items[$provider]) && count($this->registered_items[$provider]) > VGSE()->helpers->get_columns_limit() && !$args['skip_columns_limit']) {
+			if ($args['allow_to_hide'] && !$this->has_item($key, $provider) && $this->columns_limit_reached($provider) && !$args['skip_columns_limit']) {
 				$this->add_rejection($key, 'columns_limit_reached', $provider);
 				return;
 			}
@@ -129,7 +142,7 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 
 		function _register_item($key, $args = array()) {
 			$defaults = array(
-				'data_type' => 'post_data', // (post_data,post_meta|meta_data)	
+				'data_type' => 'post_data', // (post_data,post_meta|meta_data|post_terms)	
 				'column_width' => 100,
 				'title' => ucwords(str_replace(array('-', '_'), ' ', $key)),
 				'type' => '', // String boton_gallery|boton_gallery_multiple|view_post|handsontable|metabox|(empty)
@@ -146,6 +159,8 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 				'allow_to_save' => true,
 				'allow_to_save_sanitization' => true,
 				'allow_plain_text' => true,
+				'allow_direct_search' => true, // We use this to mark fields that can't be searched with the advanced filters
+				'allow_search_during_import' => true, // useful to exclude serialized fields from the import > wp fields dropdown in the step 3
 				'is_locked' => false, // We'll add a lock icon before the cell value and disable editing
 				'lock_template_key' => false, // We'll add a lock icon before the cell value and disable editing
 				'forced_allow_to_save' => null,
@@ -266,6 +281,10 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 				}
 			}
 
+			if (!empty($args['data_type']) && $args['data_type'] === 'post_terms') {
+				$args['allow_search_during_import'] = false;
+			}
+
 			// post_meta is an alias of meta_data
 			if ($args['data_type'] === 'post_meta') {
 				$args['data_type'] = 'meta_data';
@@ -322,8 +341,15 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 				$this->registered_items[$post_type] = array_merge($enabled_columns, $locked_pro_columns);
 			}
 
+			$this->registered_items = $this->_enforce_unique_titles($this->registered_items);
+
 			$spreadsheet_columns = ( $skip_filters ) ? $this->registered_items : apply_filters('vg_sheet_editor/columns/all_items', $this->registered_items);
 
+			// We do this twice because other modules might modify titles through the filter and
+			// some modules also use the initial value to display unfiltered columns
+			$spreadsheet_columns = $this->_enforce_unique_titles($spreadsheet_columns);
+
+			// Detect registered columns that were filtered out
 			foreach ($this->registered_items as $post_type => $columns) {
 				foreach ($columns as $key => $column) {
 					if (!isset($spreadsheet_columns[$post_type]) || !isset($spreadsheet_columns[$post_type][$key])) {
@@ -332,6 +358,23 @@ if (!class_exists('WP_Sheet_Editor_Columns')) {
 				}
 			}
 
+			return $spreadsheet_columns;
+		}
+
+		function _enforce_unique_titles($spreadsheet_columns) {
+			// Make sure all the column titles are unique, append a number if needed, useful during imports
+			foreach ($spreadsheet_columns as $post_type => $columns) {
+				$post_type_titles = array_fill_keys(wp_list_pluck($columns, 'title'), 0);
+				foreach ($columns as $key => $column) {
+					if (empty($column['title'])) {
+						continue;
+					}
+					$post_type_titles[$column['title']] ++;
+					if ($post_type_titles[$column['title']] > 1) {
+						$spreadsheet_columns[$post_type][$key]['title'] .= ' ' . $post_type_titles[$column['title']];
+					}
+				}
+			}
 			return $spreadsheet_columns;
 		}
 
