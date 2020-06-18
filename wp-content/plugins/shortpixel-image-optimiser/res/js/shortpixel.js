@@ -3,13 +3,13 @@
  */
 
 // init checks bulkProcess on each page. initSettings is when the settings View is being loaded.
-jQuery(document).ready(function(){ShortPixel.init();});
+jQuery(document).ready(function(){ShortPixel.init(); });
 
 var ShortPixel = function() {
 
     function init() {
 
-        if (typeof ShortPixel.API_KEY !== 'undefined') return; //was initialized by the 10 sec. setTimeout, rare but who knows, might happen on very slow connections...
+        if (typeof ShortPixel.API_IS_ACTIVE !== 'undefined') return; //was initialized by the 10 sec. setTimeout, rare but who knows, might happen on very slow connections...
         //are we on media list?
         if( jQuery('table.wp-list-table.media').length > 0) {
             //register a bulk action
@@ -89,12 +89,15 @@ var ShortPixel = function() {
     function checkExifWarning()
     {
       if (! jQuery('input[name="removeExif"]').is(':checked') && jQuery('input[name="png2jpg"]').is(':checked') )
-      {
         jQuery('.exif_warning').fadeIn();
-      }
-      else {
+      else
         jQuery('.exif_warning').fadeOut();
-      }
+
+      if (! jQuery('input[name="removeExif"]').is(':checked') && jQuery('.exif_imagick_warning').data('imagick') <= 0)
+        jQuery('.exif_imagick_warning').fadeIn();
+      else
+        jQuery('.exif_imagick_warning').fadeOut();
+
     }
 
     function checkBackUpWarning()
@@ -189,10 +192,11 @@ var ShortPixel = function() {
 
     function setupAdvancedTab() {
         jQuery("input.remove-folder-button").click(function(){
-            var path = jQuery(this).data("value");
+            var id = jQuery(this).data("value");
+            var path = jQuery(this).data('name');
             var r = confirm( SPstringFormat(_spTr.areYouSureStopOptimizing, path) );
             if (r == true) {
-                jQuery("#removeFolder").val(path);
+                jQuery("#removeFolder").val(id);
                 jQuery('#wp_shortpixel_options').submit();
             }
         });
@@ -413,7 +417,7 @@ var ShortPixel = function() {
         if(isNaN(ShortPixel.retries)) ShortPixel.retries = 1;
         if(ShortPixel.retries < 6) {
             console.log("Invalid response from server (Error: " + msg + "). Retrying pass " + (ShortPixel.retries + 1) +  "...");
-            setTimeout(checkBulkProgress, 5000);
+            setBulkTimer(5000);
         } else {
             ShortPixel.bulkShowError(-1,"Invalid response from server received 6 times. Please retry later by reloading this page, or <a href='https://shortpixel.com/contact' target='_blank'>contact support</a>. (Error: " + msg + ")", "");
             console.log("Invalid response from server 6 times. Giving up.");
@@ -422,6 +426,7 @@ var ShortPixel = function() {
 
     function browseContent(browseData) {
         browseData.action = 'shortpixel_browse_content';
+
         var browseResponse = "";
         jQuery.ajax({
             type: "POST",
@@ -537,8 +542,6 @@ var ShortPixel = function() {
         }
     });
 } */
-
-
     function initFolderSelector() {
         jQuery(".select-folder-button").click(function(){
             jQuery(".sp-folder-picker-shade").fadeIn(100); //.css("display", "block");
@@ -548,9 +551,7 @@ var ShortPixel = function() {
             picker.parent().css('margin-left', -picker.width() / 2);
             picker.fileTree({
                 script: ShortPixel.browseContent,
-                //folderEvent: 'dblclick',
-                multiFolder: false
-                //onlyFolders: true
+                multiFolder: false,
             });
         });
         jQuery(".shortpixel-modal input.select-folder-cancel, .sp-folder-picker-shade").click(function(){
@@ -559,6 +560,8 @@ var ShortPixel = function() {
         });
         jQuery(".shortpixel-modal input.select-folder").click(function(e){
             //var subPath = jQuery("UL.jqueryFileTree LI.directory.selected A").attr("rel").trim();
+
+            // @todo This whole thing might go, since we don't display files anymore in folderTree.
 
             // check if selected item is a directory. If so, we are good.
             var selected = jQuery('UL.jqueryFileTree LI.directory.selected');
@@ -577,7 +580,8 @@ var ShortPixel = function() {
 
             if(subPath) {
                 var fullPath = jQuery("#customFolderBase").val() + subPath;
-                if(fullPath.slice(-1) == '/') fullPath = fullPath.slice(0, -1);
+                fullPath = fullPath.replace(/\/\//,'/');
+                console.debug('FullPath' + fullPath);
                 jQuery("#addCustomFolder").val(fullPath);
                 jQuery("#addCustomFolderView").val(fullPath);
                 jQuery(".sp-folder-picker-shade").fadeOut(100);
@@ -877,7 +881,7 @@ function showToolBarAlert($status, $message, id) {
         case ShortPixel.STATUS_QUOTA_EXCEEDED:
             if(  window.location.href.search("wp-short-pixel-bulk") > 0
               && jQuery(".sp-quota-exceeded-alert").length == 0) { //if we're in bulk and the alert is not displayed reload to see all options
-              //  location.reload();
+
                 return;
             }
             robo.addClass("shortpixel-alert");
@@ -986,24 +990,53 @@ function checkBulkProgress() {
     //if i'm the bulk page, steal the bulk processor
     if( window.location.href.search("wp-short-pixel-bulk") >= 0 ) {
         ShortPixel.bulkProcessor = true;
-        localStorage.bulkTime = Math.floor(Date.now() / 1000);
+        localStorage.bulkTime = Date.now();
         localStorage.bulkPage = 1;
+        ShortPixel.BULK_SECRET = false;
+    }
+
+    if (ShortPixel.BULK_SECRET !== false)
+    {
+      if (ShortPixel.BULK_SECRET != localStorage.bulkSecret)
+      {
+    //    console.log('Cancelled Processing. Bulk Processor in use');
+        clearBulkProcessor();
+        jQuery("li.shortpixel-toolbar-processing").removeClass("shortpixel-processing");
+        jQuery("li.shortpixel-toolbar-processing").addClass("shortpixel-hide");
+        return;
+      }
     }
 
     //if I'm not the bulk processor, check every 20 sec. if the bulk processor is running, otherwise take the role
-    if(ShortPixel.bulkProcessor == true || typeof localStorage.bulkTime == 'undefined' || Math.floor(Date.now() / 1000) -  localStorage.bulkTime > 90) {
+    if(ShortPixel.bulkProcessor == true || typeof localStorage.bulkTime == 'undefined' || Date.now() - localStorage.bulkTime > 10000) {
         ShortPixel.bulkProcessor = true;
         localStorage.bulkPage = (window.location.href.search("wp-short-pixel-bulk") >= 0 ? 1 : 0);
-        localStorage.bulkTime = Math.floor(Date.now() / 1000);
-        console.log(localStorage.bulkTime);
+        localStorage.bulkTime = Date.now();
+        if (localStorage.getItem('bulkSecret') == null)
+          localStorage.bulkSecret = Math.random().toString(36).substring(7);
+
         checkBulkProcessingCallApi();
     } else {
-        setTimeout(checkBulkProgress, 5000);
+        setBulkTimer(20000);
     }
 }
 
+var bulkTimer; // scope
+function setBulkTimer(time)
+{
+   window.clearTimeout(bulkTimer);
+   //console.log('Clearing TimeOut');
+
+   if (time > 0)
+   {
+    bulkTimer = window.setTimeout(checkBulkProgress, time);
+    //console.log('Set Timeout ' + time + ' ms');
+  }
+}
+
 function checkBulkProcessingCallApi(){
-    var data = { 'action': 'shortpixel_image_processing' };
+  //  console.log('CheckBulkProcessingAPI');
+    var data = { 'action': 'shortpixel_image_processing', 'bulk-secret': localStorage.bulkSecret };
     // since WP 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
     jQuery.ajax({
         type: "POST",
@@ -1037,16 +1070,16 @@ function checkBulkProcessingCallApi(){
                 switch (data["Status"]) {
                     case ShortPixel.STATUS_NO_KEY:
                         setCellMessage(id, data["Message"], "<a class='button button-smaller button-primary' href=\"https://shortpixel.com/wp-apikey"
-                                       + ShortPixel.AFFILIATE + "\" target=\"_blank\">" + _spTr.getApiKey + "</a>");
+                                       + "\" target=\"_blank\">" + _spTr.getApiKey + "</a>");
                         showToolBarAlert(ShortPixel.STATUS_NO_KEY);
                         break;
                     case ShortPixel.STATUS_QUOTA_EXCEEDED:
                         setCellMessage(id, data["Message"], "<a class='button button-smaller button-primary' href=\"https://shortpixel.com/login/"
-                                       + ShortPixel.API_KEY + "\" target=\"_blank\">" + _spTr.extendQuota + "</a>"
+                                       + "\" target=\"_blank\">" + _spTr.extendQuota + "</a>"
                                        + "<a class='button button-smaller' href='admin.php?action=shortpixel_check_quota'>" + _spTr.check__Quota + "</a>");
                         showToolBarAlert(ShortPixel.STATUS_QUOTA_EXCEEDED);
                         if(data['Stop'] == false) { //there are other items in the priority list, maybe processed, try those
-                            setTimeout(checkBulkProgress, 5000);
+                            setBulkTimer(5000);
                         }
                         ShortPixel.otherMediaUpdateActions(id, ['quota','view']);
                         break;
@@ -1062,7 +1095,7 @@ function checkBulkProcessingCallApi(){
                             ShortPixel.otherMediaUpdateActions(id, ['retry','view']);
                         }
                         console.log(data["Message"]);
-                        setTimeout(checkBulkProgress, 5000);
+                        setBulkTimer(5000);
                         break;
                     case ShortPixel.STATUS_EMPTY_QUEUE:
                         console.log(data["Message"]);
@@ -1108,8 +1141,10 @@ function checkBulkProcessingCallApi(){
                         // [BS] Only update date on Custom Media Page.
                         if (ShortPixel.isCustomImageId(id) && data['TsOptimized'] && data['TsOptimized'].length > 0)
                         {
-                          console.log(id);
-                          jQuery('.date-' + id).text(data['TsOptimized']);
+                          var row = jQuery('.list-overview .item-' + id);
+
+                          jQuery(row).children('.date').text(data['TsOptimized']);
+                          jQuery(row).find('.row-actions .action-optimize').remove(); // gets complicated
                         }
 
 
@@ -1134,7 +1169,7 @@ function checkBulkProcessingCallApi(){
                         if(isBulkPage && typeof data["BulkPercent"] !== 'undefined') {
                             progressUpdate(data["BulkPercent"], data["BulkMsg"]);
                         }
-                        setTimeout(checkBulkProgress, 5000);
+                        setBulkTimer(5000);
                         break;
 
                     case ShortPixel.STATUS_SKIP:
@@ -1158,7 +1193,7 @@ function checkBulkProcessingCallApi(){
                         if(isBulkPage && data["Count"] > 3) {
                             ShortPixel.bulkShowLengthyMsg(id, data["Filename"], data["CustomImageLink"]);
                         }
-                        setTimeout(checkBulkProgress, 5000);
+                        setBulkTimer(5000);
                         break;
                     case ShortPixel.STATUS_SEARCHING:
                         console.log('Server response: ' + response);
@@ -1167,20 +1202,32 @@ function checkBulkProcessingCallApi(){
                         {
                           jQuery('.bulk-notice-msg.bulk-searching').show();
                         }
-                        setTimeout(checkBulkProgress, 2500);
+                        setBulkTimer(2500);
                     break;
                     case ShortPixel.STATUS_MAINTENANCE:
                         ShortPixel.bulkShowMaintenanceMsg('maintenance');
-                        setTimeout(checkBulkProgress, 60000);
+                        setBulkTimer(60000);
                         break;
                     case ShortPixel.STATUS_QUEUE_FULL:
                         ShortPixel.bulkShowMaintenanceMsg('queue-full');
-                        setTimeout(checkBulkProgress, 60000);
+                        setBulkTimer(60000);
                         break;
                     default:
                         ShortPixel.retry("Unknown status " + data["Status"] + ". Retrying...");
                         break;
+                } // switch
+
+                // If custom, if has ID ( returned something about image )
+                if (typeof id != 'undefined' && ShortPixel.isCustomImageId(id))
+                {
+                  var row = jQuery('.list-overview .item-' + id);
+                  jQuery(row).find('.row-actions .action-optimize').remove(); // gets complicated
+                  if (data['actions'])
+                  {
+                    jQuery(row).children('.actions').html(data['actions']);
+                  }
                 }
+
             }
         },
         error: function(response){
@@ -1191,7 +1238,9 @@ function checkBulkProcessingCallApi(){
 
 function clearBulkProcessor(){
     ShortPixel.bulkProcessor = false; //nothing to process, leave the role. Next page load will check again
-    localStorage.bulkTime = 0;
+    localStorage.bulkTime = Date.now();
+    setBulkTimer(0); // stop checking.
+
     if(window.location.href.search("wp-short-pixel-bulk") >= 0) {
         localStorage.bulkPage = 0;
     }
@@ -1225,7 +1274,8 @@ function manualOptimization(id, cleanup) {
             var resp = JSON.parse(response);
             if(resp["Status"] == ShortPixel.STATUS_SUCCESS) {
                 //TODO - when calling several manual optimizations, the checkBulkProgress gets scheduled several times so several loops run in || - make only one.
-                setTimeout(checkBulkProgress, 2000);
+                setBulkTimer(2000);
+                ShortPixel.BULK_SECRET = false;
             } else {
                 setCellMessage(id, typeof resp["Message"] !== "undefined" ? resp["Message"] : _spTr.thisContentNotProcessable, "");
             }
@@ -1260,7 +1310,8 @@ function reoptimize(id, type) {
     jQuery.get(ShortPixel.AJAX_URL, data, function(response) {
         data = JSON.parse(response);
         if(data["Status"] == ShortPixel.STATUS_SUCCESS) {
-            setTimeout(checkBulkProgress, 2000);
+            setBulkTimer(2000);
+            ShortPixel.BULK_SECRET = false;
         } else {
             $msg = typeof data["Message"] !== "undefined" ? data["Message"] : _spTr.thisContentNotProcessable;
             setCellMessage(id, $msg, "");
@@ -1278,7 +1329,8 @@ function optimizeThumbs(id) {
     jQuery.get(ShortPixel.AJAX_URL, data, function(response) {
         data = JSON.parse(response);
         if(data["Status"] == ShortPixel.STATUS_SUCCESS) {
-            setTimeout(checkBulkProgress, 2000);
+            setBulkTimer(2000);
+            ShortPixel.BULK_SECRET = false;
         } else {
             setCellMessage(id, typeof data["Message"] !== "undefined" ? data["Message"] : _spTr.thisContentNotProcessable, "");
         }

@@ -59,9 +59,9 @@ WHERE i.language_code  = '" . esc_sql($sitepress->get_current_language()) . "' A
 			return $original_id;
 		}
 
-		function get_main_translation_id($translation_id, $type) {
+		function get_main_translation_id($translation_id, $type, $is_original_id = false) {
 			global $wpdb;
-			$original_id = $this->get_main_id($translation_id, $type);
+			$original_id = (!$is_original_id ) ? $this->get_main_id($translation_id, $type) : $translation_id;
 
 			if (!$original_id) {
 				return $original_id;

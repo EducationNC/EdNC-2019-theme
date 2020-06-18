@@ -68,9 +68,9 @@ if (!class_exists('WP_Sheet_Editor_Ajax')) {
 			$rows = VGSE()->helpers->get_rows($settings);
 
 			if (is_wp_error($rows)) {
-				wp_send_json_error(array(
-					'message' => $rows->get_error_message()
-				));
+				wp_send_json_error(wp_parse_args(array(
+					'message' => $rows->get_error_message(),
+								), $rows->get_error_data()));
 			}
 
 			$rows['rows'] = array_values($rows['rows']);

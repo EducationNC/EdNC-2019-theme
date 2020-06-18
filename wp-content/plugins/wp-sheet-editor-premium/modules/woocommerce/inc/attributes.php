@@ -57,6 +57,10 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Attrs')) {
 			$new_value = (int) $raw_form_data['formula_data'][1];
 			$attribute = sanitize_text_field($raw_form_data['formula_data'][2]);
 			$previous_value = $new_value === 1 ? 0 : 1;
+			$first_post_id = current($post_ids);
+			if (is_object($first_post_id)) {
+				$post_ids = wp_list_pluck($post_ids, 'ID');
+			}
 
 			if (empty($attribute)) {
 				$sql = "UPDATE $wpdb->postmeta SET meta_value = {replace} WHERE  post_id IN (" . implode(',', $post_ids) . ")  AND meta_value <> '' AND meta_key = '" . esc_sql($column_settings['key_for_formulas']) . "' ;";
@@ -85,28 +89,64 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Attrs')) {
 			return $update_count;
 		}
 
+		function get_all_attributes() {
+			global $wpdb;
+			$transient_key = 'vgse_wc_attributes';
+			$all_attributes = get_transient($transient_key);
+
+			// Clear cache
+			if (!empty($_GET['wpse_rescan_db_fields'])) {
+				$all_attributes = false;
+			}
+
+			if (empty($all_attributes)) {
+				$raw_attributes = array_map('maybe_unserialize', $wpdb->get_col("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = '_product_attributes' AND meta_value <> '' GROUP BY meta_value LIMIT 100"));
+				$all_attributes = array(
+					'custom' => array(),
+					'global' => array(),
+				);
+				foreach ($raw_attributes as $attributes) {
+					if (!is_array($attributes) || empty($attributes)) {
+						continue;
+					}
+
+					foreach ($attributes as $key => $attribute) {
+						if (strpos($key, 'pa_') === 0 || empty($attribute['name']) || !is_string($attribute['name'])) {
+							continue;
+						}
+						$all_attributes['custom'][$key] = $attribute['name'];
+					}
+				}
+
+
+				$attribute_taxonomies = wc_get_attribute_taxonomies();
+				if (!empty($attribute_taxonomies)) {
+					foreach ($attribute_taxonomies as $tax) {
+						$key = wc_attribute_taxonomy_name($tax->attribute_name);
+						$all_attributes['global'][$key] = $tax->attribute_label;
+					}
+				}
+				set_transient($transient_key, $all_attributes, DAY_IN_SECONDS * 3);
+			}
+
+			return $all_attributes;
+		}
+
 		function add_formula_type_toggle_attribute_settings($formulas, $post_type) {
 			global $wpdb;
 			if ($this->post_type !== $post_type) {
 				return $formulas;
 			}
 
-			$raw_attributes = array_map('maybe_unserialize', $wpdb->get_col("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = '_product_attributes' AND meta_value <> '' GROUP BY meta_value LIMIT 100"));
-			$all_attributes = array();
-			foreach ($raw_attributes as $attributes) {
-				if (!is_array($attributes)) {
-					continue;
-				}
-				$all_attributes = array_unique(array_merge($all_attributes, array_keys($attributes)));
-			}
-
-
+			$all_attributes = $this->get_all_attributes();
 			$attributes_options = '<option value="">All</option>';
-			foreach ($all_attributes as $attributes) {
-				if (empty($attributes)) {
-					continue;
+			foreach ($all_attributes as $group => $attributes) {
+				foreach ($attributes as $attribute_key => $attribute_label) {
+					if (empty($attribute_label) || empty($attribute_key)) {
+						continue;
+					}
+					$attributes_options .= '<option value="' . esc_attr($attribute_key) . '">' . esc_html($attribute_label . ' (' . $group . ')') . '</option>';
 				}
-				$attributes_options .= '<option value="' . esc_attr($attributes) . '">' . esc_html($attributes) . '</option>';
 			}
 
 			$formulas['columns_actions']['text']['wc_attributes_toggle_setting'] = 'default';
@@ -266,6 +306,140 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Attrs')) {
 			return $custom_attributes;
 		}
 
+		function get_custom_attribute_for_cell($post, $cell_key, $cell_args) {
+			$attribute_key = str_replace('wpse_custom_attribute', '', $cell_key);
+			$value = '';
+			if ($post->post_type === 'product') {
+				$attributes = VGSE()->helpers->get_current_provider()->get_item_meta($post->ID, '_product_attributes', true);
+				$value = ( is_array($attributes) && isset($attributes[$attribute_key])) ? $attributes[$attribute_key]['value'] : '';
+			} elseif ($post->post_type === 'product_variation') {
+				$raw_value = VGSE()->helpers->get_current_provider()->get_item_meta($post->ID, 'attribute_' . $attribute_key, true);
+				$value = (!empty($raw_value)) ? $raw_value : '';
+			}
+			return $value;
+		}
+
+		function update_custom_attribute_from_cell($post_id, $cell_key, $data_to_save, $post_type, $cell_args, $spreadsheet_columns) {
+			$attribute_key = str_replace('wpse_custom_attribute', '', $cell_key);
+			$post = get_post($post_id);
+
+			if ($post->post_type === 'product') {
+
+				$attributes = get_post_meta($post_id, '_product_attributes', true);
+
+				$new_attribute_settings = ( is_array($attributes) && isset($attributes[$attribute_key])) ? $attributes[$attribute_key] : array();
+
+				// Bail if the attribute value is empty and the product wasn't using the attribute
+				if (empty($data_to_save) && empty($new_attribute_settings)) {
+					return;
+				}
+
+				if (empty($new_attribute_settings)) {
+					$all_attributes = $this->get_all_attributes();
+					$new_attribute_settings = array(
+						'name' => $all_attributes['custom'][$attribute_key],
+						'value' => $data_to_save,
+						'is_taxonomy' => 0,
+						'position' => count($attributes),
+						'is_visible' => $this->is_attribute_visible($attribute_key),
+						'is_variation' => $this->is_attribute_for_variations($attribute_key, $post_id)
+					);
+				} else {
+					$new_attribute_settings['value'] = $data_to_save;
+				}
+				if (!empty($new_attribute_settings['value'])) {
+					$attributes[$attribute_key] = $new_attribute_settings;
+				} elseif (isset($attributes[$attribute_key])) {
+					unset($attributes[$attribute_key]);
+				}
+				update_post_meta($post_id, '_product_attributes', $attributes);
+			} elseif ($post->post_type === 'product_variation') {
+				if (!empty($data_to_save)) {
+					update_post_meta($post_id, 'attribute_' . $attribute_key, $data_to_save);
+				} else {
+					delete_post_meta($post_id, 'attribute_' . $attribute_key);
+				}
+			}
+		}
+
+		/**
+		 * Callback when the product was updated.
+		 * @param int $product_id
+		 * @param mixed $new_value
+		 * @param string $key
+		 * @param string $data_source
+		 */
+		function _sync_product_terms($product_id, $new_value, $key, $data_source, $row = array()) {
+
+
+			// sync woocommerce attributes
+			if ($data_source === 'post_terms' && strpos($key, 'pa_') !== false) {
+				// We can't use the provider's get_item_meta function because it uses the object cache
+				// and we need to read the real value from the database everytime otherwise it won't save 
+				// all attributes on next calls from the same ajax call
+				$attributes = maybe_unserialize(get_post_meta($product_id, '_product_attributes', true));
+				if (empty($attributes) || !is_array($attributes)) {
+					$attributes = array();
+				}
+				$attribute_key = sanitize_title($key);
+				$product_type = (is_array($row) && isset($row['product_type']) ) ? $row['product_type'] : VGSE()->WC->get_product_type($product_id);
+
+				$new_attribute_settings = array();
+				$new_attribute_settings['is_variation'] = $this->is_attribute_for_variations($attribute_key, $product_id, $product_type);
+				$new_attribute_settings['is_visible'] = $this->is_attribute_visible($attribute_key, $product_id);
+
+				$current_attribute_settings = isset($attributes[$attribute_key]) ? $attributes[$attribute_key] : array(
+					'name' => wc_clean($key),
+					'value' => '',
+					'is_taxonomy' => 1,
+					'position' => count($attributes),
+					'is_visible' => 1
+				);
+
+				// Add attribute association only if it doesn´t exist.
+				$attributes[$attribute_key] = array_merge($current_attribute_settings, $new_attribute_settings);
+				update_post_meta($product_id, '_product_attributes', $attributes);
+			}
+		}
+
+		function is_attribute_for_variations($attribute_key, $product_id, $new_product_type = null) {
+			$is_variation = 0;
+			$product_type = (!empty($new_product_type)) ? $new_product_type : VGSE()->WC->get_product_type($product_id);
+
+			if ($product_type === 'variable') {
+				$is_variation = 1;
+			}
+			if (!empty(VGSE()->options['wc_product_attributes_not_variation'])) {
+				$attributes_not_used_for_variations = array_filter(array_map('trim', explode(',', VGSE()->options['wc_product_attributes_not_variation'])));
+				foreach ($attributes_not_used_for_variations as $attribute_not_used_for_variations) {
+					if (stripos($attribute_key, $attribute_not_used_for_variations) !== false) {
+						$is_variation = 0;
+						break;
+					}
+				}
+			}
+			return $is_variation;
+		}
+
+		function is_attribute_visible($attribute_key, $product_id = null) {
+			$attribute_visible = 1;
+			if ($product_id) {
+				$product_attributes = VGSE()->helpers->get_current_provider()->get_item_meta($product_id, '_product_attributes', true);
+				if (is_array($product_attributes) && isset($product_attributes[$attribute_key])) {
+					$attribute_visible = (int) $product_attributes[$attribute_key]['is_visible'];
+				}
+			} elseif (!empty(VGSE()->options['wc_product_attributes_is_not_visible'])) {
+				$attributes_not_visible = array_filter(array_map('trim', explode(',', VGSE()->options['wc_product_attributes_is_not_visible'])));
+				foreach ($attributes_not_visible as $attribute_not_visible) {
+					if (stripos($attribute_key, $attribute_not_visible) !== false) {
+						$attribute_visible = 0;
+						break;
+					}
+				}
+			}
+			return $attribute_visible;
+		}
+
 		/**
 		 * Register spreadsheet columns
 		 */
@@ -275,6 +449,31 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Attrs')) {
 
 			if (!in_array($post_type, $editor->args['enabled_post_types'])) {
 				return;
+			}
+
+
+			$all_attributes = $this->get_all_attributes();
+			foreach ($all_attributes['custom'] as $attribute_key => $attribute_label) {
+
+				$editor->args['columns']->register_item('wpse_custom_attribute' . $attribute_key, $post_type, array(
+					'data_type' => 'meta_data',
+					'column_width' => 200,
+					'title' => sprintf(__('Custom attribute: %s', VGSE()->textname), $attribute_label),
+					'type' => '',
+					'supports_formulas' => true,
+					'supports_sql_formulas' => false,
+					'allow_to_hide' => true,
+					'allow_to_rename' => true,
+					'allow_plain_text' => true,
+					'get_value_callback' => array($this, 'get_custom_attribute_for_cell'),
+					'save_value_callback' => array($this, 'update_custom_attribute_from_cell'),
+					'allow_to_save' => true,
+					'allow_for_variations' => true,
+					'export_key' => 'attributes',
+					'formatted' => array(
+						'comment' => array('value' => __('Enter multiple attributes separated by |', VGSE()->textname))
+					)
+				));
 			}
 
 			$attribute_taxonomies = wc_get_attribute_taxonomies();
@@ -490,7 +689,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Attrs')) {
 				if (!empty($variation_attributes)) {
 					$product_update_data['type'] = 'variable';
 				}
-				$api_response = VGSE()->WC->update_products_with_api($product_update_data);
+				$api_response = VGSE()->WC->update_products_with_api($product_update_data, 3);
 			} else {
 				// view
 				$api_response = VGSE()->helpers->create_rest_request('GET', '/wc/v1/products/' . $product_id);
@@ -535,7 +734,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Attrs')) {
 if (!function_exists('vgse_init_WooCommerce_Attrs')) {
 
 	function vgse_init_WooCommerce_Attrs() {
-		WP_Sheet_Editor_WooCommerce_Attrs::get_instance();
+		return WP_Sheet_Editor_WooCommerce_Attrs::get_instance();
 	}
 
 }

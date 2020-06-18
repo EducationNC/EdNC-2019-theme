@@ -180,7 +180,7 @@ class ShortPixelRegexParser {
 
         if($integrations['elementor']) {
             //Elementor can pass image URLs in sections' or divs' data-settings
-            $regex = str_replace(array('{{TAG}}', '{{ATTR}}'), array('section|div', 'data-settings|data-options'), $regexMasterSrcset);
+            $regex = str_replace(array('{{TAG}}', '{{ATTR}}'), array('header|section|div', 'data-settings|data-options'), $regexMasterSrcset);
             $content = preg_replace_callback($regex,
                 array($this, 'replace_custom_json_attr'),
                 $content
@@ -448,10 +448,10 @@ class ShortPixelRegexParser {
             set_transient("shortpixelai_thrown_notice", array('when' => 'lazy', 'extra' => false), 86400);
             $this->ctrl->lazyNoticeThrown = true;
         }
-        if($this->ctrl->lazyNoticeThrown) {
-            $this->logger->log("Lazy notice thrown");
-            return $text;
-        }
+        //if($this->ctrl->lazyNoticeThrown) {
+        //    $this->logger->log("Lazy notice thrown");
+        //    return $text;
+        //}
 
         $extMeta = $this->extMeta; //TODO REMOVE OBSOLETE
         if($this->ctrl->urlIsApi($url)) {$this->logger->log('IS API');return $text;}
@@ -503,6 +503,7 @@ class ShortPixelRegexParser {
 
         //Get current image size
         $sizes = ShortPixelUrlTools::get_image_size($url);
+        $AR = isset($sizes[0]) ? $sizes[0] / $sizes[1] : 1;
         $this->logger->log('Got Sizes: ', $sizes);
         $qex = strlen($q) ? '' : '"';
         $qm = strlen($q) ? $q : '"';
@@ -518,9 +519,13 @@ class ShortPixelRegexParser {
                 foreach($items as $item) {
                     $parts = explode(' ', trim($item));
                     $partSizes = ShortPixelUrlTools::get_image_size($parts[0]);
-                    if(isset($partSizes[0]) && $partSizes[0] > $sizes[0]) {
-                        $sizes = $partSizes;
-                        $url = $parts[0];
+                    if(isset($partSizes[0])) {
+                        $partAR = $partSizes[0] / $partSizes[1];
+                        if($partSizes[0] > $sizes[0]
+                            && abs(($partAR - $AR) / $AR) < 0.03) {
+                            $sizes = $partSizes;
+                            $url = $parts[0];
+                        }
                     }
                 }
             }

@@ -1,5 +1,7 @@
 <?php
 
+use function Easy_Plugins\Table_Of_Contents\String\br2;
+
 class ezTOC_Post {
 
 	/**
@@ -359,7 +361,7 @@ class ezTOC_Post {
 		 * @param $selectors array  Array of classes/id selector to exclude from TOC.
 		 * @param $content   string Post content.
 		 */
-		$selectors = apply_filters( 'ez_toc_exclude_by_selector', array(), $content );
+		$selectors = apply_filters( 'ez_toc_exclude_by_selector', array( '.ez-toc-exclude-headings' ), $content );
 
 		$nodes = $html->Find( implode( ',', $selectors ) );
 
@@ -426,7 +428,7 @@ class ezTOC_Post {
 
 		}
 
-		return $matches;
+		return array_values( $matches ); // Rest the array index.
 	}
 
 	/**
@@ -442,7 +444,7 @@ class ezTOC_Post {
 
 		foreach ( $this->excludedNodes as $node ) {
 
-			if ( empty( $node ) ) {
+			if ( empty( $node ) || empty( $string ) ) {
 
 				return false;
 			}
@@ -469,7 +471,7 @@ class ezTOC_Post {
 
 		foreach ( $matches as $i => $match ) {
 
-			if ( $this->inExcludedNode( $match[3] ) ) {
+			if ( $this->inExcludedNode( "{$match[3]}</h$match[2]>" ) ) {
 
 				unset( $matches[ $i ] );
 			}
@@ -524,13 +526,14 @@ class ezTOC_Post {
 		if ( count( $levels ) != 6 ) {
 
 			$new_matches = array();
-			$count       = count( $matches );
+			//$count       = count( $matches );
 
-			for ( $i = 0; $i < $count; $i++ ) {
+			//for ( $i = 0; $i < $count; $i++ ) {
+			foreach ( $matches as $i => $match ) {
 
 				if ( in_array( $matches[ $i ][2], $levels ) ) {
 
-					$new_matches[] = $matches[ $i ];
+					$new_matches[ $i ] = $matches[ $i ];
 				}
 			}
 
@@ -582,11 +585,18 @@ class ezTOC_Post {
 				}
 
 				$new_matches = array();
-				$count       = count( $matches );
+				//$count       = count( $matches );
 
-				for ( $i = 0; $i < $count; $i++ ) {
+				//for ( $i = 0; $i < $count; $i++ ) {
+				foreach ( $matches as $i => $match ) {
 
 					$found = false;
+
+					$against = html_entity_decode(
+						wptexturize( strip_tags( str_replace( array( "\r", "\n" ), ' ', $matches[ $i ][0] ) ) ),
+						ENT_NOQUOTES,
+						get_option( 'blog_charset' )
+					);
 
 					for ( $j = 0; $j < $excluded_count; $j++ ) {
 
@@ -594,12 +604,6 @@ class ezTOC_Post {
 						// the actual header be manipulated similarly so a match can be made.
 						$pattern = html_entity_decode(
 							wptexturize( $excluded_headings[ $j ] ),
-							ENT_NOQUOTES,
-							get_option( 'blog_charset' )
-						);
-
-						$against = html_entity_decode(
-							wptexturize( strip_tags( str_replace( array( "\r", "\n" ), ' ', $matches[ $i ][0] ) ) ),
 							ENT_NOQUOTES,
 							get_option( 'blog_charset' )
 						);
@@ -613,14 +617,14 @@ class ezTOC_Post {
 
 					if ( ! $found ) {
 
-						$new_matches[] = $matches[ $i ];
+						$new_matches[ $i ] = $matches[ $i ];
 					}
 				}
 
-				if ( count( $matches ) != count( $new_matches ) ) {
+				//if ( count( $matches ) != count( $new_matches ) ) {
 
 					$matches = $new_matches;
-				}
+				//}
 			}
 		}
 
@@ -682,11 +686,12 @@ class ezTOC_Post {
 	private function alternateHeadings( &$matches ) {
 
 		$alt_headings = $this->getAlternateHeadings();
-		$count        = count( $matches );
+		//$count        = count( $matches );
 
 		if ( 0 < count( $alt_headings ) ) {
 
-			for ( $i = 0; $i < $count; $i++ ) {
+			//for ( $i = 0; $i < $count; $i++ ) {
+			foreach ( $matches as $i => $match ) {
 
 				foreach ( $alt_headings as $original_heading => $alt_heading ) {
 
@@ -745,9 +750,10 @@ class ezTOC_Post {
 	 */
 	private function headingIDs( &$matches ) {
 
-		$count = count( $matches );
+		//$count = count( $matches );
 
-		for ( $i = 0; $i < $count; $i++ ) {
+		//for ( $i = 0; $i < $count; $i++ ) {
+		foreach ( $matches as $i => $match ) {
 
 			$matches[ $i ]['id'] = $this->generateHeadingIDFromTitle( $matches[ $i ][0] );
 		}
@@ -773,7 +779,7 @@ class ezTOC_Post {
 
 			// WP entity encodes the post content.
 			$return = html_entity_decode( $heading, ENT_QUOTES, get_option( 'blog_charset' ) );
-
+			$return = br2( $return, ' ' );
 			$return = trim( strip_tags( $return ) );
 
 			// Convert accented characters to ASCII.
@@ -790,13 +796,41 @@ class ezTOC_Post {
 			$return = html_entity_decode( $return, ENT_QUOTES, get_option( 'blog_charset' ) );
 
 			// remove non alphanumeric chars
-			$return = preg_replace( '/[^a-zA-Z0-9 \-_]*/', '', $return );
+			//$return = preg_replace( '/[^a-zA-Z0-9 \-_]*/', '', $return );
+			$return = preg_replace( '/[\x00-\x1F\x7F\-_]*/u', '', $return );
 
-			// convert spaces to _
+			// AMP/Caching plugins seems to break URL with the following characters, so lets replace them.
+			$return = str_replace( array( ':' ), '_', $return );
+			$return = str_replace( array( '.' ), ' ', $return );
+
+			// Do not allow these characters because some JS libraries just are dumb.
+			$return = str_replace( array( '#', '?' ), '', $return );
+
+			// Convert space characters to an `_` (underscore).
 			$return = preg_replace( '/\s+/', '_', $return );
 
-			// remove trailing - and _
+			// Replace multiple `_` (underscore) with a single `_` (underscore).
+			$return = preg_replace( '/_+/', '_', $return );
+
+			// Remove trailing `-` (hyphen) and `_` (underscore).
 			$return = rtrim( $return, '-_' );
+
+			/*
+			 * Encode URI based on ECMA-262.
+			 *
+			 * Only required to support the jQuery smoothScroll library.
+			 *
+			 * @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI#Description
+			 * @link https://stackoverflow.com/a/19858404/5351316
+			 */
+			$return = preg_replace_callback(
+				"{[^0-9a-z_.!~*'();,/?:@&=+$#-]}i",
+				function( $m ) {
+
+					return sprintf( '%%%02X', ord( $m[0] ) );
+				},
+				$return
+			);
 
 			// lowercase everything?
 			if ( ezTOC_Option::get( 'lowercase' ) ) {
@@ -845,20 +879,21 @@ class ezTOC_Post {
 	private function removeEmptyHeadings( &$matches ) {
 
 		$new_matches = array();
-		$count       = count( $matches );
+		//$count       = count( $matches );
 
-		for ( $i = 0; $i < $count; $i ++ ) {
+		//for ( $i = 0; $i < $count; $i ++ ) {
+		foreach ( $matches as $i => $match ) {
 
 			if ( trim( strip_tags( $matches[ $i ][0] ) ) != false ) {
 
-				$new_matches[] = $matches[ $i ];
+				$new_matches[ $i ] = $matches[ $i ];
 			}
 		}
 
-		if ( count( $matches ) != count( $new_matches ) ) {
+		//if ( count( $matches ) != count( $new_matches ) ) {
 
 			$matches = $new_matches;
-		}
+		//}
 
 		return $matches;
 	}
@@ -902,9 +937,10 @@ class ezTOC_Post {
 			//$headings = wp_list_pluck( $this->pages[ $page ]['headings'], 0 );
 
 			$matches = $this->pages[ $page ]['headings'];
-			$count   = count( $matches );
+			//$count   = count( $matches );
 
-			for ( $i = 0; $i < $count; $i++ ) {
+			//for ( $i = 0; $i < $count; $i++ ) {
+			foreach ( $matches as $i => $match ) {
 
 				//$anchor     = $matches[ $i ]['id'];
 				$headings[] = str_replace(
@@ -946,9 +982,10 @@ class ezTOC_Post {
 		if ( isset( $this->pages[ $page ] ) ) {
 
 			$matches = $this->pages[ $page ]['headings'];
-			$count   = count( $matches );
+			//$count   = count( $matches );
 
-			for ( $i = 0; $i < $count; $i++ ) {
+			//for ( $i = 0; $i < $count; $i++ ) {
+			foreach ( $matches as $i => $match ) {
 
 				$anchor     = $matches[ $i ]['id'];
 				$headings[] = str_replace(
@@ -957,8 +994,8 @@ class ezTOC_Post {
 						'</h' . $matches[ $i ][2] . '>'   // end of heading
 					),
 					array(
-						'>',
-						'<span class="ez-toc-section" id="' . $anchor . '"></span></h' . $matches[ $i ][2] . '>'
+						'><span class="ez-toc-section" id="' . $anchor . '"></span>',
+						'<span class="ez-toc-section-end"></span></h' . $matches[ $i ][2] . '>'
 					),
 					$matches[ $i ][0]
 				);
@@ -1179,7 +1216,8 @@ class ezTOC_Post {
 			//self::$collision_collector = array();
 
 			// find the minimum heading to establish our baseline
-			for ( $i = 0; $i < count( $matches ); $i ++ ) {
+			//for ( $i = 0; $i < count( $matches ); $i ++ ) {
+			foreach ( $matches as $i => $match ) {
 				if ( $current_depth > $matches[ $i ][2] ) {
 					$current_depth = (int) $matches[ $i ][2];
 				}
@@ -1188,7 +1226,8 @@ class ezTOC_Post {
 			$numbered_items[ $current_depth ] = 0;
 			$numbered_items_min               = $current_depth;
 
-			for ( $i = 0; $i < count( $matches ); $i ++ ) {
+			//for ( $i = 0; $i < count( $matches ); $i ++ ) {
+			foreach ( $matches as $i => $match ) {
 
 				$level = $matches[ $i ][2];
 				$count = $i + 1;
@@ -1209,6 +1248,7 @@ class ezTOC_Post {
 				}
 
 				$title = isset( $matches[ $i ]['alternate'] ) ? $matches[ $i ]['alternate'] : $matches[ $i ][0];
+				$title = br2( $title, ' ' );
 				$title = strip_tags( apply_filters( 'ez_toc_title', $title ), apply_filters( 'ez_toc_title_allowable_tags', '' ) );
 
 				$html .= $this->createTOCItemAnchor( $page, $matches[ $i ]['id'], $title, $count );
@@ -1246,7 +1286,8 @@ class ezTOC_Post {
 
 		} else {
 
-			for ( $i = 0; $i < count( $matches ); $i++ ) {
+			//for ( $i = 0; $i < count( $matches ); $i++ ) {
+			foreach ( $matches as $i => $match ) {
 
 				$count = $i + 1;
 
@@ -1279,7 +1320,7 @@ class ezTOC_Post {
 
 		return sprintf(
 			'<a class="ez-toc-link ez-toc-heading-' . $count . '" href="%1$s" title="%2$s">%3$s</a>',
-			esc_url( $this->createTOCItemURL( $id, $page ) ),
+			esc_attr( $this->createTOCItemURL( $id, $page ) ),
 			esc_attr( strip_tags( $title ) ),
 			$title
 		);

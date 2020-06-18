@@ -132,6 +132,9 @@ class OMAPI_Menu {
 	 */
 	public function menu() {
 
+		// Filter to change the menu position if there is any conflict with another menu on the same position.
+		$menu_position = apply_filters( 'optin_monster_api_menu_position', 26 );
+
 		$this->hook = add_menu_page(
 			__( 'OptinMonster', 'optin-monster-api' ),
 			__( 'OptinMonster', 'optin-monster-api' ) . '<span class="om-pulse"></span>',
@@ -139,7 +142,7 @@ class OMAPI_Menu {
 			'optin-monster-api-settings',
 			array( $this, 'page' ),
 			'none',
-			579
+			$menu_position
 		);
 
 		// Just add a placeholder secondary page.
@@ -416,20 +419,20 @@ class OMAPI_Menu {
 				$slug = $optin->post_name;
 				$design_type = get_post_meta( $optin->ID, '_omapi_type', true );
 				$optin_data[ $slug ] = array(
-					'Campaign Type'                    => $design_type,
-					'WordPress ID'                     => $optin->ID,
-					'Associated IDs'                   => get_post_meta( $optin->ID, '_omapi_ids', true ),
-					'Current Status'                   => get_post_meta( $optin->ID, '_omapi_enabled', true ) ? 'Live' : 'Disabled',
-					'User Settings'                    => get_post_meta( $optin->ID, '_omapi_users', true ),
-					'Pages to Never show on'           => get_post_meta( $optin->ID, '_omapi_never', true ),
-					'Pages to Only show on'            => get_post_meta( $optin->ID, '_omapi_only', true ),
-					'Categories'                       => get_post_meta( $optin->ID, '_omapi_categories', true ),
-					'Taxonomies'                       => get_post_meta( $optin->ID, '_omapi_taxonomies', true ),
-					'Template types to Show on'        => get_post_meta( $optin->ID, '_omapi_show', true ),
-					'Shortcodes Synced and Recognized' => get_post_meta( $optin->ID, '_omapi_shortcode', true ) ? htmlspecialchars_decode( get_post_meta( $optin->ID, '_omapi_shortcode_output', true ) ) : 'None recognized',
+					__( 'Campaign Type', 'optin-monster-api' )                    => $design_type,
+					__( 'WordPress ID', 'optin-monster-api' )                     => $optin->ID,
+					__( 'Associated IDs', 'optin-monster-api' )                   => get_post_meta( $optin->ID, '_omapi_ids', true ),
+					__( 'Current Status', 'optin-monster-api' )                   => get_post_meta( $optin->ID, '_omapi_enabled', true ) ? __( 'Live', 'optin-monster-api' ) : __( 'Disabled', 'optin-monster-api' ),
+					__( 'User Settings', 'optin-monster-api' )                    => get_post_meta( $optin->ID, '_omapi_users', true ),
+					__( 'Pages to Never show on', 'optin-monster-api' )           => get_post_meta( $optin->ID, '_omapi_never', true ),
+					__( 'Pages to Only show on', 'optin-monster-api' )            => get_post_meta( $optin->ID, '_omapi_only', true ),
+					__( 'Categories', 'optin-monster-api' )                       => get_post_meta( $optin->ID, '_omapi_categories', true ),
+					__( 'Taxonomies', 'optin-monster-api' )                       => get_post_meta( $optin->ID, '_omapi_taxonomies', true ),
+					__( 'Template types to Show on', 'optin-monster-api' )        => get_post_meta( $optin->ID, '_omapi_show', true ),
+					__( 'Shortcodes Synced and Recognized', 'optin-monster-api' ) => get_post_meta( $optin->ID, '_omapi_shortcode', true ) ? htmlspecialchars_decode( get_post_meta( $optin->ID, '_omapi_shortcode_output', true ) ) : __( 'None recognized', 'optin-monster-api' ),
 				);
 				if ( OMAPI_Utils::is_inline_type( $design_type ) ) {
-					$optin_data[$slug]['Automatic Output Status'] = get_post_meta( $optin->ID, '_omapi_automatic', true ) ? 'Enabled' : 'Disabled';
+					$optin_data[$slug][ __( 'Automatic Output Status', 'optin-monster-api' ) ] = get_post_meta( $optin->ID, '_omapi_automatic', true ) ? __( 'Enabled', 'optin-monster-api' ) : __( 'Disabled', 'optin-monster-api' );
 				}
 
 			}
@@ -461,18 +464,18 @@ class OMAPI_Menu {
 		}
 
 		$array = array(
-			'Server Info'        => esc_html( $_SERVER['SERVER_SOFTWARE'] ),
-			'PHP Version'        => function_exists( 'phpversion' ) ? esc_html( phpversion() ) : 'Unable to check.',
-			'Error Log Location' => function_exists( 'ini_get' ) ? ini_get( 'error_log' ) : 'Unable to locate.',
-			'Default Timezone'   => date_default_timezone_get(),
-			'WordPress Home URL' => get_home_url(),
-			'WordPress Site URL' => get_site_url(),
-			'WordPress Version'  => get_bloginfo( 'version' ),
-			'Multisite'          => is_multisite() ? 'Multisite Enabled' : 'Not Multisite',
-			'Language'           => get_locale(),
-			'API Ping Response'  => wp_remote_retrieve_response_code( $api_ping ),
-			'Active Theme'       => $theme,
-			'Active Plugins'     => $used_plugins,
+			__( 'Server Info', 'optin-monster-api' )        => esc_html( $_SERVER['SERVER_SOFTWARE'] ),
+			__( 'PHP Version', 'optin-monster-api' )        => function_exists( 'phpversion' ) ? esc_html( phpversion() ) : __( 'Unable to check.', 'optin-monster-api' ),
+			__( 'Error Log Location', 'optin-monster-api' ) => function_exists( 'ini_get' ) ? ini_get( 'error_log' ) : __( 'Unable to locate.', 'optin-monster-api' ),
+			__( 'Default Timezone', 'optin-monster-api' )   => date_default_timezone_get(),
+			__( 'WordPress Home URL', 'optin-monster-api' ) => get_home_url(),
+			__( 'WordPress Site URL', 'optin-monster-api' ) => get_site_url(),
+			__( 'WordPress Version', 'optin-monster-api' )  => get_bloginfo( 'version' ),
+			__( 'Multisite', 'optin-monster-api' )          => is_multisite() ? __( 'Multisite Enabled', 'optin-monster-api' ) : __( 'Not Multisite', 'optin-monster-api' ),
+			__( 'Language', 'optin-monster-api' )           => get_locale(),
+			__( 'API Ping Response', 'optin-monster-api' )  => wp_remote_retrieve_response_code( $api_ping ),
+			__( 'Active Theme', 'optin-monster-api' )       => $theme,
+			__( 'Active Plugins', 'optin-monster-api' )     => $used_plugins,
 
 		);
 
@@ -643,11 +646,11 @@ class OMAPI_Menu {
 						break 2;
 
 					case 'links' :
-						$ret = $this->get_support_links( $setting, 'Helpful Links' );
+						$ret = $this->get_support_links( $setting, __( 'Helpful Links', 'optin-monster-api' ) );
 						break 2;
 
 					case 'server-report';
-						$ret = $this->get_plugin_report($setting, 'Server / Plugin Report');
+						$ret = $this->get_plugin_report( $setting, __( 'Server / Plugin Report', 'optin-monster-api' ) );
 						break 2;
 				}
 				break;
@@ -655,13 +658,13 @@ class OMAPI_Menu {
 			case 'toggle' :
 				switch ( $setting ) {
 					case 'advanced-start' :
-						$ret = $this->get_toggle_start( $setting, __( 'Advanced Settings', 'optin-monster-api'), __('More specific settings available for campaign visibility.', 'optin-monster-api') );
+						$ret = $this->get_toggle_start( $setting, __( 'Advanced Settings', 'optin-monster-api' ), __( 'More specific settings available for campaign visibility.', 'optin-monster-api' ) );
 					break 2;
 					case 'advanced-end' :
 						$ret = $this->get_toggle_end();
 					break 2;
 					case 'woocommerce-start' :
-						$ret = $this->get_toggle_start( $setting, __( 'WooCommerce Settings', 'optin-monster-api'), __('More specific settings available for WooCommerce integration.', 'optin-monster-api') );
+						$ret = $this->get_toggle_start( $setting, __( 'WooCommerce Settings', 'optin-monster-api' ), __( 'More specific settings available for WooCommerce integration.', 'optin-monster-api' ) );
 						break 2;
 					case 'woocommerce-end' :
 						$ret = $this->get_toggle_end();
@@ -756,7 +759,7 @@ class OMAPI_Menu {
 									wp_terms_checklist( 0, $args );
 									$output = ob_get_clean();
 									if ( ! empty( $output ) ) {
-										$data[ $taxonomy ] = $this->get_custom_field( 'taxonomies', $output, __( 'Load campaign on ' . strtolower( $tax->labels->name ) . ':', 'optin-monster-api' ) );
+										$data[ $taxonomy ] = $this->get_custom_field( 'taxonomies', $output, __( 'Load campaign on ', 'optin-monster-api' ) . strtolower( $tax->labels->name ) . ':' );
 									}
 								}
 							}
@@ -783,6 +786,16 @@ class OMAPI_Menu {
 
 					case 'mailpoet_list' :
 						$ret = $this->get_dropdown_field( $setting, $value, $id, $this->get_mailpoet_lists(), __( 'Add lead to this MailPoet list:', 'optin-monster-api' ), __( 'All successful leads for the campaign will be added to this particular MailPoet list.', 'optin-monster-api' ) );
+					break 2;
+
+					case 'mailpoet_use_phone':
+						$phone_field = get_post_meta( $optin_id, '_omapi_mailpoet_phone_field', true );
+
+						$ret = $this->get_checkbox_field( $setting, ! empty( $phone_field ), $id, __( 'Save phone number to MailPoet?', 'optin-monster-api' ), __( 'If checked, Phone number will be saved in Mailpoet.', 'optin-monster-api' ) );
+					break 2;
+
+					case 'mailpoet_phone_field' :
+						$ret .= $this->get_dropdown_field( $setting, $value, $id, $this->get_mailpoet_custom_fields(), __( 'Select the custom field for phone:', 'optin-monster-api' ), __( 'If you have a custom field for phone numbers, select the field here.', 'optin-monster-api' ) );
 					break 2;
 
 					// Start WooCommerce settings.
@@ -960,7 +973,7 @@ class OMAPI_Menu {
 		// Add default option.
 		$ret[]    = array(
 			'name'  => __( 'Select your MailPoet list...', 'optin-monster-api' ),
-			'value' => 'none'
+			'value' => 'none',
 		);
 
 		// Loop through the list data and add to array.
@@ -981,6 +994,54 @@ class OMAPI_Menu {
 		 */
 		return apply_filters( 'optin_monster_api_mailpoet_lists', $ret, $lists, $mailpoet );
 
+	}
+
+	/**
+	 * Returns the available MailPoet custom fields.
+	 *
+	 * @since 1.9.8
+	 *
+	 * @return array An array of MailPoet custom fields.
+	 */
+	public function get_mailpoet_custom_fields() {
+		// Prepare variables.
+		$custom_fields  = array();
+		$ret       		= array();
+		$default_fields	= array( 'email', 'first_name', 'last_name' );
+
+		// Get lists. Check for MailPoet 3.
+		if ( class_exists( '\\MailPoet\\Config\\Initializer' ) ) {
+			$custom_fields = \MailPoet\API\API::MP('v1')->getSubscriberFields();
+		}
+
+		// Add default option.
+		$ret[]    = array(
+			'name'  => __( 'Select the phone number field...', 'optin-monster-api' ),
+			'value' => '',
+		);
+
+		// Loop through the list data and add to array.
+		foreach ( (array) $custom_fields as $custom_field ) {
+			if ( in_array( $custom_field['id'], $default_fields ) ) {
+			    continue;
+			}
+
+			$ret[] = array(
+				'name'  => $custom_field['name'],
+				'value' => $custom_field['id'],
+			);
+		}
+
+		/**
+		 * Filters the MailPoet custom fields.
+		 *
+		 *
+		 * @param array. $ret           The MailPoet custom fields array, except
+		 *                              first name, last name and email
+		 * @param array. $custom_fields The raw MailPoet custom fields array.
+		 *                              Format differs by plugin verison.
+		 */
+		return apply_filters( 'optin_monster_api_mailpoet_custom_fields', $ret, $custom_fields );
 	}
 
 	/**
@@ -1118,7 +1179,7 @@ class OMAPI_Menu {
 						$field .= '<br /><label for="omapi-field-' . $setting . '"><span class="omapi-field-desc">' . $desc . '</span></label>';
 					}
 				} else {
-					$field .= '<p>Your account is <strong>connected.</strong></p><button id="omapiDisconnectButton" class="button button-omapi-gray button-hero">Disconnect</button>';
+					$field .= '<p>' . __( 'Your account is <strong>connected.</strong>', 'optin-monster-api' ) . '</p><button id="omapiDisconnectButton" class="button button-omapi-gray button-hero">' . __( 'Disconnect', 'optin-monster-api' ) . '</button>';
 				}
 
 			$field .= '</p>';
@@ -1380,7 +1441,7 @@ class OMAPI_Menu {
 		$field .= '<div class="omapi-support-data ' . $setting . '"><h3>' . $title . '</h3>';
 		$link = OPTINMONSTER_APP_URL . '/account/support/';
 		$field .= '<p>' . sprintf( wp_kses( __( 'Download the report and attach to your <a href="%s">support ticket</a> to help speed up the process.', 'optin-monster-api' ), array(  'a' => array( 'href' => array() ) ) ), esc_url( $link ) ) . '</p>';
-		$field .= '<a href="' . esc_url_raw( '#' ) . '" id="js--omapi-support-pdf" class="button button-primary button-large omapi-support-data-button" title="Download a PDF Report for Support" target="_blank">Download PDF Report</a>';
+		$field .= '<a href="' . esc_url_raw( '#' ) . '" id="js--omapi-support-pdf" class="button button-primary button-large omapi-support-data-button" title="' . __( 'Download a PDF Report for Support', 'optin-monster-api' ) . '" target="_blank">' . __( 'Download PDF Report', 'optin-monster-api' ) . '</a>';
 		$field .= '</div>';
 
 		return apply_filters( 'optin_monster_api_support_data', $field, $setting, $title );
@@ -1408,8 +1469,8 @@ class OMAPI_Menu {
 			// Set some default key details.
 			$defaults = array(
 				'key_id'        => '',
-				'description'   => 'no description found',
-				'truncated_key' => 'no truncated key found',
+				'description'   => __( 'no description found', 'optin-monster-api' ),
+				'truncated_key' => __( 'no truncated key found', 'optin-monster-api' ),
 			);
 
 			// Get the key details.
@@ -1423,13 +1484,13 @@ class OMAPI_Menu {
 			$key_string = "<code>{$description} (&hellip;{$truncated_key})</code>";
 			$key_url    = esc_url( add_query_arg( 'edit-key', $r['key_id'], $keys_admin_url ) );
 
-			$output .= '<p>WooCommerce is currently connected to OptinMonster with the following key:</p>';
+			$output .= '<p>' . __( 'WooCommerce is currently connected to OptinMonster with the following key:', 'optin-monster-api' ) . '</p>';
 			$output .= '<p>' . $key_string . ' <a href="' . $key_url . '">View key</a></p>';
-			$output .= '<p>You need to disconnect WooCommerce, below, to remove your keys from OptinMonster, or to change the consumer key/secret pair associated with OptinMonster.</p>';
+			$output .= '<p>' . __( 'You need to disconnect WooCommerce, below, to remove your keys from OptinMonster, or to change the consumer key/secret pair associated with OptinMonster.', 'optin-monster-api' ) . '</p>';
 			$output .= $this->get_hidden_field( 'disconnect', '1', 'woocommerce' );
 		} else {
 
-			$output .= '<p>In order to integrate WooCommerce with the Display Rules in the campaign builder, OptinMonster needs <a href="' . $keys_admin_url . '" target="_blank">WooCommerce REST API credentials</a>. OptinMonster only needs Read access permissions to work. Enter an existing consumer key/secret pair below, or we can auto-generate a new pair of keys for you.</p>';
+			$output .= '<p>' . sprintf( __( 'In order to integrate WooCommerce with the Display Rules in the campaign builder, OptinMonster needs <a href="%s" target="_blank">WooCommerce REST API credentials</a>. OptinMonster only needs Read access permissions to work. Enter an existing consumer key/secret pair below, or we can auto-generate a new pair of keys for you.', 'optin-monster-api' ), esc_url( $keys_admin_url ) ) . '</p>';
 			$output .= $this->get_text_field(
 				'consumer_key',
 				'',

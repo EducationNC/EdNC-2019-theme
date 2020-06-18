@@ -99,6 +99,11 @@ class OMAPI_Output {
 	 */
 	public function __construct() {
 
+		// Checking if AMP is enabled.
+		if ( OMAPI_Utils::is_amp_enabled() ) {
+		    return;
+		}
+
 		// Set our object.
 		$this->set();
 
@@ -143,7 +148,7 @@ class OMAPI_Output {
 	 * @since 1.0.0
 	 */
 	public function api_script() {
-		wp_enqueue_script( $this->base->plugin_slug . '-api-script', $this->base->get_api_url(), array( 'jquery' ), null );
+		wp_enqueue_script( $this->base->plugin_slug . '-api-script', $this->base->get_api_url(), array(), null );
 
 		if ( version_compare( get_bloginfo( 'version' ), '4.1.0', '>=' ) ) {
 			add_filter( 'script_loader_tag', array( $this, 'filter_api_script' ), 10, 2 );
@@ -154,7 +159,7 @@ class OMAPI_Output {
 	}
 
 	/**
-	 * Filters the API script tag to add a custom ID.
+	 * Filters the API script tag to output the JS version embed and to add a custom ID.
 	 *
 	 * @since 1.0.0
 	 *
@@ -169,9 +174,10 @@ class OMAPI_Output {
 			return $tag;
 		}
 
-		// Adjust the output to add our custom script ID.
-		return str_replace( ' src', ' data-cfasync="false" id="omapi-script" async="async" src', $tag );
-
+		// Adjust the output to the JS version embed and to add our custom script ID.
+		return $this->om_script_tag( array(
+			'id' => 'omapi-script',
+		) );
 	}
 
 	/**
@@ -297,7 +303,7 @@ class OMAPI_Output {
 		$optins = $this->base->get_optins();
 
 		// If no optins are found, return early.
-		if ( ! $optins ) {
+		if ( empty( $optins ) ) {
 			return $content;
 		}
 
@@ -329,7 +335,7 @@ class OMAPI_Output {
 		$init    = array();
 
 		// If no optins are found, return early.
-		if ( ! $optins ) {
+		if ( empty( $optins ) ) {
 			return;
 		}
 
@@ -384,13 +390,9 @@ class OMAPI_Output {
 			return;
 		}
 
-		printf(
-			'<script type="text/javascript" src="%s" data-account="%s" data-user="%s" %s async></script>',
-			esc_url_raw( $this->base->get_api_url() ),
-			esc_attr( $option['accountId'] ),
-			esc_attr( $option['userId'] ),
-			defined( 'OPTINMONSTER_ENV' ) ? 'data-env="' . OPTINMONSTER_ENV . '"' : ''
-		);
+		$option['id'] = 'omapi-script-global';
+
+		echo $this->om_script_tag( $option );
 	}
 
 	/**
@@ -715,5 +717,59 @@ class OMAPI_Output {
 
 		// Send back a response.
 		return $cart;
+	}
+
+	/**
+	 * Get the OptinMonster embed script JS.
+	 *
+	 * @since  1.9.8
+	 *
+	 * @param  array   $args Array of arguments for the script, including
+	 *                       optional user id, account id, and script id.
+	 *
+	 * @return string        The embed script JS.
+	 */
+	public function om_script_tag( $args = array() ) {
+
+		$src = esc_url_raw( $this->base->get_api_url() );
+
+		$script_id = ! empty( $args['id'] )
+			? sprintf( 's.id="%s";', esc_attr( $args['id'] ) )
+			: '';
+
+		$account_id = ! empty( $args['accountId'] )
+			? sprintf( 's.dataset.account="%s";', esc_attr( $args['accountId'] ) )
+			: '';
+
+		$user_id = ! empty( $args['userId'] )
+			? sprintf( 's.dataset.user="%s";', esc_attr( $args['userId'] ) )
+			: '';
+
+		$env = defined( 'OPTINMONSTER_ENV' )
+			? sprintf( 's.dataset.env="%s";', esc_attr( OPTINMONSTER_ENV ) )
+			: '';
+
+		$tag = '<script>';
+			$tag .= '(function(d){';
+				$tag .= 'var s=d.createElement("script");';
+				$tag .= 's.type="text/javascript";';
+				$tag .= 's.src="%1$s";';
+				$tag .= 's.async=true;';
+				$tag .= '%2$s';
+				$tag .= '%3$s';
+				$tag .= '%4$s';
+				$tag .= '%5$s';
+				$tag .= 'd.getElementsByTagName("head")[0].appendChild(s);';
+			$tag .= '})(document);';
+		$tag .= '</script>';
+
+		return sprintf(
+			$tag,
+			$src,
+			$script_id,
+			$account_id,
+			$user_id,
+			$env
+		);
 	}
 }

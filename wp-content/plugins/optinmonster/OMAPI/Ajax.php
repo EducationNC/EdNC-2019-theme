@@ -103,11 +103,15 @@ class OMAPI_Ajax {
 		check_ajax_referer( 'omapi', 'nonce' );
 
 		// Prepare variables.
-		$optin = $this->base->get_optin_by_slug( stripslashes( $_REQUEST['optin'] ) );
-		$list  = get_post_meta( $optin->ID, '_omapi_mailpoet_list', true );
-		$email = ! empty( $_REQUEST['email'] ) ? stripslashes( $_REQUEST['email'] ) : false;
-		$name  = ! empty( $_REQUEST['name'] ) ? stripslashes( $_REQUEST['name'] ) : false;
-		$user  = array();
+		$data = array_merge( $_REQUEST, $_REQUEST['optinData'] );
+		unset( $data['optinData'] );
+
+		$optin       = $this->base->get_optin_by_slug( stripslashes( $data['optin'] ) );
+		$list        = get_post_meta( $optin->ID, '_omapi_mailpoet_list', true );
+		$phone_field = get_post_meta( $optin->ID, '_omapi_mailpoet_phone_field', true );
+		$email       = ! empty( $data['email'] ) ? stripslashes( $data['email'] ) : false;
+		$name        = ! empty( $data['name'] ) ? stripslashes( $data['name'] ) : false;
+		$user        = array();
 
 		// Possibly split name into first and last.
 		if ( $name ) {
@@ -123,6 +127,11 @@ class OMAPI_Ajax {
 
 		// Save the email address.
 		$user['email'] = $email;
+
+		// Save the phone number
+		if ( ! empty( $phone_field ) ) {
+			$user[ $phone_field ] = ! empty( $data['phone'] ) ? stripslashes( $data['phone'] ) : false;
+		}
 
 		// Store the data.
 		$data = array(

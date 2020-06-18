@@ -66,6 +66,7 @@ jQuery(document).ready(function () {
 
 	$modal.find('[name="vgse_terms_source"]').change(function () {
 		var source = jQuery(this).val();
+		$modal.find('.final-term').show();
 		if (source === 'individual') {
 			$modal.find('.individual-term-selector, .individual-term-selector ~  .select2-container').css('display', 'block');
 			$modal.find('.use-search-query-container').hide();
@@ -76,6 +77,9 @@ jQuery(document).ready(function () {
 
 			// Open the search modal
 			window.vgseBackToMergeTool = true;
+		} else if (source === 'duplicates') {
+			$modal.find('.individual-term-selector, .individual-term-selector ~ .select2, .final-term').hide();
+			$modal.find('.use-search-query-container').hide();
 		} else {
 			$modal.find('.individual-term-selector, .individual-term-selector ~ .select2').hide();
 			$modal.find('.use-search-query-container').hide();
@@ -138,8 +142,9 @@ jQuery(document).ready(function () {
 			return jQuery(this).is(':visible') || jQuery(this).attr('type') === 'hidden';
 		}).serializeArray();
 
+		var useAjaxLoop = $form.find('input[name="use_search_query"]:checked').length || $form.find('select[name="vgse_terms_source"]').val() === 'duplicates';
 
-		if ($form.find('input[name="use_search_query"]:checked').length) {
+		if (useAjaxLoop) {
 			loading_ajax({estado: false});
 			var $progress = $modal.find('.response');
 			// Init progress bar
@@ -151,7 +156,7 @@ jQuery(document).ready(function () {
 
 			var nanobar = new Nanobar(options);
 			// We start progress bar with 1% so it doesn't look completely empty
-			nanobar.go(1);
+			nanobar.go(4);
 			var rowsCount = jQuery('.be-total-rows').text().match(/\d+/g).map(Number);
 			var perPage = vgse_editor_settings.save_posts_per_page / 2;
 			if (perPage < 3) {
@@ -159,7 +164,7 @@ jQuery(document).ready(function () {
 			}
 			// Start saving posts, start ajax loop
 			beAjaxLoop({
-				totalCalls: Math.ceil(rowsCount / parseInt(perPage)),
+				totalCalls: $form.find('select[name="vgse_terms_source"]').val() === 'duplicates' ? 9999999 : Math.ceil(rowsCount / parseInt(perPage)),
 				url: $form.attr('action'),
 				method: $form.attr('method'),
 				data: data,
@@ -203,12 +208,18 @@ jQuery(document).ready(function () {
 						vgseRemoveRowFromSheetByID(res.data.deleted);
 					}
 
-					nanobar.go(settings.current / settings.totalCalls * 100);
+					var currentNanobar = settings.current / settings.totalCalls * 100;
+					if (currentNanobar < 1) {
+						currentNanobar = 1;
+					}
+					nanobar.go(currentNanobar);
 
 
 					// Display message saying the number of posts saved so far
 					var updated = (parseInt(perPage) * settings.current > rowsCount) ? rowsCount : parseInt(perPage) * settings.current;
-					var text = vgse_editor_settings.texts.paged_batch_saved.replace('{updated}', updated);
+					var messageTemplate = $form.find('select[name="vgse_terms_source"]').val() === 'duplicates' ? vgse_editor_settings.texts.duplicates_removed_text : vgse_editor_settings.texts.paged_batch_saved;
+					var text = messageTemplate.replace('{updated}', updated);
+					var text = messageTemplate.replace('{deleted}', res.data.deleted.length);
 					var text = text.replace('{total}', rowsCount);
 					jQuery($progress).empty().append('<p>' + text + '</p>');
 
@@ -219,14 +230,13 @@ jQuery(document).ready(function () {
 
 					// is complete, show notification to user, hide loading screen, and display "close" button
 					if (settings.current === settings.totalCalls) {
-						jQuery($progress).empty();
 						jQuery($progress).append('<p>' + vgse_editor_settings.texts.everything_saved + '</p>');
 
 						loading_ajax({estado: false});
 
 
 						nanobar.go(100);
-						notification({mensaje: vgse_editor_settings.texts.everything_saved});
+						notification({mensaje: vgse_editor_settings.texts.process_finished});
 
 						$progress.find('.remodal-cancel').removeClass('hidden');
 						$form.find('#be-merge-terms-nanobar-container').remove();

@@ -153,11 +153,91 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 			add_filter('vg_sheet_editor/js_data', array($this, 'watch_cells_to_lock'), 10, 2);
 			add_filter('vg_sheet_editor/filters/allowed_fields', array($this, 'register_filters'), 11, 2);
 			add_filter('vg_sheet_editor/custom_columns/all_meta_keys', array($this, 'disable_serialized_keys_from_automatic_columns'), 10, 2);
-			add_filter('vg_sheet_editor/formulas/execute/get_duplicate_ids', array($this, 'find_duplicate_skus_to_delete'), 10, 6);
+			add_filter('vg_sheet_editor/formulas/execute/get_duplicate_items_sql', array($this, 'get_duplicate_skus_sql'), 10, 6);
 
 			add_filter('redux/options/' . VGSE()->options_key . '/sections', array($this, 'add_settings_page_options'));
-			add_filter('vg_sheet_editor/filteres/search_by_keyword_clauses', array($this, 'include_sku_in_search_by_keyword'), 10, 4);
-			add_filter('vg_sheet_editor/filters/search_by_keyword_clauses/keyword_check', array($this, 'include_sku_in_search_by_keyword_check'), 10, 6);
+
+			if (version_compare(WC()->version, '3.6.0') >= 0) {
+				add_filter('vg_sheet_editor/filteres/search_by_keyword_clauses', array($this, 'include_sku_in_search_by_keyword'), 10, 4);
+				add_filter('vg_sheet_editor/filters/search_by_keyword_clauses/keyword_check', array($this, 'include_sku_in_search_by_keyword_check'), 10, 6);
+			}
+			add_filter('vg_sheet_editor/formulas/form_settings', array($this, 'formulas_faciliate_copy_from_regular_price'), 10, 2);
+			add_filter('vg_sheet_editor/formulas/quick_actions', array($this, 'add_quick_bulk_actions'), 10, 2);
+		}
+
+		function add_quick_bulk_actions($actions, $post_type) {
+			if ($post_type !== $this->post_type) {
+				return $actions;
+			}
+
+			$actions['remove_duplicates_by_sku_latest'] = array(
+				'label' => __('Remove duplicates by sku (delete the latest)', VGSE()->textname),
+				'columns' => array('_sku'),
+				'allow_to_select_column' => false,
+				'type_of_edit' => 'remove_duplicates',
+				'values' => array('delete_latest'),
+				'wp_handler' => false,
+			);
+			$actions['remove_duplicates_by_sku_oldest'] = array(
+				'label' => __('Remove duplicates by sku (delete the oldest)', VGSE()->textname),
+				'columns' => array('_sku'),
+				'allow_to_select_column' => false,
+				'type_of_edit' => 'remove_duplicates',
+				'values' => array('delete_oldest'),
+				'wp_handler' => false,
+			);
+
+			return $actions;
+		}
+
+		function formulas_faciliate_copy_from_regular_price($form_builder_args, $post_type) {
+			if ($post_type !== $this->post_type) {
+				return $form_builder_args;
+			}
+
+			if (isset($form_builder_args['default_actions']['merge_columns'])) {
+				$form_builder_args['default_actions']['merge_columns']['disallowed_column_keys'][] = '_sale_price';
+				$form_builder_args['default_actions']['merge_columns']['disallowed_column_keys'][] = '_regular_price';
+			}
+
+			$form_builder_args['columns_actions']['number']['wc_regular_price_decrease_number'] = 'default';
+			$form_builder_args['columns_actions']['number']['wc_regular_price_decrease_percentage'] = 'default';
+			$form_builder_args['default_actions']['wc_regular_price_decrease_number'] = array(
+				'label' => __('Copy regular price and decrease number', VGSE()->textname),
+				'description' => '',
+				'fields_relationship' => 'AND',
+				'jsCallback' => 'vgseWcRegularPriceDecreaseNumberFormula',
+				'allowed_column_keys' => array('_sale_price'),
+				'input_fields' => array(
+					array(
+						'tag' => 'input',
+						'html_attrs' => array(
+							'type' => 'number',
+							'step' => '0.01'
+						),
+						'label' => __('Decrease by', VGSE()->textname),
+					),
+				),
+			);
+			$form_builder_args['default_actions']['wc_regular_price_decrease_percentage'] = array(
+				'label' => __('Copy regular price and decrease by percentage', VGSE()->textname),
+				'description' => '',
+				'fields_relationship' => 'AND',
+				'jsCallback' => 'vgseWcRegularPriceDecreasePercentageFormula',
+				'allowed_column_keys' => array('_sale_price'),
+				'input_fields' => array(
+					array(
+						'tag' => 'input',
+						'html_attrs' => array(
+							'type' => 'number',
+							'step' => '0.01'
+						),
+						'label' => __('Decrease by percentage', VGSE()->textname),
+					),
+				),
+			);
+
+			return $form_builder_args;
 		}
 
 		function include_sku_in_search_by_keyword_check($check, $single_keyword, $clauses, $raw_keywords, $operator, $internal_join) {
@@ -185,7 +265,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 		 * @return array
 		 */
 		function add_settings_page_options($sections) {
-			$sections[] = array(
+			$sections['wc_products'] = array(
 				'icon' => 'el-icon-cogs',
 				'title' => __('WooCommerce products', VGSE()->textname),
 				'fields' => array(
@@ -219,26 +299,16 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 			return $sections;
 		}
 
-		function find_duplicate_skus_to_delete($duplicate_ids_to_delete, $column, $post_type, $raw_form_data, $column_settings, $query) {
+		function get_duplicate_skus_sql($sql, $column, $post_type, $raw_form_data, $column_settings, $query) {
 			global $wpdb;
 			if ($post_type !== $this->post_type || $column !== '_sku') {
-				return $duplicate_ids_to_delete;
+				return $sql;
 			}
 
 			$main_sql = str_replace(array("SQL_CALC_FOUND_ROWS  $wpdb->posts.*", 'SQL_CALC_FOUND_ROWS'), array("$wpdb->posts.ID", ''), substr($query->request, 0, strripos($query->request, 'ORDER BY')));
-			$get_items_sql = "SELECT meta_value 'value', count(meta_value) 'count' FROM $wpdb->postmeta pm WHERE post_id IN ($main_sql) AND meta_key = '_sku' AND meta_value <> '' GROUP BY meta_value having count(*) >= 2";
+			$get_items_sql = "SELECT meta_value 'value', count(meta_value) 'count', GROUP_CONCAT(post_id SEPARATOR ',') as post_ids  FROM $wpdb->postmeta pm WHERE post_id IN ($main_sql) AND meta_key = '_sku' AND meta_value <> '' GROUP BY meta_value having count(*) >= 2";
 
-			$items_with_duplicates = $wpdb->get_results($get_items_sql, ARRAY_A);
-			// Get all items with duplicates, we use the main sql query and wrap it to add our own conditions
-			// We iterate over each post containing duplicates, and we fetch all the duplicates.
-			// Note. We use limit = count-1 to leave one item only 
-			$duplicate_ids_to_delete = array();
-			foreach ($items_with_duplicates as $item) {
-				$get_all_duplicate_ids = "SELECT post_id FROM $wpdb->postmeta WHERE meta_value = '" . esc_sql($item['value']) . "' LIMIT " . ((int) $item['count'] - 1);
-				$duplicate_ids_to_delete = array_merge($duplicate_ids_to_delete, $wpdb->get_col($get_all_duplicate_ids));
-			}
-
-			return $duplicate_ids_to_delete;
+			return $get_items_sql;
 		}
 
 		/**
@@ -486,6 +556,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 				'column_width' => 150,
 				'title' => __('SKU', 'woocommerce'),
 				'supports_formulas' => true,
+				// We must use the slow execution method to sync with the lookup table				
+				'supports_sql_formulas' => false,
 			));
 
 			$editor->args['columns']->register_item('_regular_price', $post_type, array(
@@ -494,6 +566,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 				'title' => __('Regular price', 'woocommerce'),
 				'supports_formulas' => true,
 				'value_type' => 'number',
+				// We must use the slow execution method to sync with the lookup table				
+				'supports_sql_formulas' => false,
 			));
 
 			$editor->args['columns']->register_item('_sale_price', $post_type, array(
@@ -502,6 +576,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 				'column_width' => 150,
 				'title' => __('Sale price', 'woocommerce'),
 				'supports_formulas' => true,
+				// We must use the slow execution method to sync with the lookup table				
+				'supports_sql_formulas' => false,
 			));
 
 
@@ -510,8 +586,9 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 				'column_width' => 150,
 				'title' => __('Sale start date', 'woocommerce'),
 				'supports_formulas' => true,
-				'supports_sql_formulas' => false,
 				'formatted' => array('data' => '_sale_price_dates_from', 'type' => 'date', 'dateFormat' => 'YYYY-MM-DD', 'correctFormat' => true, 'defaultDate' => '', 'datePickerConfig' => array('firstDay' => 0, 'showWeekNumber' => true, 'numberOfMonths' => 1)),
+				// We must use the slow execution method to sync with the lookup table				
+				'supports_sql_formulas' => false,
 			));
 
 			$editor->args['columns']->register_item('_sale_price_dates_to', $post_type, array(
@@ -519,8 +596,9 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 				'column_width' => 150,
 				'title' => __('Sale end date', 'woocommerce'),
 				'supports_formulas' => true,
-				'supports_sql_formulas' => false,
 				'formatted' => array('data' => '_sale_price_dates_to', 'type' => 'date', 'dateFormat' => 'YYYY-MM-DD', 'correctFormat' => true, 'defaultDate' => '', 'datePickerConfig' => array('firstDay' => 0, 'showWeekNumber' => true, 'numberOfMonths' => 1)),
+				// We must use the slow execution method to sync with the lookup table				
+				'supports_sql_formulas' => false,
 			));
 			$editor->args['columns']->register_item('_manage_stock', $post_type, array(
 				'data_type' => 'meta_data',
@@ -548,6 +626,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 					'uncheckedTemplate' => 'outofstock',
 				),
 				'default_value' => 'instock',
+				// We must use the slow execution method to sync with the lookup table				
+				'supports_sql_formulas' => false,
 			));
 
 			$editor->args['columns']->register_item('_stock', $post_type, array(
@@ -555,6 +635,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 				'column_width' => 75,
 				'title' => __('Stock', 'woocommerce'),
 				'supports_formulas' => true,
+				// We must use the slow execution method to sync with the lookup table				
+				'supports_sql_formulas' => false,
 			));
 
 			$editor->args['columns']->register_item('_weight', $post_type, array(
@@ -619,6 +701,8 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce')) {
 					'uncheckedTemplate' => 'no',
 				),
 				'default_value' => 'no',
+				// We must use the slow execution method to sync with the lookup table				
+				'supports_sql_formulas' => false,
 			));
 			$editor->args['columns']->register_item('_sold_individually', $post_type, array(
 				'data_type' => 'meta_data',

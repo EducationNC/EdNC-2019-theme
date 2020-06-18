@@ -1,0 +1,1627 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2019-11-30 07:34-0600\n"
+"PO-Revision-Date: 2019-11-30 07:35-0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;esc_html_e;esc_attr_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: custom-twitter-feed.php:156
+msgid "Settings"
+msgstr ""
+
+#: inc/CtfAdmin.php:89 inc/CtfAdmin.php:216
+msgid "What's New?"
+msgstr ""
+
+#: inc/CtfAdmin.php:90 inc/CtfAdmin.php:217
+msgid "Getting Started"
+msgstr ""
+
+#: inc/CtfAdmin.php:93
+msgid "Let's take a look at what's new in version 1.7."
+msgstr ""
+
+#: inc/CtfAdmin.php:101
+msgid "Improved Performance and GDPR Compliance"
+msgstr ""
+
+#: inc/CtfAdmin.php:102
+msgid ""
+"Twitter's widgets.js code is now included in the JavaScript file for the "
+"plugin. The JavaScript and CSS files are minified to reduce page load size. "
+"The JavaScript file is only added to the page when the Twitter feed is also "
+"present to increase page speed throughout your site."
+msgstr ""
+
+#: inc/CtfAdmin.php:103
+msgid ""
+"The widgets.js code can also be disabled using the setting on the Customize "
+"tab or by removing tweet actions. This can help with certain GDPR compliance "
+"issues."
+msgstr ""
+
+#: inc/CtfAdmin.php:104
+msgid ""
+"Added a few hooks including ctf_item_media to change media before it's added "
+"to the feed. This can help with certain embeds (YouTube) causing GDPR "
+"concerns."
+msgstr ""
+
+#: inc/CtfAdmin.php:115
+msgid "Full URLs in Tweets"
+msgstr ""
+
+#: inc/CtfAdmin.php:116
+msgid ""
+"Tweets that include links to other web pages are now displayed as full-"
+"length urls. You can continue to display the shortened versions using the "
+"setting on the \"Customize\" tab, \"Advanced\" section."
+msgstr ""
+
+#: inc/CtfAdmin.php:117
+msgid "Twitter Logo in Corner"
+msgstr ""
+
+#: inc/CtfAdmin.php:118
+msgid ""
+"By default, tweets will include a the Twitter logo in the upper right corner "
+"of your tweets. You can modify this using the settings on the Style tab or "
+"remove it using the Show/Hide section of the Customize tab."
+msgstr ""
+
+#: inc/CtfAdmin.php:119 inc/CtfAdmin.php:155
+msgid "Other Changes"
+msgstr ""
+
+#: inc/CtfAdmin.php:121
+msgid ""
+"Tweets that are replies to the same account or mention the same account can "
+"be included in the feed by enabling the setting \"Always include replies to "
+"self in the feed\""
+msgstr ""
+
+#: inc/CtfAdmin.php:122
+msgid ""
+"Added support for a \"layout\" setting (i.e. layout=list, layout=carousel, "
+"or layout=masonry in the shortcode)."
+msgstr ""
+
+#: inc/CtfAdmin.php:123
+msgid ""
+"Custom JavaScript can now be executed when the lightbox opens and changes "
+"slides by assigning a function to ctfLightboxAction"
+msgstr ""
+
+#: inc/CtfAdmin.php:129
+msgid "Here are some other features that were recently added:"
+msgstr ""
+
+#: inc/CtfAdmin.php:137
+msgid "Shorten Tweet Text"
+msgstr ""
+
+#: inc/CtfAdmin.php:138
+msgid ""
+"You can now choose to only display a certain amount of text characters in "
+"your Tweets, with a clickable link to display the rest."
+msgstr ""
+
+#: inc/CtfAdmin.php:139 inc/CtfAdmin.php:153 inc/CtfAdmin.php:174
+msgid "Directions"
+msgstr ""
+
+#: inc/CtfAdmin.php:140
+msgid ""
+"This is set to be 280 characters by default, but can be changed by using the "
+"following setting:"
+msgstr ""
+
+#: inc/CtfAdmin.php:140
+msgid "Customize > Style > Tweet Text > Text Length"
+msgstr ""
+
+#: inc/CtfAdmin.php:140
+msgid "or by using the following shortcode setting:"
+msgstr ""
+
+#: inc/CtfAdmin.php:151
+msgid "Choose to Only Load HTTPS Images in Twitter Cards"
+msgstr ""
+
+#: inc/CtfAdmin.php:152
+msgid ""
+"If your site is using SSL then you can now select to only display images "
+"from Twitter cards which are secure. By default, a Twitter card will display "
+"the image which is provided by the website it links to, which could be "
+"either HTTP or HTTPS."
+msgstr ""
+
+#: inc/CtfAdmin.php:154
+msgid ""
+"Enable this setting by going to the \"Advanced\" section on the \"Customize"
+"\" tab and checking \"HTTPS images only in Twitter Cards\"</i>."
+msgstr ""
+
+#: inc/CtfAdmin.php:157
+msgid ""
+"Icons are now generated as SVGs for a sharper look and more semantic markup"
+msgstr ""
+
+#: inc/CtfAdmin.php:158
+msgid ""
+"The plugin JavaScript file is now only included on pages with the feed on it"
+msgstr ""
+
+#: inc/CtfAdmin.php:159
+msgid "More Twitter cards are displayed the first time a feed updates"
+msgstr ""
+
+#: inc/CtfAdmin.php:160
+msgid ""
+"Improvements to the Twitter card code capture even more images, "
+"descriptions, and titles than before"
+msgstr ""
+
+#: inc/CtfAdmin.php:172
+msgid "Loop Types for Carousels"
+msgstr ""
+
+#: inc/CtfAdmin.php:173
+msgid ""
+"Choose what your carousel feeds do when they reach the last tweet. You can "
+"now have the feed loop infinitely or rewind back to the first one."
+msgstr ""
+
+#: inc/CtfAdmin.php:186
+msgid "Improvements to Twitter Cards"
+msgstr ""
+
+#: inc/CtfAdmin.php:187
+msgid ""
+"Several improvements to the plugin's code now capture more of your Twitter "
+"Cards. Share links that have qualifying data attached to them to see a "
+"related image and description for them in your feed."
+msgstr ""
+
+#: inc/CtfAdmin.php:198
+msgid "Accessibility for Tweet Actions and More"
+msgstr ""
+
+#: inc/CtfAdmin.php:199
+msgid ""
+"Visually hidden labels improve the experience for visitors that use screen "
+"readers. Your feeds now will have better compliance with accessibility "
+"standards."
+msgstr ""
+
+#: inc/CtfAdmin.php:220
+msgid "Your first time using the plugin? Let's help you get started..."
+msgstr ""
+
+#: inc/CtfAdmin.php:230
+msgid "Activate Your License Key"
+msgstr ""
+
+#: inc/CtfAdmin.php:231
+msgid ""
+"In order to receive updates for the plugin you'll need to activate your "
+"license key by entering it "
+msgstr ""
+
+#: inc/CtfAdmin.php:231
+msgid "here."
+msgstr ""
+
+#: inc/CtfAdmin.php:242
+msgid "Get your Access Token"
+msgstr ""
+
+#: inc/CtfAdmin.php:243
+msgid ""
+"We've made configuring your feed super simple. Just use the big blue button "
+"on the plugin's "
+msgstr ""
+
+#: inc/CtfAdmin.php:243
+msgid "Settings page"
+msgstr ""
+
+#: inc/CtfAdmin.php:243
+msgid " to obtain your Twitter Access Token and Access Token Secret."
+msgstr ""
+
+#: inc/CtfAdmin.php:254
+msgid "Select your Feed Type"
+msgstr ""
+
+#: inc/CtfAdmin.php:255
+msgid ""
+"Choose to display posts from any Twitter account, hashtag, or even create "
+"'search' feeds for added control over what tweets display. You can also "
+"display tweets from your home timeline, tweets that mention your account, "
+"and even lists."
+msgstr ""
+
+#: inc/CtfAdmin.php:266
+msgid "Display Your Feed"
+msgstr ""
+
+#: inc/CtfAdmin.php:267
+msgid ""
+"To display your feed simply copy and paste the <nobr><code>[custom-twitter-"
+"feeds]</code></nobr> shortcode wherever you want the feed to show up; any "
+"page, post, or widget. It really is that simple!"
+msgstr ""
+
+#: inc/CtfAdmin.php:281 views/admin/display.php:7
+msgid "Multiple Feeds"
+msgstr ""
+
+#: inc/CtfAdmin.php:282
+msgid ""
+"You can display as many feeds on your site as you'd like. Just use our handy "
+msgstr ""
+
+#: inc/CtfAdmin.php:282
+msgid "shortcode options"
+msgstr ""
+
+#: inc/CtfAdmin.php:282
+msgid "to customize each one as needed."
+msgstr ""
+
+#: inc/CtfAdmin.php:294
+msgid "Customize Your Feed"
+msgstr ""
+
+#: inc/CtfAdmin.php:295
+msgid ""
+"There are countless ways to customize your Twitter feeds. Whether it be "
+"translating the text, changing layouts and colors, or using powerful custom "
+"code snippets, display your feed just like you need to."
+msgstr ""
+
+#: inc/CtfAdmin.php:297
+msgid "Layout"
+msgstr ""
+
+#: inc/CtfAdmin.php:298
+msgid ""
+"Choose from different feed types, change the layout, and even display your "
+"content in a rotating carousel or masonry style columns."
+msgstr ""
+
+#: inc/CtfAdmin.php:300
+msgid "Styling options"
+msgstr ""
+
+#: inc/CtfAdmin.php:301
+msgid ""
+"Choose which information to show or hide, customize colors and text, and "
+"style each individual part of your feed."
+msgstr ""
+
+#: inc/CtfAdmin.php:301
+msgid "Go to the Customize page"
+msgstr ""
+
+#: inc/CtfAdmin.php:303
+msgid "Advanced Customizations"
+msgstr ""
+
+#: inc/CtfAdmin.php:304
+msgid ""
+"You can achieve some more advanced customizations using the plugin. Here's "
+"some examples:"
+msgstr ""
+
+#: inc/CtfAdmin.php:306
+msgid "Create and display a Twitter list"
+msgstr ""
+
+#: inc/CtfAdmin.php:307
+msgid "Filtering tweets by word or hashtag"
+msgstr ""
+
+#: inc/CtfAdmin.php:308
+msgid "How to build a Search feed"
+msgstr ""
+
+#: inc/CtfAdmin.php:320
+msgid "Need some more help?"
+msgstr ""
+
+#: inc/CtfAdmin.php:321
+msgid ""
+"Check out our <a href='admin.php?page=custom-twitter-"
+"feeds&tab=support'>Support Section</a> which includes helpful links, a "
+"tutorial video, and more."
+msgstr ""
+
+#: inc/CtfAdmin.php:342
+msgid "Welcome to Custom Twitter Feeds Pro"
+msgstr ""
+
+#: inc/CtfAdmin.php:344
+msgid ""
+"Thanks for installing <b>Version 1.7</b> of the Custom Twitter Feeds Pro "
+"plugin! Use the tabs below to see what's new or to get started using the "
+"plugin."
+msgstr ""
+
+#: inc/CtfAdmin.php:623
+msgid ""
+"\n"
+"            <div class='"
+msgstr ""
+
+#: inc/CtfAdmin.php:711
+msgid "Or, manually enter my own Twitter app information"
+msgstr ""
+
+#: inc/CtfAdmin.php:714
+msgid ""
+"Check this box if you would like to manually enter the information from your "
+"own <a href=\"https://smashballoon.com/custom-twitter-feeds/docs/create-"
+"twitter-app/\" target=\"_blank\">Twitter app</a>"
+msgstr ""
+
+#: inc/CtfAdmin.php:730 inc/CtfAdmin.php:740 inc/CtfAdmin.php:745
+msgid "Log in to Twitter and get my Access Token and Secret"
+msgstr ""
+
+#: inc/CtfAdmin.php:731 inc/CtfAdmin.php:741 inc/CtfAdmin.php:746
+msgid "Button not working?"
+msgstr ""
+
+#: inc/CtfAdmin.php:739
+msgid ""
+"There was an error with retrieving your access tokens. Please <a href="
+"\"https://smashballoon.com/custom-twitter-feeds/token/\" target=\"_blank"
+"\">use this tool</a> to get your access token and secret."
+msgstr ""
+
+#: inc/CtfAdmin.php:2039
+msgid "Include replies"
+msgstr ""
+
+#: inc/CtfAdmin.php:2041
+msgid "Include retweets"
+msgstr ""
+
+#: inc/CtfAdmin.php:2088
+msgid "List creator"
+msgstr ""
+
+#: inc/CtfAdmin.php:2091
+msgid "Enter the screen name of the person who created this list"
+msgstr ""
+
+#: inc/CtfAdmin.php:2095
+msgid ""
+"To display multiple feed types in a single feed, add each screen name, "
+"hashtag, search term, or type of feed into the shortcode, like so: "
+"<code>[custom-twitter-feeds screenname=\"Twins\" hashtag=\"#MNTwins\"]</"
+"code>. This will combine a user feed and a hashtag feed into the same feed"
+msgstr ""
+
+#: inc/CtfAdmin.php:2115
+msgid "Set to be 100% width on mobile?"
+msgstr ""
+
+#: inc/CtfAdmin.php:2116
+msgid "What does this mean?"
+msgstr ""
+
+#: inc/CtfAdmin.php:2117
+#, php-format
+msgid ""
+"If you set a width on the feed then this will be used on mobile as well as "
+"desktop. Check this setting to set the feed width to be 100% on mobile so "
+"that it is responsive."
+msgstr ""
+
+#: inc/CtfAdmin.php:2132
+msgid "Minutes"
+msgstr ""
+
+#: inc/CtfAdmin.php:2133
+msgid "Hours"
+msgstr ""
+
+#: inc/CtfAdmin.php:2134
+msgid "Days"
+msgstr ""
+
+#: inc/CtfAdmin.php:2136
+msgid "Clear Twitter Cache"
+msgstr ""
+
+#: inc/CtfAdmin.php:2138
+msgid "Clicking this button will clear all cached data for your Twitter feeds"
+msgstr ""
+
+#: inc/CtfAdmin.php:2145
+msgid "List"
+msgstr ""
+
+#: inc/CtfAdmin.php:2146 views/admin/display.php:328
+msgid "Carousel"
+msgstr ""
+
+#: inc/CtfAdmin.php:2147
+msgid "Masonry"
+msgstr ""
+
+#: inc/CtfAdmin.php:2163
+msgid "A full-width list of tweets."
+msgstr ""
+
+#: inc/CtfAdmin.php:2167
+msgid "Tweets in columns with no empty space between them."
+msgstr ""
+
+#: inc/CtfAdmin.php:2170 inc/CtfAdmin.php:2201
+msgid "Desktop Columns"
+msgstr ""
+
+#: inc/CtfAdmin.php:2183 inc/CtfAdmin.php:2214
+msgid "Moblie Columns"
+msgstr ""
+
+#: inc/CtfAdmin.php:2198
+msgid "Posts are displayed in a slideshow carousel."
+msgstr ""
+
+#: inc/CtfAdmin.php:2227
+msgid "Loop Type"
+msgstr ""
+
+#: inc/CtfAdmin.php:2232
+msgid "None"
+msgstr ""
+
+#: inc/CtfAdmin.php:2233
+msgid "Rewind"
+msgstr ""
+
+#: inc/CtfAdmin.php:2234
+msgid "Infinity"
+msgstr ""
+
+#: inc/CtfAdmin.php:2238
+msgid "Navigation Arrows"
+msgstr ""
+
+#: inc/CtfAdmin.php:2242
+msgid "Show on Hover"
+msgstr ""
+
+#: inc/CtfAdmin.php:2243
+msgid "Show below feed"
+msgstr ""
+
+#: inc/CtfAdmin.php:2244
+msgid "Hide arrows"
+msgstr ""
+
+#: inc/CtfAdmin.php:2248
+msgid "Carousel Height"
+msgstr ""
+
+#: inc/CtfAdmin.php:2252
+msgid "Always set to tallest post"
+msgstr ""
+
+#: inc/CtfAdmin.php:2253
+msgid "Set to shortest post, button to expand"
+msgstr ""
+
+#: inc/CtfAdmin.php:2254
+msgid "Automatically set to post height (forces single column)"
+msgstr ""
+
+#: inc/CtfAdmin.php:2259
+msgid "Enable Autoplay"
+msgstr ""
+
+#: inc/CtfAdmin.php:2263
+msgid "Interval Time"
+msgstr ""
+
+#: inc/CtfAdmin.php:2266
+msgid "miliseconds"
+msgstr ""
+
+#: inc/CtfAdmin.php:2281
+msgid "2h / 25 Feb"
+msgstr ""
+
+#: inc/CtfAdmin.php:2300
+msgid "Examples"
+msgstr ""
+
+#: inc/CtfAdmin.php:2313
+msgid "translation for \"m\" (minutes)"
+msgstr ""
+
+#: inc/CtfAdmin.php:2315
+msgid "translation for \"h\" (hours)"
+msgstr ""
+
+#: inc/CtfAdmin.php:2317
+msgid "translation for \"now\""
+msgstr ""
+
+#: inc/CtfAdmin.php:2391
+msgid "default from Twitter"
+msgstr ""
+
+#: inc/CtfAdmin.php:2392
+msgid "(GMT11:00) Midway Island, Samoa"
+msgstr ""
+
+#: inc/CtfAdmin.php:2393
+msgid "(GMT10:00) HawaiiAleutian"
+msgstr ""
+
+#: inc/CtfAdmin.php:2394
+msgid "(GMT10:00) Hawaii"
+msgstr ""
+
+#: inc/CtfAdmin.php:2395
+msgid "(GMT09:30) Marquesas Islands"
+msgstr ""
+
+#: inc/CtfAdmin.php:2396
+msgid "(GMT09:00) Gambier Islands"
+msgstr ""
+
+#: inc/CtfAdmin.php:2397
+msgid "(GMT09:00) Alaska"
+msgstr ""
+
+#: inc/CtfAdmin.php:2398
+msgid "(GMT08:00) Tijuana, Baja California"
+msgstr ""
+
+#: inc/CtfAdmin.php:2399
+msgid "(GMT08:00) Pitcairn Islands"
+msgstr ""
+
+#: inc/CtfAdmin.php:2400
+msgid "(GMT08:00) Pacific Time (US & Canada)"
+msgstr ""
+
+#: inc/CtfAdmin.php:2401
+msgid "(GMT07:00) Mountain Time (US & Canada)"
+msgstr ""
+
+#: inc/CtfAdmin.php:2402
+msgid "(GMT07:00) Chihuahua, La Paz, Mazatlan"
+msgstr ""
+
+#: inc/CtfAdmin.php:2403
+msgid "(GMT07:00) Arizona"
+msgstr ""
+
+#: inc/CtfAdmin.php:2404
+msgid "(GMT06:00) Saskatchewan, Central America"
+msgstr ""
+
+#: inc/CtfAdmin.php:2405
+msgid "(GMT06:00) Guadalajara, Mexico City, Monterrey"
+msgstr ""
+
+#: inc/CtfAdmin.php:2406
+msgid "(GMT06:00) Easter Island"
+msgstr ""
+
+#: inc/CtfAdmin.php:2407
+msgid "(GMT06:00) Central Time (US & Canada)"
+msgstr ""
+
+#: inc/CtfAdmin.php:2408
+msgid "(GMT05:00) Eastern Time (US & Canada)"
+msgstr ""
+
+#: inc/CtfAdmin.php:2409
+msgid "(GMT05:00) Cuba"
+msgstr ""
+
+#: inc/CtfAdmin.php:2410
+msgid "(GMT05:00) Bogota, Lima, Quito, Rio Branco"
+msgstr ""
+
+#: inc/CtfAdmin.php:2411
+msgid "(GMT04:30) Caracas"
+msgstr ""
+
+#: inc/CtfAdmin.php:2412
+msgid "(GMT04:00) Santiago"
+msgstr ""
+
+#: inc/CtfAdmin.php:2413
+msgid "(GMT04:00) La Paz"
+msgstr ""
+
+#: inc/CtfAdmin.php:2414
+msgid "(GMT04:00) Faukland Islands"
+msgstr ""
+
+#: inc/CtfAdmin.php:2415
+msgid "(GMT04:00) Brazil"
+msgstr ""
+
+#: inc/CtfAdmin.php:2416
+msgid "(GMT04:00) Atlantic Time (Goose Bay)"
+msgstr ""
+
+#: inc/CtfAdmin.php:2417
+msgid "(GMT04:00) Atlantic Time (Canada)"
+msgstr ""
+
+#: inc/CtfAdmin.php:2418
+msgid "(GMT03:30) Newfoundland"
+msgstr ""
+
+#: inc/CtfAdmin.php:2419
+msgid "(GMT03:00) UTC3"
+msgstr ""
+
+#: inc/CtfAdmin.php:2420
+msgid "(GMT03:00) Montevideo"
+msgstr ""
+
+#: inc/CtfAdmin.php:2421
+msgid "(GMT03:00) Miquelon, St. Pierre"
+msgstr ""
+
+#: inc/CtfAdmin.php:2422
+msgid "(GMT03:00) Greenland"
+msgstr ""
+
+#: inc/CtfAdmin.php:2423
+msgid "(GMT03:00) Buenos Aires"
+msgstr ""
+
+#: inc/CtfAdmin.php:2424
+msgid "(GMT03:00) Brasilia"
+msgstr ""
+
+#: inc/CtfAdmin.php:2425
+msgid "(GMT02:00) MidAtlantic"
+msgstr ""
+
+#: inc/CtfAdmin.php:2426
+msgid "(GMT01:00) Cape Verde Is."
+msgstr ""
+
+#: inc/CtfAdmin.php:2427
+msgid "(GMT01:00) Azores"
+msgstr ""
+
+#: inc/CtfAdmin.php:2428
+msgid "(GMT) Greenwich Mean Time : Belfast"
+msgstr ""
+
+#: inc/CtfAdmin.php:2429
+msgid "(GMT) Greenwich Mean Time : Dublin"
+msgstr ""
+
+#: inc/CtfAdmin.php:2430
+msgid "(GMT) Greenwich Mean Time : Lisbon"
+msgstr ""
+
+#: inc/CtfAdmin.php:2431
+msgid "(GMT) Greenwich Mean Time : London"
+msgstr ""
+
+#: inc/CtfAdmin.php:2432
+msgid "(GMT) Monrovia, Reykjavik"
+msgstr ""
+
+#: inc/CtfAdmin.php:2433
+msgid "(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"
+msgstr ""
+
+#: inc/CtfAdmin.php:2434
+msgid "(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague"
+msgstr ""
+
+#: inc/CtfAdmin.php:2435
+msgid "(GMT+01:00) Brussels, Copenhagen, Madrid, Paris"
+msgstr ""
+
+#: inc/CtfAdmin.php:2436
+msgid "(GMT+01:00) West Central Africa"
+msgstr ""
+
+#: inc/CtfAdmin.php:2437
+msgid "(GMT+01:00) Windhoek"
+msgstr ""
+
+#: inc/CtfAdmin.php:2438
+msgid "(GMT+02:00) Beirut"
+msgstr ""
+
+#: inc/CtfAdmin.php:2439
+msgid "(GMT+02:00) Cairo"
+msgstr ""
+
+#: inc/CtfAdmin.php:2440
+msgid "(GMT+02:00) Gaza"
+msgstr ""
+
+#: inc/CtfAdmin.php:2441
+msgid "(GMT+02:00) Harare, Pretoria"
+msgstr ""
+
+#: inc/CtfAdmin.php:2442
+msgid "(GMT+02:00) Jerusalem"
+msgstr ""
+
+#: inc/CtfAdmin.php:2443
+msgid "(GMT+02:00) Minsk"
+msgstr ""
+
+#: inc/CtfAdmin.php:2444
+msgid "(GMT+02:00) Syria"
+msgstr ""
+
+#: inc/CtfAdmin.php:2445
+msgid "(GMT+03:00) Moscow, St. Petersburg, Volgograd"
+msgstr ""
+
+#: inc/CtfAdmin.php:2446
+msgid "(GMT+03:00) Nairobi"
+msgstr ""
+
+#: inc/CtfAdmin.php:2447
+msgid "(GMT+03:30) Tehran"
+msgstr ""
+
+#: inc/CtfAdmin.php:2448
+msgid "(GMT+04:00) Abu Dhabi, Muscat"
+msgstr ""
+
+#: inc/CtfAdmin.php:2449
+msgid "(GMT+04:00) Yerevan"
+msgstr ""
+
+#: inc/CtfAdmin.php:2450
+msgid "(GMT+04:30) Kabul"
+msgstr ""
+
+#: inc/CtfAdmin.php:2451
+msgid "(GMT+05:00) Ekaterinburg"
+msgstr ""
+
+#: inc/CtfAdmin.php:2452
+msgid "(GMT+05:00) Tashkent"
+msgstr ""
+
+#: inc/CtfAdmin.php:2453
+msgid "(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi"
+msgstr ""
+
+#: inc/CtfAdmin.php:2454
+msgid "(GMT+05:45) Kathmandu"
+msgstr ""
+
+#: inc/CtfAdmin.php:2455
+msgid "(GMT+06:00) Astana, Dhaka"
+msgstr ""
+
+#: inc/CtfAdmin.php:2456
+msgid "(GMT+06:00) Novosibirsk"
+msgstr ""
+
+#: inc/CtfAdmin.php:2457
+msgid "(GMT+06:30) Yangon (Rangoon)"
+msgstr ""
+
+#: inc/CtfAdmin.php:2458
+msgid "(GMT+07:00) Bangkok, Hanoi, Jakarta"
+msgstr ""
+
+#: inc/CtfAdmin.php:2459
+msgid "(GMT+07:00) Krasnoyarsk"
+msgstr ""
+
+#: inc/CtfAdmin.php:2460
+msgid "(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi"
+msgstr ""
+
+#: inc/CtfAdmin.php:2461
+msgid "(GMT+08:00) Irkutsk, Ulaan Bataar"
+msgstr ""
+
+#: inc/CtfAdmin.php:2462
+msgid "(GMT+08:00) Perth"
+msgstr ""
+
+#: inc/CtfAdmin.php:2463
+msgid "(GMT+08:45) Eucla"
+msgstr ""
+
+#: inc/CtfAdmin.php:2464
+msgid "(GMT+09:00) Osaka, Sapporo, Tokyo"
+msgstr ""
+
+#: inc/CtfAdmin.php:2465
+msgid "(GMT+09:00) Seoul"
+msgstr ""
+
+#: inc/CtfAdmin.php:2466
+msgid "(GMT+09:00) Yakutsk"
+msgstr ""
+
+#: inc/CtfAdmin.php:2467
+msgid "(GMT+09:30) Adelaide"
+msgstr ""
+
+#: inc/CtfAdmin.php:2468
+msgid "(GMT+09:30) Darwin"
+msgstr ""
+
+#: inc/CtfAdmin.php:2469
+msgid "(GMT+10:00) Brisbane"
+msgstr ""
+
+#: inc/CtfAdmin.php:2470
+msgid "(GMT+10:00) Sydney"
+msgstr ""
+
+#: inc/CtfAdmin.php:2471
+msgid "(GMT+10:00) Vladivostok"
+msgstr ""
+
+#: inc/CtfAdmin.php:2472
+msgid "(GMT+10:30) Lord Howe Island"
+msgstr ""
+
+#: inc/CtfAdmin.php:2473
+msgid "(GMT+11:00) Solomon Is., New Caledonia"
+msgstr ""
+
+#: inc/CtfAdmin.php:2474
+msgid "(GMT+11:00) Magadan"
+msgstr ""
+
+#: inc/CtfAdmin.php:2475
+msgid "(GMT+11:30) Norfolk Island"
+msgstr ""
+
+#: inc/CtfAdmin.php:2476
+msgid "(GMT+12:00) Anadyr, Kamchatka"
+msgstr ""
+
+#: inc/CtfAdmin.php:2477
+msgid "(GMT+12:00) Auckland, Wellington"
+msgstr ""
+
+#: inc/CtfAdmin.php:2478
+msgid "(GMT+12:00) Fiji, Kamchatka, Marshall Is."
+msgstr ""
+
+#: inc/CtfAdmin.php:2479
+msgid "(GMT+12:45) Chatham Islands"
+msgstr ""
+
+#: inc/CtfAdmin.php:2480
+msgid "(GMT+13:00) Nuku'alofa"
+msgstr ""
+
+#: inc/CtfAdmin.php:2481
+msgid "(GMT+14:00) Kiritimati"
+msgstr ""
+
+#: inc/CtfAdmin.php:2497
+msgid "<p class=\"ctf_note\">"
+msgstr ""
+
+#: inc/CtfAdmin.php:2503
+msgid "Clear Persistent Caches"
+msgstr ""
+
+#: inc/CtfAdmin.php:2505
+msgid ""
+"Clicking this button will clear all cached data for search and hashtag feeds "
+"that have persistent caches"
+msgstr ""
+
+#: inc/CtfFeedPro.php:2009
+msgid "Image for the Tweet beginning"
+msgstr ""
+
+#: inc/CtfFeedPro.php:2012
+msgid "View on Twitter"
+msgstr ""
+
+#: inc/EDD_SL_Plugin_Updater.php:210
+#, php-format
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s."
+msgstr ""
+
+#: inc/EDD_SL_Plugin_Updater.php:218
+#, php-format
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s "
+"or %5$supdate now%6$s."
+msgstr ""
+
+#: inc/EDD_SL_Plugin_Updater.php:408
+msgid "You do not have permission to install plugin updates"
+msgstr ""
+
+#: inc/EDD_SL_Plugin_Updater.php:408
+msgid "Error"
+msgstr ""
+
+#: inc/admin-pro-hooks.php:223
+msgid "Clear Twitter Cards"
+msgstr ""
+
+#: inc/admin-pro-hooks.php:225
+msgid ""
+"Clicking this button will clear all cached data for your links that have "
+"Twitter Cards"
+msgstr ""
+
+#: inc/admin-pro-hooks.php:238 inc/admin-pro-hooks.php:248
+msgid "any"
+msgstr ""
+
+#: inc/admin-pro-hooks.php:239 inc/admin-pro-hooks.php:249
+msgid "all"
+msgstr ""
+
+#: inc/admin-pro-hooks.php:243
+msgid "and"
+msgstr ""
+
+#: inc/admin-pro-hooks.php:244
+msgid "or"
+msgstr ""
+
+#: inc/admin-pro-hooks.php:265 views/admin/configure.php:7
+#: views/admin/configure.php:10 views/admin/customize.php:25
+#: views/admin/customize.php:36 views/admin/style.php:21
+#: views/admin/style.php:31 views/admin/style.php:45
+msgid "Save Changes"
+msgstr ""
+
+#: inc/widget.php:13
+msgid "Custom Twitter Feeds"
+msgstr ""
+
+#: inc/widget.php:14
+msgid "Display your Twitter feed"
+msgstr ""
+
+#: inc/widget.php:40
+msgid "Title:"
+msgstr ""
+
+#: views/admin/configure.php:12
+msgid ""
+"Next Step: <a href=\"?page=custom-twitter-feeds&tab=customize\">Customize "
+"your Feed</a>"
+msgstr ""
+
+#: views/admin/customize.php:38
+msgid ""
+"<b>Next Step:</b> <a href=\"?page=custom-twitter-feeds&tab=style\">Style "
+"your Feed</a>"
+msgstr ""
+
+#: views/admin/display.php:3
+msgid "Display your Feed"
+msgstr ""
+
+#: views/admin/display.php:4
+msgid ""
+"Copy and paste the following shortcode directly into the page, post or "
+"widget where you'd like the feed to show up:"
+msgstr ""
+
+#: views/admin/display.php:5 views/admin/main.php:164
+msgid "To copy, click the field then press Ctrl + C (PC) or Cmd + C (Mac)."
+msgstr ""
+
+#: views/admin/display.php:8
+msgid ""
+"If you'd like to display multiple feeds then you can set different settings "
+"directly in the shortcode like so:"
+msgstr ""
+
+#: views/admin/display.php:10
+msgid ""
+"You can display as many different feeds as you like, on either the same page "
+"or on different pages, by just using the shortcode options below. For "
+"example:"
+msgstr ""
+
+#: views/admin/display.php:15
+msgid "See the table below for a full list of available shortcode options:"
+msgstr ""
+
+#: views/admin/display.php:17
+msgid "Pro version only"
+msgstr ""
+
+#: views/admin/display.php:22
+msgid "Shortcode option"
+msgstr ""
+
+#: views/admin/display.php:23
+msgid "Description"
+msgstr ""
+
+#: views/admin/display.php:24
+msgid "Example"
+msgstr ""
+
+#: views/admin/display.php:27
+msgid "Configure Options"
+msgstr ""
+
+#: views/admin/display.php:30
+msgid ""
+"A user account name/Twitter handle. This will generate a user timeline feed. "
+"Separate multiple screennames using commas."
+msgstr ""
+
+#: views/admin/display.php:35
+msgid ""
+"Any hashtag. This will generate a hashtag feed. Separate multiple hashtags "
+"using commas."
+msgstr ""
+
+#: views/admin/display.php:40
+msgid "Any search term or terms. Can use \"OR\" or \"AND\" for complex feeds."
+msgstr ""
+
+#: views/admin/display.php:45
+msgid ""
+"A home timeline will automatically use the account attached to your access "
+"token credentials"
+msgstr ""
+
+#: views/admin/display.php:50
+msgid ""
+"A mentions timeline will automatically use the account attached to your "
+"access token credentials"
+msgstr ""
+
+#: views/admin/display.php:55
+msgid "Any list ID. Use the tool on the \"configure\" tab to get a list ID"
+msgstr ""
+
+#: views/admin/display.php:60
+msgid "\"In reply to\" tweets will be included in your feed"
+msgstr ""
+
+#: views/admin/display.php:65
+msgid "Retweets will be included in your feed"
+msgstr ""
+
+#: views/admin/display.php:70
+msgid "Number of Tweets to display"
+msgstr ""
+
+#: views/admin/display.php:74
+msgid "Customize Options"
+msgstr ""
+
+#: views/admin/display.php:77
+msgid "How posts are arranged visually in the feed."
+msgstr ""
+
+#: views/admin/display.php:82
+msgid "A custom CSS class added to the feed"
+msgstr ""
+
+#: views/admin/display.php:87
+msgid "Custom text for the header"
+msgstr ""
+
+#: views/admin/display.php:92
+msgid "Translation for \"Retweeted\""
+msgstr ""
+
+#: views/admin/display.php:97
+msgid "Translation for \"In reply to\""
+msgstr ""
+
+#: views/admin/display.php:102
+msgid "Disable the pop up lightbox for media in the feed"
+msgstr ""
+
+#: views/admin/display.php:105
+msgid "Show/Hide Options"
+msgstr ""
+
+#: views/admin/display.php:108
+msgid ""
+"Parts of the Tweet to include in the feed. <b>Available options:</b><br /"
+">retweeter, avatar, author, text, date, actions, twitterlink, linkbox, "
+"repliedto, media, twittercards"
+msgstr ""
+
+#: views/admin/display.php:113
+msgid ""
+"Parts of the Tweet to exclude in the feed. <b>Available options:</b><br /"
+">retweeter, avatar, author, text, date, actions, twitterlink, linkbox, "
+"repliedto, media, twittercards"
+msgstr ""
+
+#: views/admin/display.php:118
+msgid "Include a header for this feed"
+msgstr ""
+
+#: views/admin/display.php:123
+msgid ""
+"Include a credit link to the Custom Twitter Feeds homepage at the bottom of "
+"the feed"
+msgstr ""
+
+#: views/admin/display.php:128
+msgid "Show the button that loads more tweets"
+msgstr ""
+
+#: views/admin/display.php:131
+msgid "Date Options"
+msgstr ""
+
+#: views/admin/display.php:134
+msgid "Number of one of the default date formats"
+msgstr ""
+
+#: views/admin/display.php:139
+msgid "Manually entered custom date format"
+msgstr ""
+
+#: views/admin/display.php:144
+msgid "Translation for \"m\" time unit (English minute)"
+msgstr ""
+
+#: views/admin/display.php:149
+msgid "Translation for \"h\" time unit (English hour)"
+msgstr ""
+
+#: views/admin/display.php:154
+msgid "Translation for English \"now\""
+msgstr ""
+
+#: views/admin/display.php:157
+msgid "Link Options"
+msgstr ""
+
+#: views/admin/display.php:160
+msgid "Disable the links in the text of the tweet"
+msgstr ""
+
+#: views/admin/display.php:165
+msgid "Link the tweet text to Twitter"
+msgstr ""
+
+#: views/admin/display.php:170
+msgid "Custom text for the Twitter link"
+msgstr ""
+
+#: views/admin/display.php:174
+msgid "Moderation"
+msgstr ""
+
+#: views/admin/display.php:177
+msgid "Show only tweets that include these words or phrases"
+msgstr ""
+
+#: views/admin/display.php:182
+msgid "Show only Tweets that DON'T contain these words or phrases"
+msgstr ""
+
+#: views/admin/display.php:187
+msgid "Whether or not any or all of the includewords need to be in the tweet"
+msgstr ""
+
+#: views/admin/display.php:192
+msgid "Whether or not any or all of the excludewords need to be in the tweet"
+msgstr ""
+
+#: views/admin/display.php:197
+msgid "Tweet needs to contain includewords AND/OR doesn't contain excludewords"
+msgstr ""
+
+#: views/admin/display.php:200
+msgid "Miscellaneous"
+msgstr ""
+
+#: views/admin/display.php:203
+msgid "A multiplying factor 1-3 to help with tweet filtering"
+msgstr ""
+
+#: views/admin/display.php:208
+msgid "Search and hashtag feeds will cache the last 150 tweets persistently"
+msgstr ""
+
+#: views/admin/display.php:213
+msgid ""
+"Smallest image resolution available is used relative to actual size of the "
+"images on the page"
+msgstr ""
+
+#: views/admin/display.php:217
+msgid "Style Options"
+msgstr ""
+
+#: views/admin/display.php:220
+msgid "The width of your feed. Any number with a unit like \"px\" or \"%\"."
+msgstr ""
+
+#: views/admin/display.php:225
+msgid "The height of your feed. Any number with a unit like \"px\" or \"em\"."
+msgstr ""
+
+#: views/admin/display.php:230
+msgid "Background color for the feed. Any hex color code"
+msgstr ""
+
+#: views/admin/display.php:235
+msgid "Background color for each tweet. Any hex color code"
+msgstr ""
+
+#: views/admin/display.php:238
+msgid "Typography Options"
+msgstr ""
+
+#: views/admin/display.php:241
+msgid "Size of author info font in pixels"
+msgstr ""
+
+#: views/admin/display.php:246
+msgid "Weight of author info font; inherit, bold, or normal"
+msgstr ""
+
+#: views/admin/display.php:251
+msgid "Size of Twitter logo in pixels"
+msgstr ""
+
+#: views/admin/display.php:256
+msgid "Color of Twitter logo. Any color hex code."
+msgstr ""
+
+#: views/admin/display.php:261
+msgid "Size of date info font in pixels"
+msgstr ""
+
+#: views/admin/display.php:266
+msgid "Weight of date info font; inherit, bold, or normal"
+msgstr ""
+
+#: views/admin/display.php:271
+msgid "Size of quoted author info font in pixels"
+msgstr ""
+
+#: views/admin/display.php:276
+msgid "Weight of quoted author info font; inherit, bold, or normal"
+msgstr ""
+
+#: views/admin/display.php:281
+msgid "Color of the text. Any color hex code"
+msgstr ""
+
+#: views/admin/display.php:286
+msgid "Color of the links inside the tweet text. Any color hex code"
+msgstr ""
+
+#: views/admin/display.php:291
+msgid "Size of the icons in pixels"
+msgstr ""
+
+#: views/admin/display.php:296
+msgid "Color of the icons. Any color hex code"
+msgstr ""
+
+#: views/admin/display.php:299
+msgid "\"Load More\" Button Options"
+msgstr ""
+
+#: views/admin/display.php:302
+msgid "Color of the background of the button. Any color hex code"
+msgstr ""
+
+#: views/admin/display.php:307
+msgid "Color of the text of the button. Any color hex code"
+msgstr ""
+
+#: views/admin/display.php:312
+msgid "Custom text inside the button"
+msgstr ""
+
+#: views/admin/display.php:316
+msgid "Media Layout"
+msgstr ""
+
+#: views/admin/display.php:319
+msgid "Images wil be displayed in this number of columns, masonry style"
+msgstr ""
+
+#: views/admin/display.php:324
+msgid ""
+"The maximum number of media that can be displayed in the feed. All media "
+"still available in the lightbox"
+msgstr ""
+
+#: views/admin/display.php:331
+msgid "Number of columns for the carousel feed for desktop"
+msgstr ""
+
+#: views/admin/display.php:336
+msgid "Number of columns for the carousel feed for mobile screens"
+msgstr ""
+
+#: views/admin/display.php:341
+msgid "How to display the carousel navigation arrows; onhover, below, hide"
+msgstr ""
+
+#: views/admin/display.php:346
+msgid "Whether to show the carousel pagination controls"
+msgstr ""
+
+#: views/admin/display.php:351
+msgid "How the height of the carousel is set; tallest, clickexpand, auto"
+msgstr ""
+
+#: views/admin/display.php:356
+msgid "Whether the carousel should automatically start scrolling"
+msgstr ""
+
+#: views/admin/display.php:361
+msgid "The time between slides when autoplaying"
+msgstr ""
+
+#: views/admin/display.php:366
+msgid ""
+"How the carousel posts should loop. <b>Available options:</b> none, "
+"infinite, rewind"
+msgstr ""
+
+#: views/admin/display.php:370
+msgid "Masonry Columns"
+msgstr ""
+
+#: views/admin/display.php:373
+msgid "Number of columns for the masonry feed for desktop"
+msgstr ""
+
+#: views/admin/display.php:378
+msgid "Number of columns for the masonry feed for mobile screens"
+msgstr ""
+
+#: views/admin/display.php:382
+msgid "Auto Load More on Scroll"
+msgstr ""
+
+#: views/admin/display.php:385
+msgid "Load more Tweets as the visitor scrolls to the end of the feed"
+msgstr ""
+
+#: views/admin/display.php:390
+msgid ""
+"Distance in pixels from the bottom of the page to trigger the automatic "
+"loading of more tweets"
+msgstr ""
+
+#: views/admin/display.php:396
+msgid ""
+"Need help? <a href=\"?page=custom-twitter-feeds&tab=support\">Get Support</"
+"a>."
+msgstr ""
+
+#: views/admin/license.php:35 views/admin/main.php:19
+msgid "License"
+msgstr ""
+
+#: views/admin/license.php:39
+msgid "Enter your license key"
+msgstr ""
+
+#: views/admin/license.php:48
+msgid "Deactivate License"
+msgstr ""
+
+#: views/admin/license.php:51 views/admin/license.php:61
+msgid "Expired"
+msgstr ""
+
+#: views/admin/license.php:53
+msgid "Active"
+msgstr ""
+
+#: views/admin/license.php:58
+msgid "Activate License"
+msgstr ""
+
+#: views/admin/license.php:63
+msgid "Inactive"
+msgstr ""
+
+#: views/admin/license.php:70
+msgid "The license key you received when purchasing the plugin."
+msgstr ""
+
+#: views/admin/license.php:72
+msgid "Renew your license"
+msgstr ""
+
+#: views/admin/license.php:74
+msgid "Upgrade your license"
+msgstr ""
+
+#: views/admin/license.php:79
+msgid ""
+"You can upgrade your license in two ways:<br />\n"
+"                    &bull;&nbsp; Log into <a href='https://smashballoon.com/"
+"account' target='_blank'>your Account</a> and click on the <b>'Upgrade my "
+"License'</b> tab<br />\n"
+"                    &bull;&nbsp; <a href='https://smashballoon.com/contact/' "
+"target='_blank'>Contact us directly</a>"
+msgstr ""
+
+#: views/admin/main.php:14
+msgid "1. Configure"
+msgstr ""
+
+#: views/admin/main.php:15
+msgid "2. Customize"
+msgstr ""
+
+#: views/admin/main.php:16
+msgid "3. Style"
+msgstr ""
+
+#: views/admin/main.php:17
+msgid "4. Display Your Feed"
+msgstr ""
+
+#: views/admin/main.php:18
+msgid "Support"
+msgstr ""
+
+#: views/admin/main.php:120
+msgid ""
+"\n"
+"        <div class='"
+msgstr ""
+
+#: views/admin/main.php:159
+msgid ""
+"Need help setting up the plugin? Check out our <a href=\"https://"
+"smashballoon.com/custom-twitter-feeds/docs/\" target=\"_blank\">setup "
+"directions</a>"
+msgstr ""
+
+#: views/admin/main.php:162
+msgid "Display your feed"
+msgstr ""
+
+#: views/admin/main.php:163
+msgid ""
+"Copy and paste this shortcode directly into the page, post or widget where "
+"you'd like to display the feed:"
+msgstr ""
+
+#: views/admin/main.php:165
+msgid ""
+"Find out how to display <a href='?page=custom-twitter-"
+"feeds&tab=display'>multiple feeds</a>."
+msgstr ""
+
+#: views/admin/style.php:47
+msgid ""
+"Next Step: <a href=\"?page=custom-twitter-feeds&tab=display\">Display your "
+"Feed</a>"
+msgstr ""
+
+#: views/admin/support.php:6
+msgid "Setup Directions"
+msgstr ""
+
+#: views/admin/support.php:7
+msgid "A step-by-step guide on how to setup and use the plugin."
+msgstr ""
+
+#: views/admin/support.php:11
+msgid "Watch a Video"
+msgstr ""
+
+#: views/admin/support.php:12
+msgid "How to setup, use, and customize the plugin."
+msgstr ""
+
+#: views/admin/support.php:18
+msgid "FAQs and Docs"
+msgstr ""
+
+#: views/admin/support.php:19
+msgid ""
+"View our FAQs and documentation to help solve your problem as quickly as "
+"possible."
+msgstr ""
+
+#: views/admin/support.php:26
+msgid ""
+"<a href=\"https://smashballoon.com/how-to-build-a-search-feed/\" target="
+"\"_blank\">How to Build a Search Feed</a>"
+msgstr ""
+
+#: views/admin/support.php:27
+msgid ""
+"<a href=\"https://smashballoon.com/my-feed-wont-show-the-latest-tweets/\" "
+"target=\"_blank\">My Feed Won't Show the Latest Tweets</a>"
+msgstr ""
+
+#: views/admin/support.php:28
+msgid ""
+"<a href=\"https://smashballoon.com/how-do-i-create-a-twitter-list/\" target="
+"\"_blank\">How do I Create a Twitter List</a>"
+msgstr ""
+
+#: views/admin/support.php:34
+msgid ""
+"<a href=\"https://smashballoon.com/custom-twitter-feeds/docs/\" target="
+"\"_blank\">Installation and Configuration</a>"
+msgstr ""
+
+#: views/admin/support.php:35
+msgid ""
+"<a href=\"https://smashballoon.com/custom-twitter-feeds/docs/errors/\" "
+"target=\"_blank\">Twitter API Error Reference</a>"
+msgstr ""
+
+#: views/admin/support.php:36
+msgid ""
+"<a href=\"https://smashballoon.com/custom-twitter-feeds/docs/create-twitter-"
+"app/\" target=\"_blank\">Create Your Own Twitter App</a>"
+msgstr ""
+
+#: views/admin/support.php:41
+msgid "Welcome Page"
+msgstr ""
+
+#: views/admin/support.php:42
+msgid "View the plugin welcome page to see what's new in the latest update."
+msgstr ""
+
+#: views/admin/support.php:46
+msgid "Request Support"
+msgstr ""
+
+#: views/admin/support.php:47
+msgid ""
+"Still need help? Submit a ticket and one of our support experts will get "
+"back to you as soon as possible.<br /><b>Important:</b> Please include your "
+"<b>System Info</b> below with all support requests."
+msgstr ""
+
+#: views/admin/support.php:52
+msgid "System Info"
+msgstr ""
+
+#: views/admin/support.php:52
+msgid "Click the text below to select all"
+msgstr ""

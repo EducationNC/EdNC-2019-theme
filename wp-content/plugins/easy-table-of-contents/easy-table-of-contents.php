@@ -3,7 +3,7 @@
  * Plugin Name: Easy Table of Contents
  * Plugin URI: http://connections-pro.com/
  * Description: Adds a user friendly and fully automatic way to create and display a table of contents generated from the page content.
- * Version: 2.0.4
+ * Version: 2.0.11
  * Author: Steven A. Zahm
  * Author URI: http://connections-pro.com/
  * Text Domain: easy-table-of-contents
@@ -26,7 +26,7 @@
  * @package  Easy Table of Contents
  * @category Plugin
  * @author   Steven A. Zahm
- * @version  2.0.4
+ * @version  2.0.11
  */
 
 use function Easy_Plugins\Table_Of_Contents\String\mb_find_replace;
@@ -47,7 +47,7 @@ if ( ! class_exists( 'ezTOC' ) ) {
 		 * @since 1.0
 		 * @var string
 		 */
-		const VERSION = '2.0.4';
+		const VERSION = '2.0.11';
 
 		/**
 		 * Stores the instance of this class.
@@ -226,7 +226,14 @@ if ( ! class_exists( 'ezTOC' ) ) {
 			wp_register_script( 'js-cookie', EZ_TOC_URL . "vendor/js-cookie/js.cookie$min.js", array(), '2.2.1', TRUE );
 			wp_register_script( 'jquery-smooth-scroll', EZ_TOC_URL . "vendor/smooth-scroll/jquery.smooth-scroll$min.js", array( 'jquery' ), '2.2.0', TRUE );
 			wp_register_script( 'jquery-sticky-kit', EZ_TOC_URL . "vendor/sticky-kit/jquery.sticky-kit$min.js", array( 'jquery' ), '1.9.2', TRUE );
-			wp_register_script( 'ez-toc-js', EZ_TOC_URL . "assets/js/front$min.js", array( 'jquery-smooth-scroll', 'js-cookie', 'jquery-sticky-kit'), ezTOC::VERSION, TRUE );
+
+			wp_register_script(
+				'ez-toc-js',
+				EZ_TOC_URL . "assets/js/front$min.js",
+				array( 'jquery-smooth-scroll', 'js-cookie', 'jquery-sticky-kit' ),
+				ezTOC::VERSION . '-' . filemtime( EZ_TOC_PATH . "assets/js/front$min.js" ),
+				true
+			);
 
 			if ( ! ezTOC_Option::get( 'exclude_css' ) ) {
 
@@ -243,7 +250,7 @@ if ( ! class_exists( 'ezTOC' ) ) {
 
 			if ( ezTOC_Option::get( 'show_heading_text' ) && ezTOC_Option::get( 'visibility' ) ) {
 
-				$width = ezTOC_Option::get( 'width' ) != 'custom' ? ezTOC_Option::get( 'width' ) : ezTOC_Option::get( 'width_custom' ) . ezTOC_Option::get( 'width_custom_units' );
+				$width = ezTOC_Option::get( 'width' ) !== 'custom' ? ezTOC_Option::get( 'width' ) : ezTOC_Option::get( 'width_custom' ) . ezTOC_Option::get( 'width_custom_units' );
 
 				$js_vars['visibility_hide_by_default'] = ezTOC_Option::get( 'visibility_hide_by_default' ) ? true : false;
 
@@ -282,20 +289,20 @@ if ( ! class_exists( 'ezTOC' ) ) {
 				$css .= 'div#ez-toc-container p.ez-toc-title {font-weight: ' . ezTOC_Option::get( 'title_font_weight', 500 ) . ';}';
 				$css .= 'div#ez-toc-container ul li {font-size: ' . ezTOC_Option::get( 'font_size' ) . ezTOC_Option::get( 'font_size_units' ) . ';}';
 
-				if ( ezTOC_Option::get( 'theme' ) == 'custom' || ezTOC_Option::get( 'width' ) != 'auto' ) {
+				if ( ezTOC_Option::get( 'theme' ) === 'custom' || ezTOC_Option::get( 'width' ) != 'auto' ) {
 
 					$css .= 'div#ez-toc-container {';
 
-					if ( ezTOC_Option::get( 'theme' ) == 'custom' ) {
+					if ( ezTOC_Option::get( 'theme' ) === 'custom' ) {
 
 						$css .= 'background: ' . ezTOC_Option::get( 'custom_background_colour' ) . ';border: 1px solid ' . ezTOC_Option::get( 'custom_border_colour' ) . ';';
 					}
 
-					if ( 'auto' != ezTOC_Option::get( 'width' ) ) {
+					if ( 'auto' !== ezTOC_Option::get( 'width' ) ) {
 
 						$css .= 'width: ';
 
-						if ( 'custom' != ezTOC_Option::get( 'width' ) ) {
+						if ( 'custom' !== ezTOC_Option::get( 'width' ) ) {
 
 							$css .= ezTOC_Option::get( 'width' );
 
@@ -310,7 +317,7 @@ if ( ! class_exists( 'ezTOC' ) ) {
 					$css .= '}';
 				}
 
-				if ( 'custom' == ezTOC_Option::get( 'theme' ) ) {
+				if ( 'custom' === ezTOC_Option::get( 'theme' ) ) {
 
 					$css .= 'div#ez-toc-container p.ez-toc-title {color: ' . ezTOC_Option::get( 'custom_title_colour' ) . ';}';
 					//$css .= 'div#ez-toc-container p.ez-toc-title a,div#ez-toc-container ul.ez-toc-list a {color: ' . ezTOC_Option::get( 'custom_link_colour' ) . ';}';
@@ -390,8 +397,8 @@ if ( ! class_exists( 'ezTOC' ) ) {
 
 			$type = get_post_type( $post->ID );
 
-			$enabled = in_array( $type, ezTOC_Option::get( 'enabled_post_types', array() ) );
-			$insert  = in_array( $type, ezTOC_Option::get( 'auto_insert_post_types', array() ) );
+			$enabled = in_array( $type, ezTOC_Option::get( 'enabled_post_types', array() ), true );
+			$insert  = in_array( $type, ezTOC_Option::get( 'auto_insert_post_types', array() ), true );
 
 			if ( $insert || $enabled ) {
 

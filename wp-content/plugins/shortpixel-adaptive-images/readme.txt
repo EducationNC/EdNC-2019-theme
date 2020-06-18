@@ -2,9 +2,9 @@
 Contributors: ShortPixel
 Tags: adaptive images, responsive images, resize images, scale images, cdn, optimize images, compress images, on the fly, webp, lazy load
 Requires at least: 3.2.0
-Tested up to: 5.4
+Tested up to: 5.4.1
 Requires PHP: 5.2
-Stable tag: 1.8.4
+Stable tag: 1.8.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,9 @@ Did you ever test your website with tools like <a href="https://developers.googl
 ShortPixel Adaptive Images comes to the rescue and resolves your site's image-related problems in no time.
 
 = What are the benefits? =
+
+[vimeo https://vimeo.com/407181635 ]
+
 Imagine that you could have all your image-related website problems solved with a simple click, wouldn't that be great?
 Usually the images are the biggest resource on a website page. With just one click, ShortPixel Adaptive Images replaces all your website's pics with properly sized, smartly-cropped, optimized images and offloads them on to the ShortPixel's global CDN.
 And for more Google love the plugin serves <a href="https://en.wikipedia.org/wiki/WebP">WebP</A> images to the right browsers auto-magically!
@@ -119,6 +122,32 @@ If you need to do a post-processing in JavaScript after the image/tag gets updat
 6. Advanced settings page
 
 == Changelog ==
+
+= 1.8.8 =
+Release date: May 28th 2020
+* Fix some roundings when calculating image size;
+* Fix PHP Warning: Invalid argument supplied for foreach() in url-tools.class.php line 284;
+* Added update notices functionality in order to announce the upcoming discontinuation of support for PHP < 5.6;
+* Language – 6 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted.
+
+= 1.8.7 =
+Release date: 27th April 2020
+* Fix for smooth lazy loading (fade-in);
+* Fix for srcsets with different aspect ratio images;
+* Fix: remove jQuery's Deferred() from WebP check, as it was generating JS errors in certain situations with WP Rocket enabled;
+* Language – 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted
+
+= 1.8.6 =
+Release date: 20th April 2020
+* Fix slow query based on GUID on wp_posts
+* Language – 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted
+
+= 1.8.5 =
+Release date: 13th April 2020
+* Fix wrong replace of srcset in some cases after the metadata changes
+* Fix integration with Oxygen builder when using code blocks
+* Support Elementor's data-settings in &lt;header&gt; tag
+* Language – 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted
 
 = 1.8.4 =
 Release date: 16th March 2020
@@ -280,18 +309,18 @@ Release date: 30th September 2019
 = 1.3.5 =
 
 Release date: 23rd September 2019
-* For <img>'s, take the largest image from src and srcset if srcset is present
+* For `<img>`'s, take the largest image from src and srcset if srcset is present
 * Compatibility with Slider Revolution
 * Compatibility with Oxygen Builder
 * Notify incompatibility with Divi Toolbox's "Custom Post Meta" option.
-* Fixed: images not loaded on first page load on some iPhones due to the fact that DOMLoaded event is triggered before the <img>'s inline src's are parsed.
+* Fixed: images not loaded on first page load on some iPhones due to the fact that DOMLoaded event is triggered before the `<img>`'s inline src's are parsed.
 * Fixed: not replacing divs data-thumbs in some circumstances
 * Language – 7 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted
 
 = 1.3.4 =
 
 Release date: 14th September 2019
-* fix replacing images in <img data-src> tags
+* fix replacing images in `<img data-src>` tags
 * Language – 0 new strings added, 0 updated, 0 fuzzied, and 0 obsoleted
 
 = 1.3.3 =
@@ -354,7 +383,7 @@ Release date: 3rd July 2019
 
 * Fix bug in span background-image
 * Compatibility with Ginger – EU Cookie Law plugin
-* Parse also <section>'s backgrounds
+* Parse also `<section>`'s backgrounds
 * Fix bug when parsing some background-images containing spaces
 
 = 1.2.3 =
@@ -365,7 +394,7 @@ Release date: 20th June 2019
 * Compatibility with Thrive Architect and Avia Layout Builder
 * Fix problem with sites having the WP install in a subfolder (site_url vs. home_url)
 * Fix notice on sites with older Autoptimize versions
-* Skip the <a> tags when determining the size of an element recursively, based on parent size
+* Skip the `<a>` tags when determining the size of an element recursively, based on parent size
 * Fix: background images of spans
 * Refactoring in preparation for DOM Parse
 
@@ -389,9 +418,9 @@ Release date: 4th June 2019
 * Integrate with Viba Portfolio
 * Integrate with the Elementor paralax section
 * Work around random jQuery not loaded error due to jQuery bug (https://github.com/jquery/jquery/issues/3271)
-* Don't lazy-load the images set on backgrounds in <style> blocks.
+* Don't lazy-load the images set on backgrounds in `<style>` blocks.
 * Move ai.min.js to footer
-* Fix exclude pattern matching when class defined without quotes (<div class=myclass>)
+* Fix exclude pattern matching when class defined without quotes (`<div class=myclass>`)
 
 = 1.1.3 =
 
@@ -407,12 +436,10 @@ Release date: 30th May 2019
 Release date: 29th May 2019
 
 * Thrive Architect preview compatibility
-* Parse also the <amp-img> tag
+* Parse also the `<amp-img>` tag
 * Fix not parsing AJAX in some circumstances
 * Fix compatibility with Safari in some cases when ai.min.js is loaded later (async)
 * Fix translations by adding load_plugin_textdomain
-
-== Changelog ==
 
 = 1.1.1 =
 
@@ -479,7 +506,7 @@ Release date: 25th April 2019
 
 Release date: 23rd April 2019
 
-* Parse the CSS <style> blocks for background-image rules and replace them
+* Parse the CSS `<style>` blocks for background-image rules and replace them
 * Smarter replace for background-image rules - cover cases when there is also a gradient
 * Alert for double compression when ShortPixel Image Optimization is present has the same lossy setting
 * Alert for conflict when Autoptimize has the option to deliver images using ShortPixel's service.
@@ -501,7 +528,7 @@ Release date: 4th March 2019
 
 Release date: 13th February 2019
 
-* exclude from parsing the <script> and <![CDATA[ sections
+* exclude from parsing the `<script>` and `<![CDATA[` sections
 * honour the GET parameter PageSpeed=off used by some third parties as the Divi Builder
 * add settings link in the plugins list
 * lazy-load the images referred by inline background-image CSS
@@ -511,7 +538,7 @@ Release date: 13th February 2019
 
 Release date: 30th January 2019
 
-* handle <div data-src="...">
+* handle `<div data-src="...">`
 * handle &nbsp;'s, &quot;'s in background-image CSS
 * handle images with empty href
 * handle more cases of hrefs without quotes

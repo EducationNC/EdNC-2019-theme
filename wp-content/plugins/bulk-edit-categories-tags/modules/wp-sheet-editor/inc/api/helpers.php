@@ -13,6 +13,93 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 			
 		}
 
+		public function set_with_dot_notation(&$array, $key, $value) {
+			if (is_null($key)) {
+				return $array = $value;
+			}
+
+			$keys = explode('.', $key);
+
+			while (count($keys) > 1) {
+				$key = array_shift($keys);
+
+				if (!isset($array[$key]) || !is_array($array[$key])) {
+					$array[$key] = array();
+				}
+
+				$array = & $array[$key];
+			}
+
+			$array[array_shift($keys)] = $value;
+
+			return $array;
+		}
+
+		function array_to_dot($myArray) {
+			$ritit = new RecursiveIteratorIterator(new RecursiveArrayIterator($myArray));
+			$result = array();
+			foreach ($ritit as $leafValue) {
+				$keys = array();
+				foreach (range(0, $ritit->getDepth()) as $depth) {
+					$keys[] = $ritit->getSubIterator($depth)->key();
+				}
+				$result[join('.', $keys)] = $leafValue;
+			}
+			return $result;
+		}
+
+		public function get_with_dot_notation($array, $key, $default = null) {
+			if (is_null($key)) {
+				return $array;
+			}
+
+			if (isset($array[$key])) {
+				return $array[$key];
+			}
+
+			foreach (explode('.', $key) as $segment) {
+				if (!is_array($array) ||
+						!array_key_exists($segment, $array)) {
+					return $default;
+				}
+
+				$array = $array[$segment];
+			}
+
+			return $array;
+		}
+
+		/**
+		 * Notation to numbers.
+		 *
+		 * This function transforms the php.ini notation for numbers (like '2M') to an integer.
+		 *
+		 * @param  string $size Size value.
+		 * @return int
+		 */
+		function let_to_num($size) {
+			$l = substr($size, -1);
+			$ret = (int) substr($size, 0, -1);
+			switch (strtoupper($l)) {
+				case 'P':
+					$ret *= 1024;
+				// No break.
+				case 'T':
+					$ret *= 1024;
+				// No break.
+				case 'G':
+					$ret *= 1024;
+				// No break.
+				case 'M':
+					$ret *= 1024;
+				// No break.
+				case 'K':
+					$ret *= 1024;
+				// No break.
+			}
+			return $ret;
+		}
+
 		/**
 		 * Remove all empty elements from an array recursively
 		 * @param array $haystack
@@ -419,6 +506,19 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 						continue;
 					}
 
+					// If this is a <select> column, we check if the incoming value 
+					// is a label and we convert it into the real value to prevent mistakes from the user
+					// We don't do this for autocomplete columns because they don't have static option values
+					$cell_value = $item[$key];
+					$allowed_values = !empty($column_settings['formatted']['selectOptions']) ? $column_settings['formatted']['selectOptions'] : array();
+
+					if ($allowed_values && !empty($cell_value) && !isset($allowed_values[$cell_value])) {
+						$value_key = array_search($cell_value, $allowed_values, true);
+						if ($value_key !== false && is_string($value_key)) {
+							$item[$key] = $value_key;
+						}
+					}
+
 					do_action('vg_sheet_editor/save_rows/before_saving_cell', $item, $post_type, $column_settings, $key, $spreadsheet_columns, $post_id);
 					if (!$column_settings['allow_to_save']) {
 						continue;
@@ -804,7 +904,9 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 			do_action('vg_sheet_editor/load_rows/after_processing', $data, $wp_query_args, $spreadsheet_columns, $clean_data, $not_found_message);
 
 			if (empty($query->posts) && !empty($not_found_message)) {
-				return new WP_Error('vgse', apply_filters('vg_sheet_editor/load_rows/not_found_message', $not_found_message, $wp_query_args, $spreadsheet_columns, $clean_data));
+				return new WP_Error('vgse', apply_filters('vg_sheet_editor/load_rows/not_found_message', $not_found_message, $wp_query_args, $spreadsheet_columns, $clean_data), array(
+					'request' => current_user_can('manage_options') && is_object($query) && property_exists($query, 'request') ? $query->request : null,
+				));
 			}
 
 			VGSE()->helpers->profile_record('Before load_rows/output ' . __FUNCTION__);
@@ -938,17 +1040,28 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 				$id = str_replace(' ', '%20', $id);
 				$cache_id = 'f' . md5($id);
 
+				// If found in cache, we also cache negative results when 
+				// the file couldn't be downloaded, that's why we use the double if
+				if (isset($this->urls_to_file_ids_cache[$cache_id]) && empty($_REQUEST['wpse_no_cache'])) {
+					if ($this->urls_to_file_ids_cache[$cache_id]) {
+						$out[] = $this->urls_to_file_ids_cache[$cache_id];
+					}
+					continue;
+				}
+
+				$new_id = apply_filters('vg_sheet_editor/save/url_to_file_id', null, $id, $post_id);
+				if (!is_null($new_id)) {
+					$this->urls_to_file_ids_cache[$cache_id] = $new_id;
+
+					if ($new_id) {
+						$out[] = (int) $new_id;
+					}
+					continue;
+				}
+
 				// We use strpos instead of filter_var because filter_var doesn't detect as 
 				// URL when the string contains portuguese characters
 				if (strpos($id, 'http://') === 0 || strpos($id, 'https://') === 0) {
-					// If found in cache, we also cache negative results when 
-					// the file couldn't be downloaded, that's why we use the double if
-					if (isset($this->urls_to_file_ids_cache[$cache_id]) && empty($_REQUEST['wpse_no_cache'])) {
-						if ($this->urls_to_file_ids_cache[$cache_id]) {
-							$out[] = $this->urls_to_file_ids_cache[$cache_id];
-						}
-						continue;
-					}
 
 					if (strpos($id, '?wpId') !== false) {
 						$media_file_id = preg_replace('/.+wpId=(\d+)$/', '$1', $id);
@@ -971,6 +1084,7 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 					if ($new_id) {
 						$out[] = $new_id;
 					}
+					$this->urls_to_file_ids_cache[$cache_id] = (int) $new_id;
 				} else {
 					$out[] = $id;
 				}
@@ -991,6 +1105,44 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 
 
 			return $out;
+		}
+
+		function add_file_to_gallery_from_path($file_path, $save_as, $post_id = null, $original_url = null) {
+			require_once(ABSPATH . 'wp-admin/includes/media.php');
+			require_once(ABSPATH . 'wp-admin/includes/file.php');
+			require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+			if (!$save_as) {
+				$save_as = basename($file_path);
+			}
+// build up array like PHP file upload
+			$file = array();
+			$file['name'] = $save_as;
+			$file['tmp_name'] = $file_path;
+
+			if (empty($file['tmp_name']) || is_wp_error($file['tmp_name'])) {
+				if (is_string($file['tmp_name']) && file_exists($file['tmp_name'])) {
+					unlink($file['tmp_name']);
+				}
+				return false;
+			}
+
+			$attachmentId = media_handle_sideload($file, $post_id);
+
+// If error storing permanently, unlink
+			if (is_wp_error($attachmentId)) {
+				unlink($file['tmp_name']);
+				return false;
+			}
+
+// create the thumbnails
+			$attach_data = wp_generate_attachment_metadata($attachmentId, get_attached_file($attachmentId));
+
+			wp_update_attachment_metadata($attachmentId, $attach_data);
+			if (!empty($original_url)) {
+				update_post_meta($attachmentId, 'wpse_external_file_url', esc_url($original_url));
+			}
+			return $attachmentId;
 		}
 
 		/**
@@ -1017,36 +1169,10 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 			if (!$save_as) {
 				$save_as = basename($url);
 			}
-			require_once(ABSPATH . 'wp-admin/includes/media.php');
-			require_once(ABSPATH . 'wp-admin/includes/file.php');
-			require_once(ABSPATH . 'wp-admin/includes/image.php');
 
-// build up array like PHP file upload
-			$file = array();
-			$file['name'] = $save_as;
-			$file['tmp_name'] = download_url(esc_url($url), 4);
-
-			if (empty($file['tmp_name']) || is_wp_error($file['tmp_name'])) {
-				if (is_string($file['tmp_name']) && file_exists($file['tmp_name'])) {
-					unlink($file['tmp_name']);
-				}
-				return false;
-			}
-
-			$attachmentId = media_handle_sideload($file, $post_id);
-
-// If error storing permanently, unlink
-			if (is_wp_error($attachmentId)) {
-				unlink($file['tmp_name']);
-				return false;
-			}
-
-// create the thumbnails
-			$attach_data = wp_generate_attachment_metadata($attachmentId, get_attached_file($attachmentId));
-
-			wp_update_attachment_metadata($attachmentId, $attach_data);
-			update_post_meta($attachmentId, 'wpse_external_file_url', esc_url($url));
-			return $attachmentId;
+			$file_path = download_url(esc_url($url), 4);
+			$attachment_id = $this->add_file_to_gallery_from_path($file_path, $save_as, $post_id, $url);
+			return $attachment_id;
 		}
 
 		/**
@@ -1068,7 +1194,8 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 				$column_settings = $spreadsheet_columns[$column_key];
 			}
 			$data_type = $column_settings['data_type'];
-			if (is_int($post_id)) {
+			if (is_numeric($post_id)) {
+				$post_id = (int) $post_id;
 				$post = VGSE()->helpers->get_current_provider()->get_item($post_id);
 			} else {
 				$post = $post_id;
@@ -1169,10 +1296,11 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 		public function add_post_type_to_rows($rows) {
 			$new_data = array();
 			foreach ($rows as $row) {
-				if (isset($row['post_type'])) {
+				if (!empty($row['post_type'])) {
 					$new_data[] = $row;
+					continue;
 				}
-				$post_id = $this->sanitize_integer($row['ID']);
+				$post_id = (int) $this->sanitize_integer($row['ID']);
 
 				if (empty($post_id)) {
 					continue;
@@ -1427,7 +1555,7 @@ if (!class_exists('WP_Sheet_Editor_Helpers')) {
 				$file_ids = array_map('trim', explode(',', $current_value));
 				foreach ($file_ids as $file_id) {
 					if (is_numeric($file_id)) {
-						$url = add_query_arg('wpId', $file_id, wp_get_attachment_url($file_id));
+						$url = add_query_arg('wpId', $file_id, wp_get_attachment_image_url($file_id, 'medium'));
 					} elseif (strpos($file_id, WP_CONTENT_URL) !== false) {
 						$url = $file_id;
 						$file_id = VGSE()->helpers->get_attachment_id_from_url($file_id);

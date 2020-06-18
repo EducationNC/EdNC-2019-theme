@@ -3,13 +3,13 @@
 Plugin Name: Custom Twitter Feeds
 Plugin URI: http://smashballoon.com/custom-twitter-feeds
 Description: Customizable Twitter feeds for your website
-Version: 1.4.1
+Version: 1.5.1
 Author: Smash Balloon
 Author URI: http://smashballoon.com/
 Text Domain: custom-twitter-feeds
 */
 /*
-Copyright 2019 Smash Balloon LLC (email : hey@smashballoon.com)
+Copyright 2020 Smash Balloon LLC (email : hey@smashballoon.com)
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 define( 'CTF_URL', plugin_dir_path( __FILE__ )  );
-define( 'CTF_VERSION', '1.4.1' );
+define( 'CTF_VERSION', '1.5.1' );
 define( 'CTF_TITLE', 'Custom Twitter Feeds' );
 define( 'CTF_JS_URL', plugins_url( '/js/ctf-scripts.min.js?ver=' . CTF_VERSION , __FILE__ ) );
 define( 'OAUTH_PROCESSOR_URL', 'https://api.smashballoon.com/twitter-login.php?return_uri=' );
@@ -46,6 +46,20 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 require_once( CTF_URL . '/inc/widget.php' );
 
 require_once( CTF_URL . '/inc/admin-hooks.php' );
+
+function ctf_plugin_init() {
+	require_once trailingslashit( CTF_PLUGIN_DIR ) . 'inc/blocks/class-ctf-blocks.php';
+
+	$ctf_blocks = new CTF_Blocks();
+
+	if ( $ctf_blocks->allow_load() ) {
+		$ctf_blocks->load();
+	}
+
+	include_once trailingslashit( CTF_PLUGIN_DIR ) . 'inc/class-ctf-tracking.php';
+}
+
+add_action( 'plugins_loaded', 'ctf_plugin_init' );
 
 function ctf_update_settings() {
     $existing_deprecated_options = get_option( 'ctf_configure' );
@@ -469,6 +483,21 @@ function ctf_clear_persistent_cache() {
 }
 add_action( 'wp_ajax_ctf_clear_persistent_cache', 'ctf_clear_persistent_cache' );
 
+function ctf_activate() {
+	// set usage tracking to false if fresh install.
+	$usage_tracking = get_option( 'ctf_usage_tracking', false );
+
+	if ( ! is_array( $usage_tracking ) ) {
+		$usage_tracking = array(
+			'enabled' => false,
+			'last_send' => 0
+		);
+
+		update_option( 'ctf_usage_tracking', $usage_tracking, false );
+	}
+}
+register_activation_hook( __FILE__, 'ctf_activate' );
+
 /**
  * clear the cache and unschedule an cron jobs when deactivated
  */
@@ -482,7 +511,7 @@ register_deactivation_hook( __FILE__, 'ctf_deactivate' );
 /**
  * Loads the javascript for the plugin front-end. Also localizes the admin-ajax file location for use in ajax calls
  */
-function ctf_scripts_and_styles() {
+function ctf_scripts_and_styles( $enqueue = false ) {
 	$options = get_option( 'ctf_options' );
 	$not_ajax_theme = (! isset( $options['ajax_theme'] ) || ! $options['ajax_theme']);
 	$font_method = isset( $options['font_method'] ) ? $options['font_method'] : 'svg';
@@ -507,6 +536,10 @@ function ctf_scripts_and_styles() {
 	    );
     }
 
+	if ( $enqueue ) {
+		wp_enqueue_style( 'ctf_styles' );
+		wp_enqueue_script( 'ctf_scripts' );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'ctf_scripts_and_styles' );
 
@@ -564,3 +597,6 @@ function ctf_admin_scripts_and_styles() {
 add_action( 'admin_enqueue_scripts', 'ctf_admin_scripts_and_styles' );
 
 
+function ctf_is_pro_version() {
+	return defined( 'CTF_STORE_URL' );
+}

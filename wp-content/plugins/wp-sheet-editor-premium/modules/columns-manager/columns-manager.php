@@ -8,7 +8,6 @@ if (!class_exists('WP_Sheet_Editor_Columns_Manager')) {
 
 		static private $instance = false;
 		var $key = 'vgse_columns_manager';
-		var $groups_key = 'vgse_column_groups';
 
 		private function __construct() {
 			
@@ -31,6 +30,8 @@ if (!class_exists('WP_Sheet_Editor_Columns_Manager')) {
 				return;
 			}
 
+			require __DIR__ . '/inc/column-groups.php';
+
 			// Allow to manage the columns formatting
 			// UI
 			if (current_user_can('manage_options')) {
@@ -46,97 +47,6 @@ if (!class_exists('WP_Sheet_Editor_Columns_Manager')) {
 			add_filter('vg_sheet_editor/columns/all_items', array($this, 'apply_settings'), 10, 2);
 			add_filter('vg_sheet_editor/serialized_addon/column_settings', array($this, 'apply_settings_to_serialized_column'), 10, 5);
 			add_filter('vg_sheet_editor/infinite_serialized_column/column_settings', array($this, 'apply_settings_to_infinitely_serialized_column'), 10, 3);
-
-			// Column groups
-			if (current_user_can('manage_options')) {
-				add_action('vg_sheet_editor/columns_visibility/after_fields', array($this, 'render_save_columns_view_option'));
-				add_action('vg_sheet_editor/columns_visibility/after_options_saved', array($this, 'save_column_group'), 10, 3);
-				add_action('vg_sheet_editor/editor/before_init', array($this, 'register_groups_toolbar_items'));
-				$this->maybe_switch_to_group();
-			}
-		}
-
-		function maybe_switch_to_group() {
-			if (empty($_REQUEST['wpse_cmg'])) {
-				return;
-			}
-
-			$existing = get_option($this->groups_key);
-			$post_type = VGSE()->helpers->get_provider_from_query_string();
-			$group_key = sanitize_title($_REQUEST['wpse_cmg']);
-			if (empty($existing) || empty($existing[$post_type]) || empty($existing[$post_type][$group_key])) {
-				return;
-			}
-
-			$columns_visibility_options = get_option(WP_Sheet_Editor_Columns_Visibility::$columns_visibility_key);
-			if (empty($columns_visibility_options)) {
-				$columns_visibility_options = array();
-			}
-			if (empty($columns_visibility_options[$post_type])) {
-				$columns_visibility_options[$post_type] = array();
-			}
-			$columns_visibility_options[$post_type] = $existing[$post_type][$group_key];
-			update_option(WP_Sheet_Editor_Columns_Visibility::$columns_visibility_key, $columns_visibility_options);
-			$url = esc_url(remove_query_arg('wpse_cmg'));
-			wp_redirect($url);
-			exit();
-		}
-
-		function register_groups_toolbar_items($editor) {
-			$existing = get_option($this->groups_key);
-			if (empty($existing)) {
-				return;
-			}
-
-			$post_types = $editor->args['enabled_post_types'];
-			foreach ($post_types as $post_type) {
-				if (!isset($existing[$post_type])) {
-					continue;
-				}
-
-				foreach ($existing[$post_type] as $group_key => $group) {
-					$editor->args['toolbars']->register_item('cm_g_' . $group_key, array(
-						'type' => 'button',
-						'toolbar_key' => 'secondary',
-						'allow_in_frontend' => false,
-						'parent' => 'columns_manager',
-						'content' => $group['name'],
-						'url' => add_query_arg('wpse_cmg', $group_key)
-							), $post_type);
-				}
-			}
-		}
-
-		function save_column_group($post_type, $data, $options) {
-			if (empty($data['wpse_group_name']) || !is_string($data['wpse_group_name'])) {
-				return;
-			}
-
-			$name = esc_html($data['wpse_group_name']);
-			$existing = get_option($this->groups_key);
-			if (empty($existing)) {
-				$existing = array();
-			}
-			if (empty($existing[$post_type])) {
-				$existing[$post_type] = array();
-			}
-			$group = $options[$post_type];
-			$group['name'] = $name;
-			$key = sanitize_title($name);
-			$existing[$post_type][$key] = $group;
-			update_option($this->groups_key, $existing);
-		}
-
-		function render_save_columns_view_option($post_type) {
-			if (!VGSE()->helpers->is_editor_page()) {
-				return;
-			}
-			?>
-			<li class="vgse-save-preset">
-				<label><?php _e('Add a name for this group of columns (optional)', VGSE()->textname); ?> <a href="#" class="tipso" data-tipso="<?php esc_attr_e('You will be able to switch from one columns group to another group with one click. We will display the option in the top toolbar > columns manager dropdown', VGSE()->textname); ?>">( ? )</a></label>
-				<input name="wpse_group_name" type="text" />
-			</li>
-			<?php
 		}
 
 		function are_values_dates($values) {
@@ -192,10 +102,20 @@ if (!class_exists('WP_Sheet_Editor_Columns_Manager')) {
 		}
 
 		function maybe_detect_column_type_automatically($columns_detected, $post_type) {
+			if (!empty(VGSE()->options['disable_automatic_formatting_detection'])) {
+				return $columns_detected;
+			}
+
 			$new_formatting = array();
 			if (isset($columns_detected['normal'])) {
 				foreach ($columns_detected['normal'] as $column_key => $column_settings) {
 					if ($column_settings['detected_type']['type'] !== 'text') {
+						continue;
+					}
+
+					// If we have defined formatting previously, don't overwrite it automatically
+					$current_format_settings = $this->get_formatted_column_settings($column_key, $post_type);
+					if (!empty($current_format_settings)) {
 						continue;
 					}
 
@@ -283,6 +203,10 @@ if (!class_exists('WP_Sheet_Editor_Columns_Manager')) {
 					if (empty($options[$post_type_key][$key])) {
 						continue;
 					}
+					// Skip if custom format is not explicitely enabled for this column
+					if (empty($column['allow_custom_format'])) {
+						continue;
+					}
 					$new_settings = $this->get_formatted_column_settings($key, $post_type_key);
 					$columns[$post_type_key][$key] = wp_parse_args($new_settings, $column);
 				}
@@ -309,7 +233,7 @@ if (!class_exists('WP_Sheet_Editor_Columns_Manager')) {
 					'renderer' => 'wp_tinymce'
 				);
 			} elseif ($column_settings['field_type'] === 'select' && !empty($column_settings['allowed_values'])) {
-				$lines = array_map('trim', explode(PHP_EOL, $column_settings['allowed_values']));
+				$lines = array_map('trim', preg_split('/\r\n|\r|\n/', $column_settings['allowed_values']));
 				$column_options = array();
 				foreach ($lines as $line) {
 					$line_parts = array_map('trim', explode(':', $line));
@@ -338,8 +262,14 @@ if (!class_exists('WP_Sheet_Editor_Columns_Manager')) {
 					'renderer' => 'wp_media_gallery'
 				);
 				$out['prepare_value_for_database'] = array($this, 'prepare_files_for_database');
+				$out['prepare_value_for_display'] = array($this, 'prepare_files_for_display');
 			}
 			return $out;
+		}
+
+		function prepare_files_for_display($value, $post, $column_key, $column_settings) {
+			$value = VGSE()->helpers->get_gallery_cell_content($post->ID, $column_key, $column_settings['data_type'], $value);
+			return $value;
 		}
 
 		function get_format_settings_for_date_column($key, $date_format_save) {
@@ -484,6 +414,9 @@ if (!class_exists('WP_Sheet_Editor_Columns_Manager')) {
 
 		function render_settings_button($column, $post_type) {
 			if (empty($column['allow_custom_format'])) {
+				return;
+			}
+			if (!apply_filters('vg_sheet_editor/columns_manager/can_render_button', true, $column, $post_type)) {
 				return;
 			}
 			$column_key = $column['key'];

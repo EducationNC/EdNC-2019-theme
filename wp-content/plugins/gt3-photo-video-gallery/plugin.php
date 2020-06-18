@@ -4,7 +4,7 @@ if(!defined('ABSPATH')) {
 	exit;
 } // Exit if accessed directly
 
-define('GT3PG_PLUGIN_VERSION', '2.4.1.7');
+define('GT3PG_PLUGIN_VERSION', '2.4.1.9');
 define('GT3PG_PLUGINNAME', 'GT3 Photo & Video Gallery');
 define('GT3PG_ADMIN_TITLE', 'GT<span class="digit">3</span> Photo & Video Gallery - Lite');
 define('GT3PG_PLUGINSHORT', 'gt3_photo_gallery');
@@ -148,24 +148,23 @@ if(!function_exists('gt3_banner_addon')) {
 
 add_filter("plugin_row_meta", 'gt3pg_add_plugin_meta_links', 10, 2);
 function gt3pg_add_plugin_meta_links($meta_fields, $file){
-	if(plugin_basename(__FILE__) == $file) {
+	if($file == 'gt3-photo-video-gallery/gt3-photo-video-gallery.php') {
 		$meta_fields[] = "<a href='".GT3PG_WORDPRESS_URL."' target='_blank'>".esc_html__('Support Forum', 'gt3pg')."</a>";
-		$meta_fields[] = "<a href='".GT3PG_WORDPRESS_URL."/reviews#new-post' target='_blank' title='".esc_html__('Rate', 'gt3pg')."'>
-            <i class='gt3pg-rate-stars'>"
-		                 ."<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-		                 ."<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-		                 ."<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-		                 ."<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-		                 ."<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-		                 ."</i></a>";
+		$svg = "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>";
 
-		$stars_color = "#ffb900";
-
+		$meta_fields[] = '<i class="gt3pg-rate-stars">'.
+		                 '<a href="'.GT3PG_WORDPRESS_URL.'/reviews/?rate=1#new-post" target="_blank">'.$svg.'</a>'.
+		                 '<a href="'.GT3PG_WORDPRESS_URL.'/reviews/?rate=2#new-post" target="_blank">'.$svg.'</a>'.
+		                 '<a href="'.GT3PG_WORDPRESS_URL.'/reviews/?rate=3#new-post" target="_blank">'.$svg.'</a>'.
+		                 '<a href="'.GT3PG_WORDPRESS_URL.'/reviews/?rate=4#new-post" target="_blank">'.$svg.'</a>'.
+		                 '<a href="'.GT3PG_WORDPRESS_URL.'/reviews/?rate=5#new-post" target="_blank">'.$svg.'</a>'.
+		                 '</i>';
 		echo "<style>"
-		     .".gt3pg-rate-stars{display:inline-block;color:".$stars_color.";position:relative;top:3px;}"
-		     .".gt3pg-rate-stars svg{fill:".$stars_color.";}"
-		     .".gt3pg-rate-stars svg:hover{fill:".$stars_color."}"
-		     .".gt3pg-rate-stars svg:hover ~ svg{fill:none;}"
+		     .".gt3pg-rate-stars{display:inline-block;color:#ffb900;position:relative;top:3px;}"
+		     .".gt3pg-rate-stars a {color:#ffb900;}"
+		     .".gt3pg-rate-stars a svg{fill:#ffb900;}"
+		     .".gt3pg-rate-stars a:hover svg{fill:#ffb900}"
+		     .".gt3pg-rate-stars a:hover ~ a svg {fill:none;}"
 		     ."</style>";
 	}
 

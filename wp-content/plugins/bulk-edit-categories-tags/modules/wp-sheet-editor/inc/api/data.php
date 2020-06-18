@@ -59,7 +59,7 @@ if (!class_exists('WP_Sheet_Editor_Data')) {
 				}
 				$out = ( isset($statuses[$post->post_status]) || VGSE()->helpers->is_plain_text_request() ) ? $post->post_status : '<i class="fa fa-lock vg-cell-blocked"></i> ' . $post->post_status;
 			} elseif ($item === 'post_parent') {
-				$out = (!empty($post->post_parent) ) ? get_the_title($post->post_parent) : '';
+				$out = (!empty($post->post_parent) ) ? html_entity_decode(get_the_title($post->post_parent)) : '';
 			} else {
 				$out = VGSE()->helpers->get_current_provider()->get_item_data($id, $item);
 			}
@@ -177,7 +177,12 @@ if (!class_exists('WP_Sheet_Editor_Data')) {
 
 			$first_term = current($current_terms);
 			$separator = (!empty(VGSE()->options['be_taxonomy_terms_separator']) ) ? VGSE()->options['be_taxonomy_terms_separator'] : ',';
-			$names = $this->format_term_ids(wp_list_pluck($current_terms, 'term_id'), $first_term->taxonomy, $separator);
+			$term_ids = wp_list_pluck($current_terms, 'term_id');
+			if (!empty(VGSE()->options['manage_taxonomy_columns_term_ids'])) {
+				$names = implode("$separator ", $term_ids);
+			} else {
+				$names = $this->format_term_ids($term_ids, $first_term->taxonomy, $separator);
+			}
 			return $names;
 		}
 
@@ -414,6 +419,16 @@ ORDER BY user_login ASC", OBJECT);
 
 			$separator = (!empty(VGSE()->options['be_taxonomy_terms_separator']) ) ? VGSE()->options['be_taxonomy_terms_separator'] : ',';
 			$row_terms = array_map('trim', explode("$separator", $value));
+
+			if (!empty(VGSE()->options['manage_taxonomy_columns_term_ids'])) {
+				foreach ($row_terms as $term_id) {
+					if (is_numeric($term_id)) {
+						$out['term_ids'][] = (int) $term_id;
+					}
+				}
+				return $out;
+			}
+
 			$categories = array();
 			$created = 0;
 			$wc_attributes = function_exists('wc_get_attribute_taxonomy_names') ? wc_get_attribute_taxonomy_names() : array();
@@ -496,6 +511,10 @@ ORDER BY user_login ASC", OBJECT);
 				if ($term) {
 					return array($term->term_id);
 				}
+			}
+
+			if (!is_taxonomy_hierarchical($taxonomy)) {
+				$categories = str_replace('>', $separator, $categories);
 			}
 
 			$parsed_data = $this->parse_terms_string_for_saving(html_entity_decode(sanitize_text_field($categories)), $taxonomy);

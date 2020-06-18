@@ -31,7 +31,7 @@ if (!class_exists('WP_Sheet_Editor_Filters')) {
 			add_filter('posts_clauses', array($this, 'search_by_keyword'), 10, 2);
 			add_filter('vg_sheet_editor/js_data', array($this, 'set_initial_filters'), 10, 2);
 			add_filter('vg_sheet_editor/load_rows/wp_query_args', array($this, 'add_session_query_vars_from_session_id'), 10, 2);
-			add_action('vg_sheet_editor/editor_page/after_content', array($this, 'init_session_parameters_from_url'));
+			add_action('vg_sheet_editor/editor_page/after_editor_page', array($this, 'init_session_parameters_from_url'));
 		}
 
 		function init_session_parameters_from_url($post_type) {
@@ -201,7 +201,7 @@ if (!class_exists('WP_Sheet_Editor_Filters')) {
 
 				$editor->args['toolbars']->register_item('quick_search', array(
 					'type' => 'html', // html | switch | button
-					'content' => __('Quick search', VGSE()->textname) . '<input type="search" class="wpse-quick-search" placeholder="' . __('Enter a keyword', VGSE()->textname) . '"/>',
+					'content' => __('Quick search', VGSE()->textname) . '<input type="search" name="keyword" class="wpse-quick-search" placeholder="' . __('Enter a keyword', VGSE()->textname) . '"/><button type="button" class="wpse-start-quick-search">' . __('Search', VGSE()->textname) . '</button>',
 					'allow_in_frontend' => false,
 					'parent' => 'run_filters',
 						), $post_type);
@@ -276,9 +276,9 @@ if (!class_exists('WP_Sheet_Editor_Filters')) {
 
 		function set_initial_filters($all_settings, $current_provider_in_page) {
 
-			// If we received custom filters from the URL (wpse_custom_filters query string), don't apply the previous session filters
-			if (VGSE()->helpers->user_can_edit_post_type($current_provider_in_page) && !empty($_GET['wpse_custom_filters']) && is_array($_GET['wpse_custom_filters'])) {
-				$last_session_filters = VGSE()->helpers->clean_data($_GET['wpse_custom_filters']);
+			// If we received custom filters from the URL or post body (wpse_custom_filters query string), don't apply the previous session filters
+			if (VGSE()->helpers->user_can_edit_post_type($current_provider_in_page) && !empty($_REQUEST['wpse_custom_filters']) && is_array($_REQUEST['wpse_custom_filters'])) {
+				$last_session_filters = VGSE()->helpers->clean_data($_REQUEST['wpse_custom_filters']);
 			} else {
 				$last_session_filters = $this->get_last_session_filters($current_provider_in_page);
 			}

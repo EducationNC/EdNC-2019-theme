@@ -10,7 +10,7 @@ if (!class_exists('WP_Sheet_Editor_Serialized_Field')) {
 
 		function __construct($args) {
 
-			if (!empty(VGSE()->options['be_disable_serialized_columns']) || !apply_filters('vg_sheet_editor/serialized_addon/is_enabled', true, $args)) {
+			if (!empty(VGSE()->options['be_disable_serialized_columns']) || !apply_filters('vg_sheet_editor/serialized_addon/is_enabled', true)) {
 				return;
 			}
 			$defaults = array(
@@ -227,8 +227,18 @@ if (!class_exists('WP_Sheet_Editor_Serialized_Field')) {
 				}
 				$label_index = $this->settings['label_index_start'];
 				foreach ($this->settings['level'] as $i) {
+					if (method_exists($editor->args['columns'], 'columns_limit_reached') && $editor->args['columns']->columns_limit_reached($post_type)) {
+						$editor->args['columns']->add_rejection($this->settings['sample_field_key'], 'columns_limit_reached', $post_type);
+						break;
+					}
 
 					foreach ($first_set_keys as $field) {
+						if (method_exists($editor->args['columns'], 'columns_limit_reached') && $editor->args['columns']->columns_limit_reached($post_type)) {
+							$editor->args['columns']->add_rejection($this->settings['sample_field_key'], 'columns_limit_reached', $post_type);
+							break;
+						}
+
+
 						$field_label = (!empty($this->settings['column_title_prefix']) ? $this->settings['column_title_prefix'] : $this->settings['sample_field_key']) . ': ' . $field . ': ' . ( is_numeric($i) ? $label_index : $i );
 						$key = $this->settings['sample_field_key'] . '_' . $field . '_i_' . $i;
 						$column_settings = apply_filters('vg_sheet_editor/serialized_addon/column_settings', array_merge(array(
@@ -241,6 +251,9 @@ if (!class_exists('WP_Sheet_Editor_Serialized_Field')) {
 							'supports_formulas' => true,
 							'formatted' => array('data' => $key),
 							'allow_to_hide' => true,
+							'allow_direct_search' => false,
+							'allow_search_during_import' => false,
+							'allow_for_variations' => !empty($this->settings['allow_in_wc_product_variations']),
 							'allow_to_rename' => true,
 							// Allow to edit on view requests, this will prevent core from adding the 
 							// lock icon and locking edits, and it will disable saving because this class 

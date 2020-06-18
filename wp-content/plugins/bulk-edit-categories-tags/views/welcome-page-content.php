@@ -6,7 +6,7 @@ $instance = vgse_taxonomy_terms();
 <?php
 $steps = array();
 
-$sheets = $GLOBALS['wpse_taxonomy_terms_sheet']->get_prop('post_type');
+$sheets = apply_filters('vg_sheet_editor/terms/welcome_sheets', $GLOBALS['wpse_taxonomy_terms_sheet']->get_prop('post_type'));
 $sheets_buttons = '';
 
 
@@ -18,10 +18,10 @@ $taxonomies = array_merge(get_taxonomies(array(
 	'show_ui' => true,
 	'_builtin' => false,
 				), 'objects'));
-$all = array(
+$all = apply_filters('vg_sheet_editor/terms/welcome_sheets_all', array(
 	'post_types' => array_values(wp_list_pluck($taxonomies, 'name')),
 	'labels' => array_values(wp_list_pluck($taxonomies, 'label')),
-);
+		));
 
 foreach ($all['post_types'] as $index => $sheet) {
 	if (in_array($sheet, $sheets)) {
@@ -39,7 +39,10 @@ $steps = apply_filters('vg_sheet_editor/taxonomy_terms/welcome_steps', $steps);
 
 if (!empty($steps)) {
 	echo '<ol class="steps">';
-	foreach ($steps as $key => $step_content) { if(empty($step_content)){continue;}
+	foreach ($steps as $key => $step_content) {
+		if (empty($step_content)) {
+			continue;
+		}
 		?>
 		<li><?php echo $step_content; ?></li>		
 		<?php

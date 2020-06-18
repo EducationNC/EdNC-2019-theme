@@ -260,7 +260,7 @@ class ShortPixelAI_Settings{
                                                                 <?php _e('Lazy-load the background images from inline STYLE blocks.','shortpixel-adaptive-images');?>
                                                             </label>
                                                             <p class="description">
-                                                                <?php _e('This will make the backgrounds in STYLE blocks be loaded after the device with is determined. Will also impose a maximum width of the backgrounds equal to the viewport width.','shortpixel-adaptive-images');?>
+                                                                <?php _e('This will make the backgrounds in STYLE blocks be loaded after the device width is determined. Will also impose a maximum width of the backgrounds equal to the viewport width.','shortpixel-adaptive-images');?>
                                                             </p>
                                                         </td>
                                                     </tr>

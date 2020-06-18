@@ -123,6 +123,12 @@ class OMAPI_ConstantContact {
 	 * @since 1.6.0
 	 */
 	public function constant_contact_cta_notice() {
+		
+		// Only consider showing the notice when WPForms plugin is not active.
+		// Here WPForms_Constant_Contact class existence is checked which shows the notice in WPForms plugin.
+		if ( class_exists( 'WPForms_Constant_Contact' ) ) {
+			return;
+		}
 
 		// Only consider showing the review request to admin users.
 		if ( ! is_super_admin() ) {

@@ -207,6 +207,13 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 				$formula = str_replace('$current_date$', date('d-m-Y'), $formula);
 				$formula = str_replace('$random_date$', VGSE()->helpers->get_random_date_in_range(strtotime('January 1st, -2 years'), time()), $formula);
 
+				if (strpos($formula, '$current_value_excerpt') !== false) {
+					$excerpt_length = preg_replace('/.+\$current_value_excerpt(\d+)\$.+/', '$1', $formula);
+					$formula = preg_replace('/\$current_value_excerpt(\d+)\$/', '$current_value_excerpt$', $formula);
+					$excerpt = wp_trim_words(wp_strip_all_tags(strip_shortcodes($data)), $excerpt_length, ' ...');
+					$formula = str_replace('$current_value_excerpt$', $excerpt, $formula);
+				}
+
 				// Replacing placeholders for columns names.
 				// The column name must be in the format of $column_key$
 				if (!empty($post_id)) {
@@ -267,14 +274,14 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 					$data = 0;
 				}
 				if (!is_numeric($data)) {
-					return new WP_Error(VGSE()->options_key, __('The math formula can´t be applied. We found some existing data is not numeric.', VGSE()->textname));
+					return new WP_Error(VGSE()->options_key, sprintf(__('The math formula can´t be applied. We found some existing data is not numeric. Data found: %s, ID: %d', VGSE()->textname), $data, $post_id));
 				}
 				// Execute math operation. It sanitizes the formula automatically.
 				$parser = new VG_Math_Calculator();
 				$data = round($parser->calculate($formula), 2);
 
 				if ($data === $formula) {
-					return new WP_Error(VGSE()->options_key, __('Error. The math engine could not execute the math operation', VGSE()->textname));
+					return new WP_Error(VGSE()->options_key, sprintf(__('Error. The math engine could not execute the math operation: %s, ID: %d', VGSE()->textname), $formula, $post_id));
 				}
 			}
 
@@ -636,7 +643,9 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 				if (is_null($duplicate_ids_to_delete)) {
 
 					$main_sql = str_replace(array("SQL_CALC_FOUND_ROWS  $wpdb->posts.ID", 'SQL_CALC_FOUND_ROWS'), array("$wpdb->posts.*", ''), substr($query->request, 0, strripos($query->request, 'ORDER BY')));
-					$get_items_sql = "SELECT p." . esc_sql($column) . " 'value', count(p." . esc_sql($column) . ") 'count' FROM ($main_sql) p WHERE p." . esc_sql($column) . " <> '' GROUP BY p." . esc_sql($column) . " having count(*) >= 2";
+
+					$get_items_sql = "SELECT p." . esc_sql($column) . " 'value', count(p." . esc_sql($column) . ") 'count', GROUP_CONCAT(p.ID SEPARATOR ',') as post_ids FROM ($main_sql) p WHERE p." . esc_sql($column) . " <> '' GROUP BY p." . esc_sql($column) . " having count(*) >= 2";
+					$get_items_sql = apply_filters('vg_sheet_editor/formulas/execute/get_duplicate_items_sql', $get_items_sql, $column, $post_type, $raw_form_data, $column_settings, $query);
 
 					$items_with_duplicates = $wpdb->get_results($get_items_sql, ARRAY_A);
 					// Get all items with duplicates, we use the main sql query and wrap it to add our own conditions
@@ -644,8 +653,13 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 					// Note. We use limit = count-1 to leave one item only 
 					$duplicate_ids_to_delete = array();
 					foreach ($items_with_duplicates as $item) {
-						$get_all_duplicate_ids = "SELECT ID FROM $wpdb->posts WHERE post_type = '" . esc_sql($base_query['post_type']) . "' AND  " . esc_sql($column) . " = '" . esc_sql($item['value']) . "' LIMIT " . ((int) $item['count'] - 1);
-						$duplicate_ids_to_delete = array_merge($duplicate_ids_to_delete, $wpdb->get_col($get_all_duplicate_ids));
+						$duplicate_value_post_ids = array_map('intval', explode(',', $item['post_ids']));
+						sort($duplicate_value_post_ids);
+						$to_preserve = (!empty($raw_form_data['formula_data']) && $raw_form_data['formula_data'][0] === 'delete_latest') ? array_shift($duplicate_value_post_ids) : array_pop($duplicate_value_post_ids);
+
+						$duplicate_ids_to_delete = array_merge($duplicate_ids_to_delete, $duplicate_value_post_ids);
+
+						do_action('vg_sheet_editor/formulas/duplicates_to_remove', $duplicate_value_post_ids, $to_preserve, $post_type, $column, $raw_form_data);
 					}
 				}
 
@@ -845,7 +859,7 @@ if (!class_exists('WP_Sheet_Editor_Formulas')) {
 			if ($total_updated > $total) {
 				$total_updated = $total;
 			}
-			$message = sprintf(__('<p class="success-message%s"><b>Editing the field: {column_label}</b>. Items to process: {total}, Progress: {progress_percentage}%%, We have updated {edited} items.</p>', VGSE()->textname), $column, $processed, $total, $total_updated);
+			$message = sprintf(__('<p class="success-message" data-column-key="%s"><b>Editing the field: {column_label}</b>. Items to process: {total}, Progress: {progress_percentage}%%, We have updated {edited} items.</p>', VGSE()->textname), esc_attr($query_strings['column']), $processed, $total, $total_updated);
 
 			return array(
 				'message' => $message,

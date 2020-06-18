@@ -424,7 +424,7 @@ if (!class_exists('WP_Sheet_Editor_ACF')) {
 				}
 			}
 
-			return $fields;
+			return apply_filters('vg_sheet_editor/acf/fields', $fields, $post_type, $acfs);
 		}
 
 		/**
@@ -636,7 +636,7 @@ if (!class_exists('WP_Sheet_Editor_ACF')) {
 					// The parent repeater is not editable, it's used internally to keep count of internal rows
 					$editor->args['columns']->remove_item($acf_field['name'], $post_type);
 
-					$repeater_count_values = array_filter(array_map('maybe_unserialize', $editor->provider->get_meta_field_unique_values($acf_field['name'], $post_type)));
+					$repeater_count_values = $this->_get_repeater_count_values($acf_field['name'], $post_type, $editor);
 
 					$highest_count = ( empty($repeater_count_values) || empty($repeater_count_values[0])) ? 3 : (int) $repeater_count_values[0];
 
@@ -664,6 +664,20 @@ if (!class_exists('WP_Sheet_Editor_ACF')) {
 				}
 			}
 			return $columns;
+		}
+
+		function _get_repeater_count_values($key, $post_type, $editor) {
+			$cache_key = 'vgse_acf_repeater_values' . $key . $post_type;
+			$repeater_count_values = get_transient($cache_key);
+			if (!empty($_GET['wpse_rescan_db_fields'])) {
+				$repeater_count_values = false;
+			}
+
+			if (!$repeater_count_values) {
+				$repeater_count_values = array_filter(array_map('maybe_unserialize', $editor->provider->get_meta_field_unique_values($key, $post_type)));
+				set_transient($cache_key, $repeater_count_values, DAY_IN_SECONDS);
+			}
+			return $repeater_count_values;
 		}
 
 		/**

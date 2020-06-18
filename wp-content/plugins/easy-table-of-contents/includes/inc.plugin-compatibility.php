@@ -216,7 +216,7 @@ add_action(
 //);
 
 /**
- * Callback the for `et_builder_render_layout`.
+ * Callback the for `et_builder_render_layout` filter.
  *
  * Attaches the ezTOC `the_content` filter callback to the Divi layout content filter so the in page anchors will be
  * added the post content.
@@ -232,6 +232,68 @@ add_filter(
 	array( 'ezTOC', 'the_content' ),
 	12,
 	1
+);
+
+/**
+ * Add support for the Uncode Theme.
+ *
+ * @link http://www.undsgn.com/
+ *
+ * @since 2.0.11
+ */
+add_action(
+	'after_setup_theme',
+	function() {
+
+		if ( function_exists( 'uncode_setup' ) ) {
+
+			/**
+			 * Callback the for `the_content` filter.
+			 *
+			 * Trick the theme into applying its content filter.
+			 *
+			 * In its page/post templates it applies `the_content` filter passing an empty string.
+			 * If the value passed pack is `null` or an empty string, the theme will not run its content filter.
+			 *
+			 * This simply wraps the page/post content in comment tags that way it is not possible to return empty
+			 * and its content filter will be run. Now ezTOC can hook into the theme's content filter to insert the TOC.
+			 *
+			 * @since 2.0.11
+			 */
+			add_filter(
+				'the_content',
+				function( $content ) {
+					return '<!-- <ezTOC> -->' . $content . '<!-- </ezTOC> -->';
+				},
+				9,
+				1
+			);
+
+			/**
+			 * Callback the for `uncode_single_content` filter.
+			 *
+			 * Need to texturize the page/post content first.
+			 *
+			 * @since 2.0.11
+			 */
+			add_filter(
+				'uncode_single_content',
+				function( $content ) {
+					return wptexturize( $content );
+				},
+				10,
+				1
+			);
+			add_filter(
+				'uncode_single_content',
+				array( 'ezTOC', 'the_content' ),
+				11,
+				1
+			);
+		}
+
+	},
+	11
 );
 
 /**
@@ -289,7 +351,7 @@ add_filter(
 	'ez_toc_exclude_by_selector',
 	function( $selectors ) {
 
-		//$selectors['ultimate-addons-for-vc-composer'] = '.ult_tabs';
+		$selectors['ultimate-addons-for-vc-composer'] = '.ult_tabs';
 
 		return $selectors;
 	}
@@ -305,6 +367,38 @@ add_filter(
 	function( $selectors ) {
 
 		$selectors['wp-product-review'] = '.wppr-review-container';
+
+		return $selectors;
+	}
+);
+
+/**
+ * Remove the Create by Mediavine node from the post content before extracting headings.
+ *
+ * @link https://wordpress.org/plugins/mediavine-create/
+ * @since 2.0.8
+ */
+add_filter(
+	'ez_toc_exclude_by_selector',
+	function( $selectors ) {
+
+		$selectors['mediavine-create'] = '.mv-create-card';
+
+		return $selectors;
+	}
+);
+
+/**
+ * Remove the Contextual Related Posts node from the post content before extracting headings.
+ *
+ * @link https://wordpress.org/plugins/contextual-related-posts/
+ * @since 2.0.9
+ */
+add_filter(
+	'ez_toc_exclude_by_selector',
+	function( $selectors ) {
+
+		$selectors['contextual-related-posts'] = '.crp_related';
 
 		return $selectors;
 	}
@@ -423,3 +517,48 @@ class ezTOC_Elementor {
 }
 //new ezTOC_Elementor();
 add_action( 'elementor/init', array( 'ezTOC_Elementor', 'start' ) );
+
+
+/**
+ * Do not allow `the_content` TOC callback to run when on WooCommerce pages.
+ *
+ * @link https://docs.woocommerce.com/document/conditional-tags/
+ * @link https://wordpress.stackexchange.com/a/246525/59053
+ *
+ * @since 2.0.11
+ */
+add_filter(
+	'ez_toc_maybe_apply_the_content_filter',
+	function( $apply ) {
+
+		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+
+		// Just in case an array is not returned.
+		if ( ! is_array( $active_plugins ) ) {
+
+			$active_plugins = array();
+		}
+
+		$string = implode( '|', $active_plugins );
+
+		if ( FALSE !== stripos( $string, 'woocommerce.php' ) ) {
+
+			/** @noinspection PhpUndefinedFunctionInspection */
+			if ( is_woocommerce() ||
+			     is_shop() ||
+			     is_product_category() ||
+			     is_product_tag() ||
+			     is_cart() ||
+			     is_checkout() ||
+			     is_account_page() ||
+			     is_wc_endpoint_url()
+			) {
+
+				$apply = false;
+			}
+
+		}
+
+		return $apply;
+	}
+);

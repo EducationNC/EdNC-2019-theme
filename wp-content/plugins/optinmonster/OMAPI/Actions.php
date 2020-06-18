@@ -188,15 +188,17 @@ class OMAPI_Actions {
 	public function cookies() {
 
 		$optins = $this->base->get_optins();
-		foreach ( (array) $optins as $optin ) {
-			if ( $optin ) {
-				// Array of ids so all splits are included
-				$ids = get_post_meta( $optin->ID, '_omapi_ids', true );
-				foreach ( (array) $ids as $id ) {
-					setcookie( 'om-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
-					setcookie( 'om-success-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
-					setcookie( 'om-second-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
-					setcookie( 'om-' . $id . '-closed', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+		if ( ! empty( $optins ) ) {
+			foreach ( (array) $optins as $optin ) {
+				if ( $optin ) {
+					// Array of ids so all splits are included
+					$ids = get_post_meta( $optin->ID, '_omapi_ids', true );
+					foreach ( (array) $ids as $id ) {
+						setcookie( 'om-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+						setcookie( 'om-success-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+						setcookie( 'om-second-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+						setcookie( 'om-' . $id . '-closed', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+					}
 				}
 			}
 		}

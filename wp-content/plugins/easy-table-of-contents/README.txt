@@ -3,9 +3,9 @@ Contributors: shazahm1@hotmail.com
 Donate link: http://connections-pro.com/
 Tags: table of contents, toc
 Requires at least: 5.2
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.6.20
-Stable tag: 2.0.4
+Stable tag: 2.0.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,54 @@ Easy Table Contents is a fork of the excellent [Table of Contents Plus](https://
 4. Activate the plugin on the Plugins admin page.
 
 == Changelog ==
+
+= 2.0.11 05/01/2020 =
+* COMPATIBILITY: Add support for the Uncode theme.
+* COMPATIBILITY: Do not run on WooCommerce pages.
+* DEV: Correct typo in phpDoc.
+
+= 2.0.10 04/20/2020 =
+* TWEAK: Add trailing `span` to heading, to prepare for `#` option and to fix duplicate heading title matching.
+* TWEAK: Add second heading search/replace function to search for heading in content with heading html entities decoded. May help Beaver Builder users as it seems like it does not encode HTML entities as WP core does.
+
+
+= 2.0.9 04/08/2020 =
+* TWEAK: AMP/Caching plugins seems to break anchors with colons and periods even though they are valid characters for the id attribute in HTML5.
+* TWEAK: Replace multiple underscores with a single underscore.
+* DEV: Update the UWS library which fixes the deprecation notice for PHP 7.4.
+* DEV: Add phpcs.xml.dist.
+* DEV: Strict type checks.
+* DEV: Inline doc updates.
+
+= 2.0.8 04/03/2020 =
+* TWEAK: Convert `<br />` tags in headings to a space.
+* TWEAK: Add additional widget classes.
+* TWEAK: Improve the sanitization of the excluded headings field post setting.
+* TWEAK: Minor optimization of creating the matching pattern for excluding headings for improved performance.
+* COMPATIBILITY: Exclude Create by Mediavine from heading eligibility.
+* BUG: Ensure excluded headings are removed from the headings array.
+* BUG: Ensure empty headings are removed from the headings array.
+
+= 2.0.7 04/02/2020 =
+* NEW: Exclude any HTML nodes with the class of `.ez-toc-exclude-headings`.
+* TWEAK: Change smooth scroll selector from `'body a'` to `'a.ez-toc-link'`.
+* TWEAK: Declare JS variables.
+* TWEAK: Support unicode characters for the `id` attribute. Permitted by HTML5.
+* TWEAK: Move the in-page anchor/span to before the heading text to account for long headings where it line wraps.
+* TWEAK: Slight rework to ezTOC widget container classes logic.
+* TWEAK: Cache bust the JS to make dev easier.
+* TWEAK: JavaScript cleanup.
+* TWEAK: URI Encode the id attribute to deal with reserved characters in JavaScript. Technically not necessary for the id attribute but needed to work with the jQuery smoothScroll library.
+* COMPATIBILITY: Reintroduce filter to exclude Ultimate Addons for VC Composer Tabs from heading eligibility.
+* BUG: Correct array iteration logic when processing headings.
+* BUG: Tighten matching for headings in excluded HTML nodes. The loose matching was excluding far too many headings.
+* BUG: Use `esc_attr()` instead of `esc_url()` for the anchor href because valid id attribute characters would cause it to return an empty href which cause a nonworking link.
+
+= 2.0.6 03/30/2020 =
+* BUG: Ensure minified files are current.
+
+= 2.0.5 03/27/2020 =
+* BUG: Prevent possible "strpos(): Empty needle in" warnings when excluding nodes from TOC eligibility.
 
 = 2.0.4 03/16/2020 =
 * NEW: Introduce the `ez_toc_container_class` filter.
@@ -345,4 +393,25 @@ Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
 Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
 
 = 2.0.4 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
+
+= 2.0.5 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
+
+= 2.0.6 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
+
+= 2.0.7 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
+
+= 2.0.8 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
+
+= 2.0.9 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
+
+= 2.0.10 =
+Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).
+
+= 2.0.11 =
 Requires WordPress >= 5.0 and PHP version >= 5.6.20 (>= 7.1 is recommended).

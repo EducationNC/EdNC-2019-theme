@@ -216,9 +216,12 @@ class ShortPixelUrlTools {
     static function get_from_meta_by_guid($image_url, $fuzzy = false) {
         global $wpdb;
         $prefix = $wpdb->prefix;
-        $condition = 'guid' . ($fuzzy ? " like'%%%s'" : "='%s'");
+        /*
+        $condition = 'guid' . ($fuzzy ? " like '%%%s'" : "='%s'");
         $sqlPosts = "SELECT id FROM {$prefix}posts WHERE ";
         $postId = $wpdb->get_var($wpdb->prepare("$sqlPosts $condition;", $image_url ));
+        */
+        $postId = attachment_url_to_postid(ShortPixelUrlTools::absoluteUrl($image_url));
 
         //ShortPixelAILogger::instance()->log("GET Post FROM META: $sqlPosts $condition");
 
@@ -278,9 +281,11 @@ class ShortPixelUrlTools {
             if(strlen(@$meta['file']) && preg_match("/".preg_quote($meta['file'], '/') . "$/", $original_image_url)) {
                 return array($meta['width'], $meta['height']);
             }
-            foreach(@$meta['sizes'] as $size) {
-                if($size['file'] == wp_basename($original_image_url)) {
-                    return array($size['width'], $size['height']);
+            if(is_array(@$meta['sizes'])) {
+                foreach($meta['sizes'] as $size) {
+                    if($size['file'] == wp_basename($original_image_url)) {
+                        return array($size['width'], $size['height']);
+                    }
                 }
             }
         }

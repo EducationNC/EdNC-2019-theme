@@ -10,6 +10,7 @@
 						<option value="">- -</option>
 						<option value="individual"><?php _e('Select individual items', VGSE()->textname); ?></option>
 						<option value="search"><?php _e('Select all the items from a search', VGSE()->textname); ?></option>
+						<option value="duplicates"><?php _e('Merge all the duplicates with same name and hierarchy', VGSE()->textname); ?></option>
 					</select>
 
 					<br>

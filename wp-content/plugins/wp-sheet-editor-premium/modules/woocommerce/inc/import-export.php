@@ -33,6 +33,15 @@ if (!class_exists('WPSE_WC_Products_Universal_Sheet')) {
 			add_filter('vg_sheet_editor/import/after_data_sources', array($this, 'render_import_sample_csv_link'));
 			add_filter('vg_sheet_editor/import/find_post_id', array($this, 'find_product_id_for_import'), 10, 6);
 			add_action('vg_sheet_editor/import/after_advanced_options', array($this, 'import_after_advanced_options'));
+			add_filter('sanitize_taxonomy_name', array($this, 'prevent_long_attribute_name_error_during_import'));
+		}
+
+		function prevent_long_attribute_name_error_during_import($sanitized_name) {
+			if (strlen($sanitized_name) > 28 && doing_action('wp_ajax_vgse_import_csv')) {
+				$sanitized_name = substr($sanitized_name, 0, 25);
+			}
+
+			return $sanitized_name;
 		}
 
 		function import_after_advanced_options($post_type) {
@@ -108,10 +117,23 @@ if (!class_exists('WPSE_WC_Products_Universal_Sheet')) {
 		}
 
 		function add_export_keys($columns) {
-			if (isset($columns[VGSE()->WC->post_type])) {
-				foreach ($columns[VGSE()->WC->post_type] as $column_key => $column) {
-					if (isset(VGSE()->WC->core_to_woo_importer_columns_list[$column_key])) {
-						$columns[VGSE()->WC->post_type][$column_key]['export_key'] = VGSE()->WC->core_to_woo_importer_columns_list[$column_key];
+			if (!isset($columns[VGSE()->WC->post_type])) {
+				return $columns;
+			}
+			foreach ($columns[VGSE()->WC->post_type] as $column_key => $column) {
+				$export_key = null;
+
+				if (isset(VGSE()->WC->core_to_woo_importer_columns_list[$column_key])) {
+					$export_key = VGSE()->WC->core_to_woo_importer_columns_list[$column_key];
+				}
+				if (!empty($column['export_key'])) {
+					$export_key = $column['export_key'];
+				}
+				if ($export_key && $column_key !== $export_key) {
+					$columns[VGSE()->WC->post_type][$column_key]['export_key'] = $export_key;
+					VGSE()->WC->core_to_woo_importer_columns_list[$column_key] = $export_key;
+					if (!in_array($column_key, VGSE()->WC->core_columns_list, true)) {
+						VGSE()->WC->core_columns_list[] = $column_key;
 					}
 				}
 			}
@@ -161,7 +183,7 @@ if (!class_exists('WPSE_WC_Products_Universal_Sheet')) {
 			}
 			?>
 
-			<p><?php printf(__('Here is a <a href="%s" target="_blank">sample CSV</a> containing all types of products, including simple, grouped, <br>variable products; variations, attributes, product downloads, and more.', VGSE()->textname), 'https://github.com/woocommerce/woocommerce/blob/master/sample-data/sample_products.csv'); ?></p>
+			<p><?php printf(__('Here is a <a href="%s" target="_blank">sample CSV</a> containing all types of products.', VGSE()->textname), 'https://github.com/woocommerce/woocommerce/blob/master/sample-data/sample_products.csv'); ?></p>
 			<?php
 		}
 
@@ -254,8 +276,15 @@ if (!class_exists('WPSE_WC_Products_Universal_Sheet')) {
 			}
 
 			$original_data = $data;
+			$product_type = null;
 
-			$product_type = !empty($data['type']) ? $data['type'] : VGSE()->WC->get_product_type($data['id']);
+			if (!empty($data['type'])) {
+				$product_type = $data['type'];
+			} elseif (!empty($data['ID'])) {
+				$product_type = VGSE()->WC->get_product_type($data['ID']);
+			} elseif (!empty($data['id'])) {
+				$product_type = VGSE()->WC->get_product_type($data['id']);
+			}
 
 			// Convert the special column keys from attribute_name to attribute:name,
 			// required by the WC importer class.
@@ -307,7 +336,7 @@ if (!class_exists('WPSE_WC_Products_Universal_Sheet')) {
 			// If the user allows skipping broken images, we try to download them with our CORE function
 			// and save the downloaded ids, this way WooCommerce won't stop the import if the images fail
 			if (!empty($settings['wpse_import_settings']['skip_broken_images']) && !empty($data['images'])) {
-				$image_ids = VGSE()->helpers->maybe_replace_urls_with_file_ids($data['images']);
+				$image_ids = implode(',', array_map('wp_get_attachment_url', array_filter(VGSE()->helpers->maybe_replace_urls_with_file_ids(explode(',', $data['images'])))));
 				$data['images'] = $image_ids;
 			}
 

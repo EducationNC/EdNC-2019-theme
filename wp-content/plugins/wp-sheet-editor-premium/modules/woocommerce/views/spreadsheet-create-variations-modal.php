@@ -71,7 +71,15 @@
 				</h3>
 				<ul class="unstyled-list">
 					<li>
-						<label><?php _e('The variations are for these products:', VGSE()->textname); ?> </label>
+						<label><?php _e('The variations are for these products: ', VGSE()->textname); ?>  <a href="#" class="tipso tipso_style" data-tipso="<?php _e('Copy the variations into these products.', VGSE()->textname); ?>">( ? )</a></label>
+						<select name="vgse_variation_manager_source">
+							<option value="">- -</option>
+							<option value="individual"><?php _e('Select individual products', VGSE()->textname); ?></option>
+							<option value="search"><?php _e('Select all the products from a search', VGSE()->textname); ?></option>
+							<option value="all"><?php _e('All the variable products', VGSE()->textname); ?></option>
+						</select>
+						<label class="use-search-query-container"><input type="checkbox" value="yes"  name="use_search_query"><?php _e('I understand it will update the products from my search.', VGSE()->textname); ?> <a href="#" class="tipso tipso_style" data-tipso="<?php _e('For example, if you searched for posts by author = Mark using the search tool, we will update only posts with author Mark', VGSE()->textname); ?>">( ? )</a><input type="hidden" name="filters"></label>
+
 						<select name="<?php echo $this->post_type; ?>[]" data-remote="true" data-min-input-length="4" data-action="vgse_find_post_by_name" data-post-type="<?php echo $post_type; ?>" data-nonce="<?php echo $nonce; ?>"  data-placeholder="<?php _e('Select product...', VGSE()->textname); ?> " class="select2 individual-product-selector" multiple>
 							<option></option>
 						</select>
@@ -85,6 +93,8 @@
 						<label><?php _e('Create this number of variations', VGSE()->textname); ?> <input type="number" class="link-variations-number" name="number" /></label>								
 					</li>
 				</ul>
+				<div class="response">
+				</div>
 			</div>
 
 			<input type="hidden" value="vgse_create_variations" name="action">

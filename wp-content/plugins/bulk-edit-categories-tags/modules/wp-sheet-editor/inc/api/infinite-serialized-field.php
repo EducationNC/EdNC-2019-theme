@@ -8,7 +8,7 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 		var $column_keys = array();
 
 		function __construct($settings = array()) {
-			if (!empty(VGSE()->options['be_disable_serialized_columns']) || !apply_filters('vg_sheet_editor/serialized_addon/is_enabled', true, $settings)) {
+			if (!empty(VGSE()->options['be_disable_serialized_columns']) || !apply_filters('vg_sheet_editor/serialized_addon/is_enabled', true)) {
 				return;
 			}
 			$defaults = array(
@@ -67,7 +67,18 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 			$fields = $this->column_keys;
 
 			foreach ($post_types as $post_type) {
+
+				if (method_exists($editor->args['columns'], 'columns_limit_reached') && $editor->args['columns']->columns_limit_reached($post_type)) {
+					$editor->args['columns']->add_rejection($this->settings['sample_field_key'], 'columns_limit_reached', $post_type);
+					break;
+				}
 				foreach ($fields as $field_key) {
+
+					if (method_exists($editor->args['columns'], 'columns_limit_reached') && $editor->args['columns']->columns_limit_reached($post_type)) {
+						$editor->args['columns']->add_rejection($this->settings['sample_field_key'], 'columns_limit_reached', $post_type);
+						break;
+					}
+
 					$column_key = str_replace('.', '=', $field_key);
 					$title = vgse_custom_columns_init()->_convert_key_to_label(str_replace(array($this->settings['prefix'], '='), array($this->settings['prefix'] . ': ', ' : '), $column_key));
 					$editor->args['columns']->register_item($column_key, $post_type, apply_filters('vg_sheet_editor/infinite_serialized_column/column_settings', array_merge(array(
@@ -82,6 +93,9 @@ if (!class_exists('WP_Sheet_Editor_Infinite_Serialized_Field')) {
 						'supports_sql_formulas' => false,
 						'allow_to_hide' => true,
 						'allow_to_rename' => true,
+						'allow_direct_search' => false,
+						'allow_search_during_import' => false,
+						'allow_for_variations' => !empty($this->settings['allow_in_wc_product_variations']),
 						'serialized_field_original_key' => $this->settings['sample_field_key']
 											), $this->settings['column_settings']), $this, $post_type));
 				}

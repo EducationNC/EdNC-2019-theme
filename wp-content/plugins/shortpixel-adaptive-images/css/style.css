@@ -1,3 +1,9 @@
+tr[data-slug="shortpixel-adaptive-images"] td div p span {
+	display: block;
+	margin:5px 0;
+	padding-left:25px;
+}
+
 .spai-settings-top-menu {
 	font-size: 18px;
 }

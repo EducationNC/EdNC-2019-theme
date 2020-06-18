@@ -164,10 +164,11 @@ class OMAPI_Refresh {
 		$option['is_invalid']   = false;
 		$option['is_expired']   = false;
 		$option['is_disabled']  = false;
+		$option['connected']    = time();
 		$option['siteIds']      = $sites['ids'];
 		$option['customApiUrl'] = $sites['customApiUrl'];
 
-		update_option( 'optin_monster_api', $option );
+		$this->base->save->update_option( $option, $this->view );
 
 		// Set a message.
 		add_action( 'optin_monster_api_messages_' . $this->view, array( $this, 'message' ) );

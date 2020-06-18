@@ -29,6 +29,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				'id' => 'create-variation',
 				'help_tooltip' => __('Create and copy variations for variable products.', VGSE()->textname),
 				'extra_html_attributes' => 'data-remodal-target="create-variation-modal"',
+				'css_class' => 'wpse-disable-if-unsaved-changes',
 				'footer_callback' => array($this, 'render_create_variation_modal')
 					), $this->post_type);
 
@@ -316,6 +317,37 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 			// because the spreadsheet needs it for "delete duplicates" based on title and some search functionality
 			add_filter('woocommerce_product_variation_title_include_attributes', '__return_true', 99999);
 			add_action('vg_sheet_editor/editor/before_init', array($this, 'register_columns'));
+			add_filter('vg_sheet_editor/advanced_filters/all_meta_keys', array($this, 'add_variation_attribute_fields_to_search'), 10, 2);
+			add_filter('vg_sheet_editor/custom_columns/columns_detected_settings_before_cache', array($this, 'maybe_allow_serialized_columns_for_variations'), 10, 2);
+		}
+
+		function maybe_allow_serialized_columns_for_variations($columns_detected, $post_type) {
+
+			if ($post_type === $this->post_type) {
+				foreach ($columns_detected as $group => $columns) {
+					if ($group === 'normal') {
+						continue;
+					}
+					foreach ($columns as $column_key => $column_settings) {
+						if (in_array($column_key, $this->get_variation_meta_keys(), true)) {
+							$columns_detected[$group][$column_key]['allow_in_wc_product_variations'] = true;
+						}
+					}
+				}
+			}
+
+			return $columns_detected;
+		}
+
+		function add_variation_attribute_fields_to_search($keys, $post_type) {
+			global $wpdb;
+			if ($post_type !== $this->post_type) {
+				return $keys;
+			}
+
+			$keys = array_merge($keys, $wpdb->get_col("SELECT meta_key FROM $wpdb->postmeta WHERE meta_key LIKE 'attribute_%' AND meta_value <> '' GROUP BY meta_key LIMIT 100"));
+
+			return $keys;
 		}
 
 		/**
@@ -414,7 +446,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 			global $post;
 			$spreadsheet_url = add_query_arg(array(
 				'wpse_custom_filters' => array(
-					'keyword' => $post->post_title,
+					'keyword' => $post->ID,
 					'search_variations' => 'on',
 					'wc_display_variations' => 'yes',
 				)
@@ -459,7 +491,38 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				return $value;
 			}
 
-			return $this->get_default_attributes($post->ID);
+			// Previously we used the WC REST API to get the default attributes but it was too slow
+
+			$raw_default = maybe_unserialize(get_post_meta($post->ID, '_default_attributes', true));
+			if (empty($raw_default) || !is_array($raw_default)) {
+				$raw_default = array();
+			}
+
+			$default = array();
+			foreach (array_filter((array) $raw_default, 'strlen') as $key => $value) {
+				if (0 === strpos($key, 'pa_')) {
+					$default[] = array(
+						'id' => wc_attribute_taxonomy_id_by_name($key),
+						'name' => $this->get_attribute_taxonomy_label($key),
+						'option' => $value,
+					);
+				} else {
+					$default[] = array(
+						'id' => 0,
+						'name' => wc_attribute_taxonomy_slug($key),
+						'option' => $value,
+					);
+				}
+			}
+
+			return $default;
+		}
+
+		function get_attribute_taxonomy_label($name) {
+			$tax = get_taxonomy($name);
+			$labels = get_taxonomy_labels($tax);
+
+			return $labels->singular_name;
 		}
 
 		function add_variation_meta_after_copy($object, $data) {
@@ -636,10 +699,18 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				'_length',
 				'post_parent'
 			);
-			$this->wc_core_variation_columns = $this->wc_variation_columns;
+			$this->wc_core_variation_columns = array_diff($this->wc_variation_columns, array('post_type', 'post_parent'));
 
 			// We enable the global attribute and custom meta columns for variations too
 			$this->wc_variation_columns = array_unique(array_merge($this->wc_variation_columns, wc_get_attribute_taxonomy_names(), $this->get_variation_meta_keys()));
+
+			// Allow columns automatically when the column was registered with allow_for_variations=true
+			$post_type = VGSE()->helpers->get_provider_from_query_string();
+			if ($post_type === $this->post_type) {
+				$spreadsheet_columns = wp_list_filter(VGSE()->helpers->get_provider_columns($post_type), array('allow_for_variations' => true));
+				$this->wc_variation_columns = array_unique(array_merge($this->wc_variation_columns, array_keys($spreadsheet_columns)));
+			}
+
 			return apply_filters('vg_sheet_editor/woocommerce/variation_columns', $this->wc_variation_columns);
 		}
 
@@ -790,8 +861,14 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				wp_send_json_error(array('message' => __('The source product doesn´t have variations.', VGSE()->textname)));
 			}
 
-			$product_variations_response = VGSE()->helpers->create_rest_request('GET', '/wc/v3/products/' . $copy_from_product . '/variations', array('per_page' => count($product_data['variations'])));
-			$product_variations = $product_variations_response->get_data();
+			$variations_per_page = 100;
+			$number_of_variation_pages = ceil((int) count($product_data['variations']) / $variations_per_page);
+			$product_variations = array();
+
+			for ($i = 1; $i < ($number_of_variation_pages + 1); $i++) {
+				$product_variations_response = VGSE()->helpers->create_rest_request('GET', '/wc/v3/products/' . $copy_from_product . '/variations', array('per_page' => $variations_per_page, 'page' => $i));
+				$product_variations = array_merge($product_variations, $product_variations_response->get_data());
+			}
 
 			// Reduce memory usage
 			$product_variations_response = null;
@@ -812,13 +889,12 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				$variation['wpse_custom_meta'] = get_post_meta($variation['id']);
 
 				// These fields should be auto generated by WC
-				unset($variation['id']);
-				unset($variation['date_created']);
-				unset($variation['date_modified']);
-				unset($variation['permalink']);
-				unset($variation['sku']);
-				unset($variation['price']);
-				unset($variation['meta_data']);
+				$fields_to_remove = array('id', 'date_created', 'date_modified', 'permalink', 'sku', 'price', 'meta_data');
+				foreach ($fields_to_remove as $field_to_remove) {
+					if (isset($variation[$field_to_remove])) {
+						unset($variation[$field_to_remove]);
+					}
+				}
 
 				// Remove all fields that inherit value from the parent to avoid error 400s
 				// when the parent doesn't have the field value or has it with wrong format,
@@ -929,14 +1005,17 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 					'default_attributes' => $product_data['default_attributes'],
 					'attributes' => array_values($new_attributes),
 						), 3);
-
-				$modified_variations_api_response = VGSE()->helpers->create_rest_request('POST', '/wc/v3/products/' . $product_id . '/variations/batch', array(
-					'create' => $variations
-				));
-
 				$modified_product_data = $modified_product_api_response->get_data();
-				$modified_variations_data = $modified_variations_api_response->get_data();
-				do_action('vg_sheet_editor/woocommerce/variations_copied', $modified_variations_data['create'], $modified_product_data);
+
+				$variations_groups = array_chunk($variations, 100);
+				foreach ($variations_groups as $variations_group) {
+					$modified_variations_api_response = VGSE()->helpers->create_rest_request('POST', '/wc/v3/products/' . $product_id . '/variations/batch', array(
+						'create' => $variations_group
+					));
+
+					$modified_variations_data = $modified_variations_api_response->get_data();
+					do_action('vg_sheet_editor/woocommerce/variations_copied', $modified_variations_data['create'], $modified_product_data);
+				}
 
 				// Reduce memory usage
 				$modified_product_api_response = null;
@@ -967,7 +1046,7 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 			// Disable post actions to prevent conflicts with other plugins
 			VGSE()->helpers->remove_all_post_actions($this->post_type);
 
-			if ((isset($data['vgse_variation_manager_source']) && $data['vgse_variation_manager_source'] === 'individual' ) || $data['vgse_variation_tool'] === 'create') {
+			if ((isset($data['vgse_variation_manager_source']) && $data['vgse_variation_manager_source'] === 'individual')) {
 
 				if (empty($data[$this->post_type])) {
 					wp_send_json_error(array('message' => __('Please select a product.', VGSE()->textname)));
@@ -982,11 +1061,12 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				}
 			} elseif (in_array($data['vgse_variation_manager_source'], array('search', 'all'), true)) {
 
+				$page = (int) $data['page'];
 				$get_rows_args = apply_filters('vg_sheet_editor/woocommerce/copy_variations/search_query/get_rows_args', array(
 					'nonce' => wp_create_nonce('bep-nonce'),
 					'post_type' => $this->post_type,
 					'filters' => $_REQUEST['filters'],
-					'paged' => $data['page'],
+					'paged' => $page,
 					'wpse_source' => 'create_variations'
 				));
 				$base_query = VGSE()->helpers->prepare_query_params_for_retrieving_rows($get_rows_args, $get_rows_args);
@@ -999,6 +1079,16 @@ if (!class_exists('WP_Sheet_Editor_WooCommerce_Variations')) {
 				VGSE()->current_provider = $editor->provider;
 				$query = $editor->provider->get_items($base_query);
 				$product_ids = $query->posts;
+
+				if ($page > 1 && empty($product_ids)) {
+					wp_send_json_success(array(
+						'message' => sprintf(__('%s variations created.', VGSE()->textname), 0),
+						'force_complete' => true,
+						'deleted' => array(),
+						'data' => array(),
+						'processed_products' => array()
+					));
+				}
 			}
 			if (empty($product_ids)) {
 				wp_send_json_error(array('message' => __('Target products not found.', VGSE()->textname)));

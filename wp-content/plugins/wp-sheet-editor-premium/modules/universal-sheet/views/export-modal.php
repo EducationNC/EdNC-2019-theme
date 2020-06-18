@@ -29,20 +29,22 @@
 					</select>
 					<br/>
 					<button class="select-active button"><?php _e('Select active columns', VGSE()->textname); ?></button> <button class="select-all button"><?php _e('Select all', VGSE()->textname); ?></button> <button class="unselect-all button"><?php _e('Unselect  all', VGSE()->textname); ?></button>
-					<br/>
+					<?php if (empty(VGSE()->options['enable_simple_mode'])) { ?>
+						<br/>
 
-					<label class="use-search-query-container"><input type="checkbox" value="yes"  name="use_search_query" required><?php _e('I understand it will export all the rows from my current search.', VGSE()->textname); ?> <a href="#" class="tipso tipso_style" data-tipso="<?php _e('For example, if you searched for posts by "author = Mark" using the search tool, we will export only posts with "author Mark"', VGSE()->textname); ?>">( ? )</a></label>
-					<br/>
+						<label class="use-search-query-container"><input type="checkbox" value="yes"  name="use_search_query" required><?php _e('I understand it will export all the rows from my current search.', VGSE()->textname); ?> <a href="#" class="tipso tipso_style" data-tipso="<?php _e('For example, if you searched for posts by "author = Mark" using the search tool, we will export only posts with "author Mark"', VGSE()->textname); ?>">( ? )</a></label>
+						<br/>
 
-					<label class="excel-compatibility-container"><?php _e('What app will you use to edit this file? (optional)', VGSE()->textname); ?><br>
-						<select name="add_excel_separator_flag">
-							<option value=""><?php _e('--', VGSE()->textname); ?></option>
-							<option value=""><?php _e('Microsoft Excel (Office 365)', VGSE()->textname); ?></option>
-							<option value="yes"><?php _e('Other versions of Microsoft Excel', VGSE()->textname); ?></option>
-							<option value=""><?php _e('Google Sheets', VGSE()->textname); ?></option>
-							<option value=""><?php _e('Other', VGSE()->textname); ?></option>
-						</select>
-					</label>
+						<label class="excel-compatibility-container"><?php _e('What app will you use to edit this file? (optional)', VGSE()->textname); ?><br>
+							<select name="add_excel_separator_flag">
+								<option value=""><?php _e('--', VGSE()->textname); ?></option>
+								<option value=""><?php _e('Microsoft Excel (Office 365)', VGSE()->textname); ?></option>
+								<option value="yes"><?php _e('Other versions of Microsoft Excel', VGSE()->textname); ?></option>
+								<option value=""><?php _e('Google Sheets', VGSE()->textname); ?></option>
+								<option value=""><?php _e('Other', VGSE()->textname); ?></option>
+							</select>
+						</label>
+					<?php } ?>
 					<?php if (current_user_can('manage_options')) { ?>
 						<br/>
 

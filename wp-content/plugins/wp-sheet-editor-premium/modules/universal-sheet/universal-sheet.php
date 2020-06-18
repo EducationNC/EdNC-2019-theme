@@ -34,6 +34,7 @@ if (!class_exists('WP_Sheet_Editor_Universal_Sheet')) {
 
 			// Enqueue metabox css and js
 			add_action('vg_sheet_editor/after_enqueue_assets', array($this, 'enqueue_assets'));
+			add_action('wp_ajax_vgse_delete_saved_export', array($this, 'delete_saved_export'));
 		}
 
 		/**
@@ -94,7 +95,37 @@ if (!class_exists('WP_Sheet_Editor_Universal_Sheet')) {
 			foreach ($columns as $key => $column) {
 				echo '<option value="' . esc_attr($key) . '">' . esc_html($column['title']) . '</option>';
 			}
+
+			if (post_type_exists($post_type)) {
+				echo '<option value="post_name__in">' . __('Full URL', VGSE()->textname) . '</option>';
+			}
 			do_action('vg_sheet_editor/import/after_available_columns_options', $post_type);
+		}
+
+		function delete_saved_export() {
+			$data = VGSE()->helpers->clean_data($_REQUEST);
+			if (!wp_verify_nonce($data['nonce'], 'bep-nonce') || !current_user_can('manage_options')) {
+				wp_send_json_error(array('message' => __('You dont have enough permissions to view this page.', VGSE()->textname)));
+			}
+
+			$post_type = $data['post_type'];
+			$name = $data['search_name'];
+
+			$saved_items = get_option('vgse_saved_exports');
+			if (empty($saved_items)) {
+				wp_send_json_success();
+			}
+
+			if (!isset($saved_items[$post_type])) {
+				wp_send_json_success();
+			}
+
+			$same_name = wp_list_filter($saved_items[$post_type], array('name' => $name));
+			foreach ($same_name as $index => $same_name_search) {
+				unset($saved_items[$post_type][$index]);
+			}
+			update_option('vgse_saved_exports', $saved_items);
+			wp_send_json_success();
 		}
 
 		function register_toolbar_items($editor) {
@@ -119,7 +150,7 @@ if (!class_exists('WP_Sheet_Editor_Universal_Sheet')) {
 							'toolbar_key' => 'secondary',
 							'allow_in_frontend' => false,
 							'parent' => 'export_csv',
-							'extra_html_attributes' => 'data-start-saved-export="' . esc_attr(json_encode($saved_export)) . '"',
+							'extra_html_attributes' => 'data-saved-type="export" data-saved-item data-item-name="' . esc_attr($saved_export['name']) . '" data-start-saved-export="' . esc_attr(json_encode($saved_export)) . '"',
 								), $post_type);
 					}
 				}

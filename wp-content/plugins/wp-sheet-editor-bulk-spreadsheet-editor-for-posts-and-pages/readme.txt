@@ -2,7 +2,7 @@
 Contributors: wpsheeteditor,vegacorp,josevega
 Tags: woocommerce, easy digital downloads, events, bulk edit, spreadsheet
 Tested up to: 5.4
-Stable tag: 2.18.1
+Stable tag: 2.20.0
 Requires at least: 3.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -230,12 +230,83 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 2. settings page
 
 == Changelog ==
-= V 2.18.1 - 2020-03-17 =
+= V 2.20.0 - 2020-05-20 =
+* NEW - CORE - Improve the handling of external images
+* NEW - FORMULAS - Improved the types of edit
+* NEW - FILTERS - Improve the search
+* Products el enlace de metabox variaciones que use id para búsqueda en lugar de title
+* in the autocomplete dialog for tags, when we use keyboard arrows to move down the list of matching tags, there is no visual indication of which menu item is selected. This means we can't use keyboard navigation to select items – the arrow keys do work, it's just we can't see what is selected. I'm sure a simple CSS tweak would fix this. If/when you release an update to fix this, please let me know at peter@80000hours.org
+* CHANGE - CORE - Improve the freezing of columns
+* CHANGE - CORE - Improve the productivity while sorting columns
+* CHANGE - WC Coupons - Remove duplicate columns
+* CHANGE - WC Products - Improve performance of the default attributes column
+* CHANGE - FORMULAS - Improve productivity for executing some edits
+* CHANGE - COLUMNS MANAGER - Improve the toolbar item
+* CHANGE - EXPORT - Improve the toolbar item
+* FIX - WC Products - Sometimes the post type and parent columns aren't saved
+* FIX - WC Products - Import - new images are not saved when using the option "skip broken images"
+* FIX - WC Products - Error when copying more than 100 variations
+* FIX - FORMULAS - Sometimes columns can't be copied
+* FIX - COLUMNS MANAGER - If we specify column formatting manually, don't overwrite it during automatic detection
+* FIX - CORE - Sometimes deleted columns also deleted similar columns by mistake
+* FIX - CORE - Sometimes the save popup gets stuck
+* FIX - WC Products - When converting a product into variation, the attributes are not migrated sometimes
+
+
+
+= V 2.20.0 - 2020-04-20 =
+* NEW - COLUMNS MANAGER - Improve the handling of columns between users
+* NEW - WC Products - Improve the handling of custom attributes
+* CHANGE - Small tweak to the display of advanced settings toolbar
+* CHANGE - WC Products - Keyword search by sku should allow partial matches
+* CHANGE - CORE - Prevent data errors during imports
+* CHANGE - WC Products - Import - Prevent attribute data errors
+* CHANGE - CORE - Prevent memory issues
+* CHANGE - UNIVERSAL SHEET - IMPORT - Remove the wp fields that can't be used for searching
+* CHANGE - FORMULAS - Make the "duplicates" option more flexible
+* CHANGE - WC Products - Create variations - Improve the context menu performance
+* CHANGE - IMPORT - Prevent column name errors
+* CHANGE - CORE - Prevent confusion when the loading of rows is disabled
+* CHANGE - WC Products - Prevent errors when using tools with missing data
+* CHANGE - COLUMNS MANAGER - Improve the productivity when managing columns
+* CHANGE - CORE - Optimized performance when we have thousands of columns
+* CHANGE - WC COUPONS - Facilitate the selection of coupon prefix while duplicating
+* CHANGE - WC Products - Improve the selection of products for creating variations
+* CHANGE - CORE - Facilitate the removal of many columns
+* CHANGE - WC COUPONS - Don't duplicate some fields
+* CHANGE - IMPORT - Prevent unnecessary stops
+* CHANGE - WC COUPONS - Make the edition of product restrictions more flexible
+* CHANGE - WC Coupons - Improve the display of usage limit columns
+* FIX - WC Products - The attributes column appear as text column
+* FIX - EXPORT - Fatal error when using the "decode quotes" option
+* FIX - Ajax Loops - Avoid sending too many fields in a request
+* FIX - WC Products - The "display variations" switch doesn't work sometimes
+* FIX - FORMULAS - Fatal error when applying bulk edit on an infinitely serialized column
+* FIX - CORE - Advanced settings modal doesn't save some options
+* FIX - CORE - The pagination options don't appear when we are in the middle of the spreadsheet and we reach the bottom
+* FIX - CORE - Bulk Edit - Empty checkboxes are ignored
+* FIX - CORE - Search - Empty checkboxes are ignored
+* FIX - CORE - TinyMCE popup sometimes skips rows when using the navigation
+* FIX - WC Products - Sometimes the bulk edit of "product attributes" settings fails
+* FIX - COLUMNS MANAGER - Sometimes some columns don't appear in the list
+* FIX - COLUMNS MANAGER - Sometimes text cell have date formatting
+* FIX - CORE - Non-hierarchical taxonomy terms should not have hierarchy
+* FIX - CORE -Parent name is wrongly encoded sometimes
+* FIX - WC Products - WPML - Sometimes variations are created and they're invisible
+* FIX - CUSTOM COLUMNS - Prevent data compatibility errors
+* FIX - WC Products - Searching by variation attributes is not working
+* FIX - CORE - Sometimes columns can't be enabled
+* FIX - WC Coupons - Expiration date wasn't saved sometimes
+* FIX - WC Products - Sometimes some columns are saved but new values don't appear in the frontend
+* FIX - CORE - Sometimes the columns manager can't save changes
+
+
+= V 2.20.0 - 2020-03-17 =
 * CHANGE - Small tweak to the display of advanced settings toolbar
 * CHANGE - WC Products - Keyword search by sku should allow partial matches
 
 
-= V 2.18.1 - 2020-03-16 =
+= V 2.20.0 - 2020-03-16 =
 * NEW - CORE - Integrate with Elementor
 * NEW - ADVANCED FILTERS - Allow OR operators
 * NEW - FILTERS - Allow to save searches
@@ -273,7 +344,7 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 * FIX - ADVANCED FILTERS - Sometimes the searches with empty values don't work
 
 
-= V 2.18.1 - 2020-02-19 =
+= V 2.20.0 - 2020-02-19 =
 * NEW - FORMULAS - Allow to apply same bulk edit to multiple fields at once
 * NEW - FORMULAS - Allow to select individual rows with a checkbox and apply the bulk edit to those rows
 * NEW - CORE - Add support for custom post statuses
@@ -316,7 +387,7 @@ Yes. You can set up the number of posts to save per batch and the waiting betwee
 * FIX - ACF - Repeater fields are saved correctly but the values are ignored by ACF
 
 
-= V 2.18.1 - 2020-01-13 =
+= V 2.20.0 - 2020-01-13 =
 * NEW - CORE - Add option to "settings" menu to reset all settings
 * NEW - FORMULAS - Add variable $current_value_capitalize_each_word$ and option "Capitalize each word" to the "type of edit" list
 * NEW - FORMULAS - Added variable tags: $uuid$, $uniqid$, $current_value_lowercase$

@@ -51,7 +51,7 @@ function ctf_return_feed_types( $val ) {
 add_action( 'ctf_admin_upgrade_note', 'ctf_update_note' );
 function ctf_update_note() {
     ?>
-    <span class="ctf_note"> - <a href="https://smashballoon.com/custom-twitter-feeds/?utm_source=plugin-free&utm_campaign=ctf" target="_blank">Available in Pro version</a></span>
+    <span class="ctf_note"> - <a href="https://smashballoon.com/custom-twitter-feeds/?utm_campaign=twitter-free&utm_source=settings&utm_medium=proonly" target="_blank">Available in Pro version</a></span>
     <?php
 }
 
@@ -60,7 +60,7 @@ function ctf_usertimeline_error_message( $args )
 { //sbi_notice sbi_user_id_error
     if ( $args['name'] == 'usertimeline') : ?>
         <div class="ctf_notice ctf_usertimeline_error">
-            <?php _e( "<p>Please use a single screenname or Twitter handle of numbers and letters. If you would like to use more than one screen name for your feed, please upgrade to our <a href='https://smashballoon.com/custom-twitter-feeds/?utm_source=plugin-free&utm_campaign=ctf' target='_blank'>Pro version</a>.</p>" ); ?>
+            <?php _e( "<p>Please use a single screenname or Twitter handle of numbers and letters. If you would like to use more than one screen name for your feed, please upgrade to our <a href='https://smashballoon.com/custom-twitter-feeds/?utm_campaign=twitter-free&utm_source=settings&utm_medium=multiuser' target='_blank'>Pro version</a>.</p>" ); ?>
         </div>
     <?php endif;
 }
@@ -69,7 +69,7 @@ add_action( 'ctf_admin_feed_settings_search_extra', 'ctf_hashtag_error_message' 
 function ctf_hashtag_error_message() {
     ?>
     <div class="ctf_notice ctf_search_error">
-        <?php _e( "<p>Please use a single hashtag of numbers and letters. If you would like to use more than one hashtag or use search terms for your feed, please upgrade to our <a href='https://smashballoon.com/custom-twitter-feeds/?utm_source=plugin-free&utm_campaign=ctf' target='_blank'>Pro version</a>.</p>" ); ?>
+        <?php _e( "<p>Please use a single hashtag of numbers and letters. If you would like to use more than one hashtag or use search terms for your feed, please upgrade to our <a href='https://smashballoon.com/custom-twitter-feeds/?utm_campaign=twitter-free&utm_source=settings&utm_medium=multisearch' target='_blank'>Pro version</a>.</p>" ); ?>
     </div>
     <?php
 }
@@ -156,7 +156,7 @@ function ctf_show_hide_list( $show_hide_list ) {
 
 function ctf_pro_autoscroll_section() {
 	?>
-    <p class="ctf_pro_section_note"><a href="https://smashballoon.com/custom-twitter-feeds/?utm_source=plugin-free&utm_campaign=ctf" target="_blank">Upgrade to Pro to enable Autoscroll loading</a></p>
+    <p class="ctf_pro_section_note"><a href="https://smashballoon.com/custom-twitter-feeds/?utm_campaign=twitter-free&utm_source=settings&utm_medium=autoscroll" target="_blank">Upgrade to Pro to enable Autoscroll loading</a></p>
     <span><a href="javascript:void(0);" class="button button-secondary ctf-show-pro"><b>+</b> Show Pro Options</a></span>
 
     <div class="ctf-pro-options">
@@ -176,7 +176,7 @@ function ctf_pro_autoscroll_section() {
 
 function ctf_pro_moderation_section() {
 	?>
-    <p class="ctf_pro_section_note"><a href="https://smashballoon.com/custom-twitter-feeds/?utm_source=plugin-free&utm_campaign=ctf" target="_blank">Upgrade to Pro to enable Tweet moderation</a></p>
+    <p class="ctf_pro_section_note"><a href="https://smashballoon.com/custom-twitter-feeds/?utm_campaign=twitter-free&utm_source=settings&utm_medium=moderation" target="_blank">Upgrade to Pro to enable Tweet moderation</a></p>
     <span><a href="javascript:void(0);" class="button button-secondary ctf-show-pro"><b>+</b> Show Pro Options</a></span>
 
     <div class="ctf-pro-options">
@@ -341,3 +341,66 @@ function ctf_add_filter_section_to_customize() {
     do_settings_sections( 'ctf_options_filter' ); // matches the section name
     echo '<hr>';
 }
+
+function ctf_lite_dismiss() {
+	$nonce = isset( $_POST['ctf_nonce'] ) ? sanitize_text_field( $_POST['ctf_nonce'] ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'ctf-smash-balloon' ) ) {
+		die ( 'You did not do this the right way!' );
+	}
+
+	set_transient( 'twitter_feed_dismiss_lite', 'dismiss', 1 * WEEK_IN_SECONDS );
+
+	die();
+}
+add_action( 'wp_ajax_ctf_lite_dismiss', 'ctf_lite_dismiss' );
+
+function ctf_admin_hide_unrelated_notices() {
+
+	// Bail if we're not on a ctf screen or page.
+	if ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'custom-twitter-feeds' ) {
+		return;
+	}
+
+	// Extra banned classes and callbacks from third-party plugins.
+	$blacklist = array(
+		'classes'   => array(),
+		'callbacks' => array(
+			'ctfdb_admin_notice', // 'Database for ctf' plugin.
+		),
+	);
+
+	global $wp_filter;
+
+	foreach ( array( 'user_admin_notices', 'admin_notices', 'all_admin_notices' ) as $notices_type ) {
+		if ( empty( $wp_filter[ $notices_type ]->callbacks ) || ! is_array( $wp_filter[ $notices_type ]->callbacks ) ) {
+			continue;
+		}
+		foreach ( $wp_filter[ $notices_type ]->callbacks as $priority => $hooks ) {
+			foreach ( $hooks as $name => $arr ) {
+				if ( is_object( $arr['function'] ) && $arr['function'] instanceof Closure ) {
+					unset( $wp_filter[ $notices_type ]->callbacks[ $priority ][ $name ] );
+					continue;
+				}
+				$class = ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) ? strtolower( get_class( $arr['function'][0] ) ) : '';
+				if (
+					! empty( $class ) &&
+					strpos( $class, 'ctf' ) !== false &&
+					! in_array( $class, $blacklist['classes'], true )
+				) {
+					continue;
+				}
+				if (
+					! empty( $name ) && (
+						strpos( $name, 'ctf' ) === false ||
+						in_array( $class, $blacklist['classes'], true ) ||
+						in_array( $name, $blacklist['callbacks'], true )
+					)
+				) {
+					unset( $wp_filter[ $notices_type ]->callbacks[ $priority ][ $name ] );
+				}
+			}
+		}
+	}
+}
+add_action( 'admin_print_scripts', 'ctf_admin_hide_unrelated_notices' );

@@ -3,14 +3,14 @@
 /*
   Plugin Name: WP Sheet Editor - Taxonomy Terms
   Description: Edit categories and tags in a spreadsheet.
-  Version: 1.3.2
+  Version: 1.5.0
   Author:      WP Sheet Editor
   Author URI:  https://wpsheeteditor.com/?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=taxonomy-terms
   Plugin URI: https://wpsheeteditor.com/go/taxonomy-terms-addon?utm_source=wp-admin&utm_medium=plugins-list&utm_campaign=taxonomy-terms
   License:     GPL2
   License URI: https://www.gnu.org/licenses/gpl-2.0.html
   WC requires at least: 3.0
-WC tested up to: 4.0
+WC tested up to: 4.1
 Text Domain: vg_sheet_editor_taxonomy_terms
   Domain Path: /lang
 */
@@ -34,7 +34,7 @@ if ( !class_exists( 'WP_Sheet_Editor_Taxonomy_Terms' ) ) {
         var  $plugin_dir = null ;
         var  $textname = 'vg_sheet_editor_taxonomy_terms' ;
         var  $buy_link = null ;
-        var  $version = '1.3.2' ;
+        var  $version = '1.5.0' ;
         var  $settings = null ;
         var  $args = null ;
         var  $vg_plugin_sdk = null ;

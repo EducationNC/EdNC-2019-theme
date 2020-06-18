@@ -40,7 +40,7 @@ if (!class_exists('WP_Sheet_Editor_Columns_Visibility')) {
 		}
 
 		static function get_visibility_options($post_type = null) {
-			$options = get_option(WP_Sheet_Editor_Columns_Visibility::$columns_visibility_key, array());
+			$options = apply_filters('vg_sheet_editor/columns_visibility/options', get_option(WP_Sheet_Editor_Columns_Visibility::$columns_visibility_key, array()), $post_type);
 
 			if ($post_type) {
 				$options = isset($options[$post_type]) ? $options[$post_type] : array();
@@ -140,7 +140,9 @@ if (!class_exists('WP_Sheet_Editor_Columns_Visibility')) {
 
 		function blacklist_removed_columns($blacklisted_columns, $post_type) {
 			$removed_columns = $this->get_removed_columns($post_type);
-			$blacklisted_columns = array_merge($blacklisted_columns, $removed_columns[$post_type]);
+			foreach ($removed_columns[$post_type] as $removed_column_key) {
+				$blacklisted_columns[] = '^' . $removed_column_key . '$';
+			}
 			return $blacklisted_columns;
 		}
 
@@ -184,6 +186,12 @@ if (!class_exists('WP_Sheet_Editor_Columns_Visibility')) {
 		function update_columns_settings($data = null, $custom_options = null, $silent = false) {
 			if (!$data) {
 				$data = VGSE()->helpers->clean_data($_REQUEST);
+			}
+
+			// Allow to receive the form data as JSON string with the "extra_data" key
+			if (isset($data['extra_data'])) {
+				$data = array_merge($data, json_decode(html_entity_decode(wp_unslash($data['extra_data'])), true));
+				unset($data['extra_data']);
 			}
 
 			if (!wp_verify_nonce($data['nonce'], 'bep-nonce') || !VGSE()->helpers->user_can_edit_post_type($data['post_type'])) {
@@ -298,6 +306,16 @@ if (!class_exists('WP_Sheet_Editor_Columns_Visibility')) {
 			if (empty($options[$post_type]['enabled'])) {
 				$options[$post_type]['enabled'] = wp_list_pluck($filtered_columns, 'title', 'key');
 			}
+
+			// When we use the columns manager and switch between groups,
+			// the saved columns might not include all the current columns so some columns
+			// might not appear in the enabled nor disabled lists. Force them to appear at least as disabled.
+			foreach ($filtered_columns as $column_key => $column_settings) {
+				if (!isset($visible_columns[$column_key])) {
+					$options[$post_type]['disabled'][$column_key] = $column_settings;
+				}
+			}
+
 			$editor = VGSE()->helpers->get_provider_editor($post_type);
 
 			include __DIR__ . '/views/form.php';
